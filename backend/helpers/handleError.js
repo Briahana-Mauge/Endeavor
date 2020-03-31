@@ -4,6 +4,13 @@ Server Error Handling Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
+/*
+USAGE
+to instantiate custom error, format: throw new Error(`<error code>__error: <msg>`);
+example: throw new Error(`404__error: volunteer ${volunteerId} not found`);
+*/
+
+
 const handleError = (err, req, res, next) => {
   // per documentation, checking for present headers and if so, passing
   if (res.headersSent) {
@@ -26,7 +33,7 @@ const handleError = (err, req, res, next) => {
     });
   } else {
 
-    // customized error handler
+    // custom error handling
     res.status(parseInt(code));
     const codeClass = parseInt(code).toString()[0];
     if (codeClass === '4') {

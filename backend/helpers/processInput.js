@@ -4,8 +4,10 @@ Server Error Handling Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
+// NAMING CONVENTION
 // hard- === must receive an non-empty input
 // soft- === defaults to empty string
+
 
 const processInput = (input, category, inputName) => {
   switch (category) {
