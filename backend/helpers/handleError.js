@@ -25,6 +25,7 @@ const handleError = (err, req, res, next) => {
         payload: null
     });
   } else {
+
     // customized error handler
     res.status(parseInt(code));
     const codeClass = parseInt(code).toString()[0];

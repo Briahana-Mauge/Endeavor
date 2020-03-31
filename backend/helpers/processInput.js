@@ -10,6 +10,7 @@ Server Error Handling Helper | Capstone App (Pursuit Volunteer Mgr)
 const processInput = (input, category, inputName) => {
   switch (category) {
 
+    // for numbers that are ids
     case "idNum":
         const numCheck1 = isNaN(parseInt(input));
         const numCheck2 = input.length !== parseInt(input).toString().length;
@@ -18,6 +19,7 @@ const processInput = (input, category, inputName) => {
         }
         return parseInt(input);
 
+    // for varchar strings with 22 length max, no empty inputs allowed
     case "hardVarchar22":
         if (!input || !input.trim()) {
           throw new Error(`400__error: empty ${inputName} input. please re-enter and try again`);
@@ -27,6 +29,7 @@ const processInput = (input, category, inputName) => {
         }
         return input.trim();
 
+    // for varchar strings with 22 length max but empty strings are allowed
     case "softVarchar22":
         if (!input || !input.trim()) {
           return "";
@@ -36,12 +39,14 @@ const processInput = (input, category, inputName) => {
         }
         return input.trim();
 
+    // for unlimited text inputs, no empty inputs allowed
     case "hardText":
         if (!input || !input.trim()) {
           throw new Error(`400__error: empty ${inputName}. Please enter a valid input`);
         }
         return input.trim();
 
+    // for booleans
     case "bool":
         if (input !== "true" && input !== "false") {
           throw new Error(`404__error: invalid ${inputName} data. Please check your input`);

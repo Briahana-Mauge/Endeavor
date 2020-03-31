@@ -6,7 +6,7 @@ FELLOWS Route Handler | Capstone App (Pursuit Volunteer Mgr)
 
 /* MODULE INITS */
 const express = require('express');
-  const router = express.Router();
+const router = express.Router();
 
 const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
