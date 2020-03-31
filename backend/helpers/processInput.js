@@ -21,22 +21,42 @@ const processInput = (input, category, inputName) => {
         }
         return parseInt(input);
 
-    // for varchar strings with 22 length max, no empty inputs allowed
-    case "hardVarchar22":
+    // for varchar strings with 30 length max, no empty inputs allowed
+    case "hardVarchar30":
         if (!input || !input.trim()) {
           throw new Error(`400__error: empty ${inputName} input. please re-enter and try again`);
         }
-        if (input.trim().length > 22) {
+        if (input.trim().length > 30) {
           throw new Error(`400__error: ${inputName} is too long. please shorten`);
         }
         return input.trim();
 
-    // for varchar strings with 22 length max but empty strings are allowed
-    case "softVarchar22":
+    // for varchar strings with 30 length max but empty strings are allowed
+    case "softVarchar30":
         if (!input || !input.trim()) {
           return "";
         }
-        if (input.trim().length > 22) {
+        if (input.trim().length > 30) {
+          throw new Error(`400__error: ${inputName} is too long. please shorten`);
+        }
+        return input.trim();
+
+    // for varchar strings with 60 length max, no empty inputs allowed
+    case "hardVarchar60":
+        if (!input || !input.trim()) {
+          throw new Error(`400__error: empty ${inputName} input. please re-enter and try again`);
+        }
+        if (input.trim().length > 60) {
+          throw new Error(`400__error: ${inputName} is too long. please shorten`);
+        }
+        return input.trim();
+
+    // for varchar strings with 60 length max but empty strings are allowed
+    case "softVarchar60":
+        if (!input || !input.trim()) {
+          return "";
+        }
+        if (input.trim().length > 60) {
           throw new Error(`400__error: ${inputName} is too long. please shorten`);
         }
         return input.trim();
@@ -45,6 +65,13 @@ const processInput = (input, category, inputName) => {
     case "hardText":
         if (!input || !input.trim()) {
           throw new Error(`400__error: empty ${inputName}. Please enter a valid input`);
+        }
+        return input.trim();
+
+    // for unlimited text inputs, no empty inputs allowed
+    case "softText":
+        if (!input || !input.trim()) {
+          return "";
         }
         return input.trim();
 

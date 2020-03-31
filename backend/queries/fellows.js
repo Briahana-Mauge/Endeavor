@@ -34,12 +34,12 @@ const getAllFellows = async () => {
 }
 
 const getFellowById = async (fId) => {
+  const getQuery = `
+    SELECT *
+    FROM fellows
+    WHERE f_id = $/fId/;
+  `;
   try {
-    const getQuery = `
-      SELECT *
-      FROM fellows
-      WHERE f_id = $/fId/;
-    `;
     return await db.one(getQuery, { fId });
   } catch (err) {
     if (err.message === "No data returned from the query.") {
@@ -49,9 +49,48 @@ const getFellowById = async (fId) => {
   }
 }
 
+const addFellow = async (bodyObj) => {
+  const postQuery = `
+      INSERT INTO fellows (
+          f_first_name,
+          f_last_name,
+          f_email,
+          f_picture,
+          f_bio,
+          f_linkedin,
+          f_github,
+          f_cohort_id,
+          want_mentor
+      ) VALUES (
+          $/firstname/,
+          $/lastname/,
+          $/email/,
+          $/picture/,
+          $/bio/,
+          $/linkedIn/,
+          $/github/,
+          $/cohortId/,
+          $/wantMentor/
+      )
+      RETURNING *;
+  `;
+  try {
+    return await db.one(postQuery, bodyObj);
+  } catch (err) {
+    if (err.message.includes("violates unique constraint")) {
+      throw new Error(
+        `403__error: username ${bodyObj.email
+          } already exists. Please try again with a new email.`
+      );
+    }
+    throw (err);
+  }
+}
+
 
 /* EXPORT */
 module.exports = {
   getAllFellows,
-  getFellowById
+  getFellowById,
+  addFellow
 }
