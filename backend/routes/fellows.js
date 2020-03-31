@@ -28,9 +28,25 @@ const readAllFellows = async (req, res, next) => {
   }
 };
 
+const readFellow = async (req, res, next) => {
+  try {
+    const fellowId = processInput(req.params.fellow_id, "idNum", "fellow id");
+    const fellowById = await queries.getFellowById(fellowId);
+    res.status(200);
+    res.json({
+        status: "success",
+        message: `fellow.${id} retrieved`,
+        payload: fellowById
+    });
+  } catch (err) {
+    handleError(err, req, res, next);
+  }
+};
+
 
 /* ROUTE HANDLERS */
 router.get("/", readAllFellows);
+router.get("/:fellow_id", readFellow);
 
 
 module.exports = router;
