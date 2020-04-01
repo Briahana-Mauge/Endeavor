@@ -1,15 +1,44 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-Server Error Handling Helper | Capstone App (Pursuit Volunteer Mgr)
+Server Input Processing Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
-// NAMING CONVENTION
-// hard- === must receive an non-empty input
-// soft- === defaults to empty string
+const errorResponse = require('./errorResponse');
 
 
-const processInput = (input, category, inputName) => {
+const varcharCheck = (softHardOrPatch, res, inputName, maxLengthNum = Infinity) => {
+
+  // NAMING CONVENTION
+  // hard- === must receive an non-empty input
+  // soft- === defaults to empty string
+  // patch- === translates empty input to undefined, in prep for patch routes
+
+  /* STAGE 1/3: handle empty inputs */
+  if (!input || !input.trim()) {
+    switch (softHardOrPatch) {
+      case "soft":  // empty input becomes EMPTY STRING
+        return "";
+      case "hard":  // empty input is REJECTED
+        errorResponse(res, 400, `(front) error: invalid empty ${inputName} input`);
+      case "patch":  // empty input returns UNDEFINED
+        return;
+      default:
+        errorResponse(res, 500, `(back) error: invalid empty ${inputName} input`);
+    }
+  }
+
+  /* STAGE 2/3: check input length against varchar limit specified */
+  if (input.trim().length > maxLengthNum) {
+    errorResponse(res, 400, `(front) error: ${inputName} is too long`);
+  }
+
+  /* STAGE 3/3: all checks passed, return trimmed input */
+  return input.trim();
+}
+
+
+const processInput = (input, res, category, inputName) => {
   switch (category) {
 
     // for numbers that are ids
@@ -17,73 +46,35 @@ const processInput = (input, category, inputName) => {
         const numCheck1 = isNaN(parseInt(input));
         const numCheck2 = input.length !== parseInt(input).toString().length;
         if (numCheck1 || numCheck2) {
-          throw new Error(`400__error: invalid ${inputName} input. please re-enter and try again`);
+          errorResponse(res, 400, `(front) error: invalid numerical ${inputName} input`);
         }
         return parseInt(input);
 
-    // for varchar strings with 30 length max, no empty inputs allowed
+    // 30 length max, no empty inputs allowed
     case "hardVarchar30":
-        if (!input || !input.trim()) {
-          throw new Error(`400__error: empty ${inputName} input. please re-enter and try again`);
-        }
-        if (input.trim().length > 30) {
-          throw new Error(`400__error: ${inputName} is too long. please shorten`);
-        }
-        return input.trim();
+        varcharCheck("hard", res, inputName, 30);
 
-    // for varchar strings with 30 length max but empty strings are allowed
-    case "softVarchar30":
-        if (!input || !input.trim()) {
-          return "";
-        }
-        if (input.trim().length > 30) {
-          throw new Error(`400__error: ${inputName} is too long. please shorten`);
-        }
-        return input.trim();
+    // 50 length max, no empty inputs allowed
+    case "hardVarchar50":
+        varcharCheck("hard", res, inputName, 50);
 
-    // for varchar strings with 60 length max, no empty inputs allowed
-    case "hardVarchar60":
-        if (!input || !input.trim()) {
-          throw new Error(`400__error: empty ${inputName} input. please re-enter and try again`);
-        }
-        if (input.trim().length > 60) {
-          throw new Error(`400__error: ${inputName} is too long. please shorten`);
-        }
-        return input.trim();
+    // 150 length max but empty strings are allowed
+    case "softVarchar150":
+        varcharCheck("soft", res, inputName, 150);
 
-    // for varchar strings with 60 length max but empty strings are allowed
-    case "softVarchar60":
-        if (!input || !input.trim()) {
-          return "";
-        }
-        if (input.trim().length > 60) {
-          throw new Error(`400__error: ${inputName} is too long. please shorten`);
-        }
-        return input.trim();
-
-    // for unlimited text inputs, no empty inputs allowed
-    case "hardText":
-        if (!input || !input.trim()) {
-          throw new Error(`400__error: empty ${inputName}. Please enter a valid input`);
-        }
-        return input.trim();
-
-    // for unlimited text inputs, no empty inputs allowed
-    case "softText":
-        if (!input || !input.trim()) {
-          return "";
-        }
-        return input.trim();
+    // no length max, empty strings are allowed
+    case "softVarcharNoLimit":
+        varcharCheck("soft", res, inputName);
 
     // for booleans
     case "bool":
         if (input !== "true" && input !== "false") {
-          throw new Error(`404__error: invalid ${inputName} data. Please check your input`);
+          errorResponse(res, 404, `(front) error: invalid boolean input`);
         }
         return input;
 
     default:
-        throw new Error("500__error: you're not supposed to be here. input category unknown");
+        errorResponse(res, 500, `(back) error: you're not supposed to be here. input category unknown`);
   }
 }
 
