@@ -31,6 +31,7 @@ const readAllFellows = async (req, res, next) => {
 const readFellow = async (req, res, next) => {
   try {
     const fellowId = processInput(req.params.fellow_id, res, "idNum", "fellow id");
+
     const fellowById = await queries.getFellowById(fellowId);
     res.status(200);
     res.json({
@@ -44,16 +45,16 @@ const readFellow = async (req, res, next) => {
 };
 
 // const createFellow = async (req, res, next) => {
-//   try {
-//     const firstname = processInput(req.body.f_first_name, res, "hardVarchar30", "firstname");
-//     const lastname = processInput(req.body.f_last_name, res, "hardVarchar30", "lastname");
-//     const picture = processInput(req.body.f_picture, res, "softVarcharNoLimit", "picture url");
-//     const bio = processInput(req.body.f_bio, res, "softVarcharNoLimit", "bio");
-//     const linkedIn = processInput(req.body.f_linkedin, res, "softVarchar150", "linkedin url");
-//     const github = processInput(req.body.f_github, res, "softVarchar150", "github url");
-//     const cohortId = processInput(req.body.cohort_id, res, "idNum", "cohort id");
-//     const wantMentor = processInput(req.body.want_mentor, res, "bool", "want mentor bool");
+//   const firstname = processInput(req.body.f_first_name, res, "hardVarchar30", "firstname");
+//   const lastname = processInput(req.body.f_last_name, res, "hardVarchar30", "lastname");
+//   const picture = processInput(req.body.f_picture, res, "softVarcharNoLimit", "picture url");
+//   const bio = processInput(req.body.f_bio, res, "softVarcharNoLimit", "bio");
+//   const linkedIn = processInput(req.body.f_linkedin, res, "softVarchar150", "linkedin url");
+//   const github = processInput(req.body.f_github, res, "softVarchar150", "github url");
+//   const cohortId = processInput(req.body.cohort_id, res, "idNum", "cohort id");
+//   const wantMentor = processInput(req.body.want_mentor, res, "bool", "want mentor bool");
 
+//   try {
 //     const response = await queries.addFellow({
 //         firstname,
 //         lastname,

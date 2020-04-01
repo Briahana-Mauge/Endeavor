@@ -4,10 +4,7 @@ Server Input Processing Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
-const errorResponse = require('./errorResponse');
-
-
-const varcharCheck = (softHardOrPatch, res, inputName, maxLengthNum = Infinity) => {
+const varcharCheck = (softHardOrPatch, inputName, maxLengthNum = Infinity) => {
 
   // NAMING CONVENTION
   // hard- === must receive an non-empty input
@@ -20,17 +17,17 @@ const varcharCheck = (softHardOrPatch, res, inputName, maxLengthNum = Infinity) 
       case "soft":  // empty input becomes EMPTY STRING
         return "";
       case "hard":  // empty input is REJECTED
-        errorResponse(res, 400, `(front) error: invalid empty ${inputName} input`);
+        throw new Error(`400__error: invalid empty ${inputName} input`);
       case "patch":  // empty input returns UNDEFINED
         return;
       default:
-        errorResponse(res, 500, `(back) error: invalid empty ${inputName} input`);
+        throw new Error(`500__error: unknown varchar type sent to check function`);
     }
   }
 
   /* STAGE 2/3: check input length against varchar limit specified */
   if (input.trim().length > maxLengthNum) {
-    errorResponse(res, 400, `(front) error: ${inputName} is too long`);
+    throw new Error(`400__error: ${inputName} is longer than ${maxLengthNum} allowed`);
   }
 
   /* STAGE 3/3: all checks passed, return trimmed input */
@@ -46,35 +43,35 @@ const processInput = (input, res, category, inputName) => {
         const numCheck1 = isNaN(parseInt(input));
         const numCheck2 = input.length !== parseInt(input).toString().length;
         if (numCheck1 || numCheck2) {
-          errorResponse(res, 400, `(front) error: invalid numerical ${inputName} input`);
+          throw new Error(`400__error: invalid numerical ${inputName} input`);
         }
         return parseInt(input);
 
     // 30 length max, no empty inputs allowed
     case "hardVarchar30":
-        varcharCheck("hard", res, inputName, 30);
+        varcharCheck("hard", inputName, 30);
 
     // 50 length max, no empty inputs allowed
     case "hardVarchar50":
-        varcharCheck("hard", res, inputName, 50);
+        varcharCheck("hard", inputName, 50);
 
     // 150 length max but empty strings are allowed
     case "softVarchar150":
-        varcharCheck("soft", res, inputName, 150);
+        varcharCheck("soft", inputName, 150);
 
     // no length max, empty strings are allowed
     case "softVarcharNoLimit":
-        varcharCheck("soft", res, inputName);
+        varcharCheck("soft", inputName);
 
     // for booleans
     case "bool":
         if (input !== "true" && input !== "false") {
-          errorResponse(res, 404, `(front) error: invalid boolean input`);
+          throw new Error(`404__error: invalid boolean input`);
         }
         return input;
 
     default:
-        errorResponse(res, 500, `(back) error: you're not supposed to be here. input category unknown`);
+        throw new Error(`500__error: you're not supposed to be here. input category unknown`);
   }
 }
 
