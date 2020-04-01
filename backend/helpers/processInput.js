@@ -4,7 +4,7 @@ Server Input Processing Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
-const varcharCheck = (softHardOrPatch, inputName, maxLengthNum = Infinity) => {
+const varcharCheck = (input, softHardOrPatch, inputName, maxLengthNum = Infinity) => {
 
   // NAMING CONVENTION
   // hard- === must receive an non-empty input
@@ -35,7 +35,7 @@ const varcharCheck = (softHardOrPatch, inputName, maxLengthNum = Infinity) => {
 }
 
 
-const processInput = (input, res, category, inputName) => {
+const processInput = (input, category, inputName) => {
   switch (category) {
 
     // for numbers that are ids
@@ -49,19 +49,19 @@ const processInput = (input, res, category, inputName) => {
 
     // 30 length max, no empty inputs allowed
     case "hardVarchar30":
-        varcharCheck("hard", inputName, 30);
+        return varcharCheck(input, "hard", inputName, 30);
 
     // 50 length max, no empty inputs allowed
     case "hardVarchar50":
-        varcharCheck("hard", inputName, 50);
+        return varcharCheck(input, "hard", inputName, 50);
 
     // 150 length max but empty strings are allowed
     case "softVarchar150":
-        varcharCheck("soft", inputName, 150);
+        return varcharCheck(input, "soft", inputName, 150);
 
     // no length max, empty strings are allowed
     case "softVarcharNoLimit":
-        varcharCheck("soft", inputName);
+        return varcharCheck(input, "soft", inputName);
 
     // for booleans
     case "bool":
