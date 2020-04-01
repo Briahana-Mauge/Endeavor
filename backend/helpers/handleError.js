@@ -4,6 +4,8 @@ Server Error Handling Helper | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
+const errorResponse = require('./errorResponse');
+
 /*
 USAGE
 to instantiate custom error, format: throw new Error(`<error code>__error: <msg>`);
@@ -23,15 +25,16 @@ const handleError = (err, req, res, next) => {
 
   // if "__" wasn't found, error was not thrown from a customized instance
   if (msg === code) {
-    res.status(500);
-    msg = `(back) error: ${msg}`;
-    console.log(msg);
-    res.json({
-        status: "fail",
-        message: msg,
-        payload: null
-    });
+    errorResponse(res, 500, `(back) error: ${msg}`);
   } else {
+
+    // specific-case errors
+    if (err.message === "No data returned from the query.") {
+      errorResponse(res, 404, `(front) error: specific record does not exist`);
+    }
+    if (err.message.includes("violates unique constraint")) {
+      errorResponse(res, 403, `(front) error: at least one unique datapoint of record already exists`);
+    }
 
     // custom error handling
     res.status(parseInt(code));
@@ -41,12 +44,7 @@ const handleError = (err, req, res, next) => {
     } else {
       errorLocation = "(back)";
     }
-    console.log(errorLocation, msg);
-    res.json({
-        status: "fail",
-        message: msg,
-        payload: null
-    });
+    errorResponse(res, code, `${errorLocation} error: ${msg}`);
   }
 };
 
