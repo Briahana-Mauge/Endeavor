@@ -267,7 +267,7 @@ INSERT INTO users_data (user_email, password, role) VALUES
     ('briahanamauge@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('brianytaveras@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('chukwukaokonkwoaguolu@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
-    ('antaeflowers@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
+    ('dantaeflowers@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('douglasmackrell@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('gisellesanchez113@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('hupaulcamacho@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
