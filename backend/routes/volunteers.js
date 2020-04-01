@@ -1,18 +1,22 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../db/db');
+const volunteerQueries = require('../db/queries/volunteers')
 
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        let allVolunteers = await db.any("SELECT * FROM volunteer");
-
+        let allVolunteers = await volunteerQueries.getAllVolunteers();
+        res.status(200)
+            .json({
+                payload: allVolunteers,
+                message: "Success",
+                err: false
+            });
+    } catch (err) {
         res.json({
-            users: allVolunteers,
-            message: "Success"
-        });
-    } catch (error) {
-        res.json({
-            message: "Error"
+            payload: null,
+            msg: "Did not retrieve all volunteers",
+            err: true
         });
         console.log(error);
     }
@@ -21,17 +25,20 @@ router.get('/all', async (req, res) => {
 // Get all new (unconfirmed) volunteers
 router.get('/new', async (req, res) => {
     try {
-        let newVolunteers = await db.any("SELECT * FROM volunteers WHERE confirmed = 'false'");
-
+        let newVolunteers = await volunteerQueries.getNewVolunteers();
+        res.status(200)
+            .res.json({
+                payload: newVolunteers,
+                message: "Success",
+                err: false
+            });
+    } catch (err) {
         res.json({
-            users: newVolunteers,
-            message: "Success"
+            payload: null,
+            message: "Did not retrieve all unconfirmed volunteers",
+            err: true
         });
-    } catch (error) {
-        res.json({
-            message: "Error"
-        });
-        console.log(error);
+        console.log(err);
     }
 });
 
@@ -40,14 +47,6 @@ router.get('/', async (req, res) => {
     /*stuff goes here */
 });
 
-// Patch volunteer confirmed status to true or false
-router.patch('/', async (req, res) => {
-    /*stuff goes here */
-});
 
-// Patch volunteer active status to true or false
-router.patch('/', async (req, res) => {
-    /*stuff goes here */
-});
 
 module.exports = router;
