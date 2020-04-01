@@ -47,12 +47,12 @@ CREATE TABLE volunteers (
     mentoring BOOLEAN NOT NULL DEFAULT FALSE,
     office_hours BOOLEAN NOT NULL DEFAULT FALSE,
     tech_mock_interview  BOOLEAN NOT NULL DEFAULT FALSE,
-    behavioal_mock_interview BOOLEAN NOT NULL DEFAULT FALSE,
+    behavioral_mock_interview BOOLEAN NOT NULL DEFAULT FALSE,
     professional_skills_coach BOOLEAN NOT NULL DEFAULT FALSE,
     hosting_site_visit BOOLEAN NOT NULL DEFAULT FALSE,
     industry_speaker BOOLEAN NOT NULL DEFAULT FALSE,
     signup_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    nactive_date DATE
+    inactive_date DATE
 );
 
 CREATE TABLE fellows (
@@ -158,7 +158,7 @@ INSERT INTO skills (skill) VALUES
 
 INSERT INTO classes (class) VALUES 
     ('General'),
-    ('Condidates'),
+    ('Candidates'),
     ('4.0'),
     ('4.1'),
     ('4.2'),
@@ -193,7 +193,7 @@ INSERT INTO volunteers
         mentoring, 
         office_hours, 
         tech_mock_interview, 
-        behavioal_mock_interview, 
+        behavioral_mock_interview, 
         professional_skills_coach, 
         hosting_site_visit, 
         industry_speaker
