@@ -28,16 +28,32 @@ const readAllFellows = async (req, res, next) => {
   }
 };
 
-const readFellow = async (req, res, next) => {
+const readFellowById = async (req, res, next) => {
   try {
-    const fellowId = processInput(req.params.fellow_id, res, "idNum", "fellow id");
+    const fId = processInput(req.params.f_id, "idNum", "fellow id");
 
-    const fellowById = await queries.getFellowById(fellowId);
+    const fellowById = await queries.getFellowById(fId);
     res.status(200);
     res.json({
         status: "success",
         message: `fellow.${id} retrieved`,
         payload: fellowById
+    });
+  } catch (err) {
+    handleError(err, req, res, next);
+  }
+};
+
+const readFellowByEmail = async (req, res, next) => {
+  try {
+    const fEmail = processInput(req.params.f_email, "hardVarchar50", "fellow email");
+
+    const fellowByEmail = await queries.getFellowByEmail(fEmail);
+    res.status(200);
+    res.json({
+        status: "success",
+        message: `fellow of ${fEmail} retrieved`,
+        payload: fellowByEmail
     });
   } catch (err) {
     handleError(err, req, res, next);
@@ -127,7 +143,8 @@ want_mentor BOOLEAN NOT NULL DEFAULT FALSE
 
 /* ROUTE HANDLERS */
 router.get("/", readAllFellows);
-router.get("/:fellow_id", readFellow);
+router.get("/id/:f_id", readFellowById);
+router.get("/email/:f_email", readFellowByEmail);
 // router.post("/create", createFellow);
 // router.put("/update/:fellow_id", updateFellow);
 

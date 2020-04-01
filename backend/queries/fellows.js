@@ -41,6 +41,15 @@ const getFellowById = async (fId) => {
   return await db.one(getQuery, { fId });
 }
 
+const getFellowByEmail = async (fEmail) => {
+  const getQuery = `
+    SELECT *
+    FROM fellows
+    WHERE f_email = $/fEmail/;
+  `;
+  return await db.one(getQuery, { fEmail });
+}
+
 // const addFellow = async (bodyObj) => {
 //   const postQuery = `
 //     INSERT INTO fellows (
@@ -72,5 +81,6 @@ const getFellowById = async (fId) => {
 module.exports = {
   getAllFellows,
   getFellowById,
+  getFellowByEmail
   // addFellow
 }
