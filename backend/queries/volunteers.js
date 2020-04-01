@@ -14,7 +14,7 @@ const getAllVolunteers = async () => {
     const selectQuery = `
     SELECT *
     FROM volunteers
-    ORDER BY v_first_name ASC;
+    ORDER BY v_first_name ASC
   `;
     return await db.any(selectQuery);
 }
@@ -25,9 +25,19 @@ const getNewVolunteers = async () => {
       SELECT *
       FROM volunteers
       WHERE confirmed = FALSE
-      ORDER BY v_first_name ASC;
+      ORDER BY v_first_name ASC
     `;
     return await db.any(selectQuery);
+}
+
+// Get volunteer by email 
+const getVolunteerByEmail = async (vEmail) => {
+  const selectQuery = `
+  SELECT *
+  FROM volunteers
+  WHERE v_email = $/vEmail/
+  `;
+  return await db.any(selectQuery, {vEmail});
 }
 
 // Get all volunteers by some filter
@@ -43,4 +53,5 @@ const formatStr = str => {
 /* EXPORT */
 module.exports = {
     getAllVolunteers,
-    getNewVolunteers
+    getNewVolunteers,
+    getVolunteerByEmail
