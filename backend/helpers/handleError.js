@@ -30,10 +30,12 @@ const handleError = (err, req, res, next) => {
   } else {
 
     // specific-case (database response) errors
-    if (err.message === "No data returned from the query.") {
-      err.message = `404__error: specific record does not exist`;
-    } else if (err.message.includes("violates unique constraint")) {
+    if (err.code === "23503") {
+      err.message = `403__error: reference error in database lookup`;
+    } else if (err.code === "23505" && err.message.includes("violates unique constraint")) {
       err.message = `403__error: at least one unique datapoint of record already exists`;
+    } else if (err.message === "No data returned from the query.") {
+      err.message = `404__error: specific record does not exist`;
     }
 
     // catch and parse error.messages for relevant http code
