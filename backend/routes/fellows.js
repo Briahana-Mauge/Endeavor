@@ -30,13 +30,13 @@ const readAllFellows = async (req, res, next) => {
 
 const readFellowById = async (req, res, next) => {
   try {
-    const fId = processInput(req.params.f_id, "idNum", "fellow id");
+    const fId = processInput(req.params.id, "idNum", "fellow id");
 
     const fellowById = await queries.getFellowById(fId);
     res.status(200);
     res.json({
         status: "success",
-        message: `fellow.${id} retrieved`,
+        message: `fellow.${fId} retrieved`,
         payload: fellowById
     });
   } catch (err) {
@@ -141,10 +141,10 @@ want_mentor BOOLEAN NOT NULL DEFAULT FALSE
 */
 
 
-/* ROUTE HANDLERS */
+/* ENDPOINT HANDLERS */
 router.get("/", readAllFellows);
-router.get("/id/:f_id", readFellowById);
-router.get("/email/:f_email", readFellowByEmail);
+router.get("/id/:id", readFellowById);
+router.get("/email/:email", readFellowByEmail);
 // router.post("/create", createFellow);
 // router.put("/update/:fellow_id", updateFellow);
 
