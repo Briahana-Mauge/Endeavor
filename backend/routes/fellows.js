@@ -46,7 +46,7 @@ const readFellowById = async (req, res, next) => {
 
 const readFellowByEmail = async (req, res, next) => {
   try {
-    const fEmail = processInput(req.params.f_email, "hardVarchar50", "fellow email");
+    const fEmail = processInput(req.params.email, "hardVC", "fellow email", 50);
 
     const fellowByEmail = await queries.getFellowByEmail(fEmail);
     res.status(200);

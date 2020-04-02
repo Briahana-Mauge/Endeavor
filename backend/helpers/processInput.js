@@ -1,41 +1,39 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
 Server Input Processing Helper | Capstone App (Pursuit Volunteer Mgr)
+
+
+NAMING CONVENTION
+hard- === must receive an non-empty input
+soft- === defaults to empty string
+patch- === translates empty input to undefined, in prep for patch routes
 */
 
 
 const varcharCheck = (input, softHardOrPatch, inputName, maxLengthNum = Infinity) => {
-
-  // NAMING CONVENTION
-  // hard- === must receive an non-empty input
-  // soft- === defaults to empty string
-  // patch- === translates empty input to undefined, in prep for patch routes
-
-  /* STAGE 1/3: handle empty inputs */
+  /* STAGE 1/3: check for and handle empty inputs */
   if (!input || !input.trim()) {
     switch (softHardOrPatch) {
-      case "soft":  // empty input becomes EMPTY STRING
-        return "";
       case "hard":  // empty input is REJECTED
         throw new Error(`400__error: invalid empty ${inputName} input`);
+      case "soft":  // empty input becomes EMPTY STRING
+        return "";
       case "patch":  // empty input returns UNDEFINED
         return;
       default:
         throw new Error(`500__error: unknown varchar type sent to check function`);
     }
   }
-
-  /* STAGE 2/3: check input length against varchar limit specified */
+  /* STAGE 2/3: check input length against specified varchar limit */
   if (input.trim().length > maxLengthNum) {
     throw new Error(`400__error: ${inputName} is longer than ${maxLengthNum} allowed`);
   }
-
-  /* STAGE 3/3: all checks passed, return trimmed input */
+  /* STAGE 3/3: all checks have passed, return trimmed input */
   return input.trim();
 }
 
 
-const processInput = (input, category, inputName) => {
+const processInput = (input, category, inputName, limit) => {
   switch (category) {
 
     // for numbers that are ids
@@ -47,21 +45,17 @@ const processInput = (input, category, inputName) => {
         }
         return parseInt(input);
 
-    // 30 length max, no empty inputs allowed
-    case "hardVarchar30":
-        return varcharCheck(input, "hard", inputName, 30);
+    // for varchars, no empty inputs allowed
+    case "hardVC":
+        return varcharCheck(input, "hard", inputName, limit);
 
-    // 50 length max, no empty inputs allowed
-    case "hardVarchar50":
-        return varcharCheck(input, "hard", inputName, 50);
+    // for varchars, empty strings return ""
+    case "softVC":
+        return varcharCheck(input, "soft", inputName, limit);
 
-    // 150 length max but empty strings are allowed
-    case "softVarchar150":
-        return varcharCheck(input, "soft", inputName, 150);
-
-    // no length max, empty strings are allowed
-    case "softVarcharNoLimit":
-        return varcharCheck(input, "soft", inputName);
+    // for varchars, empty strings return undefined
+    case "patchVC":
+        return varcharCheck(input, "patch", inputName, limit);
 
     // for booleans
     case "bool":
