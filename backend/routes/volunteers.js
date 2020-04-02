@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../db/db');
+
 const volunteerQueries = require('../queries/volunteers')
 
 router.get('/', async (req, res) => {
@@ -71,7 +72,5 @@ router.get('/email/:v_email', async (req, res) => {
 router.get('/', async (req, res) => {
     /*stuff goes here */
 });
-
-
 
 module.exports = router;
