@@ -1,22 +1,43 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const passport = require('./auth/passport');
 
-var indexRouter = require('./routes/index');
-var volunteerRouter = require('./routes/volunteers');
+const authRouter = require('./routes/auth');
+const fellowsRouter = require('./routes/fellows');
+const volunteerRouter = require('./routes/volunteers');
 var timeRouter = require('./routes/time');
 
-var app = express();
+const { checkUserLogged } = require('./auth/helpers');
+
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, '../frontend/build')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/volunteers', volunteerRouter);
-app.use('/time', timeRouter);
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true
+  }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use('/api/auth', authRouter);
+app.use('/api/fellows', /*checkUserLogged,*/ fellowsRouter);
+app.use('/api/volunteers', /*checkUserLogged,*/ volunteerRouter);
+app.use('/time', /*checkUserLogged,*/ timeRouter);
+
+// app.use('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
+// });
 
 module.exports = app;
