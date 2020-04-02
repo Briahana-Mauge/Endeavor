@@ -48,7 +48,7 @@ const readFellowByEmail = async (req, res, next) => {
   try {
     const fEmail = processInput(req.params.email, "hardVC", "fellow email", 50);
 
-    const fellowByEmail = await queries.getFellowByEmail(fEmail);
+    const fellowByEmail = await queries.getUserByEmail(fEmail);
     res.status(200);
     res.json({
         status: "success",

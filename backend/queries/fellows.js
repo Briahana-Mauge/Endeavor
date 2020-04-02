@@ -41,7 +41,7 @@ const getFellowById = async (fId) => {
   return await db.one(getQuery, { fId });
 }
 
-const getFellowByEmail = async (fEmail) => {
+const getUserByEmail = async (fEmail) => {  // function name breaks convention for app consistency
   const getQuery = `
     SELECT *
     FROM fellows
@@ -81,6 +81,6 @@ const getFellowByEmail = async (fEmail) => {
 module.exports = {
   getAllFellows,
   getFellowById,
-  getFellowByEmail
+  getUserByEmail
   // addFellow
 }
