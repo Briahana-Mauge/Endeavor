@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "reseed": "psql -f db/seed.sql",
+    "quick_install": "psql -f db/seed.sql && npm install && npm start"
   },
   "dependencies": {
     "aws-sdk": "^2.647.0",

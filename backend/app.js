@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('./auth/passport');
 
 const authRouter = require('./routes/auth');
+const volunteerRouter = require('./routes/volunteers');
 
 const { checkUserLogged } = require('./auth/helpers');
 
@@ -29,7 +30,7 @@ app.use(passport.session());
 
 
 app.use('/api/auth', authRouter);
-
+app.use('/volunteers', volunteerRouter);
 // app.use('*', (req, res) => {
 //     res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
 // });
