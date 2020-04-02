@@ -34,22 +34,15 @@
 + CSS3
 
 ## Setup
-+ To run this project, instantiate and seed the database with PostgreSQL:
++ To run this project, using PostgreSQL and npm, install the seeded database and server:
   ```
-  $ cd backend/db
-  $ psql -f capstone_project_db.sql
+  $ cd backend
+  $ npm run quick_install
   ```
-+ Second, install the server locally using npm:
-  ```
-  $ cd ..
-  $ npm install
-  $ npm start
-  ```
-+ In another terminal instance install the frontend locally using npm:
++ Then in a second terminal instance install the frontend locally using npm:
   ```
   $ cd ../frontend
-  $ npm install
-  $ npm start
+  $ npm run quick_install
   ```
 + The site app will be found at: http://localhost:3008/
 
