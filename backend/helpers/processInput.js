@@ -59,10 +59,12 @@ const processInput = (input, category, inputName, limit) => {
 
     // for booleans
     case "bool":
-        if (input !== "true" && input !== "false") {
+        const emptyCheck = !input || !input.trim();
+        const stringCheck = input.toLowerCase() !== "true" && input.toLowerCase() !== "false";
+        if (emptyCheck || stringCheck) {
           throw new Error(`404__error: invalid boolean input`);
         }
-        return input;
+        return input.trim();
 
     default:
         throw new Error(`500__error: you're not supposed to be here. input category unknown`);
