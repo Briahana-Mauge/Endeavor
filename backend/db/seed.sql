@@ -35,14 +35,14 @@ CREATE TABLE administration (
     a_id SERIAL PRIMARY KEY,
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
-    a_email VARCHAR (50) REFERENCES users_data(user_email)
+    a_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE
 );
 
 CREATE TABLE volunteers (
     v_id SERIAL PRIMARY KEY,
     v_first_name VARCHAR (30) NOT NULL,
     v_last_name VARCHAR (30) NOT NULL,
-    v_email VARCHAR (50) REFERENCES users_data(user_email),
+    v_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     v_picture VARCHAR,
@@ -66,7 +66,7 @@ CREATE TABLE fellows (
     f_id SERIAL PRIMARY KEY,
     f_first_name VARCHAR (30) NOT NULL,
     f_last_name VARCHAR (30) NOT NULL,
-    f_email VARCHAR (50) REFERENCES users_data(user_email),
+    f_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
     f_picture VARCHAR,
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
