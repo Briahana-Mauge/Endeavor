@@ -56,8 +56,8 @@
   | Method | Endpoint                   | Description                | Body Data |
   | ------ | -------------------------- | -------------------------- | --------- |
   | GET    | `/fellows/`                | Get all fellows            | n/a       |
-  | GET    | `/fellows/id/:f_id`        | Get single fellow by id    | n/a       |
-  | GET    | `/fellows/email/:f_email`  | Get single fellow by email | n/a       |
+  | GET    | `/fellows/id/:id`          | Get single fellow by id    | n/a       |
+  | GET    | `/fellows/email/:email`    | Get single fellow by email | n/a       |
 
 <!-- - **Users**
 
