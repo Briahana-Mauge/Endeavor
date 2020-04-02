@@ -1,7 +1,7 @@
 const db = require('../db/db')
 
 const getUserByEmail = async (email) => {
-    return await db.one('SELECT * FROM users_data WHERE user_email = $1', email)
+    return await db.oneOrNone('SELECT * FROM users_data WHERE user_email = $1', email)
 }
 
 const addUser = async (email, password, role) => {
