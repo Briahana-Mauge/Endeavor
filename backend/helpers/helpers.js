@@ -1,47 +1,61 @@
-const checkValidId = (id, response) => {
+const storage = require('./s3Service');
+
+const sendResponse = (response, param) => {
+    response.status(403).send({
+        error: true,
+        message: `${param} is not of a valid input, please double check your input`,
+        payload: null,
+    });
+}
+
+const checkValidId = (id, request, response) => {
     if (isNaN(parseInt(id)) || id+'' !== parseInt(id)+'') {
-        response.status(403).send({
-            error: true,
-            message: 'Missing information',
-            payload: null,
-        })
+        if (request.file) {
+            storage.deleteFile(request.file.location)
+        }
+        sendResponse(response, id);
         return false;
     }
     return true;
 }
 
-const checkValidParams = (param, response) => {
+const checkValidParams = (param, request, response) => {
     if (!param || !param.trim()) {
-        response.status(403).send({
-            error: true,
-            message: 'Missing information',
-            payload: null,
-        })
+        if (request.file) {
+            storage.deleteFile(request.file.location)
+        }
+        sendResponse(response, param);
         return false;
     }
     return true;
 }
 
-const checkValidEmail = (param, response) => {
+const checkValidEmail = (param, request, response) => {
     if (param && !param.trim() && param.trim().includes('@') && param.trim().includes('.')) {
         return true;
     }
-    response.status(403).send({
-        error: true,
-        message: 'Missing information',
-        payload: null,
-    })
+
+    if (request.file) {
+        storage.deleteFile(request.file.location)
+    }
+    sendResponse(response, param);
     return false;
 }
 
-const checkBool = (bool, response) => {
+const checkBool = (bool, request, response) => {
     if (bool && bool.trim() && (bool.trim().toLowerCase() === 'true' || bool.trim().toLowerCase() === 'false')) {
         return true;
     }
+
+    if (request.file) {
+        storage.deleteFile(request.file.location)
+    }
+    sendResponse(response, bool);
     return false;
+
 }
 
-const handleErrors = (err, response) => {
+const handleErrors = (err, request, response) => {
     console.log('ERROR: - ', err)
     if (err.code === "23505" && err.detail.includes("already exists")) {
         console.log('Attempt to register a new user/brand with a taken email')

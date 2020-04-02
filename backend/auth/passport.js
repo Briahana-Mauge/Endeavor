@@ -27,8 +27,10 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'passwor
     if (user.role === 'admin') {
       user = await adminQueries.getUserByEmail(email);
     } else if (user.role === 'volunteer') {
+      // TO BE REVIEWED ONCE /queries/volunteers.js MERGED
       user = await volunteersQueries.getUserByEmail(email);
     } else {
+      // TO BE REVIEWED ONCE /queries/fellows.js MERGED
       user = await fellowsQueries.getUserByEmail(email);
     }
 
@@ -44,15 +46,19 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser(async (user, done) => {
+  // let retrievedUser = null;
   // try {
-    // if (user.business_id) {
-    //   let retrievedBrand = await brandQueries.getBrandByEmail(user.email);
-    //   delete retrievedBrand.password;
-    //   done(null, retrievedBrand);
-    // } else {
-    //   let retrievedUser = await usersQueries.getUserByEmail(user.email);
-    //   delete retrievedUser.password;
+    // if (user.a_id) {
+    //   retrievedUser = await adminQueries.getUserById(user.a_id);
     //   done(null, retrievedUser);
+    // } else if (user.v_id) {
+    //   retrievedUser = await volunteersQueries.getUserById(user.v_id);
+    //   done(null, retrievedUser);
+    // } else if (user.f_id) {
+    //   retrievedUser = await fellowsQueries.getUserById(user.f_id);
+    //   done(null, retrievedUser);
+    // } else {
+    //   done(new Error('No registered user'), false)
     // }
   // } catch (err) {
   //   done(err, false);
