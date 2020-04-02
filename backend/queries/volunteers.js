@@ -37,7 +37,7 @@ const getVolunteerByEmail = async (vEmail) => {
   FROM volunteers
   WHERE v_email = $/vEmail/
   `;
-  return await db.any(selectQuery, {vEmail});
+  return await db.one(selectQuery, {vEmail});
 }
 
 // Get all volunteers by some filter
