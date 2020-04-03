@@ -29,7 +29,7 @@ const getUpcomingEvents = async () => {
   SELECT * 
   FROM events 
   WHERE event_start > now()
-  ORDER BY event_start
+  ORDER BY event_start ASC
   `;
   return await db.any(selectQuery);
 }
@@ -40,7 +40,7 @@ const getPastEvents = async () => {
   SELECT * 
   FROM events 
   WHERE event_start < now()
-  ORDER BY event_start
+  ORDER BY event_start ASC
   `;
   return await db.any(selectQuery);
 }
