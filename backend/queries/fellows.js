@@ -98,7 +98,7 @@ const updateFellow = async (user) => {
 }
 
 const deleteFellow = async (id) => {
-  return await db.one('DELETE FROM fellows WHERE v_id = $/id/ RETURNING *', {id});
+  return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
 }
 
 

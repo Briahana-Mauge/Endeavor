@@ -111,7 +111,7 @@ const updateVolunteer = async (user) => {
       company = $/company/,
       parsed_company = $/formattedCompanyName/,
       title = $/title/,
-      v_bio =$/bio/,
+      v_bio = $/bio/,
       v_linkedin = $/linkedIn/,
       mentoring = $/mentor/,
       office_hours = $/officeHours/,
