@@ -9,6 +9,7 @@ const passport = require('./auth/passport');
 const authRouter = require('./routes/auth');
 const fellowsRouter = require('./routes/fellows');
 const volunteerRouter = require('./routes/volunteers');
+const timeRouter = require('./routes/time');
 
 const { checkUserLogged } = require('./auth/helpers');
 
@@ -33,6 +34,7 @@ app.use(passport.session());
 app.use('/api/auth', authRouter);
 app.use('/api/fellows', /*checkUserLogged,*/ fellowsRouter);
 app.use('/api/volunteers', /*checkUserLogged,*/ volunteerRouter);
+app.use('/api/time', /*checkUserLogged,*/ timeRouter);
 
 // app.use('*', (req, res) => {
 //     res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));

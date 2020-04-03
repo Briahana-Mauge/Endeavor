@@ -55,4 +55,5 @@ module.exports = {
     getAllVolunteers,
     getNewVolunteers,
     getVolunteerByEmail
-  }
+}
+
