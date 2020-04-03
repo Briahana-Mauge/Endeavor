@@ -371,10 +371,6 @@ INSERT INTO events
     ('2020-03-22 10:00-04', '2020-06-22 20:00-04', 'BE A CAPSTONE TECHNICAL MENTOR', 
     'Each year at the close of our technical curriculum, Pursuit Fellows work in teams to build fully-functional apps that they present at our annual Demo Days. This is a critical milestone in their journeys to become professional software developers: Fellows have the opportunity to work in teams while honing their design and presentation skills. Fellows will have a portfolio-worthy project they can show off to potential employers', 
     15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 9),
-    
-    ('2020-04-22 13:00-04', '2020-04-22 13:45-04', 'Let''s Do Remote Lunch!', 
-    'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20),
 
     ('2020-04-29 13:00-04', '2020-04-29 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
