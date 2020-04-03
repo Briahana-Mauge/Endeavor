@@ -8,6 +8,7 @@
 ### _Table of Contents_
 + [Technologies Implemented](#technologies-implemented)
 + [Setup](#setup)
++ [Server Endpoints](#server-endpoints)
 
 
 <!-- ![screencap]() -->
@@ -33,21 +34,35 @@
 + CSS3
 
 ## Setup
-+ To run this project, instantiate and seed the database with PostgreSQL:
++ To run this project, using PostgreSQL and npm, install the seeded database and server:
   ```
-  $ cd backend/db
-  $ psql -f capstone_project_db.sql
+  $ cd backend
+  $ npm run quick_install
   ```
-+ Second, install the server locally using npm:
-  ```
-  $ cd ..
-  $ npm install
-  $ npm start
-  ```
-+ In another terminal instance install the frontend locally using npm:
++ Then in a second terminal instance install the frontend locally using npm:
   ```
   $ cd ../frontend
-  $ npm install
-  $ npm start
+  $ npm run quick_install
   ```
 + The site app will be found at: http://localhost:3008/
+
+---
+
+## Developers' Notes
+
+### **Server Endpoints**
+- **Fellows**
+
+  | Method | Endpoint                   | Description                | Body Data |
+  | ------ | -------------------------- | -------------------------- | --------- |
+  | GET    | `/fellows/`                | Get all fellows            | n/a       |
+  | GET    | `/fellows/id/:id`          | Get single fellow by id    | n/a       |
+  | GET    | `/fellows/email/:email`    | Get single fellow by email | n/a       |
+
+<!-- - **Users**
+
+  | Method | Endpoint     | Description           | Body Data                |
+  | ------ | ------------ | --------------------- | ------------------------ |
+  | GET    | `/users`     | Get all users         | n/a                      |
+  | GET    | `/users/:id` | Get single user by id | n/a                      |
+  | POST   | `/users/`    | Add new user          | `username`, `avatarUrl`  | -->
