@@ -6,10 +6,13 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/db');
 
+const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
 const volunteerQueries = require('../queries/volunteers')
+
+router.get('/all', async (req, res, next) => {
     try {
-        let allVolunteers = await volunteerQueries.getAllVolunteers();
+        const allVolunteers = await volunteerQueries.getAllVolunteers();
         res.status(200)
             .json({
                 payload: allVolunteers,
@@ -22,7 +25,7 @@ const volunteerQueries = require('../queries/volunteers')
 });
 
 // Get all new (unconfirmed) volunteers
-router.get('/new', async (req, res) => {
+router.get('/new', async (req, res, next) => {
     try {
         let newVolunteers = await volunteerQueries.getNewVolunteers();
         res.status(200)
@@ -37,7 +40,7 @@ router.get('/new', async (req, res) => {
 });
 
 // Get volunteer by email
-router.get('/email/:v_email', async (req, res) => {
+router.get('/email/:v_email', async (req, res, next) => {
     try {
         const vEmail = processInput(req.params.v_email, "hardVC", "volunteer email", 50);
 
