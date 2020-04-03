@@ -15,8 +15,9 @@ router.get('/all', async (req, res, next) => {
     try {
         let allEvents = await eventsQueries.getAllEvents();
         res.json({
-            users: allEvents,
-            message: "Success"
+            payload: allEvents,
+            message: "Success",
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
@@ -28,8 +29,9 @@ router.get('/upcoming', async (req, res, next) => {
     try {
         let allEvents = await eventsQueries.getUpcomingEvents();
         res.json({
-            users: allEvents,
-            message: "Success"
+            payload: allEvents,
+            message: "Success",
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
@@ -41,8 +43,9 @@ router.get('/past', async (req, res, next) => {
     try {
         let allEvents = await eventsQueries.getPastEvents();
         res.json({
-            users: allEvents,
-            message: "Success"
+            payload: allEvents,
+            message: "Success",
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
