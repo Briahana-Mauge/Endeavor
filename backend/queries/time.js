@@ -12,9 +12,9 @@ const db = require('../db/db');
 // Get all hours banked by a volunteer
 const allBankedHours = async (volunteer) => {
     const selectQuery = `
-    SELECT banked_hours 
-    FROM volunteer_hours 
-    WHERE volunteer = $/volunteer/
+    SELECT banked_time 
+    FROM volunteers_hours 
+    WHERE volunteer_id = $/volunteer/
   `;
     return await db.one(selectQuery, {volunteer});
 }
@@ -23,19 +23,19 @@ const allBankedHours = async (volunteer) => {
 const allPlannedHours = async (volunteer) => {
     const selectQuery = `
     SELECT planned_time 
-    FROM volunteer_hours 
-    WHERE volunteer = $/volunteer/
+    FROM volunteers_hours 
+    WHERE volunteer_id = $/volunteer/
     `;
-    return await db.one(selectQuery);
+    return await db.one(selectQuery, {volunteer});
 }
 
-//Get the number of hours by all volunteers 
+//Get the number of hours by all volunteers (response is an array of objects)
 const allHours = async () => {
   const selectQuery = `
-  SELECT banked_hours 
-  FROM volunteer_hours
+  SELECT banked_time 
+  FROM volunteers_hours
   `;
-  return await db.one(selectQuery);
+  return await db.any(selectQuery);
 }
 
 
