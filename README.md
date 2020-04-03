@@ -8,6 +8,7 @@
 ### _Table of Contents_
 + [Technologies Implemented](#technologies-implemented)
 + [Setup](#setup)
++ [Server Endpoints](#server-endpoints)
 
 
 <!-- ![screencap]() -->
@@ -44,3 +45,24 @@
   $ npm run quick_install
   ```
 + The site app will be found at: http://localhost:3008/
+
+---
+
+## Developers' Notes
+
+### **Server Endpoints**
+- **Fellows**
+
+  | Method | Endpoint                   | Description                | Body Data |
+  | ------ | -------------------------- | -------------------------- | --------- |
+  | GET    | `/fellows/`                | Get all fellows            | n/a       |
+  | GET    | `/fellows/id/:id`          | Get single fellow by id    | n/a       |
+  | GET    | `/fellows/email/:email`    | Get single fellow by email | n/a       |
+
+<!-- - **Users**
+
+  | Method | Endpoint     | Description           | Body Data                |
+  | ------ | ------------ | --------------------- | ------------------------ |
+  | GET    | `/users`     | Get all users         | n/a                      |
+  | GET    | `/users/:id` | Get single user by id | n/a                      |
+  | POST   | `/users/`    | Add new user          | `username`, `avatarUrl`  | -->

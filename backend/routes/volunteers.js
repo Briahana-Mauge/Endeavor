@@ -6,11 +6,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/db');
 
-const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
 const volunteerQueries = require('../queries/volunteers')
-
-router.get('/', async (req, res) => {
     try {
         let allVolunteers = await volunteerQueries.getAllVolunteers();
         res.status(200)
@@ -60,7 +57,5 @@ router.get('/email/:v_email', async (req, res) => {
 // router.get('/', async (req, res) => {
 //     /*stuff goes here */
 // });
-
-
 
 module.exports = router;
