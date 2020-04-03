@@ -25,13 +25,11 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'passwor
     }
 
     if (user.role === 'admin') {
-      user = await adminQueries.getUserByEmail(email);
+      user = await adminQueries.getAdminByEmail(email);
     } else if (user.role === 'volunteer') {
-      // TO BE REVIEWED ONCE /queries/volunteers.js MERGED
-      user = await volunteersQueries.getUserByEmail(email);
+      user = await volunteersQueries.getVolunteerByEmail(email);
     } else {
-      // TO BE REVIEWED ONCE /queries/fellows.js MERGED
-      user = await fellowsQueries.getUserByEmail(email);
+      user = await fellowsQueries.getFellowByEmail(email);
     }
 
     done(null, user);

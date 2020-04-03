@@ -7,6 +7,7 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 /* DB CONNECTION */
 const db = require('../db/db');
 
+const userQueries = require('./users');
 
 /*
 // f_id SERIAL PRIMARY KEY,
@@ -41,7 +42,7 @@ const getFellowById = async (fId) => {
   return await db.one(getQuery, { fId });
 }
 
-const getUserByEmail = async (fEmail) => {  // function name breaks convention for app consistency
+const getFellowByEmail = async (fEmail) => {  // function name breaks convention for app consistency
   const getQuery = `
     SELECT *
     FROM fellows
@@ -50,37 +51,54 @@ const getUserByEmail = async (fEmail) => {  // function name breaks convention f
   return await db.one(getQuery, { fEmail });
 }
 
-// const addFellow = async (bodyObj) => {
-//   const postQuery = `
-//     INSERT INTO fellows (
-//         f_first_name,
-//         f_last_name,
-//         f_picture,
-//         f_bio,
-//         f_linkedin,
-//         f_github,
-//         cohort_id,
-//         want_mentor
-//     ) VALUES (
-//         $/firstname/,
-//         $/lastname/,
-//         $/picture/,
-//         $/bio/,
-//         $/linkedIn/,
-//         $/github/,
-//         $/cohortId/,
-//         $/wantMentor/
-//     )
-//     RETURNING *;
-//   `;
-//   return await db.one(postQuery, bodyObj);
-// }
+const addFellow = async (user, password) => {
+  await userQueries.addUser(user.email, password, 'fellow');
+
+  const postQuery = `
+    INSERT INTO fellows (
+        f_first_name,
+        f_last_name,
+        f_email,
+        cohort_id
+    ) VALUES (
+        $/firstName/,
+        $/lastName/,
+        $/email/,
+        $/cohortId/
+    )
+    RETURNING *;
+  `;
+  return await db.one(postQuery, user);
+}
+
+const updateFellow = async (user) => {
+  const updateQuery = `
+    UPDATE fellows
+    SET 
+      f_first_name = $/firstName/,
+      f_last_name = $/lastName/,
+      f_picture = $/picture/,
+      f_bio = $/bio/,
+      f_linkedin = $/linkedIn/,
+      f_github = $/github/,
+      cohort_id = $/cohortId/,
+      want_mentor = $/wantMentor/
+    WHERE f_id = $/userId/
+    RETURNING *;
+  `;
+}
+
+const deleteFellow = async (id) => {
+  return await db.one('DELETE FROM fellows WHERE v_id = $/id/ RETURNING *', {id});
+}
 
 
 /* EXPORT */
 module.exports = {
   getAllFellows,
   getFellowById,
-  getUserByEmail
-  // addFellow
+  getFellowByEmail,
+  addFellow,
+  updateFellow,
+  deleteFellow
 }
