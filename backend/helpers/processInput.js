@@ -38,9 +38,7 @@ const processInput = (input, category, inputName, limit) => {
 
     // for numbers that are ids
     case "idNum":
-        const numCheck1 = isNaN(parseInt(input));
-        const numCheck2 = input.length !== parseInt(input).toString().length;
-        if (numCheck1 || numCheck2) {
+        if (isNaN(parseInt(input)) || input.toString().length !== parseInt(input).toString().length) {
           throw new Error(`400__error: invalid numerical ${inputName} input`);
         }
         return parseInt(input);
@@ -59,10 +57,8 @@ const processInput = (input, category, inputName, limit) => {
 
     // for booleans
     case "bool":
-        const emptyCheck = !input || !input.trim();
-        const stringCheck = input.toLowerCase() !== "true" && input.toLowerCase() !== "false";
-        if (emptyCheck || stringCheck) {
-          throw new Error(`404__error: invalid boolean input`);
+        if (!input || !input.trim() || (input.toLowerCase() !== "true" && input.toLowerCase() !== "false")) {
+          throw new Error(`404__error: invalid boolean input ${inputName} - ${input}`);
         }
         return input.trim();
 

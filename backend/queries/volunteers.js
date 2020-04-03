@@ -52,7 +52,7 @@ const formatStr = str => {
 }
 
 const addVolunteer = async (user, password) => {
-  await userQueries.addUser(user.email, password, 'volunteer');
+  const registeredUser = await userQueries.addUser(user.email, password, 'volunteer');
 
   user.formattedCompanyName = formatStr(user.company);
   const insertQuery = `
@@ -89,7 +89,15 @@ const addVolunteer = async (user, password) => {
       )
       RETURNING *
   `
-  return await db.one(insertQuery, user)
+
+  try {
+    return await db.one(insertQuery, user)
+  } catch (err) {
+    if (registeredUser) {
+        userQueries.deleteUser(user.email);
+    }
+    throw err;
+}
 }
 
 const updateVolunteer = async (user) => {
@@ -112,7 +120,7 @@ const updateVolunteer = async (user) => {
       professional_skills_coach = $/professionalSkillsCoach/,
       hosting_site_visit = $/hostSiteVisit/,
       industry_speaker = $/industrySpeaker/
-    WHERE id = $/userId/
+    WHERE v_id = $/userId/
     RETURNING *
   `;
   return await db.one(updateQuery, user);

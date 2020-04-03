@@ -14,6 +14,7 @@ const fellowsQueries = require('../queries/fellows');
 const processInput = require('../helpers/processInput');
 const handleError = require('../helpers/handleError');
 
+
 // LOGIN  A USER
 // Expecting: request.email and request.password
 router.post('/login', passport.authenticate('local'), (request, response) => {
@@ -63,7 +64,7 @@ const signupVolunteer = async (request, response, next) => {
             hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
             industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker')
         }
-        const hashedPassword = await hashPassword(password);
+        const hashedPassword = await hashPassword(formattedRequestBody.password);
 
         await volunteersQueries.addVolunteer(formattedRequestBody, hashedPassword);
         request.body.email = formattedRequestBody.email;
@@ -83,10 +84,10 @@ const signupFellow = async (request, response, next) => {
         const password = processInput(request.body.password, 'hardVC', 'user password');
         const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
-        const cohort = processInput(request.body.cohort, 'idNum', 'cohort id', 50);
+        const cohortId = processInput(request.body.cohortId, 'idNum', 'cohort id', 50);
         const hashedPassword = await hashPassword(password);
 
-        await fellowsQueries.addFellow({firstName, lastName, email, cohort}, hashedPassword);
+        await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword);
         request.body.email = email;
         request.body.password = password;
         next();
@@ -123,8 +124,7 @@ router.post('/:userType/signup', signupUser, passport.authenticate('local'), (re
     })
 })
 
-const updateAdminUser = async (userId, request, response, next) => {
-    
+const updateAdminUser = async (userId, request, response, next) => { 
     try {
         const actualEmail = request.user.a_email;
         const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
@@ -159,9 +159,9 @@ const updateAdminUser = async (userId, request, response, next) => {
 
 const updateVolunteerUser = async (userId, request, response, next) => {
     try {
+        const actualEmail = request.user.v_email;
         const formattedRequestBody = {
             userId,
-            actualEmail: request.user.v_email,
             email: processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase(),
             password: processInput(request.body.password, 'hardVC', 'user password'),
             firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
@@ -180,11 +180,11 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             picture: request.user.v_picture
         }
         
-        const user = await usersQueries.getUserByEmail(email);
+        const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-            if (actualEmail !== email) {
-                await usersQueries.updateEmail(actualEmail, email)
+            if (actualEmail !== formattedRequestBody.email) {
+                await usersQueries.updateEmail(actualEmail, formattedRequestBody.email)
             }
 
             if (request.file) {
@@ -192,15 +192,17 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             }
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
-            if (request.file) {
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.v_picture)
             }
-            request.body.email = email;
-            request.body.password = password;
+            request.body.email = formattedRequestBody.email;
+            request.body.password = formattedRequestBody.password;
             next();
         }
         else {
-            storage.deleteFile(request.file.location);
+            if (request.file) {
+                storage.deleteFile(request.file.location);
+            }
             throw new Error('401__error: Wrong password');
         }
         
@@ -222,16 +224,17 @@ const updateFellowUser = async (userId, request, response, next) => {
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
             github: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
-            cohort: processInput(request.body.cohort, 'idNum', 'cohort id', 50),
+            cohortId: processInput(request.body.cohortId, 'idNum', 'cohort id', 50),
             wantMentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             picture: request.user.f_picture
         }
 
-        const user = await usersQueries.getUserByEmail(email);
+        const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
+
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-            if (actualEmail !== email) {
-                await usersQueries.updateEmail(actualEmail, email)
+            if (actualEmail !== formattedRequestBody.email) {
+                await usersQueries.updateEmail(actualEmail, formattedRequestBody.email);
             }
 
             if (request.file) {
@@ -239,7 +242,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             }
 
             await fellowsQueries.updateFellow(formattedRequestBody);
-            if (request.file) {
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.f_picture)
             }
             request.body.email = formattedRequestBody.email;
@@ -247,7 +250,9 @@ const updateFellowUser = async (userId, request, response, next) => {
             next();
         }
         else {
-            storage.deleteFile(request.file.location);
+            if (request.file) {
+                storage.deleteFile(request.file.location);
+            }
             throw new Error('401__error: Wrong password');
         }
         
@@ -260,14 +265,16 @@ const updateFellowUser = async (userId, request, response, next) => {
 const updateUser = (request, response, next) => {
     const userId = processInput(request.params.user_id, 'idNum', 'user id');
 
-    if (request.user.a_email && Number(userId) === user.a_id) {
+    if (request.user.a_email && Number(userId) === request.user.a_id) {
         updateAdminUser(userId, request, response, next);
-    } else if (request.user.v_email && Number(userId) === user.v_id) {
+    } else if (request.user.v_email && Number(userId) === request.user.v_id) {
         updateVolunteerUser(userId, request, response, next);
-    } else if (request.user.f_email && Number(userId) === user.f_id){
+    } else if (request.user.f_email && Number(userId) === request.user.f_id){
         updateFellowUser(userId, request, response, next);
     } else {
-        storage.deleteFile(request.file.location);
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
         response.status(401).json({
             error: true,
             message: 'Not authorized to update these information',
@@ -288,10 +295,11 @@ router.put('/:user_id', checkUserLogged, storage.upload.single('picture'), updat
 const updatePassword = async(request, response, next) => {
     try {
         const newPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
-        const confirmPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
+        const confirmPassword = processInput(request.body.confirmPassword, 'hardVC', 'user password');
         const targetId = processInput(request.params.user_id, 'idNum', 'user id');
         const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
-        
+
+        console.log(newPassword, confirmPassword)
         if (targetId === loggedUserId && newPassword === confirmPassword) {
             const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
             const hashedPassword = await hashPassword(newPassword);

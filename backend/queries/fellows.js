@@ -52,7 +52,7 @@ const getFellowByEmail = async (fEmail) => {  // function name breaks convention
 }
 
 const addFellow = async (user, password) => {
-  await userQueries.addUser(user.email, password, 'fellow');
+  const registeredUser = await userQueries.addUser(user.email, password, 'fellow');
 
   const postQuery = `
     INSERT INTO fellows (
@@ -68,7 +68,15 @@ const addFellow = async (user, password) => {
     )
     RETURNING *;
   `;
-  return await db.one(postQuery, user);
+
+  try {
+    return await db.one(postQuery, user);
+  } catch (err) {
+    if (registeredUser) {
+        userQueries.deleteUser(user.email);
+    }
+    throw err;
+}
 }
 
 const updateFellow = async (user) => {
@@ -86,6 +94,7 @@ const updateFellow = async (user) => {
     WHERE f_id = $/userId/
     RETURNING *;
   `;
+  return await db.one(updateQuery, user);
 }
 
 const deleteFellow = async (id) => {

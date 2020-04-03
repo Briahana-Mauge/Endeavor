@@ -11,7 +11,7 @@ const fellowsQueries = require('../queries/fellows');
 passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'password', passReqToCallback: true}, 
   async (request, username, password, done) => {
   try {
-    const email = username.toLowerCase()
+    const email = username.trim().toLowerCase();
     let user = await usersQueries.getUserByEmail(email);
     if (!user) { // user not found in the database
       console.log('AUTHENTICATION - user not found in the database');
