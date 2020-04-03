@@ -93,6 +93,7 @@ const addVolunteer = async (user, password) => {
 }
 
 const updateVolunteer = async (user) => {
+  user.formattedCompanyName = formatStr(user.company);
   const updateQuery = `
     UPDATE volunteers
     SET 
