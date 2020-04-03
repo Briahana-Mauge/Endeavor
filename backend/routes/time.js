@@ -18,8 +18,9 @@ router.get('/past/:v_id', async (req, res, next) => {
         let allBankedHours = await timeQueries.allBankedHours(vId);
 
         res.json({
-            users: allBankedHours,
-            message: "Success"
+            payload: allBankedHours,
+            message: "Success",
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
@@ -32,8 +33,9 @@ router.get('/upcoming/:v_id', async (req, res, next) => {
         const vId = processInput(req.params.v_id, "idNum", "volunteer id");
         let allPlannedHours = await timeQueries.allPlannedHours(vId);
         res.json({
-            users: allPlannedHours,
-            message: "Success"
+            payload: allPlannedHours,
+            message: "Success",
+            errr: false
         });
     } catch (err) {
         handleError(err, req, res, next);
@@ -46,8 +48,9 @@ router.get('/', async (req, res, next) => {
         let allHours = await timeQueries.allHours();
 
         res.json({
-            users: allHours,
-            message: "Success"
+            payload: allHours,
+            message: "Success",
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
