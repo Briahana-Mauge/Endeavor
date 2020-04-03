@@ -35,7 +35,7 @@ router.get('/upcoming/:v_id', async (req, res, next) => {
         res.json({
             payload: allPlannedHours,
             message: "Success",
-            errr: false
+            err: false
         });
     } catch (err) {
         handleError(err, req, res, next);
