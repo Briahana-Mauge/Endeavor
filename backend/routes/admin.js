@@ -15,7 +15,8 @@ router.post('/add', async (request, response, next) => {
             const password = processInput(request.body.password, 'hardVC', 'user password');
             const hashedPassword = await hashPassword(password);
             
-            const newAdmin = await usersQueries.addUser(email, hashedPassword);
+            const newAdmin = await usersQueries.addUser(email, hashedPassword, 'admin');
+            delete newAdmin.password;
             response.status(201).json({
                 error: false,
                 message: 'Successfully added new user to admin list',
@@ -23,7 +24,7 @@ router.post('/add', async (request, response, next) => {
             });
         }
         else {
-            throw new Error("401__You don't permission to perform this operation - Admin right only");
+            throw new Error("401__You don't have permission to perform this operation - Admin right only");
         }
 
     } catch (err) {
