@@ -35,19 +35,24 @@ const signupAdmin = async (request, response, next) => {
         const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
         
-        const allowedAdmin = usersQueries.getUserByEmail(email);
-        const passMatch = await comparePasswords(request.body.password, allowedAdmin.password);
-        
-        if (passMatch) {
-            const hashedPassword = await hashPassword(newPassword);
+        const allowedAdmin = await usersQueries.getUserByEmail(email);
+        if (allowedAdmin) {
+            const passMatch = await comparePasswords(request.body.password, allowedAdmin.password);
             
-            await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password);
-            request.body.email = email;
-            request.body.password = password;
-            next();
+            if (passMatch) {
+                const hashedPassword = await hashPassword(newPassword);
+                
+                await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password);
+                request.body.email = email;
+                request.body.password = newPassword;
+                next();
+            }
+            else {
+                throw new Error('401__Not authorized to sign up, default password does not match')
+            }
         }
         else {
-            throw new Error('401__Not authorized to sign up, email/default password does not match')
+            throw new Error('401__Not authorized to sign up as an Admin')
         }
 
     } catch (err) {
