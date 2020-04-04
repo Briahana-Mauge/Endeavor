@@ -87,23 +87,22 @@ const addFellow = async (userObj, password) => {
   }
 }
 
-// const updateFellow = async (user) => {
-//   const updateQuery = `
-//     UPDATE fellows
-//     SET
-//       f_first_name = $/firstName/,
-//       f_last_name = $/lastName/,
-//       f_picture = $/picture/,
-//       f_bio = $/bio/,
-//       f_linkedin = $/linkedIn/,
-//       f_github = $/github/,
-//       cohort_id = $/cohortId/,
-//       want_mentor = $/wantMentor/
-//     WHERE f_id = $/userId/
-//     RETURNING *;
-//   `;
-//   return await db.one(updateQuery, user);
-// }
+const updateFellow = async (userObj) => {
+  const updateQuery = `
+    UPDATE fellows
+    SET
+      f_first_name = $/fFirstName/,
+      f_last_name = $/fLastName/,
+      f_picture = $/fPicture/,
+      f_bio = $/fBio/,
+      f_linkedin = $/fLinkedIn/,
+      f_github = $/fGithub/,
+      want_mentor = $/wantMentor/
+    WHERE f_id = $/fellowId/
+    RETURNING *;
+  `;
+  return await db.one(updateQuery, userObj);
+}
 
 // const deleteFellow = async (id) => {
 //   return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
@@ -116,6 +115,6 @@ module.exports = {
   getFellowById,
   getFellowByEmail,
   addFellow,
-  // updateFellow,
+  updateFellow,
   // deleteFellow
 }
