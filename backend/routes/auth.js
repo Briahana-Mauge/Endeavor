@@ -11,7 +11,8 @@ const adminQueries = require('../queries/admin');
 const volunteersQueries = require('../queries/volunteers');
 const fellowsQueries = require('../queries/fellows');
 
-const { checkValidId, checkValidParams, checkValidEmail, checkBool, handleErrors } = require('../helpers/helpers');
+const processInput = require('../helpers/processInput');
+const handleError = require('../helpers/handleError');
 
 
 // LOGIN  A USER
@@ -27,85 +28,72 @@ router.post('/login', passport.authenticate('local'), (request, response) => {
 // Sign-up a user as Admin
 // Expecting into the request body: email, password, firstName, lastName
 const signupAdmin = async (request, response, next) => {
-    const { email, password, firstName, lastName } = request.body;
-    if (checkValidEmail(email, request, response) 
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)) {
-        try {
-            const hashedPassword = await hashPassword(password.trim());
-            await adminQueries.addAdmin(firstName.trim(), LastName.trim(), email.trim().toLowerCase(), hashedPassword);
-            request.body.email = email.trim().toLowerCase();
-            request.body.password = password.trim();
-            next();
+    try {
+        const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
+        const password = processInput(request.body.password, 'hardVC', 'user password');
+        const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
+        const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
+        const hashedPassword = await hashPassword(password);
+        
+        await adminQueries.addAdmin(firstName, lastName, email, hashedPassword);
+        request.body.email = email;
+        request.body.password = password;
+        next();
 
-        } catch (err) {
-            handleErrors(err, response);
-        }
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
 // Sign-up a user as Volunteer
 // Expecting into the request body: email, password, firstName, lastName, company, title, mentor, officeHours, techMockInterview, behavioralMockInterview
 const signupVolunteer = async (request, response, next) => {
-    let { email, password, firstName, lastName, company, title, mentor, officeHours, techMockInterview, behavioralMockInterview } = request.body;
-    if (checkValidEmail(email, request, response) 
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)
-    && checkValidParams(company, request, response)
-    && checkValidParams(title, request, response)
-    && checkBool(mentor, request, response)
-    && checkBool(officeHours, request, response)
-    && checkBool(techMockInterview, request, response)
-    && checkBool(behavioralMockInterview, request, response)) {
-        try {
-            email = email.trim().toLowerCase();
-            password = password.trim();
-            firstName = firstName.trim();
-            lastName = lastName.trim();
-            company = company.trim();
-            title = title.trim();
-            mentor = mentor.trim().toLowerCase();
-            officeHours = officeHours.trim().toLowerCase();
-            techMockInterview = techMockInterview.trim().toLowerCase();
-            behavioralMockInterview = behavioralMockInterview.trim().toLowerCase();
-            const hashedPassword = await hashPassword(password);
-
-            // TO BE REVIEWED ONCE queries/volunteers.js MERGED
-            await volunteersQueries.addVolunteer(firstName, LastName, email, hashedPassword, company, title, mentor, officeHours, techMockInterview, behavioralMockInterview);
-            request.body.email = email;
-            request.body.password = password.trim();
-            next();
-            
-        } catch (err) {
-            handleErrors(err, response);
+    try {
+        const formattedRequestBody = {
+            email: processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase(),
+            password: processInput(request.body.password, 'hardVC', 'user password'),
+            firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
+            lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
+            company: processInput(request.body.company, 'hardVC', 'company', 50),
+            title: processInput(request.body.title, 'hardVC', 'title', 50),
+            mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
+            officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
+            techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
+            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'bool', 'behavioral mock interview'),
+            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
+            hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
+            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker')
         }
+        const hashedPassword = await hashPassword(formattedRequestBody.password);
+
+        await volunteersQueries.addVolunteer(formattedRequestBody, hashedPassword);
+        request.body.email = formattedRequestBody.email;
+        request.body.password = formattedRequestBody.password;
+        next();
+        
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
 // Sign-up a user as Fellow
 // Expecting into the request body: email, password, firstName, lastName, cohort
 const signupFellow = async (request, response, next) => {
-    const { email, password, firstName, lastName, cohort } = request.body;
-    if (checkValidEmail(email, request, response) 
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)
-    && checkValidId(cohort, request, response)) {
-        try {
-            const hashedPassword = await hashPassword(password.trim());
+    try {
+        const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
+        const password = processInput(request.body.password, 'hardVC', 'user password');
+        const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
+        const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
+        const cohortId = processInput(request.body.cohortId, 'idNum', 'cohort id', 50);
+        const hashedPassword = await hashPassword(password);
 
-            // TO BE REVIEWED ONCE queries/fellows.js MERGED
-            await fellowsQueries.addFellow(firstName.trim(), LastName.trim(), email.trim().toLowerCase(), hashedPassword, cohort);
-            request.body.email = email.trim().toLowerCase();
-            request.body.password = password.trim();
-            next();
-            
-        } catch (err) {
-            handleErrors(err, response);
-        }
-
+        await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword);
+        request.body.email = email;
+        request.body.password = password;
+        next();
+        
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
@@ -136,177 +124,162 @@ router.post('/:userType/signup', signupUser, passport.authenticate('local'), (re
     })
 })
 
-const updateAdminUser = async (userId, request, response, next) => {
-    const actualEmail = request.user.a_email;
-    const { firstName, lastName, email, password } = request.body;
-    
-    if (checkValidEmail(email, request, response)
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)) {
-        try {
-            const formattedEmail = email.trim().toLowerCase();
-            const user = await usersQueries.getUserByEmail(actualEmail);
-            const passMatch = await comparePasswords(password, user.password);
-            if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-                if (actualEmail !== formattedEmail) {
-                    await usersQueries.updateEmail(actualEmail, formattedEmail)
-                }
-                
-                await adminQueries.updateAdmin(userId, firstName.trim(), LastName.trim(), formattedEmail);
-                request.body.email = formattedEmail;
-                request.body.password = password.trim();
-                next();
-            } 
-            else {
-                response.status(401).json({
-                    error: true,
-                    message: 'Wrong password',
-                    payload: null,
-                })
-            }
+const updateAdminUser = async (userId, request, response, next) => { 
+    try {
+        const actualEmail = request.user.a_email;
+        const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
+        const password = processInput(request.body.password, 'hardVC', 'user password');
+        const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
+        const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
 
-        } catch (err) {
-            handleErrors(err, response);
+        const user = await usersQueries.getUserByEmail(actualEmail);
+        const passMatch = await comparePasswords(request.body.password, user.password);
+        if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
+            if (actualEmail !== email) {
+                await usersQueries.updateEmail(actualEmail, email)
+            }
+            
+            await adminQueries.updateAdmin(userId, firstName, lastName, email);
+            request.body.email = email;
+            request.body.password = password;
+            next();
+        } 
+        else {
+            response.status(401).json({
+                error: true,
+                message: 'Wrong password',
+                payload: null,
+            })
         }
+
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
 const updateVolunteerUser = async (userId, request, response, next) => {
-    const actualEmail = request.user.v_email;
-    let { email, password, firstName, lastName, company, title, bio, linkedIn, mentor, officeHours, techMockInterview, behavioralMockInterview } = request.body;
-    
-    if (checkValidEmail(email, request, response) 
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)
-    && checkValidParams(company, request, response)
-    && checkValidParams(title, request, response)
-    && checkValidParams(bio, request, response)
-    && checkValidParams(linkedIn, request, response)
-    && checkBool(mentor, request, response)
-    && checkBool(officeHours, request, response)
-    && checkBool(techMockInterview, request, response)
-    && checkBool(behavioralMockInterview, request, response)) {
-        try {
-            email = email.trim().toLowerCase();
-            password = password.trim();
-            firstName = firstName.trim();
-            lastName = lastName.trim();
-            company = company.trim();
-            title = title.trim();
-            bio = bio.trim();
-            linkedIn = linkedIn.trim();
-            mentor = mentor.trim();
-            officeHours = officeHours.trim();
-            techMockInterview = techMockInterview.trim();
-            behavioralMockInterview = behavioralMockInterview.trim();
-
-            const user = await usersQueries.getUserByEmail(email);
-            const passMatch = await comparePasswords(password, user.password);
-            if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-                if (actualEmail !== email) {
-                    await usersQueries.updateEmail(actualEmail, email)
-                }
-
-                let picture = request.user.v_picture;
-                if (request.file) {
-                    picture = request.file.location;
-                }
-                
-                // TO BE REVIEWED ONCE queries/volunteers.js MERGED
-                await volunteersQueries.updateVolunteer(userId, firstName, LastName, email, picture, company, title, bio, linkedIn, mentor, officeHours, techMockInterview, behavioralMockInterview);
-                if (request.file) {
-                    storage.deleteFile(request.user.v_picture)
-                }
-                request.body.email = email;
-                request.body.password = password.trim();
-                next();
+    try {
+        const actualEmail = request.user.v_email;
+        const formattedRequestBody = {
+            userId,
+            email: processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase(),
+            password: processInput(request.body.password, 'hardVC', 'user password'),
+            firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
+            lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
+            company: processInput(request.body.company, 'hardVC', 'company', 50),
+            title: processInput(request.body.title, 'hardVC', 'title', 50),
+            bio: processInput(request.body.bio, 'softVC', 'bio'),
+            linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
+            mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
+            officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
+            techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
+            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'bool', 'behavioral mock interview'),
+            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
+            hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
+            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker'),
+            picture: request.user.v_picture
+        }
+        
+        const user = await usersQueries.getUserByEmail(actualEmail);
+        const passMatch = await comparePasswords(request.body.password, user.password);
+        if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
+            if (actualEmail !== formattedRequestBody.email) {
+                await usersQueries.updateEmail(actualEmail, formattedRequestBody.email)
             }
-            else {
-                storage.deleteFile(request.file.location);
-                response.status(401).json({
-                    error: true,
-                    message: 'Wrong password',
-                    payload: null,
-                });
+
+            if (request.file) {
+                formattedRequestBody.picture = request.file.location;
             }
             
-        } catch (err) {
-            handleErrors(err, response);
+            await volunteersQueries.updateVolunteer(formattedRequestBody);
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+                storage.deleteFile(request.user.v_picture)
+            }
+            request.body.email = formattedRequestBody.email;
+            request.body.password = formattedRequestBody.password;
+            next();
         }
+        else {
+            if (request.file) {
+                storage.deleteFile(request.file.location);
+            }
+            throw new Error('401__error: Wrong password');
+        }
+        
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
 const updateFellowUser = async (userId, request, response, next) => {
-    const actualEmail = request.user.f_email;
-    let { email, password, firstName, lastName, bio, linkedIn, github, cohort, wantMentor } = request.body;
-    
-    if (checkValidEmail(email, request, response) 
-    && checkValidParams(password, request, response)
-    && checkValidParams(firstName, request, response)
-    && checkValidParams(lastName, request, response)
-    && checkValidParams(bio, request, response)
-    && checkValidParams(linkedIn, request, response)
-    && checkValidParams(github, request, response)
-    && checkValidId(cohort, request, response)
-    && checkBool(wantMentor, request, response)) {
-        try {
-            email = email.trim().toLowerCase();
-            password = password.trim();
-            firstName = firstName.trim();
-            lastName = lastName.trim();
-            bio = bio.trim();
-            linkedIn = linkedIn.trim();
-            github = github.trim();
-            wantMentor = wantMentor.trim().toLowerCase();
+    try {
+        const actualEmail = request.user.f_email;
 
-            const user = await usersQueries.getUserByEmail(email);
-            const passMatch = await comparePasswords(password, user.password);
-            if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-                if (actualEmail !== email) {
-                    await usersQueries.updateEmail(actualEmail, email)
-                }
-
-                let picture = request.user.f_picture;
-                if (request.file) {
-                    picture = request.file.location;
-                }
-
-                // TO BE REVIEWED ONCE queries/fellows.js MERGED
-                await fellowsQueries.updateFellow(userId, firstName, LastName, email, picture, bio, linkedIn, github, cohort, wantMentor);
-                if (request.file) {
-                    storage.deleteFile(request.user.f_picture)
-                }
-                request.body.email = email;
-                request.body.password = password.trim();
-                next();
-            }
-            else {
-                storage.deleteFile(request.file.location);
-                response.status(401).json({
-                    error: true,
-                    message: 'Wrong password',
-                    payload: null,
-                });
-            }
-            
-        } catch (err) {
-            handleErrors(err, response);
+        const formattedRequestBody = {
+            userId,
+            email: processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase(),
+            password: processInput(request.body.password, 'hardVC', 'user password'),
+            firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
+            lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
+            bio: processInput(request.body.bio, 'softVC', 'bio'),
+            linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
+            github: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
+            cohortId: processInput(request.body.cohortId, 'idNum', 'cohort id', 50),
+            wantMentor: processInput(request.body.mentor, 'bool', 'mentoring'),
+            picture: request.user.f_picture
         }
+
+        const user = await usersQueries.getUserByEmail(actualEmail);
+        const passMatch = await comparePasswords(request.body.password, user.password);
+
+        if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
+            if (actualEmail !== formattedRequestBody.email) {
+                await usersQueries.updateEmail(actualEmail, formattedRequestBody.email);
+            }
+
+            if (request.file) {
+                formattedRequestBody.picture = request.file.location;
+            }
+
+            await fellowsQueries.updateFellow(formattedRequestBody);
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+                storage.deleteFile(request.user.f_picture)
+            }
+            request.body.email = formattedRequestBody.email;
+            request.body.password = formattedRequestBody.password;
+            next();
+        }
+        else {
+            if (request.file) {
+                storage.deleteFile(request.file.location);
+            }
+            throw new Error('401__error: Wrong password');
+        }
+        
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
 
-const updateUser = async(request, response, next) => {
-    const userId = request.params.user_id;
+const updateUser = (request, response, next) => {
+    const userId = processInput(request.params.user_id, 'idNum', 'user id');
 
-    if (request.user.a_email) {
+    if (request.user.a_email && Number(userId) === request.user.a_id) {
         updateAdminUser(userId, request, response, next);
-    } else if (request.user.v_email) {
+    } else if (request.user.v_email && Number(userId) === request.user.v_id) {
         updateVolunteerUser(userId, request, response, next);
-    } else {
+    } else if (request.user.f_email && Number(userId) === request.user.f_id){
         updateFellowUser(userId, request, response, next);
+    } else {
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
+        response.status(401).json({
+            error: true,
+            message: 'Not authorized to update these information',
+            payload: null,
+        });
     }
 }
 
@@ -320,24 +293,24 @@ router.put('/:user_id', checkUserLogged, storage.upload.single('picture'), updat
 
 
 const updatePassword = async(request, response, next) => {
-    const { newPassword, confirmPassword } = request.body;
-    const targetId = request.params.user_id;
-    const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
-    const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
-  
-    if (parseInt(targetId) === loggedUserId
-        && checkValidParams(newPassword, request, response) 
-        && checkValidParams(confirmPassword, request, response)
-        && newPassword === confirmPassword) {
-        try {
-            const hashedPassword = await hashPassword(newPassword.trim());
-            await usersQueries.updatePassword(loggedUserEmail, hashedPassword);
-            request.body.password = newPassword.trim();
-            next();
+    try {
+        const newPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
+        const confirmPassword = processInput(request.body.confirmPassword, 'hardVC', 'user password');
+        const targetId = processInput(request.params.user_id, 'idNum', 'user id');
+        const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
 
-        } catch (err) {
-            handleErrors(err, response);
+        if (targetId === loggedUserId && newPassword === confirmPassword) {
+            const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
+            const hashedPassword = await hashPassword(newPassword);
+            
+            await usersQueries.updatePassword(loggedUserEmail, hashedPassword);
+            next();
+        } else {
+            throw new Error("401__error: Not authorized to update - password doesn't match or you don't have the right to update");
         }
+
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
@@ -351,30 +324,31 @@ router.patch('/:user_id', checkUserLogged, updatePassword, (request, response) =
 
 
 const deleteAccount = async(request, response, next) => {
-    const targetId = request.params.user_id;
-    const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
-    const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
+    try {
+        const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
+        const targetId = processInput(request.params.user_id, 'idNum', 'user id');
+        const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
 
-    if (parseInt(targetId) === loggedUserId) {
-        try {
+        if (targetId === loggedUserId) {
             if (request.user.a_id) {
-                await adminQueries.deleteUser(loggedUserId);
+                await adminQueries.deleteAdmin(loggedUserId);
             } 
             else if (request.user.v_id) {
-                // TO BE REVIEWED ONCE queries/volunteers.js MERGED
-                await volunteersQueries.deleteUser(loggedUserId);
+                await volunteersQueries.deleteVolunteer(loggedUserId);
             } 
             else {
-                // TO BE REVIEWED ONCE queries/fellows.js MERGED
-                await fellowsQueries.deleteUser(loggedUserId);
+                await fellowsQueries.deleteFellow(loggedUserId);
             }
-
-            await usersQueries.deleteUser(loggedUserEmail)
+    
+            // await usersQueries.deleteUser(loggedUserEmail)
             next();
-
-        } catch (err) {
-            handleErrors(response, err)
+        } 
+        else {
+            throw new Error("401__error: Not authorized to delete");
         }
+
+    } catch (err) {
+        handleError(err, request, response, next);
     }
 }
 
@@ -403,7 +377,7 @@ router.get('/is_logged', checkUserLogged, (request, response) => {
         error: false,
         message: 'User is logged in. Session active',
         payload: request.user,
-    })
+    });
 })
 
 
