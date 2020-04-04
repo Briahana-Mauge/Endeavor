@@ -60,87 +60,90 @@ const readFellowByEmail = async (req, res, next) => {
   }
 };
 
-const createFellow = async (req, res, next) => {
-  try {
-    const fFirstName = processInput(req.body.fFirstName, "hardVC", "first name", 30);
-    const fLastName = processInput(req.body.fLastName, "hardVC", "last name", 30);
-    const fEmail = processInput(req.body.fEmail, "hardVC", "fellow email", 50);
-    const cohortId = processInput(req.body.cohort_id, "idNum", "cohort id");
 
-    const response = await queries.addFellow({
-        fFirstName,
-        fLastName,
-        fEmail,
-        cohortId
-    });
-    res.status(201);
-    res.json({
-        status: "success",
-        message: `new fellow '${fFirstName} ${fLastName}' added`,
-        payload: response
-    });
-  } catch (err) {
-    handleError(err, req, res, next);
-  }
-};
+/* SAVE FOR POSSIBLE FUTURE REFERENCE, DELETE WHEN BACKEND FINISHED
+// router.post("/create", createFellow);
+// const createFellow = async (req, res, next) => {
+//   try {
+//     const fFirstName = processInput(req.body.fFirstName, "hardVC", "first name", 30);
+//     const fLastName = processInput(req.body.fLastName, "hardVC", "last name", 30);
+//     const fEmail = processInput(req.body.fEmail, "hardVC", "fellow email", 50);
+//     const cohortId = processInput(req.body.cohort_id, "idNum", "cohort id");
 
-const updateFellow = async (req, res, next) => {
-  try {
-    const fId = processInput(req.params.id, "idNum", "fellow id");
-    const fFirstName = processInput(req.body.fFirstName, "hardVC", "first name", 30);
-    const fLastName = processInput(req.body.fLastName, "hardVC", "last name", 30);
-    // const fEmail = processInput(req.body.fEmail, "hardVC", "fellow email", 50);
-    const fPicture = processInput(req.body.fPicture, "softVC", "picture url", undefined);
-    const fBio = processInput(req.body.fBio, "softVC", "bio", undefined);
-    const fLinkedIn = processInput(req.body.fLinkedIn, "softVC", "linkedin url", 150);
-    const fGithub = processInput(req.body.fGithub, "softVC", "github url", 150);
-    const wantMentor = processInput(req.body.wantMentor, "bool", "want mentor bool");
+//     const response = await queries.addFellow({
+//         fFirstName,
+//         fLastName,
+//         fEmail,
+//         cohortId
+//     });
+//     res.status(201);
+//     res.json({
+//         status: "success",
+//         message: `new fellow '${fFirstName} ${fLastName}' added`,
+//         payload: response
+//     });
+//   } catch (err) {
+//     handleError(err, req, res, next);
+//   }
+// };
 
-    const response = await queries.editFellow({
-        fId,
-        fFirstName,
-        fLastName,
-        // fEmail,
-        fPicture,
-        fBio,
-        fLinkedIn,
-        fGithub,
-        wantMentor
-    });
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `fellow.${fId} data has been updated`,
-        payload: response
-    });
-  } catch (err) {
-    handleError(err, req, res, next);
-  }
-};
+// router.put("/update/:id", updateFellow);
+// const updateFellow = async (req, res, next) => {
+//   try {
+//     const fId = processInput(req.params.id, "idNum", "fellow id");
+//     const fFirstName = processInput(req.body.fFirstName, "hardVC", "first name", 30);
+//     const fLastName = processInput(req.body.fLastName, "hardVC", "last name", 30);
+//     // const fEmail = processInput(req.body.fEmail, "hardVC", "fellow email", 50);
+//     const fPicture = processInput(req.body.fPicture, "softVC", "picture url", undefined);
+//     const fBio = processInput(req.body.fBio, "softVC", "bio", undefined);
+//     const fLinkedIn = processInput(req.body.fLinkedIn, "softVC", "linkedin url", 150);
+//     const fGithub = processInput(req.body.fGithub, "softVC", "github url", 150);
+//     const wantMentor = processInput(req.body.wantMentor, "bool", "want mentor bool");
 
-const deleteFellow = async (req, res, next) => {
-  try {
-    const fId = processInput(req.params.id, "idNum", "fellow id");
-    const response = await queries.removeFellow(fId);
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `fellow.${fId} has been deleted`,
-        payload: response
-    });
-  } catch (err) {
-    handleError(err, req, res, next);
-  }
-};
+//     const response = await queries.editFellow({
+//         fId,
+//         fFirstName,
+//         fLastName,
+//         // fEmail,
+//         fPicture,
+//         fBio,
+//         fLinkedIn,
+//         fGithub,
+//         wantMentor
+//     });
+//     res.status(200);
+//     res.json({
+//         status: "success",
+//         message: `fellow.${fId} data has been updated`,
+//         payload: response
+//     });
+//   } catch (err) {
+//     handleError(err, req, res, next);
+//   }
+// };
+
+// router.delete("/delete/:id", deleteFellow);
+// const deleteFellow = async (req, res, next) => {
+//   try {
+//     const fId = processInput(req.params.id, "idNum", "fellow id");
+//     const response = await queries.removeFellow(fId);
+//     res.status(200);
+//     res.json({
+//         status: "success",
+//         message: `fellow.${fId} has been deleted`,
+//         payload: response
+//     });
+//   } catch (err) {
+//     handleError(err, req, res, next);
+//   }
+// };
+*/
 
 
 /* ENDPOINT HANDLERS */
 router.get("/", readAllFellows);
 router.get("/id/:id", readFellowById);
 router.get("/email/:email", readFellowByEmail);
-router.post("/create", createFellow);
-router.put("/update/:id", updateFellow);
-router.delete("/delete/:id", deleteFellow);
 
 
 module.exports = router;

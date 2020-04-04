@@ -45,7 +45,7 @@ const getFellowByEmail = async (fEmail) => {
 
 const addFellow = async (userObj, password) => {
   // adds fellow login to users_data table
-  const registeredUser = await userQueries.addUser(userObj.fEmail, password, 'fellow');
+  const registeredUser = await userQueries.addUser(userObj.email, password, 'fellow');
 
   // continues with adding rest of fellow info
   const postQuery = `
@@ -55,9 +55,9 @@ const addFellow = async (userObj, password) => {
         f_email,
         cohort_id
     ) VALUES (
-        $/fFirstName/,
-        $/fLastName/,
-        $/fEmail/,
+        $/firstName/,
+        $/lastName/,
+        $/email/,
         $/cohortId/
     )
     RETURNING *;
@@ -68,30 +68,31 @@ const addFellow = async (userObj, password) => {
   } catch (err) {
     // immediately undo add to users_data table if any error adding remainder of data to fellows table
     if (registeredUser) {
-        userQueries.deleteUser(userObj.fEmail);
+        userQueries.deleteUser(userObj.email);
     }
     throw (err);
   }
 }
 
-const editFellow = async (userObj) => {
+const updateFellow = async (userObj) => {
   const updateQuery = `
     UPDATE fellows
     SET
-      f_first_name = $/fFirstName/,
-      f_last_name = $/fLastName/,
-      f_picture = $/fPicture/,
-      f_bio = $/fBio/,
-      f_linkedin = $/fLinkedIn/,
-      f_github = $/fGithub/,
-      want_mentor = $/wantMentor/
-    WHERE f_id = $/fellowId/
+        f_first_name = $/firstName/,
+        f_last_name = $/lastName/,
+        f_picture = $/picture/,
+        f_bio = $/bio/,
+        f_linkedin = $/linkedIn/,
+        f_github = $/github/,
+        cohort_id = $/cohortId/,
+        want_mentor = $/wantMentor/
+    WHERE f_id = $/userId/
     RETURNING *;
   `;
   return await db.one(updateQuery, userObj);
 }
 
-const removeFellow = async (fId) => {
+const deleteFellow = async (fId) => {
   const deleteQuery = `
     DELETE FROM fellows
     WHERE f_id = $/fId/
@@ -107,6 +108,6 @@ module.exports = {
   getFellowById,
   getFellowByEmail,
   addFellow,
-  editFellow,
-  removeFellow
+  updateFellow,
+  deleteFellow
 }
