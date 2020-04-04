@@ -24,7 +24,7 @@ const deleteUser = async (email) => {
     return await db.one('DELETE FROM users_data WHERE user_email = $1 RETURNING *', email);
 }
 
-module.export = {
+module.exports = {
     getUserByEmail,
     addUser,
     updatePassword,
