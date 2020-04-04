@@ -203,7 +203,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
-            throw new Error('401__error: Wrong password');
+            throw new Error('401__Wrong password');
         }
         
     } catch (err) {
@@ -253,7 +253,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
-            throw new Error('401__error: Wrong password');
+            throw new Error('401__Wrong password');
         }
         
     } catch (err) {
@@ -306,7 +306,7 @@ const updatePassword = async(request, response, next) => {
             await usersQueries.updatePassword(loggedUserEmail, hashedPassword);
             next();
         } else {
-            throw new Error("401__error: Not authorized to update - password doesn't match or you don't have the right to update");
+            throw new Error("401__Not authorized to update - password doesn't match or you don't have the right to update");
         }
 
     } catch (err) {
@@ -340,11 +340,11 @@ const deleteAccount = async(request, response, next) => {
                 await fellowsQueries.deleteFellow(loggedUserId);
             }
     
-            // await usersQueries.deleteUser(loggedUserEmail)
+            // await usersQueries.deleteUser(loggedUserEmail);
             next();
         } 
         else {
-            throw new Error("401__error: Not authorized to delete");
+            throw new Error("401__Not authorized to delete");
         }
 
     } catch (err) {
