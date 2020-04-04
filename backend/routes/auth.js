@@ -299,7 +299,6 @@ const updatePassword = async(request, response, next) => {
         const targetId = processInput(request.params.user_id, 'idNum', 'user id');
         const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
 
-        console.log(newPassword, confirmPassword)
         if (targetId === loggedUserId && newPassword === confirmPassword) {
             const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
             const hashedPassword = await hashPassword(newPassword);
