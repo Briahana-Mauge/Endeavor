@@ -71,7 +71,7 @@ CREATE TABLE fellows (
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
     f_github VARCHAR (150),
-    cohort INT REFERENCES classes(class_id),
+    cohort_id INT REFERENCES classes(class_id),
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
@@ -178,7 +178,7 @@ INSERT INTO classes (class) VALUES
 
 
 INSERT INTO users_data (user_email, password, role) VALUES
-    ('admin@SuperPower.dev', '$2b$12$BnlkuACZiHUs8h0TLWejv.NaSyBXQGNWnczdYt8KrdDEDV9VHQ4/O', 'admin'),
+    ('admin@superpower.dev', '$2b$12$BnlkuACZiHUs8h0TLWejv.NaSyBXQGNWnczdYt8KrdDEDV9VHQ4/O', 'admin'),
     ('alexis@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'admin'),
     
     ('dlopez@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
@@ -222,7 +222,7 @@ INSERT INTO users_data (user_email, password, role) VALUES
 
 
 INSERT INTO administration (a_first_name, a_last_name, a_email) VALUES
-    ('Admin', 'Admin', 'admin@SuperPower.dev'),
+    ('Admin', 'Admin', 'admin@superpower.dev'),
     ('Alexis', 'Medina', 'alexis@pursuit.org');
 
 
@@ -264,7 +264,7 @@ INSERT INTO fellows
         f_picture,
         f_linkedin,
         f_github,
-        cohort,
+        cohort_id,
         want_mentor
     )
     VALUES 

@@ -12,7 +12,7 @@ example:
 
 
 const errorResponse = (res, code, errorMsg) => {
-  console.log(errorMsg);   // log for developer
+  console.log('Error message: ', errorMsg, '\n');   // log for developer
   res.status(code);
   res.json({
       status: "fail",
@@ -23,6 +23,7 @@ const errorResponse = (res, code, errorMsg) => {
 
 
 const handleError = (err, req, res, next) => {
+  console.log('Error: ', err, '\n');
   /* STAGE 1/5:
   Per documentation, checking for present headers and if so, pass to default Express error handler
   https://expressjs.com/en/guide/error-handling.html#the-default-error-handler
