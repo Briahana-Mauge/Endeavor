@@ -16,7 +16,7 @@ export default (props) => {
                     
                 :
                     <>
-                        <span className='d-flex justify-content-between'>
+                        <span className='d-flex w-100 justify-content-between'>
                             <button type='submit' className='btn btn-primary'>Sign Up</button>
                             <span className='mb-2 mx-2 mr-sm-2'>Already a user?
                                 <span className='btn btn-link' onClick={() => props.setFormType('login')}>Sign In</span>
@@ -39,6 +39,16 @@ export default (props) => {
                                     <input className='form-check-input' type='checkbox' /> Fellow Account
                                 </label>
                             </div>
+                        </div>
+
+                        <div className='form-group'>
+                            <label className='mr-sm-2' htmlFor='firstName'>First Name:</label>
+                            <input type='text' className='form-control' placeholder='Enter first name' id='firstName' />
+                        </div>
+
+                        <div className='form-group'>
+                            <label className='mr-sm-2' htmlFor='lastName'>Last name:</label>
+                            <input type='text' className='form-control' placeholder='Enter last name' id='lastName' />
                         </div>
                     </>
             }
