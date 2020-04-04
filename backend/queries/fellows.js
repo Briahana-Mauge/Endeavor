@@ -56,9 +56,11 @@ const getFellowByEmail = async (fEmail) => {
   return await db.one(getQuery, { fEmail });
 }
 
-const addFellow = async (user, password) => {
-  const registeredUser = await userQueries.addUser(user.email, password, 'fellow');
+const addFellow = async (userObj, password) => {
+  // adds fellow login to users_data table
+  const registeredUser = await userQueries.addUser(userObj.fEmail, password, 'fellow');
 
+  // continues with adding rest of fellow info
   const postQuery = `
     INSERT INTO fellows (
         f_first_name,
@@ -66,45 +68,46 @@ const addFellow = async (user, password) => {
         f_email,
         cohort_id
     ) VALUES (
-        $/firstName/,
-        $/lastName/,
-        $/email/,
+        $/fFirstName/,
+        $/fLastName/,
+        $/fEmail/,
         $/cohortId/
     )
     RETURNING *;
   `;
 
   try {
-    return await db.one(postQuery, user);
+    return await db.one(postQuery, userObj);
   } catch (err) {
+    // immediately undo add to users_data table if any error adding remainder of data to fellows table
     if (registeredUser) {
-        userQueries.deleteUser(user.email);
+        userQueries.deleteUser(userObj.fEmail);
     }
-    throw err;
-}
-}
-
-const updateFellow = async (user) => {
-  const updateQuery = `
-    UPDATE fellows
-    SET 
-      f_first_name = $/firstName/,
-      f_last_name = $/lastName/,
-      f_picture = $/picture/,
-      f_bio = $/bio/,
-      f_linkedin = $/linkedIn/,
-      f_github = $/github/,
-      cohort_id = $/cohortId/,
-      want_mentor = $/wantMentor/
-    WHERE f_id = $/userId/
-    RETURNING *;
-  `;
-  return await db.one(updateQuery, user);
+    throw (err);
+  }
 }
 
-const deleteFellow = async (id) => {
-  return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
-}
+// const updateFellow = async (user) => {
+//   const updateQuery = `
+//     UPDATE fellows
+//     SET
+//       f_first_name = $/firstName/,
+//       f_last_name = $/lastName/,
+//       f_picture = $/picture/,
+//       f_bio = $/bio/,
+//       f_linkedin = $/linkedIn/,
+//       f_github = $/github/,
+//       cohort_id = $/cohortId/,
+//       want_mentor = $/wantMentor/
+//     WHERE f_id = $/userId/
+//     RETURNING *;
+//   `;
+//   return await db.one(updateQuery, user);
+// }
+
+// const deleteFellow = async (id) => {
+//   return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
+// }
 
 
 /* EXPORT */
@@ -113,6 +116,6 @@ module.exports = {
   getFellowById,
   getFellowByEmail,
   addFellow,
-  updateFellow,
-  deleteFellow
+  // updateFellow,
+  // deleteFellow
 }
