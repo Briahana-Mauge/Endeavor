@@ -59,7 +59,7 @@ const processInput = (input, category, inputName, limit) => {
     case "bool":
         // currently undefined will respond as FAIL
         if (typeof input === "boolean") return input; // lets actual booleans through
-        if (input && input.trim()) {
+        if (input && input.trim()) {  // for string bools like req.search params
           if (input.trim().toLowerCase() === "true") return true;
           if (input.trim().toLowerCase() === "false") return false;
         }
