@@ -88,7 +88,7 @@ const addVolunteer = async (user, password) => {
         $/industrySpeaker/
       )
       RETURNING *
-  `
+  `;
 
   try {
     return await db.one(insertQuery, user)
