@@ -9,19 +9,6 @@ const db = require('../db/db');
 
 const userQueries = require('./users');
 
-/*
-// f_id SERIAL PRIMARY KEY,
-f_first_name VARCHAR (30) NOT NULL,
-f_last_name VARCHAR (30) NOT NULL,
-// f_email VARCHAR (50) REFERENCES users_data(user_email),
-f_picture VARCHAR,
-f_bio VARCHAR,
-f_linkedin VARCHAR (150),
-f_github VARCHAR (150),
-cohort INT REFERENCES classes(class_id),
-want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
-*/
-
 
 /* QUERIES */
 const getAllFellows = async (askedForMentor) => {
@@ -87,7 +74,7 @@ const addFellow = async (userObj, password) => {
   }
 }
 
-const updateFellow = async (userObj) => {
+const editFellow = async (userObj) => {
   const updateQuery = `
     UPDATE fellows
     SET
@@ -104,9 +91,14 @@ const updateFellow = async (userObj) => {
   return await db.one(updateQuery, userObj);
 }
 
-// const deleteFellow = async (id) => {
-//   return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
-// }
+const removeFellow = async (fId) => {
+  const deleteQuery = `
+    DELETE FROM fellows
+    WHERE f_id = $/fId/
+    RETURNING *;
+  `;
+  return await db.one(deleteQuery, { fId });
+}
 
 
 /* EXPORT */
@@ -115,6 +107,6 @@ module.exports = {
   getFellowById,
   getFellowByEmail,
   addFellow,
-  updateFellow,
-  // deleteFellow
+  editFellow,
+  removeFellow
 }

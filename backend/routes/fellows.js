@@ -86,7 +86,7 @@ const createFellow = async (req, res, next) => {
 
 const updateFellow = async (req, res, next) => {
   try {
-    const fellowId = processInput(req.params.fellow_id, "idNum", "fellow id");
+    const fId = processInput(req.params.id, "idNum", "fellow id");
     const fFirstName = processInput(req.body.fFirstName, "hardVC", "first name", 30);
     const fLastName = processInput(req.body.fLastName, "hardVC", "last name", 30);
     // const fEmail = processInput(req.body.fEmail, "hardVC", "fellow email", 50);
@@ -96,8 +96,8 @@ const updateFellow = async (req, res, next) => {
     const fGithub = processInput(req.body.fGithub, "softVC", "github url", 150);
     const wantMentor = processInput(req.body.wantMentor, "bool", "want mentor bool");
 
-    const response = await queries.updateFellow({
-        fellowId,
+    const response = await queries.editFellow({
+        fId,
         fFirstName,
         fLastName,
         // fEmail,
@@ -107,10 +107,25 @@ const updateFellow = async (req, res, next) => {
         fGithub,
         wantMentor
     });
-    res.status(201);
+    res.status(200);
     res.json({
         status: "success",
-        message: `fellow.${fellowId} data has been updated`,
+        message: `fellow.${fId} data has been updated`,
+        payload: response
+    });
+  } catch (err) {
+    handleError(err, req, res, next);
+  }
+};
+
+const deleteFellow = async (req, res, next) => {
+  try {
+    const fId = processInput(req.params.id, "idNum", "fellow id");
+    const response = await queries.removeFellow(fId);
+    res.status(200);
+    res.json({
+        status: "success",
+        message: `fellow.${fId} has been deleted`,
         payload: response
     });
   } catch (err) {
@@ -119,26 +134,13 @@ const updateFellow = async (req, res, next) => {
 };
 
 
-/*
-// f_id SERIAL PRIMARY KEY,
-f_first_name VARCHAR (30) NOT NULL,
-f_last_name VARCHAR (30) NOT NULL,
-// f_email VARCHAR (50) REFERENCES users_data(user_email),
-f_picture VARCHAR,
-f_bio VARCHAR,
-f_linkedin VARCHAR (150),
-f_github VARCHAR (150),
-cohort INT REFERENCES classes(class_id),
-want_mentor BOOLEAN NOT NULL DEFAULT FALSE
-*/
-
-
 /* ENDPOINT HANDLERS */
 router.get("/", readAllFellows);
 router.get("/id/:id", readFellowById);
 router.get("/email/:email", readFellowByEmail);
 router.post("/create", createFellow);
-router.put("/update/:fellow_id", updateFellow);
+router.put("/update/:id", updateFellow);
+router.delete("/delete/:id", deleteFellow);
 
 
 module.exports = router;
