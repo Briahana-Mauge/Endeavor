@@ -18,6 +18,7 @@ class VolunteerSearch extends React.Component {
             let results = []
             console.log(basic.data.payload);
             basic.data.payload.forEach( e => {
+                
                 let userInfo = {
                     picture: e.v_picture,
                     name: e.v_first_name + ' ' + e.v_last_name,
