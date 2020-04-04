@@ -57,11 +57,11 @@ const processInput = (input, category, inputName, limit) => {
 
     // for booleans
     case "bool":
-        // currently undefineds will respond as FAIL
+        // currently undefined will respond as FAIL
         if (typeof input === "boolean") return input; // lets actual booleans through
         if (input && input.trim()) {
-          if (input.trim().toLowerCase() === "true" || input === true) return true;
-          if (input.trim().toLowerCase() === "false" || input === false) return false;
+          if (input.trim().toLowerCase() === "true") return true;
+          if (input.trim().toLowerCase() === "false") return false;
         }
         throw new Error(`404__error: invalid boolean input`);
 
