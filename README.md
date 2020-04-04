@@ -53,12 +53,18 @@
 ### **Server Endpoints**
 - **Fellows**
 
-  | Method | Endpoint                   | Description                | Body Data |
-  | ------ | -------------------------- | -------------------------- | --------- |
-  | GET    | `/fellows/`                | Get all fellows            | n/a       |
-  | GET    | `/fellows/id/:id`          | Get single fellow by id    | n/a       |
-  | GET    | `/fellows/email/:email`    | Get single fellow by email | n/a       |
-
+  | Method | Endpoint                | Description                 | Query Parameters       | Body Data |
+  | ------ | ----------------------- | --------------------------- | ---------------------- | --------- |
+  | GET    | `/fellows/`             | Get all fellows             | want_mentor=true|false | n/a       |
+  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                    | n/a       |
+  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                    | n/a       |
+  | POST   | `/fellows/create`       | Add a new fellow            | n/a                    | `fFirstName`, `fLastName`, `fEmail`, `cohortId` |
+  | PUT    | `/fellows/update/:id`   | Edit a single fellow's data | n/a                    | `fFirstName`, `fLastName`, `fPicture`, `fBio`, `fLinkedIn`, `fGithub`, `wantMentor` |
+  | DELETE | `/fellows/delete/:id`   | Delete a single fellow      | n/a                    | n/a       |
+fFirstName,
+        fLastName,
+        fEmail,
+        cohortId
 <!-- - **Users**
 
   | Method | Endpoint     | Description           | Body Data                |
