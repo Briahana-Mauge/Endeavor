@@ -24,13 +24,18 @@ want_mentor BOOLEAN NOT NULL DEFAULT FALSE
 
 
 /* QUERIES */
-const getAllFellows = async () => {
+const getAllFellows = async (askedForMentor) => {
   const getQuery = `
     SELECT *
     FROM fellows
+    $/mentorFilter:raw/
     ORDER BY f_first_name ASC;
   `;
-  return await db.any(getQuery);
+  let mentorFilter = "";
+  if (askedForMentor === true) {
+    mentorFilter = `WHERE want_mentor = TRUE`;
+  }
+  return await db.any(getQuery, { mentorFilter });
 }
 
 const getFellowById = async (fId) => {
@@ -42,7 +47,7 @@ const getFellowById = async (fId) => {
   return await db.one(getQuery, { fId });
 }
 
-const getFellowByEmail = async (fEmail) => {  // function name breaks convention for app consistency
+const getFellowByEmail = async (fEmail) => {
   const getQuery = `
     SELECT *
     FROM fellows
