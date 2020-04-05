@@ -51,6 +51,7 @@ CREATE TABLE volunteers (
     title VARCHAR (50) NOT NULL,
     v_bio VARCHAR,
     v_linkedin VARCHAR (150),
+    skills VARCHAR (50),
     mentoring BOOLEAN NOT NULL DEFAULT FALSE,
     office_hours BOOLEAN NOT NULL DEFAULT FALSE,
     tech_mock_interview  BOOLEAN NOT NULL DEFAULT FALSE,

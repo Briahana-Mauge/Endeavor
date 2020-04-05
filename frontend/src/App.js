@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import LoginSignup from './Components/LoginSignup';
-import Routing from './Components/Routing';
 import ErrorFeedback from './Components/ErrorFeedback';
+import VolunteerSearch from './Components/VolunteerSearch';
 
 function App() {
+  const history = useHistory();
+
   const [ loggedUser, setLoggedUser ] = useState({});
   const [ networkError, setNetworkError ] = useState(null);
 
@@ -13,6 +16,7 @@ function App() {
     try {
       const { data } = await axios.get('/api/auth/is_logged');
       setLoggedUser(data.payload);
+      history.push('/home');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         console.log('User not logged in yet');
@@ -28,6 +32,12 @@ function App() {
 
   const setUser = (user) => {
     setLoggedUser(user);
+    history.push('/home');
+  }
+
+  const logout = () => {
+    setLoggedUser('');
+    history.push('/')
   }
 
   const resetNetworkError = () => {
@@ -37,15 +47,19 @@ function App() {
 
   return (
     <div className="container-md">
+      <Switch>
+        <Route exact path='/'> 
+          <LoginSignup setNetworkError={setNetworkError} setUser={setUser}/>
+        </Route>
+        <Route path='/volunteers/search'> 
+          <VolunteerSearch />
+        </Route>
+      </Switch>
+      
       {
         (networkError)
         ? <ErrorFeedback err={networkError} resetNetworkError={resetNetworkError}/>
         : null
-      }
-      {
-        (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id)
-        ? <Routing err={networkError} resetNetworkError={resetNetworkError}/>
-        : <LoginSignup err={networkError} resetNetworkError={resetNetworkError} setUser={setUser}/>
       }
     </div>
   );
