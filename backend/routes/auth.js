@@ -48,11 +48,11 @@ const signupAdmin = async (request, response, next) => {
                 next();
             }
             else {
-                throw new Error('401__Not authorized to sign up, default password does not match')
+                throw new Error('401__Not authorized to sign up, default password does not match');
             }
         }
         else {
-            throw new Error('401__Not authorized to sign up as an Admin')
+            throw new Error('401__Not authorized to sign up as an Admin');
         }
 
     } catch (err) {
