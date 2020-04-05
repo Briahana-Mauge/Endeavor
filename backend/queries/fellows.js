@@ -9,28 +9,20 @@ const db = require('../db/db');
 
 const userQueries = require('./users');
 
-/*
-// f_id SERIAL PRIMARY KEY,
-f_first_name VARCHAR (30) NOT NULL,
-f_last_name VARCHAR (30) NOT NULL,
-// f_email VARCHAR (50) REFERENCES users_data(user_email),
-f_picture VARCHAR,
-f_bio VARCHAR,
-f_linkedin VARCHAR (150),
-f_github VARCHAR (150),
-cohort INT REFERENCES classes(class_id),
-want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
-*/
-
 
 /* QUERIES */
-const getAllFellows = async () => {
+const getAllFellows = async (askedForMentor) => {
   const getQuery = `
     SELECT *
     FROM fellows
+    $/mentorFilter:raw/
     ORDER BY f_first_name ASC;
   `;
-  return await db.any(getQuery);
+  let mentorFilter = "";
+  if (askedForMentor === true) {
+    mentorFilter = `WHERE want_mentor = TRUE`;
+  }
+  return await db.any(getQuery, { mentorFilter });
 }
 
 const getFellowById = async (fId) => {
@@ -42,7 +34,7 @@ const getFellowById = async (fId) => {
   return await db.one(getQuery, { fId });
 }
 
-const getFellowByEmail = async (fEmail) => {  // function name breaks convention for app consistency
+const getFellowByEmail = async (fEmail) => {
   const getQuery = `
     SELECT *
     FROM fellows
@@ -51,9 +43,11 @@ const getFellowByEmail = async (fEmail) => {  // function name breaks convention
   return await db.one(getQuery, { fEmail });
 }
 
-const addFellow = async (user, password) => {
-  const registeredUser = await userQueries.addUser(user.email, password, 'fellow');
+const addFellow = async (userObj, newPassword, oldPassword) => {
+  // Update the password of the new fellow whom already registered into the users_data
+  const registeredUser = await userQueries.updatePassword(userObj.email, newPassword);
 
+  // continues with adding rest of fellow info
   const postQuery = `
     INSERT INTO fellows (
         f_first_name,
@@ -70,35 +64,40 @@ const addFellow = async (user, password) => {
   `;
 
   try {
-    return await db.one(postQuery, user);
+    return await db.one(postQuery, userObj);
   } catch (err) {
-    if (registeredUser) {
-        userQueries.deleteUser(user.email);
+    if (registeredUser) { // if adding the new fellow fails, the password gets reset
+        userQueries.updatePassword(email, oldPassword);
     }
     throw err;
-}
+  }
 }
 
-const updateFellow = async (user) => {
+const updateFellow = async (userObj) => {
   const updateQuery = `
     UPDATE fellows
-    SET 
-      f_first_name = $/firstName/,
-      f_last_name = $/lastName/,
-      f_picture = $/picture/,
-      f_bio = $/bio/,
-      f_linkedin = $/linkedIn/,
-      f_github = $/github/,
-      cohort_id = $/cohortId/,
-      want_mentor = $/wantMentor/
+    SET
+        f_first_name = $/firstName/,
+        f_last_name = $/lastName/,
+        f_picture = $/picture/,
+        f_bio = $/bio/,
+        f_linkedin = $/linkedIn/,
+        f_github = $/github/,
+        cohort_id = $/cohortId/,
+        want_mentor = $/wantMentor/
     WHERE f_id = $/userId/
     RETURNING *;
   `;
-  return await db.one(updateQuery, user);
+  return await db.one(updateQuery, userObj);
 }
 
-const deleteFellow = async (id) => {
-  return await db.one('DELETE FROM fellows WHERE f_id = $/id/ RETURNING *;', {id});
+const deleteFellow = async (fId) => {
+  const deleteQuery = `
+    DELETE FROM fellows
+    WHERE f_id = $/fId/
+    RETURNING *;
+  `;
+  return await db.one(deleteQuery, { fId });
 }
 
 

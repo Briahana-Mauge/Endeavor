@@ -8,7 +8,7 @@ const getAdminByEmail = async (email) => {
 
 const addAdmin = async (firstName, lastName, email, newPassword, oldPassword) => {
     // Update the password of the new admin whom already registered into the users_data
-    const registeredUser = await userQueries.updatePassword(email, newPassword, );
+    const registeredUser = await userQueries.updatePassword(email, newPassword);
 
     const insertQuery = `
         INSERT INTO administration (a_first_name, a_last_name, a_email) VALUES
