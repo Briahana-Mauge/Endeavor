@@ -39,18 +39,11 @@ export default function LoginSignup(props) {
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.setUser(data.payload);
-                } else if (props.userType === 'fellow' && email && password && firstName && lastName && cohortId) {
+                } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
                     const userData = {email, password, firstName, lastName, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
                     props.setUser(data.payload);
                 } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
-                    // const skills = [];
-                    // for (let id in volunteerSkills) {
-                    //     if (volunteerSkills[id]) {
-                    //         skills.push(parseInt(id));
-                    //     }
-                    // }
-
                     const userData = {
                         email, 
                         password, 
@@ -77,6 +70,7 @@ export default function LoginSignup(props) {
             props.setNetworkError(err)
         }
     }
+    
     return (
         <div> 
             <img className='d-block mx-auto appLogo' src='/images/app_logo.jpg' alt='app logo'/>

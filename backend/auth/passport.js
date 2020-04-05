@@ -44,23 +44,6 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser(async (user, done) => {
-  // let retrievedUser = null;
-  // try {
-    // if (user.a_id) {
-    //   retrievedUser = await adminQueries.getUserById(user.a_id);
-    //   done(null, retrievedUser);
-    // } else if (user.v_id) {
-    //   retrievedUser = await volunteersQueries.getUserById(user.v_id);
-    //   done(null, retrievedUser);
-    // } else if (user.f_id) {
-    //   retrievedUser = await fellowsQueries.getUserById(user.f_id);
-    //   done(null, retrievedUser);
-    // } else {
-    //   done(new Error('No registered user'), false)
-    // }
-  // } catch (err) {
-  //   done(err, false);
-  // }
   done (null, user);
 })
 

@@ -5,7 +5,7 @@ export default function SignupAdminSubForm(props) {
         <>
             <div className='col-sm-6'>
                 <input 
-                    type='text' 
+                    type='password' 
                     className='form-control mb-2' 
                     placeholder='Enter new password'
                     value={props.newPassword}

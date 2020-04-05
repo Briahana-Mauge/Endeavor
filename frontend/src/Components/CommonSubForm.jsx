@@ -3,6 +3,8 @@ import React from 'react';
 import SignupAdminSubForm from './SignupAdminSubForm';
 import SignupFellowSubForm from './SignupFellowSubForm';
 import SignupVolunteerSubForm from './SignupVolunteerSubForm';
+import UserTypeSelection from './UserTypeSelection';
+import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 
 
 export default function CommonSubForm(props) {
@@ -23,61 +25,17 @@ export default function CommonSubForm(props) {
                 :
                     <>
 
-                        <div className='col-12 d-flex flex-wrap justify-content-between'>
-                            <div className='form-group form-check'>
-                                <label className='form-check-label'>
-                                    <input 
-                                        className='form-check-input' 
-                                        type='radio' 
-                                        name='userType'
-                                        value={props.userType}
-                                        onChange={() => props.setUserType('admin')}
-                                    /> Admin
-                                </label>
-                            </div>
-                            <div className='form-group form-check'>
-                                <label className='form-check-label'>
-                                    <input 
-                                        className='form-check-input' 
-                                        type='radio' 
-                                        name='userType'
-                                        value={props.userType}
-                                        onChange={() => props.setUserType('volunteer')}
-                                    /> Volunteer
-                                </label>
-                            </div>
-                            <div className='form-group form-check'>
-                                <label className='form-check-label'>
-                                    <input 
-                                        className='form-check-input' 
-                                        type='radio' 
-                                        name='userType'
-                                        value={props.userType}
-                                        onChange={() => props.setUserType('fellow')}
-                                    /> Fellow
-                                </label>
-                            </div>
-                        </div>
+                        <UserTypeSelection 
+                            userType={props.userType}
+                            setUserType={props.setUserType}
+                        />
 
-                        <div className='col-sm-6'>
-                            <input 
-                                type='text' 
-                                className='form-control mb-2' 
-                                placeholder='Enter first name' 
-                                value={props.firstName}
-                                onChange={e => props.setFirstName(e.target.value)}
-                            />
-                        </div>
-
-                        <div className='col-sm-6'>
-                            <input 
-                                type='text' 
-                                className='form-control mb-2' 
-                                placeholder='Enter last name'
-                                value={props.lastName}
-                                onChange={e => props.setLastName(e.target.value)}
-                            />
-                        </div>
+                        <FirstAndLastNameInputs 
+                            firstName={props.firstName}
+                            setFirstName={props.setFirstName}
+                            lastName={props.lastName}
+                            setLastName={props.setLastName}
+                        />
 
 
                         {
@@ -89,11 +47,14 @@ export default function CommonSubForm(props) {
 
                         {
                             props.formType === 'signup' && props.userType === 'fellow'
-                            ? <SignupFellowSubForm 
-                                setNetworkError={props.setNetworkError} 
-                                cohortId={props.cohortId}
-                                setCohortId={props.setCohortId}
-                                />
+                            ? <>
+                                <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
+                                <SignupFellowSubForm 
+                                    setNetworkError={props.setNetworkError}
+                                    cohortId={props.cohortId}
+                                    setCohortId={props.setCohortId}
+                                    />
+                                </>
                             : null
                         }
 
