@@ -43,9 +43,9 @@ const getFellowByEmail = async (fEmail) => {
   return await db.one(getQuery, { fEmail });
 }
 
-const addFellow = async (userObj, password) => {
-  // adds fellow login to users_data table
-  const registeredUser = await userQueries.addUser(userObj.email, password, 'fellow');
+const addFellow = async (userObj, newPassword, oldPassword) => {
+  // Update the password of the new fellow whom already registered into the users_data
+  const registeredUser = await userQueries.updatePassword(userObj.email, newPassword);
 
   // continues with adding rest of fellow info
   const postQuery = `
@@ -66,11 +66,10 @@ const addFellow = async (userObj, password) => {
   try {
     return await db.one(postQuery, userObj);
   } catch (err) {
-    // immediately undo add to users_data table if any error adding remainder of data to fellows table
-    if (registeredUser) {
-        userQueries.deleteUser(userObj.email);
+    if (registeredUser) { // if adding the new fellow fails, the password gets reset
+        userQueries.updatePassword(email, oldPassword);
     }
-    throw (err);
+    throw err;
   }
 }
 
