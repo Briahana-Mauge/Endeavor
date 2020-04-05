@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import CommonSubForm from './CommonSubForm';
 
 
 export default function LoginSignup(props) {
-    const [ formType, setFormType ] = useState('login');
-    const [ userType, setUserType ] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
-    const [ newPassword, setNewPassword ] = useState('');
-    const [ firstName, setFirstName ] = useState('');
-    const [ lastName, setLastName ] = useState('');
-    const [ cohortId, setCohortId ] = useState(0);
-    const [ company, setCompany ] = useState('');
-    const [ title, setTitle ] = useState('');
-    const [ volunteerSkills, setVolunteerSkills ] = useState({});
-    const [ mentor, setMentor ] = useState(true);
-console.log(volunteerSkills)
-
+    const {
+        formType,
+        userType,
+        email, 
+        password, 
+        firstName, 
+        lastName,
+        newPassword,
+        cohortId, 
+        company,
+        title,
+        volunteerSkills,
+        skills,
+        mentor,
+        officeHours,
+        techMockInterview,
+        behavioralMockInterview,
+        professionalSkillsCoach,
+        hostSiteVisit,
+        industrySpeaker
+    } = props
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -32,8 +39,38 @@ console.log(volunteerSkills)
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.setUser(data.payload);
-                }
+                } else if (props.userType === 'fellow' && email && password && firstName && lastName && cohortId) {
+                    const userData = {email, password, firstName, lastName, cohortId};
+                    const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
+                    props.setUser(data.payload);
+                } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
+                    // const skills = [];
+                    // for (let id in volunteerSkills) {
+                    //     if (volunteerSkills[id]) {
+                    //         skills.push(parseInt(id));
+                    //     }
+                    // }
 
+                    const userData = {
+                        email, 
+                        password, 
+                        firstName, 
+                        lastName, 
+                        company,
+                        title,
+                        skills,
+                        mentor,
+                        officeHours,
+                        techMockInterview,
+                        behavioralMockInterview,
+                        professionalSkillsCoach,
+                        hostSiteVisit,
+                        industrySpeaker
+                    };
+
+                    const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
+                    props.setUser(data.payload);
+                }
             }
 
         } catch (err) {
@@ -51,7 +88,7 @@ console.log(volunteerSkills)
                         type='email' 
                         placeholder='Enter email' 
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={e => props.setEmail(e.target.value)}
                     />
                 </div>
 
@@ -61,32 +98,44 @@ console.log(volunteerSkills)
                         className='form-control mb-2' 
                         placeholder={formType === 'signup' && userType === 'admin' ? 'Enter default password proved by your Admin' : 'Enter password'} 
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={e => props.setPassword(e.target.value)}
                     />
                 </div>
 
                 <CommonSubForm 
                     formType={formType} 
-                    setFormType={setFormType} 
+                    setFormType={props.setFormType} 
                     userType={userType}
-                    setUserType={setUserType}
+                    setUserType={props.setUserType}
                     firstName={firstName}
-                    setFirstName={setFirstName}
+                    setFirstName={props.setFirstName}
                     lastName={lastName}
-                    setLastName={setLastName}
+                    setLastName={props.setLastName}
                     newPassword={newPassword}
-                    setNewPassword={setNewPassword}
+                    setNewPassword={props.setNewPassword}
                     setNetworkError={props.setNetworkError}
                     cohortId={cohortId}
-                    setCohortId={setCohortId}
+                    setCohortId={props.setCohortId}
                     company={company}
-                    setCompany={setCompany}
+                    setCompany={props.setCompany}
                     title={title}
-                    setTitle={setTitle}
+                    setTitle={props.setTitle}
                     volunteerSkills={volunteerSkills}
-                    setVolunteerSkills={setVolunteerSkills}
+                    setVolunteerSkills={props.setVolunteerSkills}
                     mentor={mentor}
-                    setMentor={setMentor}
+                    setMentor={props.setMentor}
+                    officeHours={officeHours}
+                    setOfficeHours={props.setOfficeHours}
+                    techMockInterview={techMockInterview}
+                    setTechMockInterview={props.setTechMockInterview}
+                    behavioralMockInterview={behavioralMockInterview}
+                    setBehavioralMockInterview={props.setBehavioralMockInterview}
+                    professionalSkillsCoach={professionalSkillsCoach}
+                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                    hostSiteVisit={hostSiteVisit}
+                    setHostSiteVisit={props.setHostSiteVisit}
+                    industrySpeaker={industrySpeaker}
+                    setIndustrySpeaker={props.setIndustrySpeaker}
                 />
 
             </form>

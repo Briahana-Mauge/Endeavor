@@ -65,6 +65,12 @@ const processInput = (input, category, inputName, limit) => {
         }
         throw new Error(`404__error: invalid boolean input`);
 
+    // for booleans
+    case "array":
+      if (Array.isArray(input) && input.length <= limit) return input;
+      if (!input) return [];
+      throw new Error(`404__error: invalid input type for ${inputName}`);
+
     default:
         throw new Error(`500__error: you're not supposed to be here. input category unknown`);
   }

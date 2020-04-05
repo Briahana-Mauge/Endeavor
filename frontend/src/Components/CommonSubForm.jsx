@@ -109,6 +109,18 @@ export default function CommonSubForm(props) {
                                 setVolunteerSkills={props.setVolunteerSkills}
                                 mentor={props.mentor}
                                 setMentor={props.setMentor}
+                                officeHours={props.officeHours}
+                                setOfficeHours={props.setOfficeHours}
+                                techMockInterview={props.techMockInterview}
+                                setTechMockInterview={props.setTechMockInterview}
+                                behavioralMockInterview={props.behavioralMockInterview}
+                                setBehavioralMockInterview={props.setBehavioralMockInterview}
+                                professionalSkillsCoach={props.professionalSkillsCoach}
+                                setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                                hostSiteVisit={props.hostSiteVisit}
+                                setHostSiteVisit={props.setHostSiteVisit}
+                                industrySpeaker={props.industrySpeaker}
+                                setIndustrySpeaker={props.setIndustrySpeaker}
                                 />
                             : null
                         }
