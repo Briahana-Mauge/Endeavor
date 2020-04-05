@@ -65,7 +65,7 @@ const processInput = (input, category, inputName, limit) => {
         }
         throw new Error(`404__invalid boolean input`);
 
-    // for booleans
+    // for arrays
     case "array":
       if (Array.isArray(input) && input.length <= limit) return input;
       if (!input) return [];
