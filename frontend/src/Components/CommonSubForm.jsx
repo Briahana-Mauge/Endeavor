@@ -39,7 +39,7 @@ export default function CommonSubForm(props) {
 
 
                         {
-                            props.formType === 'signup' && props.userType === 'admin'
+                            props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow')
                             ? <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
                             : null
                             
@@ -48,7 +48,6 @@ export default function CommonSubForm(props) {
                         {
                             props.formType === 'signup' && props.userType === 'fellow'
                             ? <>
-                                <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
                                 <SignupFellowSubForm 
                                     setNetworkError={props.setNetworkError}
                                     cohortId={props.cohortId}
@@ -68,6 +67,7 @@ export default function CommonSubForm(props) {
                                 setTitle={props.setTitle}
                                 volunteerSkills={props.volunteerSkills}
                                 setVolunteerSkills={props.setVolunteerSkills}
+                                skills={props.skills}
                                 mentor={props.mentor}
                                 setMentor={props.setMentor}
                                 officeHours={props.officeHours}

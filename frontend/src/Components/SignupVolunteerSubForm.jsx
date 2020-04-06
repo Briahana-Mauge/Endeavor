@@ -17,7 +17,6 @@ export default function SignupAdminSubForm(props) {
     const skillsTracker = (e, skillId) => {
         const list = {...props.volunteerSkills};
         list[skillId] = e.target.checked;
-        console.log(list);
         props.setVolunteerSkills(list)
     }
 

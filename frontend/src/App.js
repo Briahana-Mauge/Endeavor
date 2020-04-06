@@ -57,6 +57,7 @@ function App() {
           skills.push(parseInt(id));
       }
     }
+    console.log(skills)
   }, [volunteerSkills])
 
   const setUser = (user) => {

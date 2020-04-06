@@ -110,7 +110,7 @@ const signupFellow = async (request, response, next) => {
             if (passMatch) {
                 const hashedPassword = await hashPassword(newPassword);
                 
-                await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword, allowedAdmin.password);
+                await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword, allowedFellow.password);
                 request.body.email = email;
                 request.body.password = newPassword;
                 next();
@@ -176,11 +176,7 @@ const updateAdminUser = async (userId, request, response, next) => {
             next();
         } 
         else {
-            response.status(401).json({
-                error: true,
-                message: 'Wrong password',
-                payload: null,
-            })
+            throw new Error('401__Wrong password');
         }
 
     } catch (err) {
@@ -224,7 +220,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             }
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
-            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            if (request.file && user.v_picture && user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.v_picture)
             }
             request.body.email = formattedRequestBody.email;
@@ -274,7 +270,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             }
 
             await fellowsQueries.updateFellow(formattedRequestBody);
-            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            if (request.file && user.f_picture && user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.f_picture)
             }
             request.body.email = formattedRequestBody.email;

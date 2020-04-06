@@ -26,6 +26,7 @@ export default function LoginSignup(props) {
         hostSiteVisit,
         industrySpeaker
     } = props
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -40,7 +41,7 @@ export default function LoginSignup(props) {
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.setUser(data.payload);
                 } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
-                    const userData = {email, password, firstName, lastName, cohortId};
+                    const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
                     props.setUser(data.payload);
                 } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
@@ -90,7 +91,11 @@ export default function LoginSignup(props) {
                     <input 
                         type='password' 
                         className='form-control mb-2' 
-                        placeholder={formType === 'signup' && userType === 'admin' ? 'Enter default password proved by your Admin' : 'Enter password'} 
+                        placeholder={
+                            formType === 'signup' && (userType === 'admin' || userType === 'fellow') 
+                            ? 'Enter default password proved by your Admin' 
+                            : 'Enter password'
+                        } 
                         value={password}
                         onChange={e => props.setPassword(e.target.value)}
                     />

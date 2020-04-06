@@ -35,14 +35,14 @@ CREATE TABLE administration (
     a_id SERIAL PRIMARY KEY,
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
-    a_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE
+    a_email VARCHAR (50) NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE
 );
 
 CREATE TABLE volunteers (
     v_id SERIAL PRIMARY KEY,
     v_first_name VARCHAR (30) NOT NULL,
     v_last_name VARCHAR (30) NOT NULL,
-    v_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    v_email VARCHAR (50) NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     v_picture VARCHAR,
@@ -66,25 +66,25 @@ CREATE TABLE fellows (
     f_id SERIAL PRIMARY KEY,
     f_first_name VARCHAR (30) NOT NULL,
     f_last_name VARCHAR (30) NOT NULL,
-    f_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    f_email VARCHAR (50) NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
     f_picture VARCHAR,
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
     f_github VARCHAR (150),
-    cohort_id INT REFERENCES classes(class_id),
+    cohort_id INT NOT NULL REFERENCES classes(class_id),
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
-    volunteer_id INT REFERENCES volunteers(v_id),
-    skill_id INT REFERENCES skills(skill_id)
+    volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
+    skill_id INT NOT NULL REFERENCES skills(skill_id)
 );
 
 CREATE TABLE mentor_pairs (
     m_id SERIAL PRIMARY KEY,
-    mentor INT REFERENCES volunteers(v_id),
-    mentee INT REFERENCES fellows(f_id),
+    mentor INT NOT NULL REFERENCES volunteers(v_id),
+    mentee INT NOT NULL REFERENCES fellows(f_id),
     active BOOLEAN NOT NULL DEFAULT TRUE,
     starting_date DATE NOT NULL DEFAULT CURRENT_DATE
 );
@@ -95,7 +95,7 @@ CREATE TABLE events (
     event_end TIMESTAMPTZ NOT NULL,
     topic VARCHAR (100) NOT NULL,
     description VARCHAR NOT NULL,
-    attendees INT REFERENCES classes(class_id),
+    attendees INT NOT NULL REFERENCES classes(class_id),
     location VARCHAR (200) NOT NULL,
     instructor VARCHAR (100) NOT NULL,
     number_of_volunteers INT NOT NULL,
@@ -105,15 +105,15 @@ CREATE TABLE events (
 
 CREATE TABLE event_volunteers (
     ev_id SERIAL PRIMARY KEY,
-    eventv_id INT REFERENCES events(event_id),
-    volunteer_id INT REFERENCES volunteers(v_id),
+    eventv_id INT NOT NULL REFERENCES events(event_id),
+    volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     confirmed BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE event_fellows (
     ef_id SERIAL PRIMARY KEY,
-    eventf_id INT REFERENCES events(event_id),
-    fellow_id INT REFERENCES fellows(f_id)
+    eventf_id INT NOT NULL REFERENCES events(event_id),
+    fellow_id INT NOT NULL REFERENCES fellows(f_id)
 );
 
 
@@ -123,7 +123,7 @@ CREATE TABLE event_fellows (
 
 CREATE TABLE volunteers_hours (
     vh_id SERIAL PRIMARY KEY,
-    volunteer_id INT REFERENCES volunteers(v_id),
+    volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     banked_time INT NOT NULL DEFAULT 0,
     planned_time INT NOT NULL DEFAULT 0
 );
