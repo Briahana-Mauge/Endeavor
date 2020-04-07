@@ -1,10 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import CommonSubForm from './CommonSubForm';
+import EmailPassword from './EmailPassword';
 
 
 export default function LoginSignup(props) {
+    const history = useHistory();
+    if (props.loggedUser) {
+        history.push('/home');
+    }
+
     const {
         formType,
         userType,
@@ -68,7 +75,7 @@ export default function LoginSignup(props) {
             }
 
         } catch (err) {
-            props.setNetworkError(err)
+            props.setNetworkError(err);
         }
     }
     
@@ -77,29 +84,14 @@ export default function LoginSignup(props) {
             <img className='d-block mx-auto appLogo' src='/images/app_logo.jpg' alt='app logo'/>
             
             <form className='form-row' onSubmit={handleFormSubmit}>
-                <div className='col-sm-6'>
-                    <input 
-                        className='form-control mb-2' 
-                        type='email' 
-                        placeholder='Enter email' 
-                        value={email}
-                        onChange={e => props.setEmail(e.target.value)}
-                    />
-                </div>
-
-                <div className='col-sm-6'>
-                    <input 
-                        type='password' 
-                        className='form-control mb-2' 
-                        placeholder={
-                            formType === 'signup' && (userType === 'admin' || userType === 'fellow') 
-                            ? 'Enter default password proved by your Admin' 
-                            : 'Enter password'
-                        } 
-                        value={password}
-                        onChange={e => props.setPassword(e.target.value)}
-                    />
-                </div>
+                <EmailPassword 
+                    email={email}
+                    setEmail={props.setEmail}
+                    password={password}
+                    setPassword={props.setPassword}
+                    formType={formType}
+                    userType={userType}
+                />
 
                 <CommonSubForm 
                     formType={formType} 

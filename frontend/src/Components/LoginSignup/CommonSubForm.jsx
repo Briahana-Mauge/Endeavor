@@ -56,8 +56,8 @@ export default function CommonSubForm(props) {
                                 </>
                             : null
                         }
-
-{
+                        
+                        {
                             props.formType === 'signup' && props.userType === 'volunteer'
                             ? <SignupVolunteerSubForm 
                                 setNetworkError={props.setNetworkError} 

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import LoginSignup from './Components/LoginSignup';
+import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ErrorFeedback from './Components/ErrorFeedback';
 import VolunteerSearch from './Components/VolunteerSearch';
+import AdminProfile from './Components/ProfileAdmin';
 
 function App() {
   const history = useHistory();
 
-  const [ loggedUser, setLoggedUser ] = useState({});
+  const [ loggedUser, setLoggedUser ] = useState(null);
   const [ networkError, setNetworkError ] = useState(null);
 
   const [ formType, setFormType ] = useState('login');
@@ -66,7 +67,7 @@ function App() {
   }
 
   const logout = () => {
-    setLoggedUser('');
+    setLoggedUser(null);
     history.push('/')
   }
 
@@ -80,6 +81,7 @@ function App() {
       <Switch>
         <Route exact path='/'> 
           <LoginSignup 
+            loggedUser={loggedUser}
             setNetworkError={setNetworkError} 
             setUser={setUser}
             formType={formType} 
@@ -121,6 +123,29 @@ function App() {
             setIndustrySpeaker={setIndustrySpeaker}
           />
         </Route>
+
+        <Route path='/profile'> 
+          {
+            loggedUser && loggedUser.a_id
+            ? <AdminProfile 
+                loggedUser={loggedUser}
+                setNetworkError={setNetworkError} 
+                setUser={setUser}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
+                newPassword={newPassword}
+                setNewPassword={setNewPassword}
+              />
+            : null
+          }
+        </Route>
+
         <Route path='/volunteers/search'> 
           <VolunteerSearch />
         </Route>
