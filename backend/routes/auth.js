@@ -36,7 +36,7 @@ const signupAdmin = async (request, response, next) => {
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
         
         const allowedAdmin = await usersQueries.getUserByEmail(email);
-        if (allowedAdmin) {
+        if (allowedAdmin && (allowedAdmin.role === 'admin' || allowedAdmin.role === 'staff')) {
             const passMatch = await comparePasswords(request.body.password, allowedAdmin.password);
             
             if (passMatch) {
