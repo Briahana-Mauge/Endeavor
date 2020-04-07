@@ -31,14 +31,29 @@ const signupAdmin = async (request, response, next) => {
     try {
         const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
         const password = processInput(request.body.password, 'hardVC', 'user password');
+        const newPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
         const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
-        const hashedPassword = await hashPassword(password);
         
-        await adminQueries.addAdmin(firstName, lastName, email, hashedPassword);
-        request.body.email = email;
-        request.body.password = password;
-        next();
+        const allowedAdmin = await usersQueries.getUserByEmail(email);
+        if (allowedAdmin) {
+            const passMatch = await comparePasswords(request.body.password, allowedAdmin.password);
+            
+            if (passMatch) {
+                const hashedPassword = await hashPassword(newPassword);
+                
+                await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password);
+                request.body.email = email;
+                request.body.password = newPassword;
+                next();
+            }
+            else {
+                throw new Error('401__Not authorized to sign up, default password does not match');
+            }
+        }
+        else {
+            throw new Error('401__Not authorized to sign up as an Admin');
+        }
 
     } catch (err) {
         handleError(err, request, response, next);
@@ -56,6 +71,7 @@ const signupVolunteer = async (request, response, next) => {
             lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
             company: processInput(request.body.company, 'hardVC', 'company', 50),
             title: processInput(request.body.title, 'hardVC', 'title', 50),
+            skills: processInput(request.body.skills, 'array', 'skills list', 25),
             mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
             techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
@@ -84,13 +100,28 @@ const signupFellow = async (request, response, next) => {
         const password = processInput(request.body.password, 'hardVC', 'user password');
         const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
+        const newPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
         const cohortId = processInput(request.body.cohortId, 'idNum', 'cohort id', 50);
-        const hashedPassword = await hashPassword(password);
 
-        await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword);
-        request.body.email = email;
-        request.body.password = password;
-        next();
+        const allowedFellow = await usersQueries.getUserByEmail(email);
+        if (allowedFellow) {
+            const passMatch = await comparePasswords(request.body.password, allowedFellow.password);
+            
+            if (passMatch) {
+                const hashedPassword = await hashPassword(newPassword);
+                
+                await fellowsQueries.addFellow({firstName, lastName, email, cohortId}, hashedPassword, allowedAdmin.password);
+                request.body.email = email;
+                request.body.password = newPassword;
+                next();
+            }
+            else {
+                throw new Error('401__Not authorized to sign up, default password does not match');
+            }
+        }
+        else {
+            throw new Error('401__Not authorized to sign up as fellow, please contact your Admin for more details');
+        }
         
     } catch (err) {
         handleError(err, request, response, next);
@@ -170,6 +201,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
+            skills: processInput(request.body.skills, 'softVC', 'skills list', 50),
             mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
             techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
@@ -203,7 +235,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
-            throw new Error('401__error: Wrong password');
+            throw new Error('401__Wrong password');
         }
         
     } catch (err) {
@@ -253,7 +285,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
-            throw new Error('401__error: Wrong password');
+            throw new Error('401__Wrong password');
         }
         
     } catch (err) {
@@ -306,7 +338,7 @@ const updatePassword = async(request, response, next) => {
             await usersQueries.updatePassword(loggedUserEmail, hashedPassword);
             next();
         } else {
-            throw new Error("401__error: Not authorized to update - password doesn't match or you don't have the right to update");
+            throw new Error("401__Not authorized to update - password doesn't match or you don't have the right to update");
         }
 
     } catch (err) {
@@ -340,11 +372,11 @@ const deleteAccount = async(request, response, next) => {
                 await fellowsQueries.deleteFellow(loggedUserId);
             }
     
-            // await usersQueries.deleteUser(loggedUserEmail)
+            // await usersQueries.deleteUser(loggedUserEmail);
             next();
         } 
         else {
-            throw new Error("401__error: Not authorized to delete");
+            throw new Error("401__Not authorized to delete");
         }
 
     } catch (err) {

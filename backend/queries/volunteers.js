@@ -99,7 +99,13 @@ const addVolunteer = async (user, password) => {
   `;
 
   try {
-    return await db.one(insertQuery, user)
+    const volunteer = await db.one(insertQuery, user);
+
+    const promises = [];
+    user.skills.map(skillId => promises.push(db.none('INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES ($1, $2)', [user.userId, skillId])));
+    await Promise.all(promises);
+
+    return volunteer;
   } catch (err) {
     if (registeredUser) {
       userQueries.deleteUser(user.email);
@@ -131,7 +137,16 @@ const updateVolunteer = async (user) => {
     WHERE v_id = $/userId/
     RETURNING *
   `;
-  return await db.one(updateQuery, user);
+
+  const volunteer = await db.one(updateQuery, user);
+
+  await db.none('DELETE FROM volunteer_skills WHERE volunteer_id = $1', user.userId);
+
+  const promises = [];
+  user.skills.map(skillId => promises.push(db.none('INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES ($1, $2)', [user.userId, skillId])));
+  await Promise.all(promises);
+
+  return volunteer;
 }
 
 const deleteVolunteer = async (id) => {
