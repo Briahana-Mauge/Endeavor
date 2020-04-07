@@ -13,23 +13,31 @@ const userQueries = require('./users');
 
 // Get all volunteers
 const getAllVolunteers = async () => {
-    const selectQuery = `
-    SELECT *
-    FROM volunteers
-    ORDER BY v_first_name ASC
+  const selectQuery = `
+    SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
+        volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
+        ARRAY_AGG(DISTINCT skills.skill) AS skills,  ARRAY_AGG(DISTINCT events.topic) AS topics,
+        volunteers.active
+    FROM volunteers 
+    INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
+    INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
+    INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+    INNER JOIN events ON events.event_id = event_volunteers.eventv_id
+    GROUP BY volunteers.v_id
+    ORDER BY v_first_name ASC;
   `;
-    return await db.any(selectQuery);
+  return await db.any(selectQuery);
 }
 
 // Get all new (unconfirmed) volunteers
 const getNewVolunteers = async () => {
-    const selectQuery = `
+  const selectQuery = `
       SELECT *
       FROM volunteers
       WHERE confirmed = FALSE
       ORDER BY v_first_name ASC
     `;
-    return await db.any(selectQuery);
+  return await db.any(selectQuery);
 }
 
 // Get volunteer by email 
@@ -39,16 +47,16 @@ const getVolunteerByEmail = async (vEmail) => {
   FROM volunteers
   WHERE v_email = $/vEmail/
   `;
-  return await db.one(selectQuery, {vEmail});
+  return await db.one(selectQuery, { vEmail });
 }
 
 // Get all volunteers by some filter
-
+// const getVolunteer
 
 
 
 const formatStr = str => {
-    return str.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return str.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
 const addVolunteer = async (user, password) => {
@@ -94,10 +102,10 @@ const addVolunteer = async (user, password) => {
     return await db.one(insertQuery, user)
   } catch (err) {
     if (registeredUser) {
-        userQueries.deleteUser(user.email);
+      userQueries.deleteUser(user.email);
     }
     throw err;
-}
+  }
 }
 
 const updateVolunteer = async (user) => {
@@ -127,16 +135,16 @@ const updateVolunteer = async (user) => {
 }
 
 const deleteVolunteer = async (id) => {
-  return await db.one('DELETE FROM volunteers WHERE v_id = $/id/ RETURNING *', {id});
+  return await db.one('DELETE FROM volunteers WHERE v_id = $/id/ RETURNING *', { id });
 }
 
 /* EXPORT */
 module.exports = {
-    getAllVolunteers,
-    getNewVolunteers,
-    getVolunteerByEmail,
-    addVolunteer,
-    updateVolunteer,
-    deleteVolunteer
+  getAllVolunteers,
+  getNewVolunteers,
+  getVolunteerByEmail,
+  addVolunteer,
+  updateVolunteer,
+  deleteVolunteer
 }
 
