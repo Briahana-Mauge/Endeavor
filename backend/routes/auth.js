@@ -42,7 +42,11 @@ const signupAdmin = async (request, response, next) => {
             if (passMatch) {
                 const hashedPassword = await hashPassword(newPassword);
                 
-                await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password);
+                if (allowedAdmin.admin) {
+                    await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password, true);
+                } else {
+                    await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password, false);
+                }
                 request.body.email = email;
                 request.body.password = newPassword;
                 next();

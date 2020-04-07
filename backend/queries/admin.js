@@ -6,16 +6,16 @@ const getAdminByEmail = async (email) => {
     return await db.one('SELECT * FROM administration WHERE a_email = $1', email)
 }
 
-const addAdmin = async (firstName, lastName, email, newPassword, oldPassword) => {
+const addAdmin = async (firstName, lastName, email, newPassword, oldPassword, admin) => {
     // Update the password of the new admin whom already registered into the users_data
     const registeredUser = await userQueries.updatePassword(email, newPassword);
 
     const insertQuery = `
-        INSERT INTO administration (a_first_name, a_last_name, a_email) VALUES
-        ($1, $2, $3) RETURNING *
+        INSERT INTO administration (a_first_name, a_last_name, a_email, admin) VALUES
+        ($1, $2, $3, $4) RETURNING *
     `
     try {
-        return await db.one(insertQuery, [firstName, lastName, email])
+        return await db.one(insertQuery, [firstName, lastName, email, admin]);
     } catch (err) {
         if (registeredUser) { // if adding the new admin to administration table fails, the password gets reset
             userQueries.updatePassword(email, oldPassword);
@@ -31,7 +31,7 @@ const updateAdmin = async (id, firstName, lastName) => {
             WHERE a_id = $1
             RETURNING *
     `
-    return await db.one(updateQuery, [id, firstName, lastName])
+    return await db.one(updateQuery, [id, firstName, lastName]);
 }
 
 const deleteAdmin = async (id) => {
