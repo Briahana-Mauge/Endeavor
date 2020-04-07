@@ -34,7 +34,7 @@ app.use(passport.session());
 
 
 app.use('/api/auth', authRouter);
-app.use('/api/admin', checkUserLogged, usersRouter);
+app.use('/api/users', checkUserLogged, usersRouter);
 app.use('/api/fellows', /*checkUserLogged,*/ fellowsRouter);
 app.use('/api/volunteers', /*checkUserLogged,*/ volunteerRouter);
 app.use('/api/time', /*checkUserLogged,*/ timeRouter);
