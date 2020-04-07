@@ -5,7 +5,7 @@ import axios from 'axios';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ErrorFeedback from './Components/ErrorFeedback';
 import VolunteerSearch from './Components/VolunteerSearch';
-import AdminProfile from './Components/ProfileAdmin';
+import AdminProfile from './Components/Profile/AdminProfile';
 
 function App() {
   const history = useHistory();
@@ -38,7 +38,7 @@ function App() {
     try {
       const { data } = await axios.get('/api/auth/is_logged');
       setLoggedUser(data.payload);
-      history.push('/home');
+      // history.push('/home');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         console.log('User not logged in yet');
@@ -77,7 +77,7 @@ function App() {
 
 
   return (
-    <div className="container-md">
+    <div className="container-md mt-4">
       <Switch>
         <Route exact path='/'> 
           <LoginSignup 
