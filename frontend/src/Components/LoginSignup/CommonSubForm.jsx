@@ -49,7 +49,7 @@ export default function CommonSubForm(props) {
                             props.formType === 'signup' && props.userType === 'fellow'
                             ? <>
                                 <SignupFellowSubForm 
-                                    setNetworkError={props.setNetworkError}
+                                    setFeedback={props.setFeedback}
                                     cohortId={props.cohortId}
                                     setCohortId={props.setCohortId}
                                     />
@@ -60,7 +60,7 @@ export default function CommonSubForm(props) {
                         {
                             props.formType === 'signup' && props.userType === 'volunteer'
                             ? <SignupVolunteerSubForm 
-                                setNetworkError={props.setNetworkError} 
+                                setFeedback={props.setFeedback} 
                                 company={props.company}
                                 setCompany={props.setCompany}
                                 title={props.title}

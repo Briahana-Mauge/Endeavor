@@ -3,15 +3,15 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import LoginSignup from './Components/LoginSignup/LoginSignup';
-import ErrorFeedback from './Components/ErrorFeedback';
+import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
-import AdminProfile from './Components/Profile/AdminProfile';
+import ProfilePage from './Components/Profile/ProfilePage';
 
 function App() {
   const history = useHistory();
 
-  const [ loggedUser, setLoggedUser ] = useState(null);
-  const [ networkError, setNetworkError ] = useState(null);
+  const [ loggedUser, setLoggedUser ] = useState({});
+  const [ feedback, setFeedback ] = useState(null);
 
   const [ formType, setFormType ] = useState('login');
   const [ userType, setUserType ] = useState('');
@@ -38,18 +38,18 @@ function App() {
     try {
       const { data } = await axios.get('/api/auth/is_logged');
       setLoggedUser(data.payload);
-      // history.push('/home');
     } catch (err) {
       if (err.response && err.response.status === 401) {
         console.log('User not logged in yet');
+        history.push('/');
       } else {
-        setNetworkError(err);
+        setFeedback(err);
       }
     }
   }
 
   useEffect(() => {
-    getLoggedInUser()
+    getLoggedInUser();
   }, []);
 
   useEffect(() => {
@@ -58,7 +58,6 @@ function App() {
           skills.push(parseInt(id));
       }
     }
-    console.log(skills)
   }, [volunteerSkills])
 
   const setUser = (user) => {
@@ -68,11 +67,10 @@ function App() {
 
   const logout = () => {
     setLoggedUser(null);
-    history.push('/')
   }
 
-  const resetNetworkError = () => {
-    setNetworkError(null);
+  const resetFeedback = () => {
+    setFeedback(null);
   }
 
 
@@ -82,7 +80,7 @@ function App() {
         <Route exact path='/'> 
           <LoginSignup 
             loggedUser={loggedUser}
-            setNetworkError={setNetworkError} 
+            setFeedback={setFeedback} 
             setUser={setUser}
             formType={formType} 
             setFormType={setFormType} 
@@ -125,25 +123,21 @@ function App() {
         </Route>
 
         <Route path='/profile'> 
-          {
-            loggedUser && loggedUser.a_id
-            ? <AdminProfile 
-                loggedUser={loggedUser}
-                setNetworkError={setNetworkError} 
-                setUser={setUser}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                firstName={firstName}
-                setFirstName={setFirstName}
-                lastName={lastName}
-                setLastName={setLastName}
-                newPassword={newPassword}
-                setNewPassword={setNewPassword}
-              />
-            : null
-          }
+          <ProfilePage 
+            loggedUser={loggedUser}
+            setFeedback={setFeedback} 
+            setUser={setUser}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+          />
         </Route>
 
         <Route path='/volunteers/search'> 
@@ -152,8 +146,8 @@ function App() {
       </Switch>
 
       {
-        (networkError)
-        ? <ErrorFeedback err={networkError} resetNetworkError={resetNetworkError}/>
+        (feedback)
+        ? <Feedback feedback={feedback} resetFeedback={resetFeedback}/>
         : null
       }
     </div>

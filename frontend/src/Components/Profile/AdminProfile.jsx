@@ -5,6 +5,8 @@ import axios from 'axios';
 import FirstAndLastNameInputs from '../LoginSignup/FirstAndLastNameInputs';
 import EmailPassword from '../LoginSignup/EmailPassword';
 import ProfileTabs from './ProfileTabs';
+import PasswordUpdate from './PasswordUpdate';
+
 
 export default function AdminProfile(props) {
     const {
@@ -14,6 +16,7 @@ export default function AdminProfile(props) {
         firstName,
         lastName,
         newPassword,
+        confirmPassword
     } = props;
 
     const {pathname} = useLocation();
@@ -25,13 +28,20 @@ export default function AdminProfile(props) {
         props.setEmail(loggedUser.a_email);
     }, [])
 
-    const handleFormSubmit = async (e) => {
+    const handleUpdateInfo = async (e) => {
         e.preventDefault();
 
         try {
+            if (email && password && firstName && lastName) {
+                const { data } = await axios.put(`/api/auth/${loggedUser.a_id}`, {email, password, firstName, lastName});
+                props.setUser(data.payload);
+                props.setPassword('');
+            } else {
+                props.setFeedback({message: 'All fields are required'});
+            }
 
         } catch (err) {
-            props.setNetworkError(err);
+            props.setFeedback(err);
         }
     }
 
@@ -41,11 +51,23 @@ export default function AdminProfile(props) {
                 pathName[2] && pathName[2].toLowerCase() === 'password' 
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
+                        <form className='form-row mt-3' onSubmit={props.handleUpdatePassword}>
+                            <PasswordUpdate 
+                                password={password}
+                                setPassword={props.setPassword}
+                                newPassword={newPassword}
+                                setNewPassword={props.setNewPassword}
+                                confirmPassword={confirmPassword}
+                                setConfirmPassword={props.setConfirmPassword}
+                            />
+
+                            <button type='submit' className='btn btn-primary'>Update</button>
+                        </form>
                     </>
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
-                        <form className='form-row mt-3' onSubmit={handleFormSubmit}>
+                        <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
                                 setFirstName={props.setFirstName}
@@ -59,9 +81,13 @@ export default function AdminProfile(props) {
                                 password={password}
                                 setPassword={props.setPassword}
                             />
-
-                            <button type='submit' className='btn btn-primary'>Update</button>
+                            <div className='col-sm-6'>
+                                <button type='submit' className='btn btn-primary mr-5'>Update</button>
+                            </div>
                         </form>
+
+                        <br />
+                        <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
                     </>
             }
 

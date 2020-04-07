@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,9 +8,11 @@ import EmailPassword from './EmailPassword';
 
 export default function LoginSignup(props) {
     const history = useHistory();
-    if (props.loggedUser) {
-        history.push('/home');
-    }
+    useEffect(() => {
+        if (props.loggedUser.a_id || props.loggedUser.v_id || props.loggedUser.f_id) {
+            history.push('/home');
+        }
+    }, [props.loggedUser]);
 
     const {
         formType,
@@ -75,7 +77,7 @@ export default function LoginSignup(props) {
             }
 
         } catch (err) {
-            props.setNetworkError(err);
+            props.setFeedback(err);
         }
     }
     
@@ -104,7 +106,7 @@ export default function LoginSignup(props) {
                     setLastName={props.setLastName}
                     newPassword={newPassword}
                     setNewPassword={props.setNewPassword}
-                    setNetworkError={props.setNetworkError}
+                    setFeedback={props.setFeedback}
                     cohortId={cohortId}
                     setCohortId={props.setCohortId}
                     company={company}

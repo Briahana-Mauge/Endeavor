@@ -9,7 +9,7 @@ export default function SignupFellowSubForm(props) {
             const { data } = await axios.get(`api/classes`);
             setClasses(data.payload);
         } catch (err) {
-            props.setNetworkError(err)
+            props.setFeedback(err)
         }
     }
     useEffect(() => {

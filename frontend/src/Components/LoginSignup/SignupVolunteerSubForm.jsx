@@ -10,7 +10,7 @@ export default function SignupAdminSubForm(props) {
             const { data } = await axios.get(`api/skills`);
             setSkills(data.payload);
         } catch (err) {
-            props.setNetworkError(err)
+            props.setFeedback(err)
         }
     }
 
