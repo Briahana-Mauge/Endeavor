@@ -28,14 +28,14 @@ CREATE TABLE classes (
 CREATE TABLE users_data (
     user_email VARCHAR (50) PRIMARY KEY,
     password VARCHAR,
-    role VARCHAR (20) NOT NULL
+    role VARCHAR (10) NOT NULL
 );
 
 CREATE TABLE administration (
     a_id SERIAL PRIMARY KEY,
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
-    a_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    a_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
     admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE volunteers (
     v_id SERIAL PRIMARY KEY,
     v_first_name VARCHAR (30) NOT NULL,
     v_last_name VARCHAR (30) NOT NULL,
-    v_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    v_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     v_picture VARCHAR,
@@ -67,7 +67,7 @@ CREATE TABLE fellows (
     f_id SERIAL PRIMARY KEY,
     f_first_name VARCHAR (30) NOT NULL,
     f_last_name VARCHAR (30) NOT NULL,
-    f_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    f_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
     f_picture VARCHAR,
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),

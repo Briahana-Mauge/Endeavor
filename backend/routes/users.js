@@ -15,7 +15,7 @@ router.post('/:role/add', async (request, response, next) => {
             const password = processInput(request.body.password, 'hardVC', 'user password');
             const hashedPassword = await hashPassword(password);
             
-            const role = processInput(request.params.role);
+            const role = processInput(request.params.role, 'hardVC', 'user role', 10);
             let newUser = null;
 
             if (role === 'admin') {

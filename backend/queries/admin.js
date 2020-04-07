@@ -14,11 +14,12 @@ const addAdmin = async (firstName, lastName, email, newPassword, oldPassword, ad
         INSERT INTO administration (a_first_name, a_last_name, a_email, admin) VALUES
         ($1, $2, $3, $4) RETURNING *
     `
+
     try {
         return await db.one(insertQuery, [firstName, lastName, email, admin]);
     } catch (err) {
         if (registeredUser) { // if adding the new admin to administration table fails, the password gets reset
-            userQueries.updatePassword(email, oldPassword);
+            await userQueries.updatePassword(email, oldPassword);
         }
         throw err;
     }
