@@ -141,21 +141,33 @@ class VolunteerSearch extends React.Component {
         }
 
     }
+    handleInput = (event) => {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value,
+            loading: true
+        })
+    }
     handleSubmit = async (event) => {
         event.preventDefault();
-        const { search } = this.state;
+       this.setState({
+            loading: false,
+            search: ''
+        })
+         const { search } = this.state;
         let volunteers = [];
         let newResults = [];
         console.log('onclick works')
-
+        
     }
     render = () => {
         // console.log(this.state.results)
         return (
             <div className="Search">
-                <input type='text' placeholder='Search' />
-                <input type='button' value='Send' /* onClick={this.getVolunteers}*/ />
-
+                <form>
+                <input type='text' name = 'search 'placeholder='Search' onChange = {this.handleInput} value = {this.setState.search}/>
+                <input type='button' value='Send'  onClick={this.handleSubmit}/>
+</form>
                 <Switch>
                     <Route exact path="/volunteers/search" render={this.getAllVolunteers} />
                 </Switch>
