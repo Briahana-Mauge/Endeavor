@@ -53,11 +53,22 @@
 ### **Server Endpoints**
 - **Fellows**
 
-  | Method | Endpoint                | Description                 | Query Parameters       | Body Data |
-  | ------ | ----------------------- | --------------------------- | ---------------------- | --------- |
+  | Method | Endpoint                | Description                 | Query Parameters        | Body Data |
+  | ------ | ----------------------- | --------------------------- | ----------------------- | --------- |
   | GET    | `/fellows/`             | Get all fellows             | want_mentor=true\|false | n/a       |
-  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                    | n/a       |
-  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                    | n/a       |
+  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                     | n/a       |
+  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                     | n/a       |
+
+- **Skills**
+
+  | Method | Endpoint                 | Description                | Query Parameters       | Body Data |
+  | ------ | ------------------------ | -------------------------- | ---------------------- | --------- |
+  | GET    | `/skills/`               | Get all skills             | n/a                    | n/a       |
+  | POST   | `/skills/add/`           | Add single skill           | n/a                    | `skill`   |
+  | PUT    | `/skills/edit/:skill_id` | Rename single skill by id  | n/a                    | `skill`   |
+  | DELETE | `/skills/del/:skill_id`  | Delete single skill by id  | n/a                    | n/a       |
+
+
   <!--
   | POST   | `/fellows/create`       | Add a new fellow            | n/a                    | `fFirstName`, `fLastName`, `fEmail`, `cohortId` |
   | PUT    | `/fellows/update/:id`   | Edit a single fellow's data | n/a                    | `fFirstName`, `fLastName`, `fPicture`, `fBio`, `fLinkedIn`, `fGithub`, `wantMentor` |
