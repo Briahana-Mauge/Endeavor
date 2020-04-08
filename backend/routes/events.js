@@ -23,6 +23,19 @@ router.get('/all', async (req, res, next) => {
         handleError(err, req, res, next);
     }
 });
+//Get all events  (admin)
+router.get('/admin/all', async (req, res, next) => {
+    try {
+        let allEventsAdmin = await eventsQueries.getALLEventsAdmin();
+        res.json({
+            payload: allEvents,
+            message: "Success",
+            err: false
+        });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
 
 // Get all upcoming events
 router.get('/upcoming', async (req, res, next) => {
