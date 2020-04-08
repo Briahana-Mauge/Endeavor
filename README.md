@@ -53,8 +53,8 @@
 ### **Server Endpoints**
 - **Fellows**
 
-  | Method | Endpoint                | Description                 | Query Parameters       | Body Data |
-  | ------ | ----------------------- | --------------------------- | ---------------------- | --------- |
+  | Method | Endpoint                | Description                 | Query Parameters        | Body Data |
+  | ------ | ----------------------- | --------------------------- | ----------------------- | --------- |
   | GET    | `/fellows/`             | Get all fellows             | want_mentor=true\|false | n/a       |
   | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                    | n/a       |
   | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                    | n/a       |

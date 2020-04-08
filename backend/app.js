@@ -8,8 +8,9 @@ const passport = require('./auth/passport');
 
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
+const volunteersRouter = require('./routes/volunteers');
 const fellowsRouter = require('./routes/fellows');
-const volunteerRouter = require('./routes/volunteers');
+const skillsRouter = require('./routes/skills');
 const timeRouter = require('./routes/time');
 const eventsRouter = require('./routes/events');
 const cohortsRouter = require('./routes/cohorts');
@@ -36,8 +37,9 @@ app.use(passport.session());
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', checkUserLogged, usersRouter);
+app.use('/api/volunteers', /*checkUserLogged,*/ volunteersRouter);
 app.use('/api/fellows', /*checkUserLogged,*/ fellowsRouter);
-app.use('/api/volunteers', /*checkUserLogged,*/ volunteerRouter);
+app.use('/api/skills', /*checkUserLogged,*/ skillsRouter);
 app.use('/api/time', /*checkUserLogged,*/ timeRouter);
 app.use('/api/events', /*checkUserLogged,*/ eventsRouter);
 app.use('/api/cohorts', /*checkUserLogged,*/ cohortsRouter);
