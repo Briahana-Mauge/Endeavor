@@ -29,21 +29,22 @@ CREATE TABLE cohorts (
 CREATE TABLE users_data (
     user_email VARCHAR (50) PRIMARY KEY,
     password VARCHAR,
-    role VARCHAR (20) NOT NULL
+    role VARCHAR (10) NOT NULL
 );
 
 CREATE TABLE administration (
     a_id SERIAL PRIMARY KEY,
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
-    a_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE
+    a_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE volunteers (
     v_id SERIAL PRIMARY KEY,
     v_first_name VARCHAR (30) NOT NULL,
     v_last_name VARCHAR (30) NOT NULL,
-    v_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    v_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     v_picture VARCHAR,
@@ -67,7 +68,7 @@ CREATE TABLE fellows (
     f_id SERIAL PRIMARY KEY,
     f_first_name VARCHAR (30) NOT NULL,
     f_last_name VARCHAR (30) NOT NULL,
-    f_email VARCHAR (50) REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    f_email VARCHAR (50) UNIQUE REFERENCES users_data(user_email) ON UPDATE CASCADE,
     f_picture VARCHAR,
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
@@ -183,6 +184,9 @@ INSERT INTO cohorts (cohort) VALUES
 INSERT INTO users_data (user_email, password, role) VALUES
     ('admin@superpower.dev', '$2b$12$BnlkuACZiHUs8h0TLWejv.NaSyBXQGNWnczdYt8KrdDEDV9VHQ4/O', 'admin'),
     ('alexis@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'admin'),
+
+    ('alejo@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'staff'),
+    ('dessa@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'staff'),
     
     ('dlopez@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
     ('chall@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
@@ -224,9 +228,11 @@ INSERT INTO users_data (user_email, password, role) VALUES
     ('karenmorisset@pursuit.org', NULL, 'fellow');
 
 
-INSERT INTO administration (a_first_name, a_last_name, a_email) VALUES
-    ('Admin', 'Admin', 'admin@superpower.dev'),
-    ('Alexis', 'Medina', 'alexis@pursuit.org');
+INSERT INTO administration (a_first_name, a_last_name, a_email, admin) VALUES
+    ('Admin', 'Admin', 'admin@superpower.dev', TRUE),
+    ('Alexis', 'Medina', 'alexis@pursuit.org', TRUE),
+    ('Alejo', 'Franco', 'alejo@pursuit.org', FALSE),
+    ('Dessa', 'Shepherd', 'dessa@pursuit.org', FALSE);
 
 
 INSERT INTO volunteers 

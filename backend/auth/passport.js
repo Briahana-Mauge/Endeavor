@@ -13,6 +13,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'passwor
   try {
     const email = username.trim().toLowerCase();
     let user = await usersQueries.getUserByEmail(email);
+    
     if (!user) { // user not found in the database
       console.log('AUTHENTICATION - user not found in the database');
       return done(null, false, {message: 'User not found'});
@@ -24,7 +25,7 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'passwor
       return done(null, false, {message: 'Incorrect password'});
     }
 
-    if (user.role === 'admin') {
+    if (user.role === 'admin' || user.role === 'staff') {
       user = await adminQueries.getAdminByEmail(email);
     } else if (user.role === 'volunteer') {
       user = await volunteersQueries.getVolunteerByEmail(email);
