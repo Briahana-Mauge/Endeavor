@@ -2,7 +2,7 @@ import React from 'react'
 
 export default (props) => {
     let text = 'Sorry, something went wrong \n Please try again'
-    console.log(props.feedback.message)
+
     if (props.feedback.response && props.feedback.response.data.message) {
         text = props.feedback.response.data.message
     } else if (props.feedback.message) {

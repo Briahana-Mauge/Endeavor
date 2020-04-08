@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 
 import AdminProfile from './AdminProfile';
+import FellowProfile from './FellowProfile';
 
 
 export default function ProfilePage(props) {
@@ -12,6 +13,7 @@ export default function ProfilePage(props) {
         firstName,
         lastName,
         newPassword,
+        cohortId,
     } = props;
 
     const [ confirmPassword, setConfirmPassword ] = useState('');
@@ -21,7 +23,9 @@ export default function ProfilePage(props) {
 
         try {
             if (password && newPassword && confirmPassword && newPassword === confirmPassword) {
-                await axios.patch(`/api/users/${loggedUser.a_id}`, {password, newPassword, confirmPassword});
+                const requestPath = `/api/users/${loggedUser.a_id || loggedUser.f_id || loggedUser.v_id}`;
+                await axios.patch(requestPath, {password, newPassword, confirmPassword});
+                
                 props.setFeedback({message: 'Password was successfully updated'});
                 props.setPassword('');
                 props.setNewPassword('');
@@ -50,28 +54,54 @@ export default function ProfilePage(props) {
     return (
         <>
             {
-            props.loggedUser.a_id
-            ? <AdminProfile
-                loggedUser={loggedUser}
-                setFeedback={props.setFeedback} 
-                setUser={props.setUser}
-                email={email}
-                setEmail={props.setEmail}
-                password={password}
-                setPassword={props.setPassword}
-                firstName={firstName}
-                setFirstName={props.setFirstName}
-                lastName={lastName}
-                setLastName={props.setLastName}
-                newPassword={newPassword}
-                setNewPassword={props.setNewPassword}
-                confirmPassword={confirmPassword}
-                setConfirmPassword={setConfirmPassword}
-                handleUpdatePassword={handleUpdatePassword}
-                deleteAccount={deleteAccount}
-              />
-            : null
-          }
+                props.loggedUser.a_id
+                ? <AdminProfile
+                    loggedUser={loggedUser}
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
+                    email={email}
+                    setEmail={props.setEmail}
+                    password={password}
+                    setPassword={props.setPassword}
+                    firstName={firstName}
+                    setFirstName={props.setFirstName}
+                    lastName={lastName}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    handleUpdatePassword={handleUpdatePassword}
+                    deleteAccount={deleteAccount}
+                  />
+                : null
+            }
+
+            {
+                props.loggedUser.f_id
+                ? <FellowProfile
+                    loggedUser={loggedUser}
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
+                    email={email}
+                    setEmail={props.setEmail}
+                    password={password}
+                    setPassword={props.setPassword}
+                    firstName={firstName}
+                    setFirstName={props.setFirstName}
+                    lastName={lastName}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    cohortId={cohortId}
+                    setCohortId={props.setCohortId}
+                    handleUpdatePassword={handleUpdatePassword}
+                    deleteAccount={deleteAccount}
+                  />
+                : null
+            }
         </>
     )
 }

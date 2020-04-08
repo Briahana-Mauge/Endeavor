@@ -137,6 +137,8 @@ function App() {
             setLastName={setLastName}
             newPassword={newPassword}
             setNewPassword={setNewPassword}
+            cohortId={cohortId}
+            setCohortId={setCohortId}
           />
         </Route>
 
