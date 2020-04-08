@@ -13,8 +13,8 @@ example:
 
 const errorResponse = (res, code, err) => {
   const errorMsg = err.message;
-  err.message = err.message + "\nDetails:"
-  console.log(err); // log for developer
+  err.message = err.message + "\n------ DETAILS:"
+  console.log(err, '\n====== END Details ======'); // log for developer
   res.status(code);
   res.json({
       status: "fail",
