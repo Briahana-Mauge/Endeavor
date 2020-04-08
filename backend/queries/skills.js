@@ -19,11 +19,25 @@ const selectAllSkills = async () => {
 }
 
 const insertSkill = async (skill) => {
-  const postQuery = `
-    INSERT INTO skills ( skill ) VALUES ( $1 )
-    RETURNING *;
-  `;
-  return await db.one(postQuery, [skill]);
+  return await db.task( async t => {
+    const checkQuery = `
+      SELECT EXISTS (
+          SELECT 1
+          FROM skills
+          WHERE skill = $1
+      );
+    `;
+    const doesSkillExist = await t.one(checkQuery, skill);
+    if (doesSkillExist.exists === false) {
+      const postQuery = `
+        INSERT INTO skills ( skill ) VALUES ( $1 )
+        RETURNING *;
+      `;
+      return await t.one(postQuery, skill);
+    } else {
+      throw new Error('403__skill already exists');
+    }
+  });
 }
 
 const updateSkill = async (skillObj) => {
