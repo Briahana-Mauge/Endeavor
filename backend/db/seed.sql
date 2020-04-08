@@ -4,15 +4,16 @@ CREATE DATABASE capstone_project_db;
 \c capstone_project_db
 
 DROP TABLE IF EXISTS volunteers_hours;
-DROP TABLE IF EXISTS event_volunteers;
 DROP TABLE IF EXISTS event_fellows;
+DROP TABLE IF EXISTS event_volunteers;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS mentor_pairs;
+DROP TABLE IF EXISTS volunteer_skills;
 DROP TABLE IF EXISTS fellows;
 DROP TABLE IF EXISTS volunteers;
 DROP TABLE IF EXISTS administration;
 DROP TABLE IF EXISTS users_data;
-DROP TABLE IF EXISTS classes;
+DROP TABLE IF EXISTS cohorts;
 DROP TABLE IF EXISTS skills;
 
 CREATE TABLE skills (
@@ -115,11 +116,6 @@ CREATE TABLE event_fellows (
     eventf_id INT REFERENCES events(event_id),
     fellow_id INT REFERENCES fellows(f_id)
 );
-
-
--- CREATE TABLE fellows_emails (
---     email VARCHAR (50) PRIMARY KEY
--- );
 
 CREATE TABLE volunteers_hours (
     vh_id SERIAL PRIMARY KEY,
@@ -366,7 +362,6 @@ INSERT INTO events
         location,
         instructor,
         number_of_volunteers
-
     )
     VALUES
     ('2020-03-22 10:00-04', '2020-06-22 20:00-04', 'BE A CAPSTONE TECHNICAL MENTOR', 
