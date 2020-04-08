@@ -18,12 +18,12 @@ DROP TABLE IF EXISTS skills;
 
 CREATE TABLE skills (
     skill_id SERIAL PRIMARY KEY,
-    skill VARCHAR (100) NOT NULL
+    skill VARCHAR (100) UNIQUE NOT NULL
 );
 
 CREATE TABLE cohorts (
     cohort_id SERIAL PRIMARY KEY,
-    cohort VARCHAR (10) NOT NULL
+    cohort VARCHAR (10) UNIQUE NOT NULL
 );
 
 CREATE TABLE users_data (
