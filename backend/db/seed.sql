@@ -137,9 +137,9 @@ INSERT INTO skills (skill) VALUES
     ('React'),
     ('React Native'),
     ('Angular'),
-    ('Rubi on Rails'),  -- 5
+    ('Ruby on Rails'),
     ('Django'),
-    ('Flasl'),
+    ('Flask'),
     ('Java'),
     ('Swift'),
     ('Objective-C'),    -- 10
@@ -149,12 +149,12 @@ INSERT INTO skills (skill) VALUES
     ('HTML'),
     ('CSS'),    -- 15
     ('Professional Communication'),
-    ('Personal Narrative and Pop Pitches'),
+    ('Personal Narrative, and Pop Pitches'),
     ('Written Communication'),
-    ('Resumes, LinkedIn and Cover letters'),
-    ('Project Management: Roles, Tools and Best Practices'),   -- 20
-    ('Product Design, UX + Prototyping'),
-    ('Company research'),
+    ('Resumes, LinkedIn, and Cover Letters'),
+    ('Project Management: Roles, Tools, and Best Practices'),
+    ('Product Design, UX, and Prototyping'),
+    ('Company Research'),
     ('Negotiations'),
     ('Talking About Tech Projects in Interviews'),
     ('Personal Finance');   -- 25
