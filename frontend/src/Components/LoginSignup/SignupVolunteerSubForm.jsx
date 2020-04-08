@@ -2,28 +2,47 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
 export default function SignupAdminSubForm(props) {
-    // const [ skills, setSkills ] = useState([]);
-    const [ skills, setSkills ] = useState([{'skill_id':1, 'skill':'skill1'}, {'skill_id':2, 'skill':'skill2'}, {'skill_id':3, 'skill':'skill3'}]);
+    // const [ skillsList, setSkillsList ] = useState([]);
+    const [ skillsList, setSkillsList ] = useState([{'skill_id':1, 'skill':'skill1'}, {'skill_id':2, 'skill':'skill2'}, {'skill_id':3, 'skill':'skill3'}]);
+    const [ skillsTracker, setSkillsTracker ] = useState({});
 
     const getSkillsList = async () => {
         try {
             const { data } = await axios.get(`api/skills`);
-            setSkills(data.payload);
+            setSkillsList(data.payload);
         } catch (err) {
             props.setFeedback(err)
         }
     }
 
-    const skillsTracker = (e, skillId) => {
-        const list = {...props.volunteerSkills};
+    const manageSkills = (e, skillId) => {
+        const list = {...skillsTracker};
+
         list[skillId] = e.target.checked;
-        props.setVolunteerSkills(list)
+        setSkillsTracker(list);
+
+        const arr = [];
+        for (let key in list) {
+            if (list[key]) {
+                arr.push(parseInt(key));
+           }
+        }
+        props.setVolunteerSkills(arr);
     }
 
     useEffect(() => {
         getSkillsList();
-    }, [])
+    }, []);
 
+    useEffect(() => {
+        const tracker = {};
+        for (let skillId of props.volunteerSkills) {
+            tracker[skillId] = true;
+        }
+        setSkillsTracker(tracker);
+    }, [props.volunteerSkills]);
+
+    
     return (
         <>
             <div className='col-sm-6'>
@@ -48,7 +67,7 @@ export default function SignupAdminSubForm(props) {
 
             <span>Please select all the skills you're interested in helping our fellows with</span> <br />
             <div className='col-12 d-flex flex-wrap justify-content-between'>
-                {skills.map(skill => 
+                {skillsList.map(skill => 
                         <div className='form-group form-check' key={skill.skill+skill.skill_id}>
                             <label className='form-check-label'>
                                 <input 
@@ -56,7 +75,8 @@ export default function SignupAdminSubForm(props) {
                                     type='checkbox' 
                                     name='userType'
                                     value={skill.skill_id}
-                                    onChange={(e) => skillsTracker(e, skill.skill_id)}
+                                    checked={props.volunteerSkills.includes(skill.skill_id)}
+                                    onChange={(e) => manageSkills(e, skill.skill_id)}
                                 /> {skill.skill}
                             </label>
                         </div>
@@ -74,7 +94,7 @@ export default function SignupAdminSubForm(props) {
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in being an Office Hours mentor?</span>
                 <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.OfficeHours} onChange={e => props.setOfficeHours(e.target.checked)}/>
+                    <input type='checkbox' checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}/>
                     <span className='slider round'></span>
                 </label>
             </div>

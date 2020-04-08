@@ -8,8 +8,7 @@ import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 
 
 export default function CommonSubForm(props) {
-    // userType={userType}
-    // setUserType={setUserType}
+    
     return (
         <>
             {
@@ -67,7 +66,6 @@ export default function CommonSubForm(props) {
                                 setTitle={props.setTitle}
                                 volunteerSkills={props.volunteerSkills}
                                 setVolunteerSkills={props.setVolunteerSkills}
-                                skills={props.skills}
                                 mentor={props.mentor}
                                 setMentor={props.setMentor}
                                 officeHours={props.officeHours}

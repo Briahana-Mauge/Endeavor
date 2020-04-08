@@ -20,7 +20,7 @@ export default function FellowProfile(props) {
         cohortId,
         confirmPassword
     } = props;
-
+console.log(loggedUser)
     const [ wantMentor, setWantMentor ] = useState(loggedUser.want_mentor);
     const [ cohortsList, setCohortsList ] = useState([{cohort_id: 1, cohort:'general'}]);
     const [ bio, setBio ] = useState(loggedUser.f_bio);
@@ -65,7 +65,7 @@ export default function FellowProfile(props) {
                     profile.append('bio', bio);
                     profile.append('linkedIn', linkedIn);
                     profile.append('github', github);
-                    profile.append('wantMentor', wantMentor);
+                    profile.append('mentor', wantMentor);
                     profile.append('picture', picFile);
                 } else {
                     profile = {
@@ -153,7 +153,7 @@ export default function FellowProfile(props) {
                                     className='form-control mb-2' 
                                     placeholder='Enter bio' 
                                     value={bio}
-                                    onChange={e => props.setBio(e.target.value)}
+                                    onChange={e => setBio(e.target.value)}
                                 />
                             </div>
 
@@ -163,7 +163,7 @@ export default function FellowProfile(props) {
                                     type='text' 
                                     placeholder='LinkedIn link ' 
                                     value={linkedIn}
-                                    onChange={e => props.setLinkedIn(e.target.value)}
+                                    onChange={e => setLinkedIn(e.target.value)}
                                 />
                             </div>
 
@@ -173,13 +173,11 @@ export default function FellowProfile(props) {
                                     type='text' 
                                     placeholder='Github link ' 
                                     value={github}
-                                    onChange={e => props.setGithub(e.target.value)}
+                                    onChange={e => setGithub(e.target.value)}
                                 />
                             </div>
 
-                            <div className='col-sm-12'>
-                                <FileUpload loggedUser={loggedUser} setPicFile={setPicFile}/>
-                            </div>
+                            <FileUpload imageLink={loggedUser.f_picture} setPicFile={setPicFile}/>
 
                             <div className='col-sm-6'>
                                 <button type='submit' className='btn btn-primary mr-5'>Update</button>

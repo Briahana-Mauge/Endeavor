@@ -31,8 +31,7 @@ function App() {
   const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-
-  const skills = [];
+  
 
   const getLoggedInUser = async () => {
     try {
@@ -40,7 +39,6 @@ function App() {
       setLoggedUser(data.payload);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        console.log('User not logged in yet');
         history.push('/');
       } else {
         setFeedback(err);
@@ -51,14 +49,6 @@ function App() {
   useEffect(() => {
     getLoggedInUser();
   }, []);
-
-  useEffect(() => {
-    for (let id in volunteerSkills) {
-      if (volunteerSkills[id]) {
-          skills.push(parseInt(id));
-      }
-    }
-  }, [volunteerSkills])
 
   const setUser = (user) => {
     setLoggedUser(user);
@@ -104,7 +94,6 @@ function App() {
             setTitle={setTitle}
             volunteerSkills={volunteerSkills}
             setVolunteerSkills={setVolunteerSkills}
-            skills={skills}
             mentor={mentor}
             setMentor={setMentor}
             officeHours={officeHours}
@@ -137,8 +126,30 @@ function App() {
             setLastName={setLastName}
             newPassword={newPassword}
             setNewPassword={setNewPassword}
+
             cohortId={cohortId}
             setCohortId={setCohortId}
+
+            company={company}
+            setCompany={setCompany}
+            title={title}
+            setTitle={setTitle}
+            volunteerSkills={volunteerSkills}
+            setVolunteerSkills={setVolunteerSkills}
+            mentor={mentor}
+            setMentor={setMentor}
+            officeHours={officeHours}
+            setOfficeHours={setOfficeHours}
+            techMockInterview={techMockInterview}
+            setTechMockInterview={setTechMockInterview}
+            behavioralMockInterview={behavioralMockInterview}
+            setBehavioralMockInterview={setBehavioralMockInterview}
+            professionalSkillsCoach={professionalSkillsCoach}
+            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
+            hostSiteVisit={hostSiteVisit}
+            setHostSiteVisit={setHostSiteVisit}
+            industrySpeaker={industrySpeaker}
+            setIndustrySpeaker={setIndustrySpeaker}
           />
         </Route>
 

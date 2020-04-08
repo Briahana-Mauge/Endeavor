@@ -14,7 +14,20 @@ export default function ProfilePage(props) {
         firstName,
         lastName,
         newPassword,
+
         cohortId,
+
+        company,
+        title,
+        volunteerSkills,
+        skills,
+        mentor,
+        officeHours,
+        techMockInterview,
+        behavioralMockInterview,
+        professionalSkillsCoach,
+        hostSiteVisit,
+        industrySpeaker,
     } = props;
 
     const [ confirmPassword, setConfirmPassword ] = useState('');
@@ -122,8 +135,27 @@ export default function ProfilePage(props) {
                     setNewPassword={props.setNewPassword}
                     confirmPassword={confirmPassword}
                     setConfirmPassword={setConfirmPassword}
-                    cohortId={cohortId}
-                    setCohortId={props.setCohortId}
+                    company={company}
+                    setCompany={props.setCompany}
+                    title={title}
+                    setTitle={props.setTitle}
+                    volunteerSkills={volunteerSkills}
+                    setVolunteerSkills={props.setVolunteerSkills}
+                    skills={skills}
+                    mentor={mentor}
+                    setMentor={props.setMentor}
+                    officeHours={officeHours}
+                    setOfficeHours={props.setOfficeHours}
+                    techMockInterview={techMockInterview}
+                    setTechMockInterview={props.setTechMockInterview}
+                    behavioralMockInterview={behavioralMockInterview}
+                    setBehavioralMockInterview={props.setBehavioralMockInterview}
+                    professionalSkillsCoach={professionalSkillsCoach}
+                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                    hostSiteVisit={hostSiteVisit}
+                    setHostSiteVisit={props.setHostSiteVisit}
+                    industrySpeaker={industrySpeaker}
+                    setIndustrySpeaker={props.setIndustrySpeaker}
                     handleUpdatePassword={handleUpdatePassword}
                     deleteAccount={deleteAccount}
                   />

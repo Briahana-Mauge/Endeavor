@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 
 export default function FileUpload(props) {
-    const [ imagePreview, setImagePreview ] = useState(props.loggedUser.f_picture);
+    const [ imagePreview, setImagePreview ] = useState(props.imageLink);
 
     const image_preview = event => {
         const reader = new FileReader();
@@ -19,7 +19,7 @@ export default function FileUpload(props) {
 
     return (
         <>
-        <div className='custom-file'>
+        <div className='custom-file col-sm-6'>
             <input 
                 className='custom-file-input' 
                 id='fileUpload' 
