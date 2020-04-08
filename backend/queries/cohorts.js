@@ -19,21 +19,51 @@ const selectAllCohorts = async () => {
 }
 
 const insertCohort = async (cohort) => {
-  const postQuery = `
-    INSERT INTO cohorts ( cohort ) VALUES ( $1 )
-    RETURNING *;
-  `;
-  return await db.one(postQuery, cohort);
+  return await db.task( async t => {
+      const checkQuery = `
+        SELECT EXISTS (
+            SELECT 1
+            FROM cohorts
+            WHERE cohort = $1
+        );
+      `;
+      const doesCohortExist = await t.one(checkQuery, cohort);
+      if (doesCohortExist.exists === false) {
+        const postQuery = `
+          INSERT INTO cohorts ( cohort ) VALUES ( $1 )
+          RETURNING *;
+        `;
+        return await t.one(postQuery, cohort);
+      } else {
+        throw new Error('403__cohort already exists');
+      }
+  });
 }
 
 const updateCohort = async (cohortObj) => {
-  const updateQuery = `
-    UPDATE cohorts
-    SET cohort = $/cohort/
-    WHERE cohort_id = $/cohortId/
-    RETURNING *;
-  `;
-  return await db.one(updateQuery, cohortObj);
+  return await db.task( async t => {
+      // check if wanted name exists first aside from target id
+      const checkQuery = `
+        SELECT EXISTS (
+            SELECT 1
+            FROM cohorts
+            WHERE cohort_id <> $/cohortId/ AND cohort = $/cohort/
+        );
+      `;
+      const doesCohortExist = await t.one(checkQuery, cohortObj);
+      // if wanted name already exists aside from target id, throw error to prev duplicate
+      if (doesCohortExist.exists === false) {
+        const updateQuery = `
+          UPDATE cohorts
+          SET cohort = $/cohort/
+          WHERE cohort_id = $/cohortId/
+          RETURNING *;
+        `;
+        return await t.one(updateQuery, cohortObj);
+      } else {
+        throw new Error('403__cohort already exists');
+      }
+  });
 }
 
 const deleteCohort = async (cohortId) => {
