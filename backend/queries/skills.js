@@ -41,13 +41,29 @@ const insertSkill = async (skill) => {
 }
 
 const updateSkill = async (skillObj) => {
-  const updateQuery = `
-    UPDATE skills
-    SET skill = $/skill/
-    WHERE skill_id = $/skillId/
-    RETURNING *;
-  `;
-  return await db.one(updateQuery, skillObj);
+  return await db.task( async t => {
+      // check if wanted name exists first aside from target id
+      const checkQuery = `
+        SELECT EXISTS (
+            SELECT 1
+            FROM skills
+            WHERE skill_id <> $/skillId/ AND skill = $/skill/
+        );
+      `;
+      const doesSkillExist = await t.one(checkQuery, skillObj);
+      // if wanted name already exists aside from target id, throw error to prev duplicate
+      if (doesSkillExist.exists === false) {
+        const updateQuery = `
+          UPDATE skills
+          SET skill = $/skill/
+          WHERE skill_id = $/skillId/
+          RETURNING *;
+        `;
+        return await t.one(updateQuery, skillObj);
+      } else {
+        throw new Error('403__skill already exists');
+      }
+  });
 }
 
 const deleteSkill = async (skillId) => {
