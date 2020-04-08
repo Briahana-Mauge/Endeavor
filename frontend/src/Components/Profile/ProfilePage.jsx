@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import AdminProfile from './AdminProfile';
 import FellowProfile from './FellowProfile';
+import VolunteerProfile from './VolunteerProfile';
 
 
 export default function ProfilePage(props) {
@@ -80,6 +81,32 @@ export default function ProfilePage(props) {
             {
                 props.loggedUser.f_id
                 ? <FellowProfile
+                    loggedUser={loggedUser}
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
+                    email={email}
+                    setEmail={props.setEmail}
+                    password={password}
+                    setPassword={props.setPassword}
+                    firstName={firstName}
+                    setFirstName={props.setFirstName}
+                    lastName={lastName}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
+                    confirmPassword={confirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    cohortId={cohortId}
+                    setCohortId={props.setCohortId}
+                    handleUpdatePassword={handleUpdatePassword}
+                    deleteAccount={deleteAccount}
+                  />
+                : null
+            }
+
+            {
+                props.loggedUser.v_id
+                ? <VolunteerProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
                     setUser={props.setUser}
