@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS skills;
 
 CREATE TABLE skills (
     skill_id SERIAL PRIMARY KEY,
-    skill VARCHAR (100) NOT NULL
+    skill VARCHAR (100) UNIQUE NOT NULL
 );
 
 CREATE TABLE cohorts (
@@ -80,7 +80,7 @@ CREATE TABLE fellows (
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
     volunteer_id INT REFERENCES volunteers(v_id),
-    skill_id INT REFERENCES skills(skill_id)
+    skill_id INT REFERENCES skills(skill_id) ON DELETE CASCADE
 );
 
 CREATE TABLE mentor_pairs (
