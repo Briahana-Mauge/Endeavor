@@ -26,9 +26,9 @@ router.get('/all', async (req, res, next) => {
 //Get all events  (admin)
 router.get('/admin/all', async (req, res, next) => {
     try {
-        let allEventsAdmin = await eventsQueries.getALLEventsAdmin();
+        let allEventsAdmin = await eventsQueries.getAllEventsAdmin();
         res.json({
-            payload: allEvents,
+            payload: allEventsAdmin,
             message: "Success",
             err: false
         });

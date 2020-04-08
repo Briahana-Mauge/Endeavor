@@ -43,7 +43,7 @@ const getAllEvents = async () => {
   return await db.any(selectQuery);
 }
 
-const getALLEventsAdmin = async () => {
+const getAllEventsAdmin = async () => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT classes.class) AS class, 
@@ -94,7 +94,7 @@ const getPastEvents = async () => {
 /* EXPORT */
 module.exports = {
   getAllEvents,
-  getALLEventsAdmin,
+  getAllEventsAdmin,
   getUpcomingEvents,
   getPastEvents
 }
