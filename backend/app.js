@@ -7,7 +7,7 @@ const session = require('express-session');
 const passport = require('./auth/passport');
 
 const authRouter = require('./routes/auth');
-const adminRouter = require('./routes/admin');
+const usersRouter = require('./routes/users');
 const volunteersRouter = require('./routes/volunteers');
 const fellowsRouter = require('./routes/fellows');
 const skillsRouter = require('./routes/skills');
@@ -35,7 +35,7 @@ app.use(passport.session());
 
 
 app.use('/api/auth', authRouter);
-app.use('/api/admin', checkUserLogged, adminRouter);
+app.use('/api/users', checkUserLogged, usersRouter);
 app.use('/api/volunteers', /*checkUserLogged,*/ volunteersRouter);
 app.use('/api/fellows', /*checkUserLogged,*/ fellowsRouter);
 app.use('/api/skills', /*checkUserLogged,*/ skillsRouter);

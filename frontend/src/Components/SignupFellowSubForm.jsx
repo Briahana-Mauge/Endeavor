@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function SignupFellowSubForm(props) {
-    const [ classes, setClasses ] = useState([{class_id: 1, class:'general'}]);
+    const [ cohorts, setCohorts ] = useState([{cohort_id: 1, cohort:'General'}]);
 
-    const getClassesList = async () => {
+    const getCohortsList = async () => {
         try {
-            const { data } = await axios.get(`api/classes`);
-            setClasses(data.payload);
+            const { data } = await axios.get(`api/cohorts`);
+            setCohorts(data.payload);
         } catch (err) {
             props.setNetworkError(err)
         }
     }
     useEffect(() => {
-        getClassesList();
+        getCohortsList();
     }, [])
 
     return (
@@ -21,7 +21,7 @@ export default function SignupFellowSubForm(props) {
             <div className='col-sm-6'>
                 <select className='mb-2' onChange={e => props.setCohortId(e.target.value)} value={props.cohortId}>
                     <option value={0}> -- Cohort --</option>
-                    {classes.map(cohort => <option key={cohort.class_id+cohort.class} value={cohort.class_id}>{cohort.class}</option>)}
+                    {cohorts.map(cohort => <option key={cohort.cohort_id + cohort.cohort} value={cohort.cohort_id}>{cohort.cohort}</option>)}
                 </select>
             </div>
         </>

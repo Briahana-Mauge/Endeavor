@@ -37,10 +37,9 @@ function App() {
     try {
       const { data } = await axios.get('/api/auth/is_logged');
       setLoggedUser(data.payload);
-      history.push('/home');
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        console.log('User not logged in yet');
+        history.push('/');
       } else {
         setNetworkError(err);
       }

@@ -36,13 +36,16 @@ const signupAdmin = async (request, response, next) => {
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
         
         const allowedAdmin = await usersQueries.getUserByEmail(email);
-        if (allowedAdmin) {
+        if (allowedAdmin && (allowedAdmin.role === 'admin' || allowedAdmin.role === 'staff')) {
             const passMatch = await comparePasswords(request.body.password, allowedAdmin.password);
             
             if (passMatch) {
                 const hashedPassword = await hashPassword(newPassword);
-                
-                await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password);
+                if (allowedAdmin.role === 'admin') {
+                    await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password, true);
+                } else {
+                    await adminQueries.addAdmin(firstName, lastName, email, hashedPassword, allowedAdmin.password, false);
+                }
                 request.body.email = email;
                 request.body.password = newPassword;
                 next();
@@ -93,7 +96,7 @@ const signupVolunteer = async (request, response, next) => {
 }
 
 // Sign-up a user as Fellow
-// Expecting into the request body: email, password, firstName, lastName, cohort
+// Expecting into the request body: email, password, firstName, lastName, cohort_id
 const signupFellow = async (request, response, next) => {
     try {
         const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
@@ -320,76 +323,6 @@ router.put('/:user_id', checkUserLogged, storage.upload.single('picture'), updat
         error: false,
         message: 'Successfully updated user info',
         payload: request.user
-    })
-})
-
-
-const updatePassword = async(request, response, next) => {
-    try {
-        const newPassword = processInput(request.body.newPassword, 'hardVC', 'user password');
-        const confirmPassword = processInput(request.body.confirmPassword, 'hardVC', 'user password');
-        const targetId = processInput(request.params.user_id, 'idNum', 'user id');
-        const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
-
-        if (targetId === loggedUserId && newPassword === confirmPassword) {
-            const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
-            const hashedPassword = await hashPassword(newPassword);
-            
-            await usersQueries.updatePassword(loggedUserEmail, hashedPassword);
-            next();
-        } else {
-            throw new Error("401__Not authorized to update - password doesn't match or you don't have the right to update");
-        }
-
-    } catch (err) {
-        handleError(err, request, response, next);
-    }
-}
-
-router.patch('/:user_id', checkUserLogged, updatePassword, (request, response) => {
-    response.json({
-        error: false,
-        message: 'Successfully updated password',
-        payload: request.user
-    })
-})
-
-
-const deleteAccount = async(request, response, next) => {
-    try {
-        const loggedUserId = request.user.a_id || request.user.v_id || request.user.f_id;
-        const targetId = processInput(request.params.user_id, 'idNum', 'user id');
-        const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
-
-        if (targetId === loggedUserId) {
-            if (request.user.a_id) {
-                await adminQueries.deleteAdmin(loggedUserId);
-            } 
-            else if (request.user.v_id) {
-                await volunteersQueries.deleteVolunteer(loggedUserId);
-            } 
-            else {
-                await fellowsQueries.deleteFellow(loggedUserId);
-            }
-    
-            // await usersQueries.deleteUser(loggedUserEmail);
-            next();
-        } 
-        else {
-            throw new Error("401__Not authorized to delete");
-        }
-
-    } catch (err) {
-        handleError(err, request, response, next);
-    }
-}
-
-router.delete('/:user_id', checkUserLogged, deleteAccount, (request, response) => {
-    request.logOut();
-    response.json({
-        error: false,
-        message: 'Successfully deleted user/brand',
-        payload: null
     })
 })
 
