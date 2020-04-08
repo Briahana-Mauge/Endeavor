@@ -23,7 +23,7 @@ CREATE TABLE skills (
 
 CREATE TABLE cohorts (
     cohort_id SERIAL PRIMARY KEY,
-    cohort VARCHAR (10) NOT NULL
+    cohort VARCHAR (10) UNIQUE NOT NULL
 );
 
 CREATE TABLE users_data (
@@ -73,7 +73,7 @@ CREATE TABLE fellows (
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
     f_github VARCHAR (150),
-    cohort_id INT REFERENCES cohorts(cohort_id),
+    cohort_id INT REFERENCES cohorts(cohort_id) ON DELETE CASCADE,
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
