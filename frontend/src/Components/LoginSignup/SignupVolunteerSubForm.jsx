@@ -85,58 +85,72 @@ export default function SignupAdminSubForm(props) {
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in mentoring a Pursuit Fellow?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.mentor} onChange={e => props.setMentor(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.mentor} onChange={e => props.setMentor(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in being an Office Hours mentor?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in administering mock technical interviews?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.techMockInterview} onChange={e => props.setTechMockInterview(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.techMockInterview} onChange={e => props.setTechMockInterview(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in behavioral interviewing?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.behavioralMockInterview} onChange={e => props.setBehavioralMockInterview(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.behavioralMockInterview} onChange={e => props.setBehavioralMockInterview(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in being a professional skills coach?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.professionalSkillsCoach} onChange={e => props.setProfessionalSkillsCoach(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.professionalSkillsCoach} onChange={e => props.setProfessionalSkillsCoach(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in hosting a Site Visit at your office?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.hostSiteVisit} onChange={e => props.setHostSiteVisit(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.hostSiteVisit} onChange={e => props.setHostSiteVisit(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
 
             <div className='col-sm-6 row'>
                 <span className='col-9'>Interested in being an Industry Speaker?</span>
-                <label className='switch col-2 mr-3'>
-                    <input type='checkbox' checked={props.industrySpeaker} onChange={e => props.setIndustrySpeaker(e.target.checked)}/>
-                    <span className='slider round'></span>
-                </label>
+                <span className='col-3 px-1'>
+                    <label className='switch'>
+                        <input type='checkbox' checked={props.industrySpeaker} onChange={e => props.setIndustrySpeaker(e.target.checked)}/>
+                        <span className='slider round'></span>
+                    </label>
+                </span>
             </div>
         </>
     )
