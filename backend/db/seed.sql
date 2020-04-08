@@ -21,9 +21,9 @@ CREATE TABLE skills (
     skill VARCHAR (100) NOT NULL
 );
 
-CREATE TABLE classes (
-    class_id SERIAL PRIMARY KEY,
-    class VARCHAR (10) NOT NULL
+CREATE TABLE cohorts (
+    cohort_id SERIAL PRIMARY KEY,
+    cohort VARCHAR (10) NOT NULL
 );
 
 CREATE TABLE users_data (
@@ -72,7 +72,7 @@ CREATE TABLE fellows (
     f_bio VARCHAR,
     f_linkedin VARCHAR (150),
     f_github VARCHAR (150),
-    cohort_id INT REFERENCES classes(class_id),
+    cohort_id INT REFERENCES cohorts(cohort_id),
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE events (
     event_end TIMESTAMPTZ NOT NULL,
     topic VARCHAR (100) NOT NULL,
     description VARCHAR NOT NULL,
-    attendees INT REFERENCES classes(class_id),
+    attendees INT REFERENCES cohorts(cohort_id),
     location VARCHAR (200) NOT NULL,
     instructor VARCHAR (100) NOT NULL,
     number_of_volunteers INT NOT NULL,

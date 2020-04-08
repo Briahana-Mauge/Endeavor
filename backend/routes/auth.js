@@ -93,7 +93,7 @@ const signupVolunteer = async (request, response, next) => {
 }
 
 // Sign-up a user as Fellow
-// Expecting into the request body: email, password, firstName, lastName, cohort
+// Expecting into the request body: email, password, firstName, lastName, cohort_id
 const signupFellow = async (request, response, next) => {
     try {
         const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
