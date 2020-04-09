@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function SignupFellowSubForm(props) {
-    const [ cohortsList, setCohortsList ] = useState([{cohort_id: 1, cohort:'general'}]);
+    const [ cohortsList, setCohortsList ] = useState([]);
 
     const getCohortsList = async () => {
         try {

@@ -200,7 +200,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
-            skills: processInput(request.body.skills, 'softVC', 'skills list', 50),
+            skills: processInput(request.body.skills, 'array', 'skills list', 25),
             mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
             techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),

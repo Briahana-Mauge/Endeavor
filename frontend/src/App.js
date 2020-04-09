@@ -52,7 +52,6 @@ function App() {
 
   const setUser = (user) => {
     setLoggedUser(user);
-    history.push('/home');
   }
 
   const logout = () => {
