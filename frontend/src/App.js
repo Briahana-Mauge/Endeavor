@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import LoginSignup from './Components/LoginSignup';
-import ErrorFeedback from './Components/ErrorFeedback';
+import LoginSignup from './Components/LoginSignup/LoginSignup';
+import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
+import ProfilePage from './Components/Profile/ProfilePage';
 
 function App() {
   const history = useHistory();
 
   const [ loggedUser, setLoggedUser ] = useState({});
-  const [ networkError, setNetworkError ] = useState(null);
+  const [ feedback, setFeedback ] = useState(null);
 
   const [ formType, setFormType ] = useState('login');
   const [ userType, setUserType ] = useState('');
@@ -30,8 +31,7 @@ function App() {
   const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-
-  const skills = [];
+  
 
   const getLoggedInUser = async () => {
     try {
@@ -41,22 +41,14 @@ function App() {
       if (err.response && err.response.status === 401) {
         history.push('/');
       } else {
-        setNetworkError(err);
+        setFeedback(err);
       }
     }
   }
 
   useEffect(() => {
-    getLoggedInUser()
+    getLoggedInUser();
   }, []);
-
-  useEffect(() => {
-    for (let id in volunteerSkills) {
-      if (volunteerSkills[id]) {
-          skills.push(parseInt(id));
-      }
-    }
-  }, [volunteerSkills])
 
   const setUser = (user) => {
     setLoggedUser(user);
@@ -64,21 +56,21 @@ function App() {
   }
 
   const logout = () => {
-    setLoggedUser('');
-    history.push('/')
+    setLoggedUser(null);
   }
 
-  const resetNetworkError = () => {
-    setNetworkError(null);
+  const resetFeedback = () => {
+    setFeedback(null);
   }
 
 
   return (
-    <div className="container-md">
+    <div className="container-md mt-4">
       <Switch>
         <Route exact path='/'> 
           <LoginSignup 
-            setNetworkError={setNetworkError} 
+            loggedUser={loggedUser}
+            setFeedback={setFeedback} 
             setUser={setUser}
             formType={formType} 
             setFormType={setFormType} 
@@ -102,7 +94,6 @@ function App() {
             setTitle={setTitle}
             volunteerSkills={volunteerSkills}
             setVolunteerSkills={setVolunteerSkills}
-            skills={skills}
             mentor={mentor}
             setMentor={setMentor}
             officeHours={officeHours}
@@ -119,14 +110,57 @@ function App() {
             setIndustrySpeaker={setIndustrySpeaker}
           />
         </Route>
+
+        <Route path='/profile'> 
+          <ProfilePage 
+            loggedUser={loggedUser}
+            setFeedback={setFeedback} 
+            setUser={setUser}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+
+            cohortId={cohortId}
+            setCohortId={setCohortId}
+
+            company={company}
+            setCompany={setCompany}
+            title={title}
+            setTitle={setTitle}
+            volunteerSkills={volunteerSkills}
+            setVolunteerSkills={setVolunteerSkills}
+            mentor={mentor}
+            setMentor={setMentor}
+            officeHours={officeHours}
+            setOfficeHours={setOfficeHours}
+            techMockInterview={techMockInterview}
+            setTechMockInterview={setTechMockInterview}
+            behavioralMockInterview={behavioralMockInterview}
+            setBehavioralMockInterview={setBehavioralMockInterview}
+            professionalSkillsCoach={professionalSkillsCoach}
+            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
+            hostSiteVisit={hostSiteVisit}
+            setHostSiteVisit={setHostSiteVisit}
+            industrySpeaker={industrySpeaker}
+            setIndustrySpeaker={setIndustrySpeaker}
+          />
+        </Route>
+
         <Route path='/volunteers/search'> 
           <VolunteerSearch />
         </Route>
       </Switch>
 
       {
-        (networkError)
-        ? <ErrorFeedback err={networkError} resetNetworkError={resetNetworkError}/>
+        (feedback)
+        ? <Feedback feedback={feedback} resetFeedback={resetFeedback}/>
         : null
       }
     </div>

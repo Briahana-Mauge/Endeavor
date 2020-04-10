@@ -94,7 +94,7 @@ const addVolunteer = async (user, password) => {
     const volunteer = await db.one(insertQuery, user);
 
     const promises = [];
-    user.skills.map(skillId => promises.push(db.none('INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES ($1, $2)', [user.userId, skillId])));
+    user.skills.map(skillId => promises.push(db.none('INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES ($1, $2)', [volunteer.v_id, skillId])));
     await Promise.all(promises);
 
     return volunteer;

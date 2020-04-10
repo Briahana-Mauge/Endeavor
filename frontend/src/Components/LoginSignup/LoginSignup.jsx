@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import CommonSubForm from './CommonSubForm';
+import EmailPassword from './EmailPassword';
 
 
 export default function LoginSignup(props) {
+    const history = useHistory();
+    useEffect(() => {
+        if (props.loggedUser.a_id || props.loggedUser.v_id || props.loggedUser.f_id) {
+            history.push('/home');
+        }
+    }, [props.loggedUser]);
+
     const {
         formType,
         userType,
@@ -17,7 +26,6 @@ export default function LoginSignup(props) {
         company,
         title,
         volunteerSkills,
-        skills,
         mentor,
         officeHours,
         techMockInterview,
@@ -26,6 +34,7 @@ export default function LoginSignup(props) {
         hostSiteVisit,
         industrySpeaker
     } = props
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -40,7 +49,7 @@ export default function LoginSignup(props) {
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.setUser(data.payload);
                 } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
-                    const userData = {email, password, firstName, lastName, cohortId};
+                    const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
                     props.setUser(data.payload);
                 } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
@@ -51,7 +60,7 @@ export default function LoginSignup(props) {
                         lastName, 
                         company,
                         title,
-                        skills,
+                        skills: volunteerSkills,
                         mentor,
                         officeHours,
                         techMockInterview,
@@ -67,7 +76,7 @@ export default function LoginSignup(props) {
             }
 
         } catch (err) {
-            props.setNetworkError(err)
+            props.setFeedback(err);
         }
     }
     
@@ -76,25 +85,14 @@ export default function LoginSignup(props) {
             <img className='d-block mx-auto appLogo' src='/images/app_logo.jpg' alt='app logo'/>
             
             <form className='form-row' onSubmit={handleFormSubmit}>
-                <div className='col-sm-6'>
-                    <input 
-                        className='form-control mb-2' 
-                        type='email' 
-                        placeholder='Enter email' 
-                        value={email}
-                        onChange={e => props.setEmail(e.target.value)}
-                    />
-                </div>
-
-                <div className='col-sm-6'>
-                    <input 
-                        type='password' 
-                        className='form-control mb-2' 
-                        placeholder={formType === 'signup' && userType === 'admin' ? 'Enter default password proved by your Admin' : 'Enter password'} 
-                        value={password}
-                        onChange={e => props.setPassword(e.target.value)}
-                    />
-                </div>
+                <EmailPassword 
+                    email={email}
+                    setEmail={props.setEmail}
+                    password={password}
+                    setPassword={props.setPassword}
+                    formType={formType}
+                    userType={userType}
+                />
 
                 <CommonSubForm 
                     formType={formType} 
@@ -107,7 +105,7 @@ export default function LoginSignup(props) {
                     setLastName={props.setLastName}
                     newPassword={newPassword}
                     setNewPassword={props.setNewPassword}
-                    setNetworkError={props.setNetworkError}
+                    setFeedback={props.setFeedback}
                     cohortId={cohortId}
                     setCohortId={props.setCohortId}
                     company={company}
