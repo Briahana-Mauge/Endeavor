@@ -31,7 +31,7 @@ router.post('/:role/add', async (request, response, next) => {
             delete newUser.password;
             response.status(201).json({
                 error: false,
-                message: 'Successfully added new user to admin list',
+                message: 'Successfully added new user to users list',
                 payload: newUser,
             });
         }

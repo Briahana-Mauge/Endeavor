@@ -6,6 +6,7 @@ import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
 import ProfilePage from './Components/Profile/ProfilePage';
+import AdminTools from './Components/AdminTools/AdminTools';
 
 function App() {
   const history = useHistory();
@@ -151,6 +152,14 @@ function App() {
             setIndustrySpeaker={setIndustrySpeaker}
           />
         </Route>
+
+        {
+          loggedUser && loggedUser.a_id
+          ? <Route path='/tools'>
+              <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
+            </Route>
+          : null
+        }
 
         <Route path='/volunteers/search'> 
           <VolunteerSearch />
