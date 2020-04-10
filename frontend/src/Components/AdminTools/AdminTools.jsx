@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import AdminToolsTabs from './AdminToolsTabs';
 import UsersTab from './UsersTab';
 import CohortsTab from './CohortsTab';
+import SkillsTab from './SkillsTab';
 
 
 export default function AdminTools(props) {
@@ -24,7 +25,7 @@ export default function AdminTools(props) {
 
             {
                 tab === 'skills'
-                ? null
+                ? <SkillsTab setFeedback={props.setFeedback} />
                 : null
             }
 

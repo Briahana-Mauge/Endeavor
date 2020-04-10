@@ -90,4 +90,5 @@ input:checked + .slider:before {
 .inputFormText {
   background-color: inherit;
   border: inherit;
+  border-bottom: dashed 1px;
 }

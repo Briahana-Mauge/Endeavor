@@ -83,16 +83,18 @@ export default function Cohorts(props) {
             
 
             {
-                cohortsList.map(cohort => <div className='' key={cohort.cohort_id + cohort.cohort}>
+                cohortsList.map(cohort => <div className='d-flex justify-content-between' key={cohort.cohort_id + cohort.cohort}>
                     <input 
                         type='text' 
-                        className='inputFormText mb-2 mr-sm-2' 
+                        className='inputFormText mb-2 mr-sm-2 flex-grow-1' 
                         placeholder='Enter cohort'
                         value={tracker[cohort.cohort_id]}
                         onChange={e => handleInputEdit(e, cohort.cohort_id)}
                     />
-                    <button className='btn btn-info mx-2 my-1' onClick={e => editCohort(cohort.cohort_id, tracker[cohort.cohort_id])}>Save</button>
-                    <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id)}>Delete</button>
+                    <div className=''>
+                        <button className='btn btn-info mx-2 my-1' onClick={e => editCohort(cohort.cohort_id, tracker[cohort.cohort_id])}>Save</button>
+                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id)}>Delete</button>
+                    </div>
                 </div>)
             }
         </div>
