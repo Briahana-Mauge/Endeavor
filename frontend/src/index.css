@@ -1,19 +1,13 @@
-/*
-ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-INDEX CSS (FONT IMPORTS) | Capstone App (Pursuit Volunteer Mgr)
-*/
-
-
-/* FONT INITS */
-@font-face {
-  font-family: 'Muli';
-  src: url('./assets/fonts/Muli/static/Muli-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-} 
+/* FONT IMPORTS */
 @font-face {
   font-family: 'Quicksand';
   src: url('./assets/fonts/Quicksand/static/Quicksand-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Muli';
+  src: url('./assets/fonts/Muli/static/Muli-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
