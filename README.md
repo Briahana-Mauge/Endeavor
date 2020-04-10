@@ -31,6 +31,7 @@
 + Node.js 12.5.0
 + JavaScript ES6+
 + HTML5
++ Node-Sass (SCSS) 4.13.1
 + CSS3
 
 ## Setup
