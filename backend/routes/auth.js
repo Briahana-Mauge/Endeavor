@@ -211,7 +211,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             picture: request.user.v_picture
         }
         
-        let user = await usersQueries.getUserByEmail(actualEmail);
+        const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
             if (actualEmail !== formattedRequestBody.email) {
@@ -222,8 +222,8 @@ const updateVolunteerUser = async (userId, request, response, next) => {
                 formattedRequestBody.picture = request.file.location;
             }
             
-            user = await volunteersQueries.updateVolunteer(formattedRequestBody);
-            if (request.file && user.v_picture && user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            await volunteersQueries.updateVolunteer(formattedRequestBody);
+            if (request.file && request.user.v_picture && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(user.v_picture);
             }
             request.body.email = formattedRequestBody.email;
@@ -263,7 +263,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             picture: request.user.f_picture
         }
 
-        let user = await usersQueries.getUserByEmail(actualEmail);
+        const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
 
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
@@ -275,9 +275,9 @@ const updateFellowUser = async (userId, request, response, next) => {
                 formattedRequestBody.picture = request.file.location;
             }
 
-            user = await fellowsQueries.updateFellow(formattedRequestBody);
-            if (request.file && user.f_picture && user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
-                storage.deleteFile(user.f_picture)
+            await fellowsQueries.updateFellow(formattedRequestBody);
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+                storage.deleteFile(request.user.f_picture)
             }
             request.body.email = formattedRequestBody.email;
             request.body.password = formattedRequestBody.password;
