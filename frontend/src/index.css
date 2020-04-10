@@ -1,88 +1,19 @@
-html, body, #root {
-  min-height: 100vh;
-}
+/*
+ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
+INDEX CSS (FONT IMPORTS) | Capstone App (Pursuit Volunteer Mgr)
+*/
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.feedbackContainer {
-  position: absolute;
-}
-
-.appLogo {
-  height: 10vh;
-}
-
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 80%;
-  height: 2.15rem;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 1.75rem;
-  width: 1.75rem;
-  left: .25rem;
-  bottom: .25rem;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(100%);
-  -ms-transform: translateX(100%);
-  transform: translateX(100%);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 2.5rem;
-}
-
-.slider.round:before {
-  border-radius: 50%;
+/* FONT INITS */
+@font-face {
+  font-family: 'Muli';
+  src: url('./assets/fonts/Muli/static/Muli-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+} 
+@font-face {
+  font-family: 'Quicksand';
+  src: url('./assets/fonts/Quicksand/static/Quicksand-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
