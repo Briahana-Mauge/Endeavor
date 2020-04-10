@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 import AdminToolsTabs from './AdminToolsTabs';
 import UsersTab from './UsersTab';
@@ -9,10 +9,13 @@ import SkillsTab from './SkillsTab';
 
 export default function AdminTools(props) {
     const path = useLocation().pathname.split('/');
-    
+    const history = useHistory();
+
     let tab = '';
     if (path[2]) {
         tab = path[2];
+    } else {
+        history.push('tools/skills');
     }
 
     return (
