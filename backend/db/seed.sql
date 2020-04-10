@@ -70,29 +70,17 @@ CREATE TABLE fellows (
     f_last_name VARCHAR (30) NOT NULL,
     f_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
     f_picture VARCHAR,
-<<<<<<< HEAD
     f_bio VARCHAR NOT NULL DEFAULT '',
     f_linkedin VARCHAR (150) NOT NULL DEFAULT '',
     f_github VARCHAR (150) NOT NULL DEFAULT '',
     cohort_id INT NOT NULL REFERENCES cohorts(cohort_id),
-=======
-    f_bio VARCHAR,
-    f_linkedin VARCHAR (150),
-    f_github VARCHAR (150),
-    cohort_id INT REFERENCES cohorts(cohort_id) ON DELETE CASCADE,
->>>>>>> d2ae16e3043d3e0f6187945371a79c3b82b75f81
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
-<<<<<<< HEAD
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     skill_id INT NOT NULL REFERENCES skills(skill_id)
-=======
-    volunteer_id INT REFERENCES volunteers(v_id),
-    skill_id INT REFERENCES skills(skill_id) ON DELETE CASCADE
->>>>>>> d2ae16e3043d3e0f6187945371a79c3b82b75f81
 );
 
 CREATE TABLE mentor_pairs (

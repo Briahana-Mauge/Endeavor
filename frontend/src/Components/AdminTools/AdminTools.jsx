@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import AdminToolsTabs from './AdminToolsTabs';
 import UsersTab from './UsersTab';
+import CohortsTab from './CohortsTab';
 
 
 export default function AdminTools(props) {
@@ -29,7 +30,7 @@ export default function AdminTools(props) {
 
             {
                 tab === 'cohorts'
-                ? null
+                ? <CohortsTab setFeedback={props.setFeedback} />
                 : null
             }
 
