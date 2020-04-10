@@ -224,7 +224,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
             if (request.file && request.user.v_picture && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
-                storage.deleteFile(user.v_picture);
+                storage.deleteFile(request.user.v_picture);
             }
             request.body.email = formattedRequestBody.email;
             request.body.password = formattedRequestBody.password;
