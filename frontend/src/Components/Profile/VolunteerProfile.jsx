@@ -62,7 +62,7 @@ export default function VolunteerProfile(props) {
         props.setHostSiteVisit(loggedUser.hosting_site_visit);
         props.setIndustrySpeaker(loggedUser.industry_speaker);
         getVolunteerSkills();
-    }, []);
+    }, [loggedUser]);
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();

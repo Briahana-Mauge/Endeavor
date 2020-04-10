@@ -30,7 +30,7 @@ const getAllCohorts = async (req, res, next) => {
 
 const postCohort = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
   
       const response = await queries.insertCohort(cohort);
@@ -50,7 +50,7 @@ const postCohort = async (req, res, next) => {
 
 const putCohort = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
       const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
   
@@ -71,7 +71,7 @@ const putCohort = async (req, res, next) => {
 
 const delCohort = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
       const response = await queries.deleteCohort(cohortId);
       res.status(200);

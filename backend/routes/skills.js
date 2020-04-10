@@ -30,7 +30,7 @@ const getAllSkills = async (req, res, next) => {
 
 const postSkill = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
   
       const response = await queries.insertSkill(skill);
@@ -50,7 +50,7 @@ const postSkill = async (req, res, next) => {
 
 const putSkill = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const skillId = processInput(req.params.skill_id, "idNum", "skill id");
       const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
   
@@ -71,7 +71,7 @@ const putSkill = async (req, res, next) => {
 
 const delSkill = async (req, res, next) => {
   try {
-    if (req.user || req.user.a_id) {
+    if (req.user && req.user.a_id) {
       const skillId = processInput(req.params.skill_id, "idNum", "skill id");
       const response = await queries.deleteSkill(skillId);
       res.status(200);

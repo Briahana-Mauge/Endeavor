@@ -218,11 +218,12 @@ const updateVolunteerUser = async (userId, request, response, next) => {
                 await usersQueries.updateEmail(actualEmail, formattedRequestBody.email)
             }
 
-            if (request.file) {
+            if (request.file) { 
                 formattedRequestBody.picture = request.file.location;
             }
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
+            // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
             if (request.file && request.user.v_picture && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.v_picture);
             }
@@ -231,6 +232,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             next();
         }
         else {
+            // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
@@ -238,6 +240,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
         if (request.file) {
             storage.deleteFile(request.file.location);
         }
@@ -276,6 +279,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             }
 
             await fellowsQueries.updateFellow(formattedRequestBody);
+            // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
             if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.f_picture)
             }
@@ -284,6 +288,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             next();
         }
         else {
+            // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
@@ -291,6 +296,7 @@ const updateFellowUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
         if (request.file) {
             storage.deleteFile(request.file.location);
         }

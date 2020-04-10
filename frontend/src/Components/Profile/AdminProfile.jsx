@@ -26,7 +26,7 @@ export default function AdminProfile(props) {
         props.setFirstName(loggedUser.a_first_name);
         props.setLastName(loggedUser.a_last_name);
         props.setEmail(loggedUser.a_email);
-    }, [])
+    }, [loggedUser])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();

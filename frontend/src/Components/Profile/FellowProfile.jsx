@@ -46,7 +46,7 @@ console.log(loggedUser)
         props.setEmail(loggedUser.f_email);
         props.setCohortId(loggedUser.cohort_id);
         getCohortsList();
-    }, [])
+    }, [loggedUser])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
