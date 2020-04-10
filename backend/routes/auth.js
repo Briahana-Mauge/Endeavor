@@ -211,7 +211,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             picture: request.user.v_picture
         }
         
-        const user = await usersQueries.getUserByEmail(actualEmail);
+        let user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
             if (actualEmail !== formattedRequestBody.email) {
@@ -222,9 +222,9 @@ const updateVolunteerUser = async (userId, request, response, next) => {
                 formattedRequestBody.picture = request.file.location;
             }
             
-            await volunteersQueries.updateVolunteer(formattedRequestBody);
+            user = await volunteersQueries.updateVolunteer(formattedRequestBody);
             if (request.file && user.v_picture && user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
-                storage.deleteFile(request.user.v_picture)
+                storage.deleteFile(user.v_picture);
             }
             request.body.email = formattedRequestBody.email;
             request.body.password = formattedRequestBody.password;
@@ -238,6 +238,9 @@ const updateVolunteerUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
         handleError(err, request, response, next);
     }
 }
@@ -260,7 +263,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             picture: request.user.f_picture
         }
 
-        const user = await usersQueries.getUserByEmail(actualEmail);
+        let user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
 
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
@@ -272,9 +275,9 @@ const updateFellowUser = async (userId, request, response, next) => {
                 formattedRequestBody.picture = request.file.location;
             }
 
-            await fellowsQueries.updateFellow(formattedRequestBody);
+            user = await fellowsQueries.updateFellow(formattedRequestBody);
             if (request.file && user.f_picture && user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
-                storage.deleteFile(request.user.f_picture)
+                storage.deleteFile(user.f_picture)
             }
             request.body.email = formattedRequestBody.email;
             request.body.password = formattedRequestBody.password;
@@ -288,6 +291,9 @@ const updateFellowUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
         handleError(err, request, response, next);
     }
 }
@@ -306,7 +312,7 @@ const updateUser = (request, response, next) => {
         if (request.file) {
             storage.deleteFile(request.file.location);
         }
-        response.status(401).json({
+        response.status(403).json({
             error: true,
             message: 'Not authorized to update these information',
             payload: null,

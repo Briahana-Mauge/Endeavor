@@ -10,7 +10,7 @@ const handleError = require('../helpers/handleError');
 
 router.post('/:role/add', async (request, response, next) => {
     try {
-        if (request.user.a_id) {
+        if (request.user && request.user.a_id) {
             const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
             const password = processInput(request.body.password, 'hardVC', 'user password');
             const hashedPassword = await hashPassword(password);
@@ -91,7 +91,7 @@ const deleteAccount = async(request, response, next) => {
         const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
 
         if (targetId === loggedUserId) {
-            if (request.user.a_id) {
+            if (request.user && request.user.a_id) {
                 await adminQueries.deleteAdmin(loggedUserId);
             } 
             else if (request.user.v_id) {
@@ -101,11 +101,11 @@ const deleteAccount = async(request, response, next) => {
                 await fellowsQueries.deleteFellow(loggedUserId);
             }
     
-            // await usersQueries.deleteUser(loggedUserEmail);
+            await usersQueries.deleteUser(loggedUserEmail);
             next();
         } 
         else {
-            throw new Error("401__Not authorized to delete");
+            throw new Error("403__Not authorized to delete");
         }
 
     } catch (err) {
