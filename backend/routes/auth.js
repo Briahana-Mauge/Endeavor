@@ -55,7 +55,7 @@ const signupAdmin = async (request, response, next) => {
             }
         }
         else {
-            throw new Error('401__Not authorized to sign up as an Admin');
+            throw new Error('403__Not authorized to sign up as an Admin');
         }
 
     } catch (err) {
@@ -107,7 +107,7 @@ const signupFellow = async (request, response, next) => {
         const cohortId = processInput(request.body.cohortId, 'idNum', 'cohort id', 50);
 
         const allowedFellow = await usersQueries.getUserByEmail(email);
-        if (allowedFellow) {
+        if (allowedFellow && allowedFellow.role === 'fellow') {
             const passMatch = await comparePasswords(request.body.password, allowedFellow.password);
             
             if (passMatch) {
@@ -123,7 +123,7 @@ const signupFellow = async (request, response, next) => {
             }
         }
         else {
-            throw new Error('401__Not authorized to sign up as fellow, please contact your Admin for more details');
+            throw new Error('403__Not authorized to sign up as fellow, please contact your Admin for more details');
         }
         
     } catch (err) {
