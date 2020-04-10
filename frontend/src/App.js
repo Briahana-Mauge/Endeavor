@@ -55,8 +55,13 @@ function App() {
     setLoggedUser(user);
   }
 
-  const logout = () => {
-    setLoggedUser(null);
+  const logout = async () => {
+    try {
+      await axios.get('/api/auth.logout');
+      setLoggedUser(null);
+    } catch (err) {
+      setFeedback(err);
+    }
   }
 
   const resetFeedback = () => {
