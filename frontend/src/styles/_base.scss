@@ -1,0 +1,46 @@
+/*
+ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
+APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
+*/
+
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    // font-size: 10px;
+
+    --ff-body1: 'Quicksand', sans-serif;
+    --ff-body2: 'Muli', sans-serif;
+    // --ff-accent: cursive;
+
+    // --fs-body: 1.6rem;
+}
+
+body {
+    font-family: var(--ff-body1);
+    // font-size: var(--fs-body);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: 
+        source-code-pro,
+        Menlo,
+        Monaco,
+        Consolas,
+        'Courier New',
+        monospace
+    ;
+}
+
+html, body, #root {
+    min-height: 100vh;
+}

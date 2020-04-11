@@ -8,8 +8,7 @@ import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 
 
 export default function CommonSubForm(props) {
-    // userType={userType}
-    // setUserType={setUserType}
+    
     return (
         <>
             {
@@ -39,7 +38,7 @@ export default function CommonSubForm(props) {
 
 
                         {
-                            props.formType === 'signup' && props.userType === 'admin'
+                            props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow')
                             ? <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
                             : null
                             
@@ -48,20 +47,19 @@ export default function CommonSubForm(props) {
                         {
                             props.formType === 'signup' && props.userType === 'fellow'
                             ? <>
-                                <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
                                 <SignupFellowSubForm 
-                                    setNetworkError={props.setNetworkError}
+                                    setFeedback={props.setFeedback}
                                     cohortId={props.cohortId}
                                     setCohortId={props.setCohortId}
                                     />
                                 </>
                             : null
                         }
-
-{
+                        
+                        {
                             props.formType === 'signup' && props.userType === 'volunteer'
                             ? <SignupVolunteerSubForm 
-                                setNetworkError={props.setNetworkError} 
+                                setFeedback={props.setFeedback} 
                                 company={props.company}
                                 setCompany={props.setCompany}
                                 title={props.title}
