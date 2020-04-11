@@ -55,7 +55,7 @@ const signupAdmin = async (request, response, next) => {
             }
         }
         else {
-            throw new Error('401__Not authorized to sign up as an Admin');
+            throw new Error('403__Not authorized to sign up as an Admin');
         }
 
     } catch (err) {
@@ -107,7 +107,7 @@ const signupFellow = async (request, response, next) => {
         const cohortId = processInput(request.body.cohortId, 'idNum', 'cohort id', 50);
 
         const allowedFellow = await usersQueries.getUserByEmail(email);
-        if (allowedFellow) {
+        if (allowedFellow && allowedFellow.role === 'fellow') {
             const passMatch = await comparePasswords(request.body.password, allowedFellow.password);
             
             if (passMatch) {
@@ -123,7 +123,7 @@ const signupFellow = async (request, response, next) => {
             }
         }
         else {
-            throw new Error('401__Not authorized to sign up as fellow, please contact your Admin for more details');
+            throw new Error('403__Not authorized to sign up as fellow, please contact your Admin for more details');
         }
         
     } catch (err) {
@@ -200,7 +200,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
-            skills: processInput(request.body.skills, 'softVC', 'skills list', 50),
+            skills: processInput(request.body.skills, 'array', 'skills list', 25),
             mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
             techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
@@ -218,19 +218,21 @@ const updateVolunteerUser = async (userId, request, response, next) => {
                 await usersQueries.updateEmail(actualEmail, formattedRequestBody.email)
             }
 
-            if (request.file) {
+            if (request.file) { 
                 formattedRequestBody.picture = request.file.location;
             }
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
-            if (request.file && user.v_picture && user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
-                storage.deleteFile(request.user.v_picture)
+            // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
+            if (request.file && request.user.v_picture && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+                storage.deleteFile(request.user.v_picture);
             }
             request.body.email = formattedRequestBody.email;
             request.body.password = formattedRequestBody.password;
             next();
         }
         else {
+            // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
@@ -238,6 +240,10 @@ const updateVolunteerUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
         handleError(err, request, response, next);
     }
 }
@@ -273,7 +279,8 @@ const updateFellowUser = async (userId, request, response, next) => {
             }
 
             await fellowsQueries.updateFellow(formattedRequestBody);
-            if (request.file && user.f_picture && user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
+            if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.f_picture)
             }
             request.body.email = formattedRequestBody.email;
@@ -281,6 +288,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             next();
         }
         else {
+            // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
             if (request.file) {
                 storage.deleteFile(request.file.location);
             }
@@ -288,6 +296,10 @@ const updateFellowUser = async (userId, request, response, next) => {
         }
         
     } catch (err) {
+        // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
         handleError(err, request, response, next);
     }
 }
@@ -306,7 +318,7 @@ const updateUser = (request, response, next) => {
         if (request.file) {
             storage.deleteFile(request.file.location);
         }
-        response.status(401).json({
+        response.status(403).json({
             error: true,
             message: 'Not authorized to update these information',
             payload: null,

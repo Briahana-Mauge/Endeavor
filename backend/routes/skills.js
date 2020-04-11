@@ -30,15 +30,19 @@ const getAllSkills = async (req, res, next) => {
 
 const postSkill = async (req, res, next) => {
   try {
-    const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
-
-    const response = await queries.insertSkill(skill);
-    res.status(201);
-    res.json({
-        status: "success",
-        message: `new skill '${skill}' added`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
+  
+      const response = await queries.insertSkill(skill);
+      res.status(201);
+      res.json({
+          status: "success",
+          message: `new skill '${skill}' added`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }
@@ -46,16 +50,20 @@ const postSkill = async (req, res, next) => {
 
 const putSkill = async (req, res, next) => {
   try {
-    const skillId = processInput(req.params.skill_id, "idNum", "skill id");
-    const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
-
-    const response = await queries.updateSkill({ skillId, skill });
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `skill.${skillId} has been renamed to '${skill}'`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const skillId = processInput(req.params.skill_id, "idNum", "skill id");
+      const skill = processInput(req.body.skill, "hardVC", "skill name", 100);
+  
+      const response = await queries.updateSkill({ skillId, skill });
+      res.status(200);
+      res.json({
+          status: "success",
+          message: `skill.${skillId} has been renamed to '${skill}'`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }
@@ -63,14 +71,18 @@ const putSkill = async (req, res, next) => {
 
 const delSkill = async (req, res, next) => {
   try {
-    const skillId = processInput(req.params.skill_id, "idNum", "skill id");
-    const response = await queries.deleteSkill(skillId);
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `skill.${skillId} has been deleted`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const skillId = processInput(req.params.skill_id, "idNum", "skill id");
+      const response = await queries.deleteSkill(skillId);
+      res.status(200);
+      res.json({
+          status: "success",
+          message: `skill.${skillId} has been deleted`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }

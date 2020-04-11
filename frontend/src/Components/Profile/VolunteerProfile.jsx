@@ -41,15 +41,14 @@ export default function VolunteerProfile(props) {
 
     const getVolunteerSkills = async () => {
         try {
-            const { data } = await axios.get(`api/skills/${loggedUser.v_id}`);
-            props.setVolunteerSkills(data.payload);
+            const { data } = await axios.get(`api/volunteers/skills/${loggedUser.v_id}`);
+            props.setVolunteerSkills(data.payload.skills_list);
         } catch (err) {
             props.setFeedback(err)
         }
     }
 
     useEffect(() => {
-        props.setVolunteerSkills([1, 3])// getVolunteerSkills();
         props.setFirstName(loggedUser.v_first_name);
         props.setLastName(loggedUser.v_last_name);
         props.setEmail(loggedUser.v_email);
@@ -62,7 +61,9 @@ export default function VolunteerProfile(props) {
         props.setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
         props.setHostSiteVisit(loggedUser.hosting_site_visit);
         props.setIndustrySpeaker(loggedUser.industry_speaker);
-    }, [])
+        getVolunteerSkills();
+    }, [loggedUser]);
+
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -79,6 +80,7 @@ export default function VolunteerProfile(props) {
                     profile.append('lastName', lastName);
                     profile.append('company', company);
                     profile.append('title', title);
+                    profile.append('skills', volunteerSkills);
                     profile.append('bio', bio);
                     profile.append('linkedIn', linkedIn);
                     profile.append('mentor', mentor);
@@ -97,6 +99,7 @@ export default function VolunteerProfile(props) {
                         lastName,
                         company,
                         title,
+                        skills: volunteerSkills,
                         bio,
                         linkedIn,
                         mentor,
@@ -113,6 +116,7 @@ export default function VolunteerProfile(props) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.v_id}`, profile);
                 props.setUser(data.payload);
                 props.setPassword('');
+                props.setFeedback({message: 'Profile updated successfully'});
             } else {
                 props.setFeedback({message: 'email, password, first and last name, company, and title fields are required'});
             }
@@ -199,7 +203,7 @@ export default function VolunteerProfile(props) {
                                     type='text' 
                                     placeholder='LinkedIn link ' 
                                     value={linkedIn}
-                                    onChange={e => props.setLinkedIn(e.target.value)}
+                                    onChange={e => setLinkedIn(e.target.value)}
                                 />
                             </div>
 

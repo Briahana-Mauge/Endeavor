@@ -86,3 +86,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.inputFormText {
+  background-color: inherit;
+  border: inherit;
+  border-bottom: dashed 1px;
+}

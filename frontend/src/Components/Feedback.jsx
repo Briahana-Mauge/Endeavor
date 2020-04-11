@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default (props) => {
+export default function Feedback(props) {
     let text = 'Sorry, something went wrong \n Please try again'
 
     if (props.feedback.response && props.feedback.response.data.message) {

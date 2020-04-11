@@ -26,7 +26,7 @@ export default function AdminProfile(props) {
         props.setFirstName(loggedUser.a_first_name);
         props.setLastName(loggedUser.a_last_name);
         props.setEmail(loggedUser.a_email);
-    }, [])
+    }, [loggedUser])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -36,6 +36,7 @@ export default function AdminProfile(props) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.a_id}`, {email, password, firstName, lastName});
                 props.setUser(data.payload);
                 props.setPassword('');
+                props.setFeedback({message: 'Profile updated successfully'});
             } else {
                 props.setFeedback({message: 'All fields are required'});
             }

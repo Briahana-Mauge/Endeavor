@@ -9,7 +9,7 @@ export default function ProfileTabs(props) {
             </li>
 
             <li className='nav-item'>
-                <Link className={`nav-link ${props.passwordTab}`} to='profile/password'>Change Password</Link>
+                <Link className={`nav-link ${props.passwordTab}`} to='/profile/password'>Change Password</Link>
             </li>
         </ul>
     )

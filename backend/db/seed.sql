@@ -73,14 +73,14 @@ CREATE TABLE fellows (
     f_bio VARCHAR NOT NULL DEFAULT '',
     f_linkedin VARCHAR (150) NOT NULL DEFAULT '',
     f_github VARCHAR (150) NOT NULL DEFAULT '',
-    cohort_id INT NOT NULL REFERENCES cohorts(cohort_id) ON DELETE CASCADE,
+    cohort_id INT NOT NULL REFERENCES cohorts(cohort_id),
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
-    skill_id INT NOT NULL REFERENCES skills(skill_id) ON DELETE CASCADE
+    skill_id INT NOT NULL REFERENCES skills(skill_id)
 );
 
 CREATE TABLE mentor_pairs (

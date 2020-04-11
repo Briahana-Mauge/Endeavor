@@ -30,15 +30,19 @@ const getAllCohorts = async (req, res, next) => {
 
 const postCohort = async (req, res, next) => {
   try {
-    const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
-
-    const response = await queries.insertCohort(cohort);
-    res.status(201);
-    res.json({
-        status: "success",
-        message: `new cohort '${cohort}' added`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
+  
+      const response = await queries.insertCohort(cohort);
+      res.status(201);
+      res.json({
+          status: "success",
+          message: `new cohort '${cohort}' added`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }
@@ -46,16 +50,20 @@ const postCohort = async (req, res, next) => {
 
 const putCohort = async (req, res, next) => {
   try {
-    const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
-    const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
-
-    const response = await queries.updateCohort({ cohortId, cohort });
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `cohort.${cohortId} has been renamed to '${cohort}'`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
+      const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
+  
+      const response = await queries.updateCohort({ cohortId, cohort });
+      res.status(200);
+      res.json({
+          status: "success",
+          message: `cohort.${cohortId} has been renamed to '${cohort}'`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }
@@ -63,14 +71,18 @@ const putCohort = async (req, res, next) => {
 
 const delCohort = async (req, res, next) => {
   try {
-    const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
-    const response = await queries.deleteCohort(cohortId);
-    res.status(200);
-    res.json({
-        status: "success",
-        message: `cohort.${cohortId} has been deleted`,
-        payload: response
-    });
+    if (req.user && req.user.a_id) {
+      const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
+      const response = await queries.deleteCohort(cohortId);
+      res.status(200);
+      res.json({
+          status: "success",
+          message: `cohort.${cohortId} has been deleted`,
+          payload: response
+      });
+    } else {
+      throw new Error('403__Not allowed to perform this operation');
+    }
   } catch (err) {
     handleError(err, req, res, next);
   }

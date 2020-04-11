@@ -22,7 +22,7 @@ export default function FellowProfile(props) {
     } = props;
 console.log(loggedUser)
     const [ wantMentor, setWantMentor ] = useState(loggedUser.want_mentor);
-    const [ cohortsList, setCohortsList ] = useState([{cohort_id: 1, cohort:'general'}]);
+    const [ cohortsList, setCohortsList ] = useState([]);
     const [ bio, setBio ] = useState(loggedUser.f_bio);
     const [ linkedIn, setLinkedIn ] = useState(loggedUser.f_linkedin);
     const [ github, setGithub ] = useState(loggedUser.f_github);
@@ -46,7 +46,7 @@ console.log(loggedUser)
         props.setEmail(loggedUser.f_email);
         props.setCohortId(loggedUser.cohort_id);
         getCohortsList();
-    }, [])
+    }, [loggedUser])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -85,6 +85,8 @@ console.log(loggedUser)
                 const { data } = await axios.put(`/api/auth/${loggedUser.f_id}`, profile);
                 props.setUser(data.payload);
                 props.setPassword('');
+                props.setFeedback({message: 'Profile updated successfully'});
+
             } else {
                 props.setFeedback({message: 'email, password, cohort, first and last name fields are required'});
             }

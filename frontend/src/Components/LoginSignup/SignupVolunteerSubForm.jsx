@@ -2,8 +2,7 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
 export default function SignupAdminSubForm(props) {
-    // const [ skillsList, setSkillsList ] = useState([]);
-    const [ skillsList, setSkillsList ] = useState([{'skill_id':1, 'skill':'skill1'}, {'skill_id':2, 'skill':'skill2'}, {'skill_id':3, 'skill':'skill3'}]);
+    const [ skillsList, setSkillsList ] = useState([]);
     const [ skillsTracker, setSkillsTracker ] = useState({});
 
     const getSkillsList = async () => {
