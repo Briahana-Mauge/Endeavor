@@ -64,6 +64,7 @@ export default function VolunteerProfile(props) {
         getVolunteerSkills();
     }, [loggedUser]);
 
+
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
 

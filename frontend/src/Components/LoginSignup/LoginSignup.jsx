@@ -74,7 +74,6 @@ export default function LoginSignup(props) {
                     props.setUser(data.payload);
                 }
             }
-            
 
         } catch (err) {
             props.setFeedback(err);

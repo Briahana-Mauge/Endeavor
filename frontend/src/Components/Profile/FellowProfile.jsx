@@ -86,6 +86,7 @@ console.log(loggedUser)
                 props.setUser(data.payload);
                 props.setPassword('');
                 props.setFeedback({message: 'Profile updated successfully'});
+
             } else {
                 props.setFeedback({message: 'email, password, cohort, first and last name fields are required'});
             }
