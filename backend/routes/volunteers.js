@@ -8,7 +8,9 @@ const db = require('../db/db');
 
 const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
-const volunteerQueries = require('../queries/volunteers')
+const volunteerQueries = require('../queries/volunteers');
+const volunteerSkillsQueries = require('../queries/volunteerSkills');
+
 
 router.get('/all', async (req, res, next) => {
     try {
@@ -51,6 +53,21 @@ router.get('/email/:v_email', async (req, res, next) => {
                 message: "Success",
                 err: false
             });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+})
+
+// Get volunteer by email
+router.get('/skills/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        const allVolunteerSkills = await volunteerSkillsQueries.getVolunteerSkills(volunteerId);
+        res.json({
+            error: false,
+            message: `All volunteer with id ${volunteerId} skills retrieved`,
+            payload: allVolunteerSkills || {skills_list: []} // if volunteer didn't select any skill from the list of skills
+        });
     } catch (err) {
         handleError(err, req, res, next);
     }

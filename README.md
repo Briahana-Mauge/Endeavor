@@ -31,6 +31,7 @@
 + Node.js 12.5.0
 + JavaScript ES6+
 + HTML5
++ Node-Sass (SCSS) 4.13.1
 + CSS3
 
 ## Setup
@@ -44,7 +45,7 @@
   $ cd ../frontend
   $ npm run quick_install
   ```
-+ The site app will be found at: http://localhost:3008/
++ The app site will be found at: http://localhost:3008/
 
 ---
 
@@ -53,21 +54,39 @@
 ### **Server Endpoints**
 - **Fellows**
 
-  | Method | Endpoint                | Description                 | Query Parameters       | Body Data |
-  | ------ | ----------------------- | --------------------------- | ---------------------- | --------- |
+  | Method | Endpoint                | Description                 | Query Parameters        | Body Data |
+  | ------ | ----------------------- | --------------------------- | ----------------------- | --------- |
   | GET    | `/fellows/`             | Get all fellows             | want_mentor=true\|false | n/a       |
-  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                    | n/a       |
-  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                    | n/a       |
-  <!--
-  | POST   | `/fellows/create`       | Add a new fellow            | n/a                    | `fFirstName`, `fLastName`, `fEmail`, `cohortId` |
-  | PUT    | `/fellows/update/:id`   | Edit a single fellow's data | n/a                    | `fFirstName`, `fLastName`, `fPicture`, `fBio`, `fLinkedIn`, `fGithub`, `wantMentor` |
-  | DELETE | `/fellows/delete/:id`   | Delete a single fellow      | n/a                    | n/a       |
-  -->
+  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                     | n/a       |
+  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                     | n/a       |
 
-<!-- - **Users**
+- **Skills**
+
+  | Method | Endpoint                 | Description                | Query Parameters  | Body Data |
+  | ------ | ------------------------ | -------------------------- | ----------------- | --------- |
+  | GET    | `/skills/`               | Get all skills             | n/a               | n/a       |
+  | POST   | `/skills/add/`           | Add single skill           | n/a               | `skill`   |
+  | PUT    | `/skills/edit/:skill_id` | Rename single skill by id  | n/a               | `skill`   |
+  | DELETE | `/skills/del/:skill_id`  | Delete single skill by id  | n/a               | n/a       |
+
+- **Cohorts**
+
+  | Method | Endpoint                   | Description                 | Query Parameters | Body Data |
+  | ------ | -------------------------- | --------------------------- | ---------------- | --------- |
+  | GET    | `/cohorts/`                | Get all cohorts             | n/a              | n/a       |
+  | POST   | `/cohorts/add/`            | Add single cohort           | n/a              | `cohort`  |
+  | PUT    | `/cohorts/edit/:cohort_id` | Rename single cohort by id  | n/a              | `cohort`  |
+  | DELETE | `/cohorts/del/:cohort_id`  | Delete single cohort by id  | n/a              | n/a       |
+
+
+<!--
+- **Users**
 
   | Method | Endpoint     | Description           | Body Data                |
   | ------ | ------------ | --------------------- | ------------------------ |
   | GET    | `/users`     | Get all users         | n/a                      |
   | GET    | `/users/:id` | Get single user by id | n/a                      |
-  | POST   | `/users/`    | Add new user          | `username`, `avatarUrl`  | -->
+  | POST   | `/users/`    | Add new user          | `username`, `avatarUrl`  |
+  | PUT    | `/fellows/update/:id`   | Edit a single fellow's data | n/a                    | `fFirstName`, `fLastName`, `fPicture`, `fBio`, `fLinkedIn`, `fGithub`, `wantMentor` |
+  | DELETE | `/fellows/delete/:id`   | Delete a single fellow      | n/a                    | n/a       |
+  -->
