@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import EventsSearchCard from './EventsSearchCard';
+import EventsSearchCard from './EventsSearchCard';
 import { Link, Route, Switch } from 'react-router-dom';
 
 //Class component
@@ -75,10 +75,11 @@ class EventSearch extends React.Component {
                     <input type='button' value='Send' onClick={this.handleSubmit} />
                     <select className='filter' name='filter' onChange={this.handleInput}>
                         <option value={false} key='null'>Choose a search filter</option>
-                        <option value='name' key='name'>Name</option>
-                        <option value='v_email' key='v_email'>Email</option>
-                        <option value='company' key='company'>Company</option>
-                        <option value='skill' key='skills'>Skill</option>
+                        <option value='topic' key='name'>Event Name</option>
+                        <option value='instructor' key='instructor'>Instructor</option>
+                        <option value='upcoming' key='upcoming'>Upcoming events</option>
+                        <option value='past' key='past'>Past events</option>
+                        <option value='v_name' key='v_name'>Volunteer</option>
                     </select>
                 </form>
                 <div>
@@ -86,7 +87,7 @@ class EventSearch extends React.Component {
                         return (
 
                             <div key={volunteer.v_id}>
-                                {/* <VolunteerSearchCard volunteer={volunteer} /> */}
+                                <EventsSearchCard volunteer={volunteer} />
 
                             </div>
 
