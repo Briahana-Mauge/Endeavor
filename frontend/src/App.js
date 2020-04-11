@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import './App.scss';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
