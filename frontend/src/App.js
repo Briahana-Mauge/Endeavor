@@ -6,6 +6,7 @@ import './App.scss';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
+import EventsSearch from './Components/EventsSearch';
 import ProfilePage from './Components/Profile/ProfilePage';
 import AdminTools from './Components/AdminTools/AdminTools';
 
@@ -168,13 +169,14 @@ function App() {
           : null
         }
 
-        <Route path='/volunteers/search'> 
+        <Route exact path='/volunteers/search'> 
           <VolunteerSearch />
         </Route>
 
-        <Route path='/events/search'> 
-          <VolunteerSearch />
+        <Route exact path='/events/search'> 
+          <EventsSearch />
         </Route>
+
       </Switch>
 
       {
