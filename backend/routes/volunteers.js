@@ -10,9 +10,15 @@ const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
 const volunteerQueries = require('../queries/volunteers')
 
-router.get('/all', async (req, res, next) => {
+router.get('/all/', async (req, res, next) => { //change email to name
+
     try {
-        const allVolunteers = await volunteerQueries.getAllVolunteers();
+        const vEmail = processInput(req.query.v_email, "softVC", "volunteer email", 50);
+        const company = processInput(req.query.company, "softVC", "volunteer company", 50);
+        const skill = processInput(req.query.skill, "softVC", "volunteer skill", 100);
+        const name = processInput(req.query.name, "softVC", "volunteer name", 60);
+
+        const allVolunteers = await volunteerQueries.getAllVolunteers(vEmail, company, skill, name);
         res.status(200)
             .json({
                 payload: allVolunteers,
@@ -21,6 +27,7 @@ router.get('/all', async (req, res, next) => {
             });
     } catch (err) {
         handleError(err, req, res, next);
+        console.log(err)
     }
 });
 
