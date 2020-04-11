@@ -67,7 +67,7 @@ const addFellow = async (userObj, newPassword, oldPassword) => {
     return await db.one(postQuery, userObj);
   } catch (err) {
     if (registeredUser) { // if adding the new fellow fails, the password gets reset
-        userQueries.updatePassword(email, oldPassword);
+        userQueries.updatePassword(postQuery.email, oldPassword);
     }
     throw err;
   }
