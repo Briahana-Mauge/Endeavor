@@ -1,13 +1,16 @@
 {
-  "name": "CapstoneProject",
-  "version": "1.0.0",
+  "name": "capstone-g1",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node ./backend/bin/www",
+    "back": "psql -f backend/db/seed.sql && cd backend && npm run dev",
+    "front": "cd frontend && npm start",
     "heroku-postbuild": "cd backend && npm install && cd ../frontend && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Amine Bensalem, Briahana Maugé, Joseph P. Pasaoa",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Briahana-Mauge/CapstoneGroup1.git"
