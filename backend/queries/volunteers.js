@@ -7,6 +7,10 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 const userQueries = require('./users');
+const timeQueries = require('./time');
+// const eventVolunteersQueries = require('./eventVolunteers');
+// const mentorPairsQueries = require('./mentorPairs');
+const volunteerSkillsQueries = require('./volunteerSkills');
 
 
 /* QUERIES */
@@ -142,7 +146,30 @@ const updateVolunteer = async (user) => {
 }
 
 const deleteVolunteer = async (id) => {
-  return await db.one('DELETE FROM volunteers WHERE v_id = $/id/ RETURNING *', {id});
+  const deleteQuery = `
+    UPDATE volunteers
+    SET deleted = NOW()
+    WHERE v_id = $1
+    RETURNING *
+  `
+  const promises = [];
+  promises.push(db.one(deleteQuery, id));
+  promises.push(timeQueries.deleteHoursByVolunteerId(id, true));
+  // promises.push(eventVolunteersQueries.delete...(id, true));
+  // promises.push(mentorPairsQueries.delete...(id, true));
+  promises.push(volunteerSkillsQueries.deleteVolunteerSkillsByVolunteerId(id, true));
+  
+  const result = await Promise.all(promises);
+  return await result[0];
+}
+
+const deleteVolunteerByEmail = async (email, promise) => {
+  const volunteer = await db.one('SELECT * FROM volunteers WHERE v_email = $1', email);
+  console.log(volunteer)
+  if (promise) {
+    return deleteVolunteer(volunteer.v_id);
+  }
+  return await deleteVolunteer(volunteer.v_id);
 }
 
 /* EXPORT */
@@ -152,6 +179,7 @@ module.exports = {
     getVolunteerByEmail,
     addVolunteer,
     updateVolunteer,
-    deleteVolunteer
+    deleteVolunteer,
+    deleteVolunteerByEmail
 }
 
