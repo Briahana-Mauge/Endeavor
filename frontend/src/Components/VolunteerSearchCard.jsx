@@ -2,7 +2,6 @@ import React from 'react';
 import { Link} from 'react-router-dom';
 
 const VolunteerSearchCard = (props) => {
-    console.log(props)
     return (
         <div class="card" style={{ width: 400 }}>
             <img class="card-img-top" src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s picture`} />
