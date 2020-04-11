@@ -171,6 +171,10 @@ function App() {
         <Route path='/volunteers/search'> 
           <VolunteerSearch />
         </Route>
+
+        <Route path='/events/search'> 
+          <VolunteerSearch />
+        </Route>
       </Switch>
 
       {
