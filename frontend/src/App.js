@@ -18,8 +18,8 @@ function App() {
 
   const [ formType, setFormType ] = useState('login');
   const [ userType, setUserType ] = useState('');
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [ email, setEmail ] = useState('alexis@pursuit.org');
+  const [ password, setPassword ] = useState('1234');
   const [ newPassword, setNewPassword ] = useState('');
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
