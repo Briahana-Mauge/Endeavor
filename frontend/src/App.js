@@ -70,94 +70,64 @@ function App() {
     setFeedback(null);
   }
 
+  const loginSignupProps = {
+    formType,
+    userType,
+    setFormType,
+    setUserType
+  }
+
+  const profileProps = {
+    loggedUser,
+    setFeedback,
+    setUser,
+
+    email,
+    password,
+    firstName,
+    lastName,
+    newPassword,
+    cohortId,
+    company,
+    title,
+    volunteerSkills,
+    mentor,
+    officeHours,
+    techMockInterview,
+    behavioralMockInterview,
+    professionalSkillsCoach,
+    hostSiteVisit,
+    industrySpeaker,
+
+    setEmail,
+    setPassword,
+    setFirstName,
+    setLastName,
+    setNewPassword,
+    setCohortId,
+    setCompany,
+    setTitle,
+    setVolunteerSkills,
+    setMentor,
+    setOfficeHours,
+    setTechMockInterview,
+    setBehavioralMockInterview,
+    setProfessionalSkillsCoach,
+    setHostSiteVisit,
+    setIndustrySpeaker
+  }
+
 
   return (
     <div className="container-md mt-4">
+      <NavBar loggedUser={loggedUser} logout={logout} />
       <Switch>
         <Route exact path='/'> 
-          <LoginSignup 
-            loggedUser={loggedUser}
-            setFeedback={setFeedback} 
-            setUser={setUser}
-            formType={formType} 
-            setFormType={setFormType} 
-            userType={userType}
-            setUserType={setUserType}
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            newPassword={newPassword}
-            setNewPassword={setNewPassword}
-            cohortId={cohortId}
-            setCohortId={setCohortId}
-            company={company}
-            setCompany={setCompany}
-            title={title}
-            setTitle={setTitle}
-            volunteerSkills={volunteerSkills}
-            setVolunteerSkills={setVolunteerSkills}
-            mentor={mentor}
-            setMentor={setMentor}
-            officeHours={officeHours}
-            setOfficeHours={setOfficeHours}
-            techMockInterview={techMockInterview}
-            setTechMockInterview={setTechMockInterview}
-            behavioralMockInterview={behavioralMockInterview}
-            setBehavioralMockInterview={setBehavioralMockInterview}
-            professionalSkillsCoach={professionalSkillsCoach}
-            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
-            hostSiteVisit={hostSiteVisit}
-            setHostSiteVisit={setHostSiteVisit}
-            industrySpeaker={industrySpeaker}
-            setIndustrySpeaker={setIndustrySpeaker}
-          />
+          <LoginSignup {...loginSignupProps} {...profileProps} />
         </Route>
 
         <Route path='/profile'> 
-          <ProfilePage 
-            loggedUser={loggedUser}
-            setFeedback={setFeedback} 
-            setUser={setUser}
-            email={email}
-            setEmail={setEmail}
-            password={password}
-            setPassword={setPassword}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            newPassword={newPassword}
-            setNewPassword={setNewPassword}
-
-            cohortId={cohortId}
-            setCohortId={setCohortId}
-
-            company={company}
-            setCompany={setCompany}
-            title={title}
-            setTitle={setTitle}
-            volunteerSkills={volunteerSkills}
-            setVolunteerSkills={setVolunteerSkills}
-            mentor={mentor}
-            setMentor={setMentor}
-            officeHours={officeHours}
-            setOfficeHours={setOfficeHours}
-            techMockInterview={techMockInterview}
-            setTechMockInterview={setTechMockInterview}
-            behavioralMockInterview={behavioralMockInterview}
-            setBehavioralMockInterview={setBehavioralMockInterview}
-            professionalSkillsCoach={professionalSkillsCoach}
-            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
-            hostSiteVisit={hostSiteVisit}
-            setHostSiteVisit={setHostSiteVisit}
-            industrySpeaker={industrySpeaker}
-            setIndustrySpeaker={setIndustrySpeaker}
-          />
+          <ProfilePage {...profileProps} />
         </Route>
 
         {
