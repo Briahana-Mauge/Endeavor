@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export default function SignupFellowSubForm(props) {
     const [ cohortsList, setCohortsList ] = useState([]);
 
-    const getCohortsList = async () => {
+    const { setFeedback } = props;
+
+    const getCohortsList = useCallback(async () => {
         try {
             const { data } = await axios.get(`api/cohorts`);
             setCohortsList(data.payload);
         } catch (err) {
-            props.setFeedback(err)
+            setFeedback(err)
         }
-    }
+    }, [setFeedback]);
     
     useEffect(() => {
         getCohortsList();
-    }, []);
+    }, [getCohortsList]);
 
     return (
         <>

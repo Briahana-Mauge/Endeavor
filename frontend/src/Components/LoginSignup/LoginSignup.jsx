@@ -8,11 +8,14 @@ import EmailPassword from './EmailPassword';
 
 export default function LoginSignup(props) {
     const history = useHistory();
+
+    const { loggedUser } = props;
+
     useEffect(() => {
-        if (props.loggedUser.a_id || props.loggedUser.v_id || props.loggedUser.f_id) {
+        if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
             history.push('/home');
         }
-    }, [props.loggedUser]);
+    }, [loggedUser, history]);
 
     const {
         formType,
