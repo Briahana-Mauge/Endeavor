@@ -49,18 +49,14 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    getLoggedInUser();
-  }, []);
-
   const setUser = (user) => {
     setLoggedUser(user);
   }
 
   const logout = async () => {
     try {
-      await axios.get('/api/auth.logout');
-      setLoggedUser(null);
+      await axios.get('/api/auth/logout');
+      setLoggedUser({});
     } catch (err) {
       setFeedback(err);
     }
