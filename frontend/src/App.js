@@ -34,9 +34,8 @@ function App() {
   const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-  
 
-  const getLoggedInUser = async () => {
+  const getLoggedInUser = useCallback(async () => {
     try {
       const { data } = await axios.get('/api/auth/is_logged');
       setLoggedUser(data.payload);
@@ -47,7 +46,11 @@ function App() {
         setFeedback(err);
       }
     }
-  }
+  }, [setFeedback, history]);
+
+  useEffect(() => {
+    getLoggedInUser();
+  }, [getLoggedInUser]);
 
   const setUser = (user) => {
     setLoggedUser(user);
