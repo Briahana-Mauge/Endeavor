@@ -8,7 +8,7 @@ import EmailPassword from './EmailPassword';
 
 export default function LoginSignup(props) {
     const {
-        currentRole,
+        loggedUser,
         setUser,
         setFeedback
     } = props;
@@ -35,13 +35,11 @@ export default function LoginSignup(props) {
 
     const history = useHistory();
 
-
     useEffect(() => {
-        if (currentRole) {
-            console.log("Logged User Found. Going to HOME");
+        if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
             history.push('/home');
         }
-    }, [currentRole, history]);
+    }, [loggedUser, history]);
 
 
     const handleFormSubmit = async (e) => {

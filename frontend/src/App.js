@@ -1,65 +1,64 @@
+/*
+ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
+APP MAIN | Capstone App (Pursuit Volunteer Mgr)
+*/
+
+
+/* IMPORTS */
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
+import LoginSignupGate from './Components/LoginSignupGate';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
-import Feedback from './Components/Feedback';
-import VolunteerSearch from './Components/VolunteerSearch';
+import PrivateRouteGate from './Components/PrivateRouteGate';
+import NavBar from './Components/NavBar';
+import Dashboard from './Components/Dashboard';
 import ProfilePage from './Components/Profile/ProfilePage';
 import AdminTools from './Components/AdminTools/AdminTools';
+import VolunteerSearch from './Components/VolunteerSearch';
+import Feedback from './Components/Feedback';
 
 
-function App() {
-  const history = useHistory();
-
+const App = () => {
   const [ loggedUser, setLoggedUser ] = useState({});
+  const [ currentRole, setCurrentRole ] = useState("");
+  const [ isUserStateReady, setIsUserStateReady ] = useState(false);
   const [ feedback, setFeedback ] = useState(null);
 
-  const [ formType, setFormType ] = useState('login');
-  const [ userType, setUserType ] = useState('');
-  const [ email, setEmail ] = useState('alexis@pursuit.org');
-  const [ password, setPassword ] = useState('1234');
-  const [ newPassword, setNewPassword ] = useState('');
-  const [ firstName, setFirstName ] = useState('');
-  const [ lastName, setLastName ] = useState('');
-  const [ cohortId, setCohortId ] = useState(0);
-  const [ company, setCompany ] = useState('');
-  const [ title, setTitle ] = useState('');
-  const [ volunteerSkills, setVolunteerSkills ] = useState([]);
-  const [ mentor, setMentor ] = useState(false);
-  const [ officeHours, setOfficeHours ] = useState(false);
-  const [ techMockInterview, setTechMockInterview ] = useState(false);
-  const [ behavioralMockInterview, setBehavioralMockInterview ] = useState(false);
-  const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
-  const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
-  const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-
-  const getLoggedInUser = useCallback(async () => {
-    try {
-      const { data } = await axios.get('/api/auth/is_logged');
-      setLoggedUser(data.payload);
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        history.push('/');
-      } else {
-        setFeedback(err);
-      }
-    }
-  }, [setFeedback, history]);
+  const history = useHistory();
 
   useEffect(() => {
-    getLoggedInUser();
-  }, [getLoggedInUser]);
+    const checkForLoggedInUser = async () => {
+      const response = await axios.get('/api/auth/is_logged');
+      return response.data.payload;
+    };
+    checkForLoggedInUser()
+      .then(setUser)
+      .catch(err => {
+        if (err.response && err.response.status === 401) {
+          setIsUserStateReady(true);
+          history.push('/');
+        } else {
+          setFeedback(err);
+        }
+      })
+    ;
+  }, [history]);
+
 
   const setUser = (user) => {
     setLoggedUser(user);
+    setCurrentRole(user.role);
+    setIsUserStateReady(true);
   }
 
   const logout = async () => {
     try {
+      setIsUserStateReady(false);
       await axios.get('/api/auth/logout');
-      setLoggedUser({});
+      // setUser({}); // this might not be needed or working because server request.logOut() seems to reload page?
     } catch (err) {
       setFeedback(err);
     }
@@ -69,76 +68,64 @@ function App() {
     setFeedback(null);
   }
 
-  const loginSignupProps = {
-    formType,
-    userType,
-    setFormType,
-    setUserType
+
+  /* PREP RETURN */
+  const gateProps = {
+    currentRole,
+    isUserStateReady
   }
-
-  const profileProps = {
+  const navProps = {
     loggedUser,
-    setFeedback,
+    logout
+  }
+  const userProps = {
+    loggedUser,
     setUser,
-
-    email,
-    password,
-    firstName,
-    lastName,
-    newPassword,
-    cohortId,
-    company,
-    title,
-    volunteerSkills,
-    mentor,
-    officeHours,
-    techMockInterview,
-    behavioralMockInterview,
-    professionalSkillsCoach,
-    hostSiteVisit,
-    industrySpeaker,
-
-    setEmail,
-    setPassword,
-    setFirstName,
-    setLastName,
-    setNewPassword,
-    setCohortId,
-    setCompany,
-    setTitle,
-    setVolunteerSkills,
-    setMentor,
-    setOfficeHours,
-    setTechMockInterview,
-    setBehavioralMockInterview,
-    setProfessionalSkillsCoach,
-    setHostSiteVisit,
-    setIndustrySpeaker
+    setFeedback,
+  }
+  let showAdmins = null;
+  if (loggedUser && loggedUser.a_id) {
+    showAdmins = (
+      <Route path='/tools'>
+        <PrivateRouteGate {...gateProps}>
+          <NavBar {...navProps} />
+          <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
+        </PrivateRouteGate>
+      </Route>
+    );
   }
 
 
   return (
     <div className="container-md mt-4">
-      <NavBar loggedUser={loggedUser} logout={logout} />
       <Switch>
-        <Route exact path='/'> 
-          <LoginSignup {...loginSignupProps} {...profileProps} />
+        <Route exact path='/'>
+          <LoginSignupGate {...gateProps}>
+            <LoginSignup {...userProps} />
+          </LoginSignupGate>
         </Route>
 
-        <Route path='/profile'> 
-          <ProfilePage {...profileProps} />
+        <Route path='/home'>
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <Dashboard />
+          </PrivateRouteGate>
         </Route>
 
-        {
-          loggedUser && loggedUser.a_id
-          ? <Route path='/tools'>
-              <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
-            </Route>
-          : null
-        }
+        <Route path='/profile'>
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <ProfilePage {...userProps} />
+          </PrivateRouteGate>
+        </Route>
 
-        <Route path='/volunteers/search'> 
-          <VolunteerSearch />
+        {showAdmins}
+
+        <Route path='/volunteers/search'>
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <VolunteerSearch />
+          </PrivateRouteGate>
         </Route>
       </Switch>
 
