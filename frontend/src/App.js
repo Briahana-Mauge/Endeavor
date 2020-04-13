@@ -8,7 +8,7 @@ import Feedback from './Components/Feedback';
 import VolunteerSearch from './Components/VolunteerSearch';
 import ProfilePage from './Components/Profile/ProfilePage';
 import AdminTools from './Components/AdminTools/AdminTools';
-
+import ProfileRender from './Components/ProfilePages/ProfileRender';
 
 function App() {
   const history = useHistory();
@@ -72,7 +72,7 @@ function App() {
 
 
   return (
-    <div className="container-md mt-4">
+    <div className=".container-fluid p-3 mt-4">
       <Switch>
         <Route exact path='/'> 
           <LoginSignup 
@@ -169,7 +169,11 @@ function App() {
         }
 
         <Route path='/volunteers/search'> 
-          <VolunteerSearch />
+          <VolunteerSearch loggedUser={loggedUser} setFeedback={setFeedback} />
+        </Route>
+
+        <Route path='/volunteers/:volunteerId'> 
+          <ProfileRender loggedUser={loggedUser} setFeedback={setFeedback} />
         </Route>
       </Switch>
 
