@@ -7,14 +7,43 @@ Events Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 
+/* HELPER FUNCTION */
+const formatStr = str => {
+  return str.toLowerCase()
+}
+
 /* QUERIES */
 
 
 // Get all events (past events are auto pushed to the back)
-const getAllEvents = async () => {
+const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
+
+  let lowercasevName = '';
+  let lowercaseTopic = '';
+  let lowercaseInstructor = '';
+  // let newUpcoming = '';
+  // let newPast = '';
+
+  if (vName) {
+    lowercasevName = vName.toLowerCase()
+  }
+  if (topic) {
+    lowercaseTopic = topic.toLowerCase()
+  }
+  if (instructor) {
+    lowercaseInstructor = instructor.toLowerCase()
+  }
+  // if (upcoming) {
+  //   newUpcoming = upcoming
+  // }
+  // if (past) {
+  //   newPast = past
+  // }
+
+
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT classes.class) AS class,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -25,12 +54,13 @@ const getAllEvents = async () => {
 
   FROM events
 
-  INNER JOIN classes ON classes.class_id = events.attendees
+  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-                 
-  GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, classes.class     
+  `
+
+  let endOfQuery = `GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
+    events.instructor, events.number_of_volunteers, cohorts.cohort     
 
   ORDER BY (
     CASE WHEN DATE(event_start) > now()
@@ -39,14 +69,34 @@ const getAllEvents = async () => {
         END
         ) 
   DESC, event_start ASC
-  `;
-  return await db.any(selectQuery);
+  `
+  if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') { //use name instead of email
+    return await db.any(selectQuery + endOfQuery);
+  }
+  else if (lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE lower(volunteers.v_first_name) = $/lowercasevName/ OR lower(volunteers.v_last_name) = $/lowercasevName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/lowercasevName/
+     ${endOfQuery}`, { lowercasevName });
+  }
+   /*issues*/else if (lowercasevName === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE LOWER (events.topic) LIKE % $/lowercaseTopic/ % ${endOfQuery}`, { lowercaseTopic });
+
+  } 
+  /*issues*/ else if (lowercasevName === '' && lowercaseTopic === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE LOWER (events.instructor) LIKE % $/lowercaseInstructor/ % ${endOfQuery}`, { lowercaseInstructor });
+  }
+  else if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && past === '') {
+    return await getUpcomingEvents();
+  } else {
+    return await getPastEvents();
+  }
+
+
 }
 
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT classes.class) AS class,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -57,14 +107,14 @@ const getSingleEvent = async (eId) => {
 
   FROM events
 
-  INNER JOIN classes ON classes.class_id = events.attendees
+  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
   WHERE events.event_id = $/eId/
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, classes.class     
+    events.instructor, events.number_of_volunteers, cohorts.cohort     
 
   ORDER BY (
     CASE WHEN DATE(event_start) > now()
@@ -74,23 +124,23 @@ const getSingleEvent = async (eId) => {
         ) 
   DESC, event_start ASC
   `;
-  return await db.any(selectQuery, {eId});
+  return await db.any(selectQuery, { eId });
 }
 
 const getAllEventsAdmin = async () => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT classes.class) AS class, 
+    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class, 
     ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
 
   FROM events
 
-  INNER JOIN classes ON classes.class_id = events.attendees
+  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
                  
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, classes.class
+    events.instructor, events.number_of_volunteers, cohorts.cohort
          
   ORDER BY (CASE WHEN DATE(event_start) > now()
     THEN 1
@@ -99,32 +149,32 @@ const getAllEventsAdmin = async () => {
     ) 
   DESC, event_start ASC
   `;
-return await db.any(selectQuery);
+  return await db.any(selectQuery);
 }
 
 //Get Single Event for Admin
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-  events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT classes.class) AS class, 
+  events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
 
   FROM events
 
-  INNER JOIN classes ON classes.class_id = events.attendees
+  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
     
   WHERE events.event_id = $/eId/
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, classes.class
+    events.instructor, events.number_of_volunteers, cohorts.cohort
   `
-  return await db.one(selectQuery, {eId});
+  return await db.one(selectQuery, { eId });
 }
 
 // Get all upcoming events
-const getUpcomingEvents = async () => {
+async function getUpcomingEvents() {
   const selectQuery = `
   SELECT * 
   FROM events 
@@ -135,7 +185,7 @@ const getUpcomingEvents = async () => {
 }
 
 // Get all past events
-const getPastEvents = async () => {
+async function getPastEvents() {
   const selectQuery = `
   SELECT * 
   FROM events 
