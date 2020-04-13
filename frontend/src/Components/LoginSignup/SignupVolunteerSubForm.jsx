@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function SignupVolunteerSubForm(props) {
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillsTracker, setSkillsTracker ] = useState({});
 
-    const { setFeedback } = props;
-
-    const getSkillsList = useCallback(async () => {
+    const getSkillsList = async () => {
         try {
             const { data } = await axios.get(`api/skills`);
             setSkillsList(data.payload);
         } catch (err) {
-            setFeedback(err)
+            props.setFeedback(err)
         }
-    }, [setFeedback]);
+    }
 
     const manageSkills = (e, skillId) => {
         const list = {...skillsTracker};
@@ -33,7 +31,7 @@ export default function SignupVolunteerSubForm(props) {
 
     useEffect(() => {
         getSkillsList();
-    }, [getSkillsList]);
+    }, []);
 
     useEffect(() => {
         const tracker = {};
