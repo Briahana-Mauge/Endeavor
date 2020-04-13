@@ -5,12 +5,23 @@ const EventsSearchCard = (props) => {
     console.log(props)
     return (
         <div class="card" style={{ width: 400 }}>
-            <img class="card-img-top" src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s picture`} />
             <div class="card-body">
-                <h4 class="card-title">{props.volunteer.v_first_name} {props.volunteer.v_last_name}</h4>
-                <p class="card-text">{props.volunteer.title} at {props.volunteer.company}</p>
-                <p class="card-text">{props.volunteer.v_email}</p>
-                <h5>Skills:</h5>
+                <h4 class="card-title">{props.event.topic}</h4>
+                <p>{new Date(props.event.event_start).toLocaleString()}</p>
+                <p class="card-text">
+                    Hosted by: {props.event.instructor}
+                    </p>
+                <p class="card-text">{props.event.description} </p>
+                <p class="card-text">Class: {props.event.class} </p>
+                {
+                (props.event.volunteers) ?
+                <p class="card-text">Volunteers: {props.event.volunteers}</p>
+                : <p class="card-text">Volunteers: TBA</p>
+                }
+                
+       
+
+                {/* <h5>Skills:</h5>
                 <ul>
                     <p class="card-text">{props.volunteer.skills[0]}</p>
                     <p class="card-text">{props.volunteer.skills[1]}</p>
@@ -19,7 +30,7 @@ const EventsSearchCard = (props) => {
                 <h5>Next Event: {props.volunteer.topics[0]} (make this a link)</h5>
                 <Link to={`/volunteers/${props.volunteer.v_id}`}>
                     <a href="#" class="btn btn-primary">See Profile</a>
-                    </Link>
+                    </Link> */}
             </div>
         </div>
     );

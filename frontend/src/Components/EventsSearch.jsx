@@ -27,18 +27,21 @@ class EventSearch extends React.Component {
         if (filter === '') {
             basic = await axios.get(`/api/events/all/`);
 
-        } else if (filter === 'v_email') {
-            basic = await axios.get(`/api/events/all/?v_email=${search}`);
+        } else if (filter === 'v_name') {
+            basic = await axios.get(`/api/events/all/?v_name=${search}`);
 
-        } else if (filter === 'company') {
-            basic = await axios.get(`/api/events/all/?company=${search}`);
+        } else if (filter === 'instructor') {
+            basic = await axios.get(`/api/events/all/?instructor=${search}`);
+
+        }else if (filter === 'topic') {
+            basic = await axios.get(`/api/events/all/?topic=${search}`);
 
         }
         else if (filter === 'skill') {
-            basic = await axios.get(`/api/events/all/?skill=${search}`);
+            basic = await axios.get(`/api/events/all/?upcoming=${filter}`);
 
         } else {
-            basic = await axios.get(`/api/events/all/?name=${search}`);
+            basic = await axios.get(`/api/events/all/?past=${filter}`);
         }
 
 
@@ -58,6 +61,7 @@ class EventSearch extends React.Component {
         event.preventDefault();
         this.setState({
             loading: false,
+            filter: ''
         })
 
         this.getAllEvents();
@@ -66,28 +70,36 @@ class EventSearch extends React.Component {
     }
     render = () => {
 
-        const { results } = this.state
+        const { results, filter } = this.state
+        console.log(results)
         return (
             <div className="Search">
         
                 <form>
-                    <input type='text' name='search' placeholder='Search' onChange={this.handleInput} value={this.setState.search} />
-                    <input type='button' value='Send' onClick={this.handleSubmit} />
+                    {
+                    this.state.filter === 'upcoming' || this.state.filter === 'past'? 
+                    <input type='text' name='search' placeholder='Press Send' onChange={this.handleInput} value={this.setState.search} disabled/>
+                   : <input type='text' name='search' placeholder='Search' onChange={this.handleInput} value={this.setState.search} />
+
+                    }
+                    
                     <select className='filter' name='filter' onChange={this.handleInput}>
                         <option value={false} key='null'>Choose a search filter</option>
                         <option value='topic' key='name'>Event Name</option>
+                        <option value='v_name' key='v_name'>Volunteer</option>
                         <option value='instructor' key='instructor'>Instructor</option>
                         <option value='upcoming' key='upcoming'>Upcoming events</option>
                         <option value='past' key='past'>Past events</option>
-                        <option value='v_name' key='v_name'>Volunteer</option>
+                        
                     </select>
+                    <input type='button' value='Send' onClick={this.handleSubmit} />
                 </form>
                 <div>
-                    {results.map(volunteer => {
+                    {results.map(event => {
                         return (
 
-                            <div key={volunteer.v_id}>
-                                <EventsSearchCard volunteer={volunteer} />
+                            <div key={event.event_id}>
+                                <EventsSearchCard event={event} />
 
                             </div>
 
