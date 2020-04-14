@@ -12,28 +12,73 @@ const timeQueries = require('./time');
 // const mentorPairsQueries = require('./mentorPairs');
 const volunteerSkillsQueries = require('./volunteerSkills');
 
+const formatStr = str => {
+  return str.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
 
 /* QUERIES */
 
-// Get all volunteers
-const getAllVolunteers = async () => {
-    const selectQuery = `
-    SELECT *
-    FROM volunteers
-    ORDER BY v_first_name ASC
-  `;
-    return await db.any(selectQuery);
+// Get all volunteers with filter cases
+const getAllVolunteers = async (vEmail, company, skill, name) => {
+  let parsedCompany = '';
+  let parsedSkill = '';
+  let lowercaseName = ''
+  if (company) {
+    parsedCompany = formatStr(company);
+    console.log(parsedCompany)
+  }
+  if (skill) {
+    parsedSkill = formatStr(skill);
+  }
+  if (name) {
+    lowercaseName = name.toLowerCase();
+  }
+
+  const selectQuery = `
+    SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
+        volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
+        ARRAY_AGG(DISTINCT skills.skill) AS skills,  ARRAY_AGG(DISTINCT events.topic) AS topics,
+        volunteers.active
+    FROM volunteers 
+    INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
+    INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
+    INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+    INNER JOIN events ON events.event_id = event_volunteers.eventv_id
+    
+  `
+  let endOfQuery = `
+  GROUP BY volunteers.v_id
+   ORDER BY v_first_name ASC
+  `
+  if (vEmail === '' && parsedCompany === '' && parsedSkill === '' && lowercaseName === '') { //use name instead of email
+    return await db.any(selectQuery + endOfQuery);
+
+  }
+  else if (parsedCompany === '' && parsedSkill === '' && lowercaseName === '') {
+    return await db.any(`${selectQuery} WHERE volunteers.v_email = $/vEmail/ ${endOfQuery}`, { vEmail });
+  }
+  else if (vEmail === '' && parsedSkill === '' && lowercaseName === '') {
+    return await db.any(`${selectQuery} WHERE volunteers.parsed_company = $/parsedCompany/ ${endOfQuery}`, { parsedCompany });
+  } else if (vEmail === '' && parsedCompany === '' && lowercaseName === '') {
+    return await db.any(`${selectQuery} WHERE skills.parsed_skill = $/parsedSkill/ ${endOfQuery}`, { parsedSkill });
+  }
+  else {
+    return await db.any(`${selectQuery} WHERE lower(volunteers.v_first_name) = $/lowercaseName/ OR lower(volunteers.v_last_name) = $/lowercaseName/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/lowercaseName/
+  ${endOfQuery}`, { lowercaseName });
+
+  }
 }
+
 
 // Get all new (unconfirmed) volunteers
 const getNewVolunteers = async () => {
-    const selectQuery = `
+  const selectQuery = `
       SELECT *
       FROM volunteers
       WHERE confirmed = FALSE
       ORDER BY v_first_name ASC
     `;
-    return await db.any(selectQuery);
+  return await db.any(selectQuery);
 }
 
 // Get volunteer by email 
@@ -43,17 +88,11 @@ const getVolunteerByEmail = async (vEmail) => {
   FROM volunteers
   WHERE v_email = $/vEmail/
   `;
-  return await db.one(selectQuery, {vEmail});
+  return await db.one(selectQuery, { vEmail });
 }
 
-// Get all volunteers by some filter
 
 
-
-
-const formatStr = str => {
-    return str.toLowerCase().replace(/[^a-z0-9]/g, '')
-}
 
 const addVolunteer = async (user, password) => {
   const registeredUser = await userQueries.addUser(user.email, password, 'volunteer');
@@ -104,10 +143,10 @@ const addVolunteer = async (user, password) => {
     return volunteer;
   } catch (err) {
     if (registeredUser) {
-        userQueries.deleteUser(user.email);
+      userQueries.deleteUser(user.email);
     }
     throw err;
-}
+  }
 }
 
 const updateVolunteer = async (user) => {
