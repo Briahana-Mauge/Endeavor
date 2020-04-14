@@ -101,4 +101,24 @@ router.get('/past', async (req, res, next) => {
     }
 });
 
+// Delete an event by its ID
+router.delete('/:event_id', async (req, res, next) => {
+    try {
+        const eventId = processInput(req.params.event_id, 'idNum');
+        if (req.user && req.user.a_id) {
+            const deletedEvent = await eventsQueries.deleteEvent(eventId);
+            res.json({
+                payload: deletedEvent,
+                message: `Successfully deleted event.${eventId}`,
+                err: false
+            });
+        } else {
+            throw new Error('403__Not allowed to perform this operation')
+        }
+
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
 module.exports = router;

@@ -18,18 +18,22 @@ DROP TABLE IF EXISTS skills;
 
 CREATE TABLE skills (
     skill_id SERIAL PRIMARY KEY,
-    skill VARCHAR (100) UNIQUE NOT NULL
+    skill VARCHAR (100) NOT NULL,
+    parsed_skill VARCHAR (100) UNIQUE NOT NULL,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE cohorts (
     cohort_id SERIAL PRIMARY KEY,
-    cohort VARCHAR (10) UNIQUE NOT NULL
+    cohort VARCHAR (10) UNIQUE NOT NULL,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE users_data (
     user_email VARCHAR (50) PRIMARY KEY,
     password VARCHAR,
-    role VARCHAR (10) NOT NULL
+    role VARCHAR (10) NOT NULL,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE administration (
@@ -37,7 +41,8 @@ CREATE TABLE administration (
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
     a_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
-    admin BOOLEAN NOT NULL DEFAULT FALSE
+    admin BOOLEAN NOT NULL DEFAULT FALSE,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE volunteers (
@@ -60,8 +65,9 @@ CREATE TABLE volunteers (
     professional_skills_coach BOOLEAN NOT NULL DEFAULT FALSE,
     hosting_site_visit BOOLEAN NOT NULL DEFAULT FALSE,
     industry_speaker BOOLEAN NOT NULL DEFAULT FALSE,
-    signup_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    inactive_date DATE
+    signup_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
+    inactive_date DATE,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE fellows (
@@ -74,13 +80,15 @@ CREATE TABLE fellows (
     f_linkedin VARCHAR (150) NOT NULL DEFAULT '',
     f_github VARCHAR (150) NOT NULL DEFAULT '',
     cohort_id INT NOT NULL REFERENCES cohorts(cohort_id),
-    want_mentor BOOLEAN NOT NULL DEFAULT FALSE 
+    want_mentor BOOLEAN NOT NULL DEFAULT FALSE,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
-    skill_id INT NOT NULL REFERENCES skills(skill_id)
+    skill_id INT NOT NULL REFERENCES skills(skill_id),
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE mentor_pairs (
@@ -88,7 +96,8 @@ CREATE TABLE mentor_pairs (
     mentor INT NOT NULL REFERENCES volunteers(v_id),
     mentee INT NOT NULL REFERENCES fellows(f_id),
     active BOOLEAN NOT NULL DEFAULT TRUE,
-    starting_date DATE NOT NULL DEFAULT CURRENT_DATE
+    starting_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE events (
@@ -102,58 +111,62 @@ CREATE TABLE events (
     instructor VARCHAR (100) NOT NULL,
     number_of_volunteers INT NOT NULL,
     g_calendar_id VARCHAR,
-    materials_url VARCHAR
+    materials_url VARCHAR,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE event_volunteers (
     ev_id SERIAL PRIMARY KEY,
     eventv_id INT NOT NULL REFERENCES events(event_id),
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
-    confirmed BOOLEAN NOT NULL DEFAULT FALSE
+    confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE event_fellows (
     ef_id SERIAL PRIMARY KEY,
     eventf_id INT NOT NULL REFERENCES events(event_id),
-    fellow_id INT NOT NULL REFERENCES fellows(f_id)
+    fellow_id INT NOT NULL REFERENCES fellows(f_id),
+    deleted DATE DEFAULT NULL
 );
 
 CREATE TABLE volunteers_hours (
     vh_id SERIAL PRIMARY KEY,
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     banked_time INT NOT NULL DEFAULT 0,
-    planned_time INT NOT NULL DEFAULT 0
+    planned_time INT NOT NULL DEFAULT 0,
+    deleted DATE DEFAULT NULL
 );
 
 
 -- SEEDING DATABASE
 
-INSERT INTO skills (skill) VALUES 
-    ('Javascript'),
-    ('React'),
-    ('React Native'),
-    ('Angular'),
-    ('Ruby on Rails'),
-    ('Django'),
-    ('Flask'),
-    ('Java'),
-    ('Swift'),
-    ('Objective-C'),    -- 10
-    ('Python'),
-    ('R'),
-    ('Scala'),
-    ('HTML'),
-    ('CSS'),    -- 15
-    ('Professional Communication'),
-    ('Personal Narrative, and Pop Pitches'),
-    ('Written Communication'),
-    ('Resumes, LinkedIn, and Cover Letters'),
-    ('Project Management: Roles, Tools, and Best Practices'),
-    ('Product Design, UX, and Prototyping'),
-    ('Company Research'),
-    ('Negotiations'),
-    ('Talking About Tech Projects in Interviews'),
-    ('Personal Finance');   -- 25
+INSERT INTO skills (skill, parsed_skill) VALUES 
+    ('Javascript', 'javascript'),
+    ('React', 'react'),
+    ('React Native', 'reactnative'),
+    ('Angular', 'angular'),
+    ('Ruby on Rails', 'rubyonrails'),
+    ('Django', 'django'),
+    ('Flask', 'Flask'),
+    ('Java', 'java'),
+    ('Swift', 'swift'),
+    ('Objective-C', 'objectivec'),    -- 10
+    ('Python', 'python'),
+    ('R', 'r'),
+    ('Scala', 'scala'),
+    ('HTML', 'html'),
+    ('CSS', 'scc'),    -- 15
+    ('Professional Communication', 'professionalcommunication'),
+    ('Personal Narrative, and Pop Pitches', 'personalnarrativeandpoppitches'),
+    ('Written Communication', 'writtencommunication'),
+    ('Resumes, LinkedIn, and Cover Letters', 'resumeslinkedinandcoverletters'),
+    ('Project Management: Roles, Tools, and Best Practices', 'projectmanagementrolestoolsandbestpractices'),
+    ('Product Design, UX, and Prototyping', 'productdesignuxandprototyping'),
+    ('Company Research', 'companyresearch'),
+    ('Negotiations', 'negotiations'),
+    ('Talking About Tech Projects in Interviews', 'talkingabouttechprojectsininterviews'),
+    ('Personal Finance', 'personalfinance');   -- 25
 
 
 INSERT INTO cohorts (cohort) VALUES

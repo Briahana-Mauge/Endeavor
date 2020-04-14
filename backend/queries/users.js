@@ -1,7 +1,11 @@
-const db = require('../db/db')
+const db = require('../db/db');
+
+const adminQueries = require('./admin');
+const fellowsQueries = require('./fellows');
+const volunteersQueries = require('./volunteers');
 
 const getUserByEmail = async (email) => {
-    return await db.oneOrNone('SELECT * FROM users_data WHERE user_email = $1', email)
+    return await db.oneOrNone('SELECT * FROM users_data WHERE user_email = $1 AND deleted IS NULL', email)
 }
 
 const addUser = async (email, password, role) => {
@@ -21,7 +25,23 @@ const updateEmail = async (oldEmail, newEmail) => {
 }
 
 const deleteUser = async (email) => {
-    return await db.one('DELETE FROM users_data WHERE user_email = $1 RETURNING *', email);
+    const deleteQuery = `
+        UPDATE users_data
+        SET deleted = NOW()
+        WHERE user_email = $1
+        RETURNING *
+    `
+    const user = await db.one(deleteQuery, email);
+
+    if (user.role === 'admin' || user.role === 'staff') {
+        await adminQueries.deleteAdminByEmail(email);
+    } else if (user.role === 'fellow') {
+        await fellowsQueries.deleteFollowByEmail(email)
+    } else if (user.role === 'volunteer') {
+        await volunteersQueries.deleteVolunteerByEmail(email)
+    }
+
+    return user;
 }
 
 module.exports = {
