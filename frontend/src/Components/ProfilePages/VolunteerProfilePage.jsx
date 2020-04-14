@@ -12,7 +12,7 @@ export default function VolunteerProfilePage(props) {
             if (volunteerId) {
                 const { data } = await axios.get(`/api/volunteers/id/${volunteerId}`);
                 setVolunteer(data.payload);
-                console.log(data.payload)
+                
                 setTasks([
                     ['mentoring', data.payload.mentoring], 
                     ['being an Office Hours mentor', data.payload.office_hours], 
@@ -28,8 +28,6 @@ export default function VolunteerProfilePage(props) {
                 promises.push(axios.get(`/api/events/past/volunteer/${volunteerId}`));
                 const response = await Promise.all(promises);
 
-                console.log('MENTEES: ', response[0].data.payload);
-                console.log('EVENTS: ', response[1].data.payload);
                 setMentees(response[0].data.payload);
                 setEvents(response[1].data.payload);
             }
