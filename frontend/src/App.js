@@ -29,11 +29,12 @@ const App = () => {
 
   const history = useHistory();
 
+  const checkForLoggedInUser = async () => {
+    const response = await axios.get('/api/auth/is_logged');
+    return response.data.payload;
+  };
+
   useEffect(() => {
-    const checkForLoggedInUser = async () => {
-      const response = await axios.get('/api/auth/is_logged');
-      return response.data.payload;
-    };
     checkForLoggedInUser()
       .then(setUser)
       .catch(err => {
