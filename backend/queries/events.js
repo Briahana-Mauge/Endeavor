@@ -18,19 +18,6 @@ const formatStr = str => {
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 
-  let lowercasevName = '';
-  let lowercaseTopic = '';
-  let lowercaseInstructor = '';
-
-  if (vName) {
-    lowercasevName = vName.toLowerCase()
-  }
-  if (topic) {
-    lowercaseTopic = topic.toLowerCase()
-  }
-  if (instructor) {
-    lowercaseInstructor = instructor.toLowerCase()
-  }
 
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
