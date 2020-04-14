@@ -34,7 +34,7 @@ function App() {
   const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-  
+
 
   const getLoggedInUser = async () => {
     try {
@@ -60,7 +60,7 @@ function App() {
   const logout = async () => {
     try {
       await axios.get('/api/auth/logout');
-      setLoggedUser(null);
+      setLoggedUser({});
     } catch (err) {
       setFeedback(err);
     }
