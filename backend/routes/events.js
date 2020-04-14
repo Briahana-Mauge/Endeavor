@@ -16,8 +16,8 @@ router.get('/all/', async (req, res, next) => {
         const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60);
         const topic = processInput(req.query.topic, "softVC", "event topic", 50);
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100);
-        const upcoming = processInput(req.query.upcoming, "softVC", "upcoming events", 60);
-        const past = processInput(req.query.past, "softVC", "past events", 60);
+        const upcoming = processInput(req.query.upcoming, "bool", "upcoming events");
+        const past = processInput(req.query.past, "bool", "past events");
 
         let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past);
         res.status(200)

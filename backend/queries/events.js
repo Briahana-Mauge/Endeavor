@@ -21,8 +21,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   let lowercasevName = '';
   let lowercaseTopic = '';
   let lowercaseInstructor = '';
-  // let newUpcoming = '';
-  // let newPast = '';
 
   if (vName) {
     lowercasevName = vName.toLowerCase()
@@ -33,13 +31,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   if (instructor) {
     lowercaseInstructor = instructor.toLowerCase()
   }
-  // if (upcoming) {
-  //   newUpcoming = upcoming
-  // }
-  // if (past) {
-  //   newPast = past
-  // }
-
 
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
@@ -51,9 +42,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
     ) AS volunteers
-
   FROM events
-
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
@@ -61,7 +50,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 
   let endOfQuery = `GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort     
-
   ORDER BY (
     CASE WHEN DATE(event_start) > now()
         THEN 1
@@ -70,19 +58,18 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         ) 
   DESC, event_start ASC
   `
-  if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') { //use name instead of email
+  if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
     return await db.any(selectQuery + endOfQuery);
   }
   else if (lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
     return await db.any(`${selectQuery} WHERE lower(volunteers.v_first_name) = $/lowercasevName/ OR lower(volunteers.v_last_name) = $/lowercasevName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/lowercasevName/
      ${endOfQuery}`, { lowercasevName });
   }
-   /*issues*/else if (lowercasevName === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE LOWER (events.topic) LIKE % $/lowercaseTopic/ % ${endOfQuery}`, { lowercaseTopic });
-
-  } 
-  /*issues*/ else if (lowercasevName === '' && lowercaseTopic === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE LOWER (events.instructor) LIKE % $/lowercaseInstructor/ % ${endOfQuery}`, { lowercaseInstructor });
+  else if (lowercasevName === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE LOWER (events.topic) LIKE '%' || $/lowercaseTopic/ || '%' ${endOfQuery}`, { lowercaseTopic });
+  }
+  else if (lowercasevName === '' && lowercaseTopic === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE LOWER (events.instructor) LIKE '%' || $/lowercaseInstructor/ || '%' ${endOfQuery}`, { lowercaseInstructor });
   }
   else if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && past === '') {
     return await getUpcomingEvents();
@@ -104,18 +91,14 @@ const getSingleEvent = async (eId) => {
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
     ) AS volunteers
-
   FROM events
-
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
   WHERE events.event_id = $/eId/
-
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort     
-
   ORDER BY (
     CASE WHEN DATE(event_start) > now()
         THEN 1
@@ -132,9 +115,7 @@ const getAllEventsAdmin = async () => {
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class, 
     ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
-
   FROM events
-
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
@@ -158,15 +139,12 @@ const getSingleEventAdmin = async (eId) => {
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
   events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS class, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
-
   FROM events
-
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
     
   WHERE events.event_id = $/eId/
-
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort
   `
