@@ -7,21 +7,18 @@ import EmailPassword from './EmailPassword';
 
 
 export default function LoginSignup(props) {
-    const history = useHistory();
-    useEffect(() => {
-        if (props.loggedUser.a_id || props.loggedUser.v_id || props.loggedUser.f_id) {
-            history.push('/home');
-        }
-    }, [props.loggedUser]);
-
     const {
+        loggedUser,
+
         formType,
         userType,
-        email, 
+
+        email,
         password, 
+        newPassword,
         firstName, 
         lastName,
-        newPassword,
+
         cohortId, 
         company,
         title,
@@ -34,7 +31,15 @@ export default function LoginSignup(props) {
         hostSiteVisit,
         industrySpeaker
     } = props
-    
+
+    const history = useHistory();
+
+    useEffect(() => {
+        if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
+            history.push('/home');
+        }
+    }, [loggedUser]);
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
@@ -87,47 +92,47 @@ export default function LoginSignup(props) {
             <form className='form-row' onSubmit={handleFormSubmit}>
                 <EmailPassword 
                     email={email}
-                    setEmail={props.setEmail}
+                        setEmail={props.setEmail}
                     password={password}
-                    setPassword={props.setPassword}
+                        setPassword={props.setPassword}
                     formType={formType}
                     userType={userType}
                 />
 
                 <CommonSubForm 
-                    formType={formType} 
-                    setFormType={props.setFormType} 
-                    userType={userType}
-                    setUserType={props.setUserType}
-                    firstName={firstName}
-                    setFirstName={props.setFirstName}
-                    lastName={lastName}
-                    setLastName={props.setLastName}
-                    newPassword={newPassword}
-                    setNewPassword={props.setNewPassword}
                     setFeedback={props.setFeedback}
+                    formType={formType} 
+                        setFormType={props.setFormType} 
+                    userType={userType}
+                        setUserType={props.setUserType}
+                    firstName={firstName}
+                        setFirstName={props.setFirstName}
+                    lastName={lastName}
+                        setLastName={props.setLastName}
+                    newPassword={newPassword}
+                        setNewPassword={props.setNewPassword}
                     cohortId={cohortId}
-                    setCohortId={props.setCohortId}
+                        setCohortId={props.setCohortId}
                     company={company}
-                    setCompany={props.setCompany}
+                        setCompany={props.setCompany}
                     title={title}
-                    setTitle={props.setTitle}
+                        setTitle={props.setTitle}
                     volunteerSkills={volunteerSkills}
-                    setVolunteerSkills={props.setVolunteerSkills}
+                        setVolunteerSkills={props.setVolunteerSkills}
                     mentor={mentor}
-                    setMentor={props.setMentor}
+                        setMentor={props.setMentor}
                     officeHours={officeHours}
-                    setOfficeHours={props.setOfficeHours}
+                        setOfficeHours={props.setOfficeHours}
                     techMockInterview={techMockInterview}
-                    setTechMockInterview={props.setTechMockInterview}
+                        setTechMockInterview={props.setTechMockInterview}
                     behavioralMockInterview={behavioralMockInterview}
-                    setBehavioralMockInterview={props.setBehavioralMockInterview}
+                        setBehavioralMockInterview={props.setBehavioralMockInterview}
                     professionalSkillsCoach={professionalSkillsCoach}
-                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                        setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
                     hostSiteVisit={hostSiteVisit}
-                    setHostSiteVisit={props.setHostSiteVisit}
+                        setHostSiteVisit={props.setHostSiteVisit}
                     industrySpeaker={industrySpeaker}
-                    setIndustrySpeaker={props.setIndustrySpeaker}
+                        setIndustrySpeaker={props.setIndustrySpeaker}
                 />
 
             </form>
