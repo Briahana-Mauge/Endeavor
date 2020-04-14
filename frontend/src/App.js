@@ -10,6 +10,8 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
+import NavBar from './Components/NavBar';
+import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
@@ -83,6 +85,10 @@ function App() {
 
 
   /* PREP RETURN */
+  const navProps = {
+    loggedUser,
+    logout
+  }
   const userProps = {
     loggedUser,
     setFeedback,
@@ -114,6 +120,7 @@ function App() {
   if (loggedUser && loggedUser.a_id) {
     showAdmins = (
       <Route path='/tools'>
+        <NavBar {...navProps} />
         <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
       </Route>
     );
@@ -123,17 +130,24 @@ function App() {
   return (
     <div className="container-md mt-4">
       <Switch>
-        <Route exact path='/'> 
+        <Route exact path='/'>
           <LoginSignup {...userProps} {...signupProps} {...profileProps} />
         </Route>
 
-        <Route path='/profile'> 
+        <Route path='/home'>
+          <NavBar {...navProps} />
+          <Dashboard />
+        </Route>
+
+        <Route path='/profile'>
+          <NavBar {...navProps} />
           <ProfilePage {...userProps} {...profileProps} />
         </Route>
 
         {showAdmins}
 
-        <Route path='/volunteers/search'> 
+        <Route path='/volunteers/search'>
+          <NavBar {...navProps} />
           <VolunteerSearch />
         </Route>
       </Switch>
