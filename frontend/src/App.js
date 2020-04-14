@@ -52,24 +52,19 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  const checkForLoggedInUser = async () => {
-    const { data } = await axios.get('/api/auth/is_logged');
-    return data.payload;
+  const checkForLoggedInUser = () => {
+    axios.get('/api/auth/is_logged')
+      .then(res => settleUser(res.data.payload))
+      .catch(err => {
+          if (err.response && err.response.status === 401) {
+            setIsUserStateReady(true);
+            history.push('/', { from: location });
+          } else {
+            setFeedback(err);
+          }
+      });
   }
-
-  useEffect(() => {
-      checkForLoggedInUser()
-        .then(settleUser)
-        .catch (err => {
-            if (err.response && err.response.status === 401) {
-              setIsUserStateReady(true);
-              history.push('/', { from: location });
-            } else {
-              setFeedback(err);
-            }
-        })
-      ;
-  }, [history]);
+  useEffect(checkForLoggedInUser, []);
 
   const settleUser = (user) => {
     setLoggedUser(user);

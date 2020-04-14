@@ -9,8 +9,8 @@ export default function SignupFellowSubForm(props) {
         axios.get(`api/cohorts`)
             .then(res => setCohortsList(res.data.payload))
             .catch(err => setFeedback(err))
+        ;
     }
-    
     useEffect(getCohortsList, []);
 
     return (
