@@ -11,10 +11,17 @@ const processInput = require('../helpers/processInput');
 const eventsQueries = require('../queries/events');
 
 // Get all events (past events are auto pushed to the back)
-router.get('/all', async (req, res, next) => {
+router.get('/all/', async (req, res, next) => {
     try {
-        let allEvents = await eventsQueries.getAllEvents();
-        res.json({
+        const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowercase();
+        const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowercase();
+        const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowercase();
+        const upcoming = processInput(req.query.upcoming, "bool", "upcoming events");
+        const past = processInput(req.query.past, "bool", "past events");
+
+        let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past);
+        res.status(200)
+        .json({
             payload: allEvents,
             message: "Success",
             err: false
