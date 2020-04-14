@@ -16,6 +16,7 @@ import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
 import AdminTools from './Components/AdminTools/AdminTools';
+import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Feedback from './Components/Feedback';
 
 
@@ -121,14 +122,14 @@ function App() {
     showAdmins = (
       <Route path='/tools'>
         <NavBar {...navProps} />
-        <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
+        <AdminTools {...userProps} />
       </Route>
     );
   }
 
 
   return (
-    <div className="container-md mt-4">
+    <div className=".container-fluid p-3 mt-4">
       <Switch>
         <Route exact path='/'>
           <LoginSignup {...userProps} {...signupProps} {...profileProps} />
@@ -148,7 +149,12 @@ function App() {
 
         <Route path='/volunteers/search'>
           <NavBar {...navProps} />
-          <VolunteerSearch />
+          <VolunteerSearch {...userProps} />
+        </Route>
+
+        <Route path='/volunteers/:volunteerId'> 
+          <NavBar {...navProps} />
+          <ProfileRender {...userProps} />
         </Route>
       </Switch>
 
