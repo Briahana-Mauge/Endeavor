@@ -3,28 +3,25 @@ import axios from 'axios';
 
 
 export default function Skills(props) {
+    const { setFeedback } = props;
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillName, setSkillName ] = useState('');
     const [ tracker, setTracker ] = useState({});
 
-    const getSkillsList = async () => {
-        try {
-            const { data } = await axios.get('/api/skills');
-            setSkillsList(data.payload);
-            const map = {};
-            for (let elem of data.payload) {
-                map[elem.skill_id] = elem.skill;
-            }
-            setTracker(map);
-
-        } catch (err) {
-            props.setFeedback(err);
-        }
+    const getSkillsList = () => {
+        axios.get('/api/skills')
+            .then(res => {
+                setSkillsList(res.data.payload);
+                const map = {};
+                for (let elem of res.data.payload) {
+                    map[elem.skill_id] = elem.skill;
+                }
+                setTracker(map);
+            })
+            .catch(err => setFeedback(err))
+        ;
     }
-
-    useEffect(() => {
-        getSkillsList();
-    }, []);
+    useEffect(getSkillsList, []);
 
     const deleteSkill = async (skillId) => {
         try {
