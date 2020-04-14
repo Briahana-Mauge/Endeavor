@@ -59,7 +59,7 @@ function App() {
 
   const logout = async () => {
     try {
-      await axios.get('/api/auth.logout');
+      await axios.get('/api/auth/logout');
       setLoggedUser(null);
     } catch (err) {
       setFeedback(err);
