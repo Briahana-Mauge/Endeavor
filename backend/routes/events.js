@@ -13,9 +13,9 @@ const eventsQueries = require('../queries/events');
 // Get all events (past events are auto pushed to the back)
 router.get('/all/', async (req, res, next) => {
     try {
-        const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60);
-        const topic = processInput(req.query.topic, "softVC", "event topic", 50);
-        const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100);
+        const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowercase();
+        const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowercase();
+        const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowercase();
         const upcoming = processInput(req.query.upcoming, "bool", "upcoming events");
         const past = processInput(req.query.past, "bool", "past events");
 
