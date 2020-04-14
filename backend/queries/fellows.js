@@ -8,6 +8,8 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 const userQueries = require('./users');
+// const mentorPairsQueries = require('./mentorPairs');
+// const eventFollowsQueries = require('./eventFollows');
 
 
 /* QUERIES */
@@ -18,9 +20,9 @@ const getAllFellows = async (askedForMentor) => {
     $/mentorFilter:raw/
     ORDER BY f_first_name ASC;
   `;
-  let mentorFilter = "";
+  let mentorFilter = "WHERE deleted IS NULL";
   if (askedForMentor === true) {
-    mentorFilter = `WHERE want_mentor = TRUE`;
+    mentorFilter += ` AND want_mentor = TRUE`;
   }
   return await db.any(getQuery, { mentorFilter });
 }
@@ -29,7 +31,7 @@ const getFellowById = async (fId) => {
   const getQuery = `
     SELECT *
     FROM fellows
-    WHERE f_id = $/fId/;
+    WHERE f_id = $/fId/ AND deleted IS NULL;
   `;
   return await db.one(getQuery, { fId });
 }
@@ -38,7 +40,7 @@ const getFellowByEmail = async (fEmail) => {
   const getQuery = `
     SELECT *
     FROM fellows
-    WHERE f_email = $/fEmail/;
+    WHERE f_email = $/fEmail/ AND deleted IS NULL;
   `;
   return await db.one(getQuery, { fEmail });
 }
@@ -85,6 +87,7 @@ const updateFellow = async (userObj) => {
         f_github = $/github/,
         cohort_id = $/cohortId/,
         want_mentor = $/wantMentor/
+        deleted = NULL
     WHERE f_id = $/userId/
     RETURNING *;
   `;
@@ -92,12 +95,30 @@ const updateFellow = async (userObj) => {
 }
 
 const deleteFellow = async (fId) => {
+  console.log('ID: ', fId)
   const deleteQuery = `
-    DELETE FROM fellows
+    UPDATE fellows
+    SET deleted = NOW()
     WHERE f_id = $/fId/
     RETURNING *;
   `;
-  return await db.one(deleteQuery, { fId });
+
+  const promises = [];
+  promises.push(db.one(deleteQuery, { fId }));
+  // promises.push(eventFollowsQueries.delete...(fId, true));
+  // promises.push(mentorPairsQueries.delete...(fId, true));
+
+  const response = await Promise.all(promises);
+  return response[0];
+}
+
+const deleteFollowByEmail = async (email, promise) => {
+  const fellow = await db.one('SELECT * FROM fellows WHERE f_email = $1', email);
+  console.log(fellow)
+  if (promise) {
+    return deleteFellow(fellow.f_id);
+  }
+  return await deleteFellow(fellow.f_id);
 }
 
 
@@ -108,5 +129,6 @@ module.exports = {
   getFellowByEmail,
   addFellow,
   updateFellow,
-  deleteFellow
+  deleteFellow,
+  deleteFollowByEmail
 }
