@@ -12,7 +12,7 @@ const volunteerQueries = require('../queries/volunteers');
 const volunteerSkillsQueries = require('../queries/volunteerSkills');
 
 
-router.get('/all/', async (req, res, next) => { //change email to name
+router.get('/all', async (req, res, next) => { //change email to name
 
     try {
         const vEmail = processInput(req.query.v_email, "softVC", "volunteer email", 50);
@@ -52,12 +52,10 @@ router.get('/new', async (req, res, next) => {
 router.get('/email/:v_email', async (req, res, next) => {
     try {
         const vEmail = processInput(req.params.v_email, "hardVC", "volunteer email", 50);
-
         let volunteer = await volunteerQueries.getVolunteerByEmail(vEmail);
-        res.status(200)
-            .json({
+        res.json({
                 payload: volunteer,
-                message: "Success",
+                message: "Successfully retrieved volunteer's info",
                 err: false
             });
     } catch (err) {
@@ -66,6 +64,21 @@ router.get('/email/:v_email', async (req, res, next) => {
 })
 
 // Get volunteer by email
+router.get('/id/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        const volunteer = await volunteerQueries.getVolunteerById(volunteerId);
+        res.json({
+                payload: volunteer,
+                message: "Successfully retrieved volunteer's info",
+                err: false
+            });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+})
+
+// Get volunteer's skills
 router.get('/skills/:volunteer_id', async (req, res, next) => {
     try {
         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
