@@ -147,13 +147,7 @@ function App() {
 
         {showAdmins}
 
-        <Route path='/volunteers/search'> 
-          <VolunteerSearch loggedUser={loggedUser} setFeedback={setFeedback} />
-        </Route>
 
-        <Route path='/volunteers/:volunteerId'> 
-          <ProfileRender loggedUser={loggedUser} setFeedback={setFeedback} />
-=======
         <Route path='/volunteers/search'>
           <NavBar {...navProps} />
           <VolunteerSearch {...userProps} />
@@ -162,7 +156,6 @@ function App() {
         <Route path='/volunteers/:volunteerId'> 
           <NavBar {...navProps} />
           <ProfileRender {...userProps} />
->>>>>>> 98c4e48f5036c380df66596d3a8dd945a89da8fc
         </Route>
 
         <Route exact path='/events/search'> 
