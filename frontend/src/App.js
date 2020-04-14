@@ -6,10 +6,12 @@ APP MAIN | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
+import LoginSignupGate from './Components/LoginSignupGate';
+import PrivateRouteGate from './Components/PrivateRouteGate';
 import NavBar from './Components/NavBar';
 import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
@@ -23,6 +25,7 @@ import Feedback from './Components/Feedback';
 function App() {
   // USER states
   const [ loggedUser, setLoggedUser ] = useState({});
+  const [ isUserStateReady, setIsUserStateReady ] = useState(false);
   const [ feedback, setFeedback ] = useState(null);
 
   // LOGIN/SIGNUP states
@@ -30,8 +33,8 @@ function App() {
   const [ userType, setUserType ] = useState('');
 
   // LOGIN/SIGNUP & PROFILE states
-  const [ email, setEmail ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const [ email, setEmail ] = useState('alexis@pursuit.org');
+  const [ password, setPassword ] = useState('1234');
   const [ newPassword, setNewPassword ] = useState('');
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
@@ -47,6 +50,7 @@ function App() {
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
 
+  const location = useLocation();
   const history = useHistory();
 
   const checkForLoggedInUser = async () => {
@@ -59,25 +63,27 @@ function App() {
         .then(settleUser)
         .catch (err => {
             if (err.response && err.response.status === 401) {
-              history.push('/');
+              setIsUserStateReady(true);
+              history.push('/', { from: location });
             } else {
               setFeedback(err);
             }
         })
       ;
-  }, []);
+  }, [history]);
 
   const settleUser = (user) => {
     setLoggedUser(user);
+    setIsUserStateReady(true);
   }
 
-  const logout = async () => {
-    try {
-      await axios.get('/api/auth/logout');
-      setLoggedUser({});
-    } catch (err) {
-      setFeedback(err);
-    }
+  const logout = () => {
+    setIsUserStateReady(false);
+    axios.get('/api/auth/logout')
+      .then(res => {
+        settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
+      })
+      .catch (err => setFeedback(err));
   }
 
   const resetFeedback = () => {
@@ -86,6 +92,10 @@ function App() {
 
 
   /* PREP RETURN */
+  const gateProps = {
+    loggedUser,
+    isUserStateReady
+  }
   const navProps = {
     loggedUser,
     logout
@@ -131,31 +141,34 @@ function App() {
   return (
     <div className=".container-fluid p-3 mt-4">
       <Switch>
+
         <Route exact path='/'>
-          <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          <LoginSignupGate {...gateProps}>
+            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          </LoginSignupGate>
         </Route>
 
-        <Route path='/home'>
+        <PrivateRouteGate path='/home' {...gateProps}>
           <NavBar {...navProps} />
           <Dashboard />
-        </Route>
+        </PrivateRouteGate>
 
-        <Route path='/profile'>
+        <PrivateRouteGate path='/profile' {...gateProps}>
           <NavBar {...navProps} />
           <ProfilePage {...userProps} {...profileProps} />
-        </Route>
+        </PrivateRouteGate>
 
         {showAdmins}
 
-        <Route path='/volunteers/search'>
+        <PrivateRouteGate path='/volunteers/search' {...gateProps}>
           <NavBar {...navProps} />
           <VolunteerSearch {...userProps} />
-        </Route>
+        </PrivateRouteGate>
 
-        <Route path='/volunteers/:volunteerId'> 
+        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}> 
           <NavBar {...navProps} />
           <ProfileRender {...userProps} />
-        </Route>
+        </PrivateRouteGate>
       </Switch>
 
       {
