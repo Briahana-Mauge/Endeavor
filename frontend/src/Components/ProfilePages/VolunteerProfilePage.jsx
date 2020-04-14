@@ -121,7 +121,6 @@ export default function VolunteerProfilePage(props) {
                 </div>
 
             </div>
-            {/* loggedUser={loggedUser} */}
         </>
     )
 }
