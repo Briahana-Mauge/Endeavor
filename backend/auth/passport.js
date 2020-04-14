@@ -27,13 +27,10 @@ passport.use(new LocalStrategy({usernameField: 'email', passwordField : 'passwor
 
     if (user.role === 'admin' || user.role === 'staff') {
       user = await adminQueries.getAdminByEmail(email);
-      user.role = "staff";
     } else if (user.role === 'volunteer') {
       user = await volunteersQueries.getVolunteerByEmail(email);
-      user.role = "volunteer";
     } else {
       user = await fellowsQueries.getFellowByEmail(email);
-      user.role = "fellow";
     }
 
     done(null, user);

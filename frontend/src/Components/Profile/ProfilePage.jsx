@@ -9,28 +9,28 @@ import VolunteerProfile from './VolunteerProfile';
 export default function ProfilePage(props) {
     const {
         loggedUser,
-        setUser,
-        setFeedback
+        email,
+        password,
+        firstName,
+        lastName,
+        newPassword,
+
+        cohortId,
+
+        company,
+        title,
+        volunteerSkills,
+        skills,
+        mentor,
+        officeHours,
+        techMockInterview,
+        behavioralMockInterview,
+        professionalSkillsCoach,
+        hostSiteVisit,
+        industrySpeaker,
     } = props;
 
-    const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
-    const [ newPassword, setNewPassword ] = useState('');
     const [ confirmPassword, setConfirmPassword ] = useState('');
-    const [ firstName, setFirstName ] = useState('');
-    const [ lastName, setLastName ] = useState('');
-    const [ cohortId, setCohortId ] = useState(0);
-    const [ company, setCompany ] = useState('');
-    const [ title, setTitle ] = useState('');
-    const [ volunteerSkills, setVolunteerSkills ] = useState([]);
-    const [ mentor, setMentor ] = useState(false);
-    const [ officeHours, setOfficeHours ] = useState(false);
-    const [ techMockInterview, setTechMockInterview ] = useState(false);
-    const [ behavioralMockInterview, setBehavioralMockInterview ] = useState(false);
-    const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
-    const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
-    const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-
 
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
@@ -40,17 +40,17 @@ export default function ProfilePage(props) {
                 const requestPath = `/api/users/${loggedUser.a_id || loggedUser.f_id || loggedUser.v_id}`;
                 await axios.patch(requestPath, {password, newPassword, confirmPassword});
                 
-                setFeedback({message: 'Password was successfully updated'});
-                setPassword('');
-                setNewPassword('');
-                setConfirmPassword('')
+                props.setFeedback({message: 'Password was successfully updated'});
+                props.setPassword('');
+                props.setNewPassword('');
+                setConfirmPassword('');
 
             } else {
-                setFeedback({message: 'All fields are required OR confirmed password does not match new one'});
+                props.setFeedback({message: 'All fields are required OR confirmed password does not match new one'});
             }
 
         } catch (err) {
-            setFeedback(err);
+            props.setFeedback(err);
         }
     }
 
@@ -61,32 +61,30 @@ export default function ProfilePage(props) {
             await axios.delete(`api/users/${userId}`);
 
         } catch (err) {
-            setFeedback(err);
+            props.setFeedback(err);
         }
     }
-
 
     return (
         <>
             {
-              loggedUser.a_id
+                props.loggedUser.a_id
                 ? <AdminProfile
                     loggedUser={loggedUser}
-                    setFeedback={setFeedback}
-                    setUser={setUser}
-
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
                     email={email}
-                        setEmail={setEmail}
+                    setEmail={props.setEmail}
                     password={password}
-                        setPassword={setPassword}
-                    newPassword={newPassword}
-                        setNewPassword={setNewPassword}
+                    setPassword={props.setPassword}
                     firstName={firstName}
-                        setFirstName={setFirstName}
+                    setFirstName={props.setFirstName}
                     lastName={lastName}
-                        setLastName={setLastName}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
                     confirmPassword={confirmPassword}
-                        setConfirmPassword={setConfirmPassword}
+                    setConfirmPassword={setConfirmPassword}
                     handleUpdatePassword={handleUpdatePassword}
                     deleteAccount={deleteAccount}
                   />
@@ -94,26 +92,25 @@ export default function ProfilePage(props) {
             }
 
             {
-              loggedUser.f_id
+                props.loggedUser.f_id
                 ? <FellowProfile
                     loggedUser={loggedUser}
-                    setFeedback={setFeedback}
-                    setUser={setUser}
-
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
                     email={email}
-                        setEmail={setEmail}
+                    setEmail={props.setEmail}
                     password={password}
-                        setPassword={setPassword}
-                    newPassword={newPassword}
-                        setNewPassword={setNewPassword}
+                    setPassword={props.setPassword}
                     firstName={firstName}
-                        setFirstName={setFirstName}
+                    setFirstName={props.setFirstName}
                     lastName={lastName}
-                        setLastName={setLastName}
-                    cohortId={cohortId}
-                        setCohortId={setCohortId}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
                     confirmPassword={confirmPassword}
-                        setConfirmPassword={setConfirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    cohortId={cohortId}
+                    setCohortId={props.setCohortId}
                     handleUpdatePassword={handleUpdatePassword}
                     deleteAccount={deleteAccount}
                   />
@@ -121,44 +118,44 @@ export default function ProfilePage(props) {
             }
 
             {
-              loggedUser.v_id
+                props.loggedUser.v_id
                 ? <VolunteerProfile
                     loggedUser={loggedUser}
-                    setFeedback={setFeedback}
-                    setUser={setUser}
-
+                    setFeedback={props.setFeedback} 
+                    setUser={props.setUser}
                     email={email}
-                        setEmail={setEmail}
+                    setEmail={props.setEmail}
                     password={password}
-                        setPassword={setPassword}
-                    newPassword={newPassword}
-                        setNewPassword={setNewPassword}
+                    setPassword={props.setPassword}
                     firstName={firstName}
-                        setFirstName={setFirstName}
+                    setFirstName={props.setFirstName}
                     lastName={lastName}
-                        setLastName={setLastName}
-                    company={company}
-                        setCompany={setCompany}
-                    title={title}
-                        setTitle={setTitle}
-                    volunteerSkills={volunteerSkills}
-                        setVolunteerSkills={setVolunteerSkills}
-                    mentor={mentor}
-                        setMentor={setMentor}
-                    officeHours={officeHours}
-                        setOfficeHours={setOfficeHours}
-                    techMockInterview={techMockInterview}
-                        setTechMockInterview={setTechMockInterview}
-                    behavioralMockInterview={behavioralMockInterview}
-                        setBehavioralMockInterview={setBehavioralMockInterview}
-                    professionalSkillsCoach={professionalSkillsCoach}
-                        setProfessionalSkillsCoach={setProfessionalSkillsCoach}
-                    hostSiteVisit={hostSiteVisit}
-                        setHostSiteVisit={setHostSiteVisit}
-                    industrySpeaker={industrySpeaker}
-                        setIndustrySpeaker={setIndustrySpeaker}
+                    setLastName={props.setLastName}
+                    newPassword={newPassword}
+                    setNewPassword={props.setNewPassword}
                     confirmPassword={confirmPassword}
-                        setConfirmPassword={setConfirmPassword}
+                    setConfirmPassword={setConfirmPassword}
+                    company={company}
+                    setCompany={props.setCompany}
+                    title={title}
+                    setTitle={props.setTitle}
+                    volunteerSkills={volunteerSkills}
+                    setVolunteerSkills={props.setVolunteerSkills}
+                    skills={skills}
+                    mentor={mentor}
+                    setMentor={props.setMentor}
+                    officeHours={officeHours}
+                    setOfficeHours={props.setOfficeHours}
+                    techMockInterview={techMockInterview}
+                    setTechMockInterview={props.setTechMockInterview}
+                    behavioralMockInterview={behavioralMockInterview}
+                    setBehavioralMockInterview={props.setBehavioralMockInterview}
+                    professionalSkillsCoach={professionalSkillsCoach}
+                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                    hostSiteVisit={hostSiteVisit}
+                    setHostSiteVisit={props.setHostSiteVisit}
+                    industrySpeaker={industrySpeaker}
+                    setIndustrySpeaker={props.setIndustrySpeaker}
                     handleUpdatePassword={handleUpdatePassword}
                     deleteAccount={deleteAccount}
                   />

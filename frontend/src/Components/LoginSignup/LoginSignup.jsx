@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,59 +7,52 @@ import EmailPassword from './EmailPassword';
 
 
 export default function LoginSignup(props) {
-    const {
-        loggedUser,
-        setUser,
-        setFeedback
-    } = props;
-
-    const [ formType, setFormType ] = useState('login');
-    const [ userType, setUserType ] = useState('');
-
-    const [ email, setEmail ] = useState('alexis@pursuit.org');
-    const [ password, setPassword ] = useState('1234');
-    const [ newPassword, setNewPassword ] = useState('');
-    const [ firstName, setFirstName ] = useState('');
-    const [ lastName, setLastName ] = useState('');
-    const [ cohortId, setCohortId ] = useState(0);
-    const [ company, setCompany ] = useState('');
-    const [ title, setTitle ] = useState('');
-    const [ volunteerSkills, setVolunteerSkills ] = useState([]);
-    const [ mentor, setMentor ] = useState(false);
-    const [ officeHours, setOfficeHours ] = useState(false);
-    const [ techMockInterview, setTechMockInterview ] = useState(false);
-    const [ behavioralMockInterview, setBehavioralMockInterview ] = useState(false);
-    const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
-    const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
-    const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
-
     const history = useHistory();
-
     useEffect(() => {
-        if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
+        if (props.loggedUser.a_id || props.loggedUser.v_id || props.loggedUser.f_id) {
             history.push('/home');
         }
-    }, [loggedUser, history]);
+    }, [props.loggedUser]);
 
-
+    const {
+        formType,
+        userType,
+        email, 
+        password, 
+        firstName, 
+        lastName,
+        newPassword,
+        cohortId, 
+        company,
+        title,
+        volunteerSkills,
+        mentor,
+        officeHours,
+        techMockInterview,
+        behavioralMockInterview,
+        professionalSkillsCoach,
+        hostSiteVisit,
+        industrySpeaker
+    } = props
+    
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         try {
             if (formType === 'login' && email && password) { // LOGIN
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
-                setUser(data.payload);
+                props.setUser(data.payload);
             }
             else {
                 if (userType === 'admin' && email && password && firstName && lastName && newPassword) {
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
-                    setUser(data.payload);
-                } else if (userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
+                    props.setUser(data.payload);
+                } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
                     const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
-                    setUser(data.payload);
-                } else if (userType === 'volunteer' && email && password && firstName && lastName && company && title) {
+                    props.setUser(data.payload);
+                } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
                     const userData = {
                         email, 
                         password, 
@@ -78,68 +71,66 @@ export default function LoginSignup(props) {
                     };
 
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
-                    setUser(data.payload);
+                    props.setUser(data.payload);
                 }
             }
 
         } catch (err) {
-            setFeedback(err);
+            props.setFeedback(err);
         }
     }
-
-
+    
     return (
-        <div>
+        <div> 
             <img className='d-block mx-auto appLogo' src='/images/app_logo.jpg' alt='app logo'/>
             
             <form className='form-row' onSubmit={handleFormSubmit}>
                 <EmailPassword 
                     email={email}
-                        setEmail={setEmail}
+                    setEmail={props.setEmail}
                     password={password}
-                        setPassword={setPassword}
+                    setPassword={props.setPassword}
                     formType={formType}
                     userType={userType}
                 />
 
                 <CommonSubForm 
                     formType={formType} 
-                        setFormType={setFormType}
+                    setFormType={props.setFormType} 
                     userType={userType}
-                        setUserType={setUserType}
-
-                    setFeedback={setFeedback}
-
+                    setUserType={props.setUserType}
                     firstName={firstName}
-                        setFirstName={setFirstName}
+                    setFirstName={props.setFirstName}
                     lastName={lastName}
-                        setLastName={setLastName}
+                    setLastName={props.setLastName}
                     newPassword={newPassword}
-                        setNewPassword={setNewPassword}
+                    setNewPassword={props.setNewPassword}
+                    setFeedback={props.setFeedback}
                     cohortId={cohortId}
-                        setCohortId={setCohortId}
+                    setCohortId={props.setCohortId}
                     company={company}
-                        setCompany={setCompany}
+                    setCompany={props.setCompany}
                     title={title}
-                        setTitle={setTitle}
+                    setTitle={props.setTitle}
                     volunteerSkills={volunteerSkills}
-                        setVolunteerSkills={setVolunteerSkills}
+                    setVolunteerSkills={props.setVolunteerSkills}
                     mentor={mentor}
-                        setMentor={setMentor}
+                    setMentor={props.setMentor}
                     officeHours={officeHours}
-                        setOfficeHours={setOfficeHours}
+                    setOfficeHours={props.setOfficeHours}
                     techMockInterview={techMockInterview}
-                        setTechMockInterview={setTechMockInterview}
+                    setTechMockInterview={props.setTechMockInterview}
                     behavioralMockInterview={behavioralMockInterview}
-                        setBehavioralMockInterview={setBehavioralMockInterview}
+                    setBehavioralMockInterview={props.setBehavioralMockInterview}
                     professionalSkillsCoach={professionalSkillsCoach}
-                        setProfessionalSkillsCoach={setProfessionalSkillsCoach}
+                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
                     hostSiteVisit={hostSiteVisit}
-                        setHostSiteVisit={setHostSiteVisit}
+                    setHostSiteVisit={props.setHostSiteVisit}
                     industrySpeaker={industrySpeaker}
-                        setIndustrySpeaker={setIndustrySpeaker}
+                    setIndustrySpeaker={props.setIndustrySpeaker}
                 />
+
             </form>
         </div>
-    );
+    )
 }

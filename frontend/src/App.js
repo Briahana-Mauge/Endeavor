@@ -1,65 +1,66 @@
-/*
-ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-APP MAIN | Capstone App (Pursuit Volunteer Mgr)
-*/
-
-
-/* IMPORTS */
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
-import LoginSignupGate from './Components/LoginSignupGate';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
-import PrivateRouteGate from './Components/PrivateRouteGate';
-import NavBar from './Components/NavBar';
-import Dashboard from './Components/Dashboard';
+import Feedback from './Components/Feedback';
+import VolunteerSearch from './Components/VolunteerSearch';
 import ProfilePage from './Components/Profile/ProfilePage';
 import AdminTools from './Components/AdminTools/AdminTools';
-import VolunteerSearch from './Components/VolunteerSearch';
-import Feedback from './Components/Feedback';
 
 
-const App = () => {
-  const [ loggedUser, setLoggedUser ] = useState({});
-  const [ currentRole, setCurrentRole ] = useState("");
-  const [ isUserStateReady, setIsUserStateReady ] = useState(false);
-  const [ feedback, setFeedback ] = useState(null);
-
+function App() {
   const history = useHistory();
 
-  const checkForLoggedInUser = async () => {
-    const response = await axios.get('/api/auth/is_logged');
-    return response.data.payload;
-  };
+  const [ loggedUser, setLoggedUser ] = useState({});
+  const [ feedback, setFeedback ] = useState(null);
+
+  const [ formType, setFormType ] = useState('login');
+  const [ userType, setUserType ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ newPassword, setNewPassword ] = useState('');
+  const [ firstName, setFirstName ] = useState('');
+  const [ lastName, setLastName ] = useState('');
+  const [ cohortId, setCohortId ] = useState(0);
+  const [ company, setCompany ] = useState('');
+  const [ title, setTitle ] = useState('');
+  const [ volunteerSkills, setVolunteerSkills ] = useState([]);
+  const [ mentor, setMentor ] = useState(false);
+  const [ officeHours, setOfficeHours ] = useState(false);
+  const [ techMockInterview, setTechMockInterview ] = useState(false);
+  const [ behavioralMockInterview, setBehavioralMockInterview ] = useState(false);
+  const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
+  const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
+  const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
+  
+
+  const getLoggedInUser = async () => {
+    try {
+      const { data } = await axios.get('/api/auth/is_logged');
+      setLoggedUser(data.payload);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        history.push('/');
+      } else {
+        setFeedback(err);
+      }
+    }
+  }
 
   useEffect(() => {
-    checkForLoggedInUser()
-      .then(setUser)
-      .catch(err => {
-        if (err.response && err.response.status === 401) {
-          setIsUserStateReady(true);
-          history.push('/');
-        } else {
-          setFeedback(err);
-        }
-      })
-    ;
-  }, [history]);
-
+    getLoggedInUser();
+  }, []);
 
   const setUser = (user) => {
     setLoggedUser(user);
-    setCurrentRole(user.role);
-    setIsUserStateReady(true);
   }
 
   const logout = async () => {
     try {
-      setIsUserStateReady(false);
-      await axios.get('/api/auth/logout');
-      // setUser({}); // this might not be needed or working because server request.logOut() seems to reload page?
+      await axios.get('/api/auth.logout');
+      setLoggedUser(null);
     } catch (err) {
       setFeedback(err);
     }
@@ -70,63 +71,105 @@ const App = () => {
   }
 
 
-  /* PREP RETURN */
-  const gateProps = {
-    currentRole,
-    isUserStateReady
-  }
-  const navProps = {
-    loggedUser,
-    logout
-  }
-  const userProps = {
-    loggedUser,
-    setUser,
-    setFeedback,
-  }
-  let showAdmins = null;
-  if (loggedUser && loggedUser.a_id) {
-    showAdmins = (
-      <Route path='/tools'>
-        <PrivateRouteGate {...gateProps}>
-          <NavBar {...navProps} />
-          <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
-        </PrivateRouteGate>
-      </Route>
-    );
-  }
-
-
   return (
     <div className="container-md mt-4">
       <Switch>
-        <Route exact path='/'>
-          <LoginSignupGate {...gateProps}>
-            <LoginSignup {...userProps} />
-          </LoginSignupGate>
+        <Route exact path='/'> 
+          <LoginSignup 
+            loggedUser={loggedUser}
+            setFeedback={setFeedback} 
+            setUser={setUser}
+            formType={formType} 
+            setFormType={setFormType} 
+            userType={userType}
+            setUserType={setUserType}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            cohortId={cohortId}
+            setCohortId={setCohortId}
+            company={company}
+            setCompany={setCompany}
+            title={title}
+            setTitle={setTitle}
+            volunteerSkills={volunteerSkills}
+            setVolunteerSkills={setVolunteerSkills}
+            mentor={mentor}
+            setMentor={setMentor}
+            officeHours={officeHours}
+            setOfficeHours={setOfficeHours}
+            techMockInterview={techMockInterview}
+            setTechMockInterview={setTechMockInterview}
+            behavioralMockInterview={behavioralMockInterview}
+            setBehavioralMockInterview={setBehavioralMockInterview}
+            professionalSkillsCoach={professionalSkillsCoach}
+            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
+            hostSiteVisit={hostSiteVisit}
+            setHostSiteVisit={setHostSiteVisit}
+            industrySpeaker={industrySpeaker}
+            setIndustrySpeaker={setIndustrySpeaker}
+          />
         </Route>
 
-        <Route path='/home'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <Dashboard />
-          </PrivateRouteGate>
+        <Route path='/profile'> 
+          <ProfilePage 
+            loggedUser={loggedUser}
+            setFeedback={setFeedback} 
+            setUser={setUser}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+
+            cohortId={cohortId}
+            setCohortId={setCohortId}
+
+            company={company}
+            setCompany={setCompany}
+            title={title}
+            setTitle={setTitle}
+            volunteerSkills={volunteerSkills}
+            setVolunteerSkills={setVolunteerSkills}
+            mentor={mentor}
+            setMentor={setMentor}
+            officeHours={officeHours}
+            setOfficeHours={setOfficeHours}
+            techMockInterview={techMockInterview}
+            setTechMockInterview={setTechMockInterview}
+            behavioralMockInterview={behavioralMockInterview}
+            setBehavioralMockInterview={setBehavioralMockInterview}
+            professionalSkillsCoach={professionalSkillsCoach}
+            setProfessionalSkillsCoach={setProfessionalSkillsCoach}
+            hostSiteVisit={hostSiteVisit}
+            setHostSiteVisit={setHostSiteVisit}
+            industrySpeaker={industrySpeaker}
+            setIndustrySpeaker={setIndustrySpeaker}
+          />
         </Route>
 
-        <Route path='/profile'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <ProfilePage {...userProps} />
-          </PrivateRouteGate>
-        </Route>
+        {
+          loggedUser && loggedUser.a_id
+          ? <Route path='/tools'>
+              <AdminTools loggedUser={loggedUser} setFeedback={setFeedback} />
+            </Route>
+          : null
+        }
 
-        {showAdmins}
-
-        <Route path='/volunteers/search'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <VolunteerSearch />
-          </PrivateRouteGate>
+        <Route path='/volunteers/search'> 
+          <VolunteerSearch />
         </Route>
       </Switch>
 
