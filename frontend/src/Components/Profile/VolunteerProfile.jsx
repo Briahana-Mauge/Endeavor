@@ -114,7 +114,7 @@ export default function VolunteerProfile(props) {
                 }
 
                 const { data } = await axios.put(`/api/auth/${loggedUser.v_id}`, profile);
-                props.setUser(data.payload);
+                props.settleUser(data.payload);
                 props.setPassword('');
                 props.setFeedback({message: 'Profile updated successfully'});
             } else {

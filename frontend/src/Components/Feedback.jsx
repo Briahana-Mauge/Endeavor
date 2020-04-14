@@ -10,7 +10,7 @@ export default function Feedback(props) {
     } else {
         text = `${props.feedback.response.status} - ${props.feedback.response.statusText}`
     }
-     
+
 
     return(
         <div className='w-75 mx-auto mt-5 p-2 text-center feedbackContainer'>

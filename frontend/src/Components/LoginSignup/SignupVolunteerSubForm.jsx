@@ -1,7 +1,7 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function SignupAdminSubForm(props) {
+export default function SignupVolunteerSubForm(props) {
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillsTracker, setSkillsTracker ] = useState({});
 
@@ -24,7 +24,7 @@ export default function SignupAdminSubForm(props) {
         for (let key in list) {
             if (list[key]) {
                 arr.push(parseInt(key));
-           }
+            }
         }
         props.setVolunteerSkills(arr);
     }
