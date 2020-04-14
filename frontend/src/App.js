@@ -10,6 +10,8 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
+import LoginSignupGate from './Components/LoginSignupGate';
+import PrivateRouteGate from './Components/PrivateRouteGate';
 import NavBar from './Components/NavBar';
 import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
@@ -22,6 +24,7 @@ import Feedback from './Components/Feedback';
 function App() {
   // USER states
   const [ loggedUser, setLoggedUser ] = useState({});
+  const [ isUserStateReady, setIsUserStateReady ] = useState(false);
   const [ feedback, setFeedback ] = useState(null);
 
   // LOGIN/SIGNUP states
@@ -58,6 +61,7 @@ function App() {
         .then(settleUser)
         .catch (err => {
             if (err.response && err.response.status === 401) {
+              setIsUserStateReady(true);
               history.push('/');
             } else {
               setFeedback(err);
@@ -68,12 +72,14 @@ function App() {
 
   const settleUser = (user) => {
     setLoggedUser(user);
+    setIsUserStateReady(true);
   }
 
   const logout = async () => {
+    setIsUserStateReady(false);
     try {
       await axios.get('/api/auth/logout');
-      setLoggedUser({});
+      settleUser({});
     } catch (err) {
       setFeedback(err);
     }
@@ -85,6 +91,10 @@ function App() {
 
 
   /* PREP RETURN */
+  const gateProps = {
+    loggedUser,
+    isUserStateReady
+  }
   const navProps = {
     loggedUser,
     logout
@@ -130,26 +140,36 @@ function App() {
   return (
     <div className="container-md mt-4">
       <Switch>
+
         <Route exact path='/'>
-          <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          <LoginSignupGate {...gateProps}>
+            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          </LoginSignupGate>
         </Route>
 
         <Route path='/home'>
-          <NavBar {...navProps} />
-          <Dashboard />
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <Dashboard />
+          </PrivateRouteGate>
         </Route>
 
         <Route path='/profile'>
-          <NavBar {...navProps} />
-          <ProfilePage {...userProps} {...profileProps} />
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <ProfilePage {...userProps} {...profileProps} />
+          </PrivateRouteGate>
         </Route>
 
         {showAdmins}
 
         <Route path='/volunteers/search'>
-          <NavBar {...navProps} />
-          <VolunteerSearch />
+          <PrivateRouteGate {...gateProps}>
+            <NavBar {...navProps} />
+            <VolunteerSearch />
+          </PrivateRouteGate>
         </Route>
+
       </Switch>
 
       {

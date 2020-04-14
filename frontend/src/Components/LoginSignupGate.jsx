@@ -9,17 +9,17 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 
-const LoginSignupGate = (props) => {
+const LoginSignupGate = ({ loggedUser, isUserStateReady, children }) => {
   // this show mechanism is needed to hide login elements before redirect
   let showLoginSignup = null;
-  if (props.isUserStateReady) {
-    showLoginSignup = props.children;
+  if (isUserStateReady) {
+    showLoginSignup = children;
   }
 
 
   return(
     <>
-      {props.currentRole
+      {loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
         ? <Redirect to={{ pathname: '/home'}} />
         : showLoginSignup
       }
