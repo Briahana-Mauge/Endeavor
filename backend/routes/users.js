@@ -101,8 +101,8 @@ const deleteAccount = async(request, response, next) => {
                 await fellowsQueries.deleteFellow(loggedUserId);
             }
     
-            await usersQueries.deleteUser(loggedUserEmail);
-            next();
+            // await usersQueries.deleteUser(loggedUserEmail);
+            // next();
         } 
         else {
             throw new Error("403__Not authorized to delete");
@@ -117,7 +117,33 @@ router.delete('/:user_id', deleteAccount, (request, response) => {
     request.logOut();
     response.json({
         error: false,
-        message: 'Successfully deleted user/brand',
+        message: 'Successfully deleted user',
+        payload: null
+    })
+})
+
+const deleteUser = async(request, response, next) => {
+    try {
+        const targetEmail = processInput(request.params.email, 'hardVC', 'email', 50);
+
+        if (request.user && request.user.a_id) {
+            await usersQueries.deleteUser(targetEmail);
+            next();
+        } 
+        else {
+            throw new Error("403__Not authorized to delete");
+        }
+
+    } catch (err) {
+        handleError(err, request, response, next);
+    }
+}
+
+router.delete('/user/:email', deleteUser, (request, response) => {
+    request.logOut();
+    response.json({
+        error: false,
+        message: 'Successfully deleted user',
         payload: null
     })
 })

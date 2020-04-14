@@ -9,7 +9,7 @@ import VolunteerSearch from './Components/VolunteerSearch';
 import EventsSearch from './Components/EventsSearch';
 import ProfilePage from './Components/Profile/ProfilePage';
 import AdminTools from './Components/AdminTools/AdminTools';
-
+import ProfileRender from './Components/ProfilePages/ProfileRender';
 
 function App() {
   const history = useHistory();
@@ -73,7 +73,7 @@ function App() {
 
 
   return (
-    <div className="container-md mt-4">
+    <div className=".container-fluid p-3 mt-4">
       <Switch>
         <Route exact path='/'> 
           <LoginSignup 
@@ -169,8 +169,17 @@ function App() {
           : null
         }
 
+<<<<<<< HEAD
         <Route exact path='/volunteers/search'> 
           <VolunteerSearch />
+=======
+        <Route path='/volunteers/search'> 
+          <VolunteerSearch loggedUser={loggedUser} setFeedback={setFeedback} />
+        </Route>
+
+        <Route path='/volunteers/:volunteerId'> 
+          <ProfileRender loggedUser={loggedUser} setFeedback={setFeedback} />
+>>>>>>> 81ffd2e74d37ad03c254234c0b9cec3573cf0954
         </Route>
 
         <Route exact path='/events/search'> 

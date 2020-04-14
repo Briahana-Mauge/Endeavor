@@ -3,7 +3,7 @@ const db = require('../db/db');
 const userQueries = require('./users');
 
 const getAdminByEmail = async (email) => {
-    return await db.one('SELECT * FROM administration WHERE a_email = $1', email)
+    return await db.one('SELECT * FROM administration WHERE a_email = $1 AND deleted IS NULL', email)
 }
 
 const addAdmin = async (firstName, lastName, email, newPassword, oldPassword, admin) => {
@@ -36,7 +36,26 @@ const updateAdmin = async (id, firstName, lastName) => {
 }
 
 const deleteAdmin = async (id) => {
-    return await db.one('DELETE FROM administration WHERE a_id = $1 RETURNING *', id);
+    const deleteQuery = `
+        UPDATE administration 
+            SET deleted = NOW()
+            WHERE a_id = $1
+            RETURNING *
+    `  
+    return await db.one(deleteQuery, id);
+}
+
+const deleteAdminByEmail = async (email, promise) => {
+    const deleteQuery = `
+        UPDATE administration 
+            SET deleted = NOW()
+            WHERE a_email = $1
+            RETURNING *
+    `  
+    if (promise) {
+        return db.one(deleteQuery, email);
+    }
+    return await db.one(deleteQuery, email);
 }
 
 
@@ -44,5 +63,6 @@ module.exports = {
     getAdminByEmail,
     addAdmin,
     updateAdmin,
-    deleteAdmin
+    deleteAdmin,
+    deleteAdminByEmail
 }

@@ -13,6 +13,7 @@ const selectAllCohorts = async () => {
   const getQuery = `
     SELECT *
     FROM cohorts
+    WHERE deleted IS NULL
     ORDER BY cohort_id ASC;
   `;
   return await db.any(getQuery);
@@ -21,19 +22,27 @@ const selectAllCohorts = async () => {
 const insertCohort = async (cohort) => {
   return await db.task( async t => {
       const checkQuery = `
-        SELECT EXISTS (
-            SELECT 1
-            FROM cohorts
-            WHERE cohort = $1
-        );
+      SELECT *
+      FROM cohorts
+      WHERE cohort = $1;
       `;
-      const doesCohortExist = await t.one(checkQuery, cohort);
-      if (doesCohortExist.exists === false) {
+      const existingCohort = await t.oneOrNone(checkQuery, cohort);
+      // if doesn't exist then allow the add
+      if (!existingCohort) {
         const postQuery = `
           INSERT INTO cohorts ( cohort ) VALUES ( $1 )
           RETURNING *;
         `;
         return await t.one(postQuery, cohort);
+        // else if it exists but it was marked as deleted then update it and bring it back as non-deleted
+      } else if (existingCohort && existingCohort.deleted) {
+        const updateQuery = `
+          UPDATE cohorts
+          SET deleted = NULL
+          WHERE cohort_id = $1
+          RETURNING *;
+        `;
+        return await t.one(updateQuery, existingCohort.cohort_id);
       } else {
         throw new Error('403__cohort already exists');
       }
@@ -44,15 +53,13 @@ const updateCohort = async (cohortObj) => {
   return await db.task( async t => {
       // check if wanted name exists first aside from target id
       const checkQuery = `
-        SELECT EXISTS (
-            SELECT 1
-            FROM cohorts
-            WHERE cohort_id <> $/cohortId/ AND cohort = $/cohort/
-        );
+      SELECT *
+      FROM cohorts
+      WHERE cohort_id <> $/cohortId/ AND cohort = $/cohort/;
       `;
-      const doesCohortExist = await t.one(checkQuery, cohortObj);
+      const existingCohort = await t.oneOrNone(checkQuery, cohortObj);
       // if wanted name already exists aside from target id, throw error to prev duplicate
-      if (doesCohortExist.exists === false) {
+      if (!existingCohort || existingCohort.deleted) {
         const updateQuery = `
           UPDATE cohorts
           SET cohort = $/cohort/
@@ -68,7 +75,8 @@ const updateCohort = async (cohortObj) => {
 
 const deleteCohort = async (cohortId) => {
   const deleteQuery = `
-    DELETE FROM cohorts
+    UPDATE cohorts
+    SET deleted = NOW()
     WHERE cohort_id = $1
     RETURNING *;
   `;

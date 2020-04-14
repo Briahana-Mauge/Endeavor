@@ -1,7 +1,10 @@
 import React from 'react';
-import { Link} from 'react-router-dom';
 
 const VolunteerSearchCard = (props) => {
+    const viewProfile = () => {
+        props.displayProfile();
+        props.setTargetVolunteerId(props.volunteer.v_id)
+    }
     return (
         <div className="card" style={{ width: 400 }}>
             <img className="card-img-top" src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s picture`} />
@@ -16,9 +19,7 @@ const VolunteerSearchCard = (props) => {
                     <p className="card-text">{props.volunteer.skills[2]}</p>
                 </ul>
                 <h5>Next Event: {props.volunteer.topics[0]} (make this a link)</h5>
-                <Link to={`/volunteers/${props.volunteer.v_id}`} className="btn btn-primary">
-                    <button>See Profile</button>
-                    </Link>
+                <button className='btn btn-primary' onClick={viewProfile}>See Profile</button>
             </div>
         </div>
     );
