@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import CommonSubForm from './CommonSubForm';
@@ -32,21 +32,26 @@ export default function LoginSignup(props) {
         industrySpeaker
     } = props
 
+    const location = useLocation();
+    // unsure if this chunk of code to Redirect away from login screen if already logged in is now redundant because of LoginSignupGate
     const history = useHistory();
 
     useEffect(() => {
         if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
             history.push('/home');
         }
-    }, [loggedUser]);
+    }, [loggedUser, history]);
+    //
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         try {
             if (formType === 'login' && email && password) { // LOGIN
+                const { from } = location.state || { from: { pathname: "/" } }; // catches if user wanted to directly go to a specific page
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
                 props.settleUser(data.payload);
+                history.replace(from);
             }
             else {
                 if (userType === 'admin' && email && password && firstName && lastName && newPassword) {

@@ -6,7 +6,7 @@ APP MAIN | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
@@ -49,6 +49,7 @@ function App() {
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
 
+  const location = useLocation();
   const history = useHistory();
 
   const checkForLoggedInUser = async () => {
@@ -62,27 +63,26 @@ function App() {
         .catch (err => {
             if (err.response && err.response.status === 401) {
               setIsUserStateReady(true);
-              history.push('/');
+              history.push('/', { from: location });
             } else {
               setFeedback(err);
             }
         })
       ;
-  }, []);
+  }, [history]);
 
   const settleUser = (user) => {
     setLoggedUser(user);
     setIsUserStateReady(true);
   }
 
-  const logout = async () => {
+  const logout = () => {
     setIsUserStateReady(false);
-    try {
-      await axios.get('/api/auth/logout');
-      settleUser({});
-    } catch (err) {
-      setFeedback(err);
-    }
+    axios.get('/api/auth/logout')
+      .then(res => {
+        settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
+      })
+      .catch (err => setFeedback(err));
   }
 
   const resetFeedback = () => {
@@ -147,28 +147,22 @@ function App() {
           </LoginSignupGate>
         </Route>
 
-        <Route path='/home'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <Dashboard />
-          </PrivateRouteGate>
-        </Route>
+        <PrivateRouteGate path='/home' {...gateProps}>
+          <NavBar {...navProps} />
+          <Dashboard />
+        </PrivateRouteGate>
 
-        <Route path='/profile'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <ProfilePage {...userProps} {...profileProps} />
-          </PrivateRouteGate>
-        </Route>
+        <PrivateRouteGate path='/profile' {...gateProps}>
+          <NavBar {...navProps} />
+          <ProfilePage {...userProps} {...profileProps} />
+        </PrivateRouteGate>
 
         {showAdmins}
 
-        <Route path='/volunteers/search'>
-          <PrivateRouteGate {...gateProps}>
-            <NavBar {...navProps} />
-            <VolunteerSearch />
-          </PrivateRouteGate>
-        </Route>
+        <PrivateRouteGate path='/volunteers/search' {...gateProps}>
+          <NavBar {...navProps} />
+          <VolunteerSearch />
+        </PrivateRouteGate>
 
       </Switch>
 

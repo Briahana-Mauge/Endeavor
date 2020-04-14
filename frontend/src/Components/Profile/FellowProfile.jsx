@@ -20,7 +20,7 @@ export default function FellowProfile(props) {
         cohortId,
         confirmPassword
     } = props;
-console.log(loggedUser)
+
     const [ wantMentor, setWantMentor ] = useState(loggedUser.want_mentor);
     const [ cohortsList, setCohortsList ] = useState([]);
     const [ bio, setBio ] = useState(loggedUser.f_bio);

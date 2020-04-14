@@ -6,25 +6,33 @@ PrivateRouteGate Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 
-const PrivateRouteGate = ({ loggedUser, children, isUserStateReady, location }) => {
-  // this show mechanism is needed to hide private elements before redirect & after clicking logout
-  let showPrivateChildren = null;
+const PrivateRouteGate = ({ children, loggedUser, isUserStateReady }) => {
+  // without this showInside, logout is visibly delayed for fraction of a second before redirect
+  let showInside = null;
   if (isUserStateReady) {
-    showPrivateChildren = children;
+    showInside = children;
   }
 
 
-  return(
-    <>
-      {loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
-        ? showPrivateChildren
-        : <Redirect to={{ pathname: '/', state: { from: location }}} />
+  return (
+    <Route
+      render={({location}) =>
+        loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
+          ? ( showInside )
+          : ( <Redirect
+                to={{
+                  pathname: "/",
+                  state: { from: location }
+                }}
+              />
+            )
       }
-    </>
+    />
   );
-};
+}
+
 
 export default PrivateRouteGate;

@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 
 
 const LoginSignupGate = ({ loggedUser, isUserStateReady, children }) => {
-  // this show mechanism is needed to hide login elements before redirect
+  // without this showLoginSignup, login screen will show for fraction of a second before redirect if user is already logged in
   let showLoginSignup = null;
   if (isUserStateReady) {
     showLoginSignup = children;
