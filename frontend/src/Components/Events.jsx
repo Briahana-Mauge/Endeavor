@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EventsSearchCard from './EventsSearchCard';
+import EventsSearchCard from './EventsCard';
 import { Link, Route, Switch } from 'react-router-dom';
 
 //Class component
@@ -38,10 +38,10 @@ class EventSearch extends React.Component {
 
         }
         else if (filter === 'skill') {
-            basic = await axios.get(`/api/events/all/?upcoming=${filter}`);
+            basic = await axios.get(`/api/events/all/?upcoming=${search}`);
 
         } else {
-            basic = await axios.get(`/api/events/all/?past=${filter}`);
+            basic = await axios.get(`/api/events/all/?past=${search}`);
         }
 
 
@@ -52,6 +52,7 @@ class EventSearch extends React.Component {
 
     handleInput = (event) => {
         const { name, value } = event.target
+        // if(event.name)
         this.setState({
             [name]: value,
             loading: true
