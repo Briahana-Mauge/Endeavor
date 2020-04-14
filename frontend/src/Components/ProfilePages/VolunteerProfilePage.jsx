@@ -45,7 +45,7 @@ export default function VolunteerProfilePage(props) {
             <div className='row'>
                 {
                     volunteer.deleted
-                    ? <div className='col-12 bg-warning text-white text-center'>This volunteer has lest the platform</div>
+                    ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
                     : null
                 }
 
