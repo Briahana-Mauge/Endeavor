@@ -20,8 +20,6 @@ import Feedback from './Components/Feedback';
 
 
 function App() {
-  const history = useHistory();
-
   // USER states
   const [ loggedUser, setLoggedUser ] = useState({});
   const [ feedback, setFeedback ] = useState(null);
@@ -48,25 +46,27 @@ function App() {
   const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
   const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
 
+  const history = useHistory();
 
-  const getLoggedInUser = async () => {
-    try {
-      const { data } = await axios.get('/api/auth/is_logged');
-      setLoggedUser(data.payload);
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        history.push('/');
-      } else {
-        setFeedback(err);
-      }
-    }
+  const checkForLoggedInUser = async () => {
+    const { data } = await axios.get('/api/auth/is_logged');
+    return data.payload;
   }
 
   useEffect(() => {
-    getLoggedInUser();
+      checkForLoggedInUser()
+        .then(settleUser)
+        .catch (err => {
+            if (err.response && err.response.status === 401) {
+              history.push('/');
+            } else {
+              setFeedback(err);
+            }
+        })
+      ;
   }, []);
 
-  const setUser = (user) => {
+  const settleUser = (user) => {
     setLoggedUser(user);
   }
 
@@ -92,7 +92,7 @@ function App() {
   const userProps = {
     loggedUser,
     setFeedback,
-    setUser
+    settleUser
   };
   const signupProps = {
     formType, setFormType,

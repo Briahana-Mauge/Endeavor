@@ -41,17 +41,17 @@ export default function LoginSignup(props) {
         try {
             if (formType === 'login' && email && password) { // LOGIN
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
-                props.setUser(data.payload);
+                props.settleUser(data.payload);
             }
             else {
                 if (userType === 'admin' && email && password && firstName && lastName && newPassword) {
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
-                    props.setUser(data.payload);
+                    props.settleUser(data.payload);
                 } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
                     const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
-                    props.setUser(data.payload);
+                    props.settleUser(data.payload);
                 } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
                     const userData = {
                         email, 
@@ -71,7 +71,7 @@ export default function LoginSignup(props) {
                     };
 
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
-                    props.setUser(data.payload);
+                    props.settleUser(data.payload);
                 }
             }
 

@@ -72,7 +72,7 @@ export default function ProfilePage(props) {
                 ? <AdminProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
-                    setUser={props.setUser}
+                    settleUser={props.settleUser}
                     email={email}
                     setEmail={props.setEmail}
                     password={password}
@@ -96,7 +96,7 @@ export default function ProfilePage(props) {
                 ? <FellowProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
-                    setUser={props.setUser}
+                    settleUser={props.settleUser}
                     email={email}
                     setEmail={props.setEmail}
                     password={password}
@@ -122,7 +122,7 @@ export default function ProfilePage(props) {
                 ? <VolunteerProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
-                    setUser={props.setUser}
+                    settleUser={props.settleUser}
                     email={email}
                     setEmail={props.setEmail}
                     password={password}

@@ -34,7 +34,7 @@ export default function AdminProfile(props) {
         try {
             if (email && password && firstName && lastName) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.a_id}`, {email, password, firstName, lastName});
-                props.setUser(data.payload);
+                props.settleUser(data.payload);
                 props.setPassword('');
                 props.setFeedback({message: 'Profile updated successfully'});
             } else {
