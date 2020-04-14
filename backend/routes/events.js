@@ -101,6 +101,22 @@ router.get('/past', async (req, res, next) => {
     }
 });
 
+// Get all past events by volunteer id
+router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        const events = await eventsQueries.getPastEventsByVolunteerId(volunteerId);
+        res.json({
+            payload: events,
+            message: "Success",
+            err: false
+        });
+      } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
+
 // Delete an event by its ID
 router.delete('/:event_id', async (req, res, next) => {
     try {
@@ -115,7 +131,6 @@ router.delete('/:event_id', async (req, res, next) => {
         } else {
             throw new Error('403__Not allowed to perform this operation')
         }
-
     } catch (err) {
         handleError(err, req, res, next);
     }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import VolunteerSearchCard from './VolunteerSearchCard';
+import ProfileRender from './ProfilePages/ProfileRender';
 
 
 // React Hooks
@@ -60,65 +62,85 @@ import VolunteerSearchCard from './VolunteerSearchCard';
 
 //Class component
 class VolunteerSearch extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            search: '',
-            loading: true,
-            results: [],
-            filter: '',
-            submitted: false
-        }
+    state = {
+        search: '',
+        // loading: true,
+        results: [],
+        filter: '',
+        submitted: false,
+        targetVolunteerId: 0,
+        displayTargetVolunteer: false
     }
+    
     componentDidMount = () => {
-
         this.getAllVolunteers();
     }
 
     getAllVolunteers = async () => {
-
-        let { results, filter, search } = this.state
-        let basic = ''
-        if (filter === '') {
-            basic = await axios.get(`/api/volunteers/all/`);
-
-        } else if (filter === 'v_email') {
-            basic = await axios.get(`/api/volunteers/all/?v_email=${search}`);
-
-        } else if (filter === 'company') {
-            basic = await axios.get(`/api/volunteers/all/?company=${search}`);
-
+        try {
+            const { filter, search } = this.state
+            let response = null;
+    
+            if (filter === '') {
+                response = await axios.get(`/api/volunteers/all/`);
+    
+            } else if (filter === 'v_email') {
+                response = await axios.get(`/api/volunteers/all/?v_email=${search}`);
+    
+            } else if (filter === 'company') {
+                response = await axios.get(`/api/volunteers/all/?company=${search}`);
+    
+            }
+            else if (filter === 'skill') {
+                response = await axios.get(`/api/volunteers/all/?skill=${search}`);
+    
+            } else {
+                response = await axios.get(`/api/volunteers/all/?name=${search}`);
+            }
+    
+            this.setState({
+                results: response.data.payload
+            })
+        } catch (err) {
+            this.props.setFeedback(err);
         }
-        else if (filter === 'skill') {
-            basic = await axios.get(`/api/volunteers/all/?skill=${search}`);
-
-        } else {
-            basic = await axios.get(`/api/volunteers/all/?name=${search}`);
-        }
-
-
-        this.setState({
-            results: basic.data.payload
-        })
     }
 
     handleInput = (event) => {
         const { name, value } = event.target
         this.setState({
             [name]: value,
-            loading: true
+            // loading: true
         })
     }
+
     handleSubmit = async (event) => {
         event.preventDefault();
         this.setState({
-            loading: false,
+            // loading: false,
         })
 
         this.getAllVolunteers();
-
-
     }
+
+    setTargetVolunteerId = (id) => {
+        this.setState({
+            targetVolunteerId: id
+        })
+    }
+
+    displayProfile = () => {
+        this.setState({
+            displayTargetVolunteer: true
+        })
+    }
+
+    hideProfile = () => {
+        this.setState({
+            displayTargetVolunteer: false
+        })
+    }
+
     render = () => {
 
         const { results } = this.state
@@ -135,20 +157,30 @@ class VolunteerSearch extends React.Component {
                         <option value='skill' key='skills'>Skill</option>
                     </select>
                 </form>
-                <div>
-                    {results.map(volunteer => {
-                        return (
 
-                            <div key={volunteer.v_id}>
-                                <VolunteerSearchCard volunteer={volunteer} />
-
-                            </div>
-
-                        )
-                    })}
+                <div className='d-flex flex-wrap justify-content-around'>
+                    {results.map(volunteer => 
+                        <div className='border align-self-stretch'
+                            key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}>
+                            <VolunteerSearchCard 
+                                volunteer={volunteer} 
+                                displayProfile={this.displayProfile} 
+                                setTargetVolunteerId={this.setTargetVolunteerId}
+                            />
+                        </div>
+                    )}
                 </div>
 
-
+                {
+                    this.state.displayTargetVolunteer 
+                    ? <ProfileRender 
+                        volunteerId={this.state.targetVolunteerId} 
+                        hideProfile={this.hideProfile} 
+                        setFeedback={this.props.setFeedback}
+                        loggedUser={this.props.loggedUser}
+                        />
+                    : null
+                }
             </div>
         );
     }
