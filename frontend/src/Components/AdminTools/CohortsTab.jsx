@@ -3,28 +3,25 @@ import axios from 'axios';
 
 
 export default function Cohorts(props) {
+    const { setFeedback } = props;
     const [ cohortsList, setCohortsList ] = useState([]);
     const [ cohortName, setCohortName ] = useState('');
     const [ tracker, setTracker ] = useState({});
 
-    const getCohortsList = async () => {
-        try {
-            const { data } = await axios.get('/api/cohorts');
-            setCohortsList(data.payload);
-            const map = {};
-            for (let elem of data.payload) {
-                map[elem.cohort_id] = elem.cohort;
-            }
-            setTracker(map);
-
-        } catch (err) {
-            props.setFeedback(err);
-        }
+    const getCohortsList = () => {
+        axios.get('/api/cohorts')
+            .then(res => {
+                setCohortsList(res.data.payload);
+                const map = {};
+                for (let elem of res.data.payload) {
+                    map[elem.cohort_id] = elem.cohort;
+                }
+                setTracker(map);
+            })
+            .catch(err => setFeedback(err))
+        ;
     }
-
-    useEffect(() => {
-        getCohortsList();
-    }, []);
+    useEffect(getCohortsList, []);
 
     const deleteCohort = async (cohortId) => {
         try {
