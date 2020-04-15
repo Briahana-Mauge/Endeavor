@@ -7,10 +7,14 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 const userQueries = require('./users');
+const timeQueries = require('./time');
+// const eventVolunteersQueries = require('./eventVolunteers');
+// const mentorPairsQueries = require('./mentorPairs');
+const volunteerSkillsQueries = require('./volunteerSkills');
 
-const formatStr = str => {
-  return str.toLowerCase().replace(/[^a-z0-9]/g, '')
-}
+const { formatStr } = require('../helpers/helpers');
+
+
 
 /* QUERIES */
 
@@ -33,7 +37,8 @@ const getAllVolunteers = async (vEmail, company, skill, name) => {
   const selectQuery = `
     SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
         volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
-        ARRAY_AGG(DISTINCT skills.skill) AS skills,  ARRAY_AGG(DISTINCT events.topic) AS topics,
+        ARRAY_AGG(DISTINCT skills.skill) AS skills,  
+        ARRAY_AGG(DISTINCT events.topic) AS topics,
         volunteers.active
     FROM volunteers 
     INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
@@ -42,9 +47,9 @@ const getAllVolunteers = async (vEmail, company, skill, name) => {
     INNER JOIN events ON events.event_id = event_volunteers.eventv_id
     
   `
-  let endOfQuery = `
-  GROUP BY volunteers.v_id
-   ORDER BY v_first_name ASC
+  const endOfQuery = `
+    GROUP BY volunteers.v_id
+    ORDER BY v_first_name ASC
   `
   if (vEmail === '' && parsedCompany === '' && parsedSkill === '' && lowercaseName === '') { //use name instead of email
     return await db.any(selectQuery + endOfQuery);
@@ -87,7 +92,33 @@ const getVolunteerByEmail = async (vEmail) => {
   return await db.one(selectQuery, { vEmail });
 }
 
-
+// Get volunteer by Id 
+const getVolunteerById = async (id) => {
+  const selectQuery = `
+    SELECT 
+	    v_id, v_first_name, v_last_name, v_email,
+      volunteers.confirmed, volunteers.active,
+      v_picture, company, title, v_bio, v_linkedin,
+      mentoring, office_hours, tech_mock_interview,
+      behavioral_mock_interview, professional_skills_coach,
+      hosting_site_visit, industry_speaker,
+      signup_date, inactive_date, volunteers.deleted,
+      banked_time, planned_time, 
+      ARRAY_AGG (DISTINCT skills.skill) AS skills,
+      ARRAY_AGG (DISTINCT events.event_id) AS event_ids,
+      ARRAY_AGG (DISTINCT mentor_pairs.mentee) AS mentee_ids
+    FROM volunteers
+    INNER JOIN volunteer_skills ON v_id = volunteer_skills.volunteer_id
+    INNER JOIN skills on volunteer_skills.skill_id = skills.skill_id
+    INNER JOIN event_volunteers ON v_id = event_volunteers.volunteer_id
+    INNER JOIN events ON eventv_id = event_id
+    INNER JOIN volunteers_hours ON v_id = volunteers_hours.volunteer_id
+    LEFT JOIN mentor_pairs ON v_id = mentor_pairs.mentor
+    WHERE v_id = $1
+    GROUP BY volunteers.v_id, volunteers_hours.banked_time, volunteers_hours.planned_time
+  `;
+  return await db.one(selectQuery, id);
+}
 
 
 const addVolunteer = async (user, password) => {
@@ -181,7 +212,30 @@ const updateVolunteer = async (user) => {
 }
 
 const deleteVolunteer = async (id) => {
-  return await db.one('DELETE FROM volunteers WHERE v_id = $/id/ RETURNING *', { id });
+  const deleteQuery = `
+    UPDATE volunteers
+    SET deleted = NOW()
+    WHERE v_id = $1
+    RETURNING *
+  `
+  const promises = [];
+  promises.push(db.one(deleteQuery, id));
+  promises.push(timeQueries.deleteHoursByVolunteerId(id, true));
+  // promises.push(eventVolunteersQueries.delete...(id, true));
+  // promises.push(mentorPairsQueries.delete...(id, true));
+  promises.push(volunteerSkillsQueries.deleteVolunteerSkillsByVolunteerId(id, true));
+  
+  const result = await Promise.all(promises);
+  return await result[0];
+}
+
+const deleteVolunteerByEmail = async (email, promise) => {
+  const volunteer = await db.one('SELECT * FROM volunteers WHERE v_email = $1', email);
+  console.log(volunteer)
+  if (promise) {
+    return deleteVolunteer(volunteer.v_id);
+  }
+  return await deleteVolunteer(volunteer.v_id);
 }
 
 /* EXPORT */
@@ -189,8 +243,10 @@ module.exports = {
   getAllVolunteers,
   getNewVolunteers,
   getVolunteerByEmail,
+  getVolunteerById,
   addVolunteer,
   updateVolunteer,
-  deleteVolunteer
+  deleteVolunteer,
+  deleteVolunteerByEmail
 }
 

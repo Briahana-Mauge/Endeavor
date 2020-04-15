@@ -9,7 +9,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 
-const PrivateRouteGate = ({ children, loggedUser, isUserStateReady }) => {
+const PrivateRouteGate = ({ children, loggedUser, isUserStateReady, ...rest }) => {
   // without this showInside, logout is visibly delayed for fraction of a second before redirect
   let showInside = null;
   if (isUserStateReady) {
@@ -19,16 +19,18 @@ const PrivateRouteGate = ({ children, loggedUser, isUserStateReady }) => {
 
   return (
     <Route
+      {...rest}
       render={({location}) =>
         loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
           ? ( showInside )
-          : ( <Redirect
-                to={{
-                  pathname: "/",
-                  state: { from: location }
-                }}
-              />
-            )
+          : null
+          // : ( <Redirect
+          //       to={{
+          //         pathname: "/",
+          //         state: { from: location }
+          //       }}
+          //     />
+          //   )
       }
     />
   );
