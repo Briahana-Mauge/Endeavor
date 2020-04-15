@@ -37,11 +37,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-  
-  WHERE events.deleted IS NULL
-  
-  GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort`     
+`     
 
   let endOfQuery = `GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort     
@@ -53,20 +49,20 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         ) 
   DESC, event_start ASC
   `
-  if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
-    return await db.any(selectQuery + endOfQuery);
+  if (vName === '' && topic === '' && instructor === '' && upcoming === '' && past === '') {
+    return await db.any(selectQuery +" WHERE events.deleted IS NULL " + endOfQuery);
   }
-  else if (lowercaseTopic === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE lower(volunteers.v_first_name) = $/lowercasevName/ OR lower(volunteers.v_last_name) = $/lowercasevName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/lowercasevName/
-     ${endOfQuery}`, { lowercasevName });
+  else if (topic === '' && instructor === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE  events.deleted IS NULL AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/
+     ${endOfQuery}`, { vName });
   }
-  else if (lowercasevName === '' && lowercaseInstructor === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE LOWER (events.topic) LIKE '%' || $/lowercaseTopic/ || '%' ${endOfQuery}`, { lowercaseTopic });
+  else if (vName === '' && instructor === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.topic) LIKE '%' || $/topic/ || '%' ${endOfQuery}`, { topic });
   }
-  else if (lowercasevName === '' && lowercaseTopic === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE LOWER (events.instructor) LIKE '%' || $/lowercaseInstructor/ || '%' ${endOfQuery}`, { lowercaseInstructor });
+  else if (vName === '' && topic === '' && upcoming === '' && past === '') {
+    return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' ${endOfQuery}`, { instructor });
   }
-  else if (lowercasevName === '' && lowercaseTopic === '' && lowercaseInstructor === '' && past === '') {
+  else if (vName === '' && topic === '' && instructor === '' && past === '') {
     return await getUpcomingEvents();
   } else {
     return await getPastEvents();
@@ -173,7 +169,7 @@ async function getPastEvents() {
   WHERE event_start < now() AND deleted IS NULL
   ORDER BY event_start ASC
   `;
-  return await db.t(selectQuery);
+  return await db.any(selectQuery);
 }
 
 // delete events
