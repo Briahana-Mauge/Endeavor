@@ -123,6 +123,21 @@ router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
     }
 });
 
+// Get all past events by fellow id
+router.get('/past/fellow/:fellow_id', async (req, res, next) => {
+    try {
+        const fellowId = processInput(req.params.fellow_id, 'idNum', 'volunteer id');
+        const events = await eventsQueries.getPastEventsByFellowId(fellowId);
+        res.json({
+            payload: events,
+            message: "Success",
+            err: false
+        });
+      } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
 
 // Delete an event by its ID
 router.delete('/:event_id', async (req, res, next) => {

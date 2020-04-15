@@ -13,7 +13,7 @@ const getMentorPairByVolunteerId = async (id) => {
 const getMentorPairByFellowId = async (id) => {
     const selectQuery = `
         SELECT * 
-        FROM mentor_pairs INNER JOIN volunteers ON mentee = v_id
+        FROM mentor_pairs INNER JOIN volunteers ON mentor = v_id
         WHERE mentee = $1 AND mentor_pairs.deleted IS NULL
     `
     return await db.any(selectQuery, id);

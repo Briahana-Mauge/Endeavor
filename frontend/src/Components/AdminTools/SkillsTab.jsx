@@ -3,36 +3,40 @@ import axios from 'axios';
 
 
 export default function Skills(props) {
+    const { setFeedback } = props;
+
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillName, setSkillName ] = useState('');
     const [ tracker, setTracker ] = useState({});
-
-    const getSkillsList = async () => {
-        try {
-            const { data } = await axios.get('/api/skills');
-            setSkillsList(data.payload);
-            const map = {};
-            for (let elem of data.payload) {
-                map[elem.skill_id] = elem.skill;
-            }
-            setTracker(map);
-
-        } catch (err) {
-            props.setFeedback(err);
-        }
-    }
-
+    const [ reload, setReload ] = useState(0);
+    
     useEffect(() => {
+        const getSkillsList = async () => {
+            try {
+                const { data } = await axios.get('/api/skills');
+                setSkillsList(data.payload);
+                const map = {};
+                for (let elem of data.payload) {
+                    map[elem.skill_id] = elem.skill;
+                }
+                setTracker(map);
+    
+            } catch (err) {
+                setFeedback(err);
+            }
+        }
+
         getSkillsList();
-    }, []);
+    }, [setFeedback, reload]);
 
     const deleteSkill = async (skillId) => {
         try {
             const { data } = await axios.delete(`/api/skills/del/${skillId}`);
-            getSkillsList();
-            props.setFeedback(data);
+            // getSkillsList();
+            setReload(reload + 1);
+            setFeedback(data);
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -46,13 +50,14 @@ export default function Skills(props) {
         try {
             if (text) {
                 const { data } = await axios.put(`/api/skills/edit/${skillId}`, {skill: text});
-                getSkillsList();
-                props.setFeedback(data);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a skill'});
+                setFeedback({message: 'Please enter a skill'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -60,13 +65,14 @@ export default function Skills(props) {
         try {
             if (skillName) {
                 const { data } = await axios.post(`/api/skills/add`, {skill: skillName});
-                getSkillsList();
-                props.setFeedback(data);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a skill'});
+                setFeedback({message: 'Please enter a skill'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 

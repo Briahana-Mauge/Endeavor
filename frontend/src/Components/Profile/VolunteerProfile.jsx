@@ -13,6 +13,7 @@ import SignupVolunteerSubForm from '../LoginSignup/SignupVolunteerSubForm';
 export default function VolunteerProfile(props) {
     const {
         loggedUser,
+        setFeedback,
         email,
         password,
         firstName,
@@ -30,6 +31,19 @@ export default function VolunteerProfile(props) {
         professionalSkillsCoach,
         hostSiteVisit,
         industrySpeaker,
+        setFirstName,
+        setLastName,
+        setEmail,
+        setCompany,
+        setTitle,
+        setVolunteerSkills,
+        setMentor,
+        setOfficeHours,
+        setTechMockInterview,
+        setBehavioralMockInterview,
+        setProfessionalSkillsCoach,
+        setHostSiteVisit,
+        setIndustrySpeaker
     } = props;
 
     const [ bio, setBio ] = useState(loggedUser.v_bio);
@@ -39,30 +53,34 @@ export default function VolunteerProfile(props) {
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const getVolunteerSkills = async () => {
-        try {
-            const { data } = await axios.get(`api/volunteers/skills/${loggedUser.v_id}`);
-            props.setVolunteerSkills(data.payload.skills_list);
-        } catch (err) {
-            props.setFeedback(err)
-        }
-    }
-
+    
     useEffect(() => {
-        props.setFirstName(loggedUser.v_first_name);
-        props.setLastName(loggedUser.v_last_name);
-        props.setEmail(loggedUser.v_email);
-        props.setCompany(loggedUser.company);
-        props.setTitle(loggedUser.title);
-        props.setMentor(loggedUser.mentoring);
-        props.setOfficeHours(loggedUser.office_hours);
-        props.setTechMockInterview(loggedUser.tech_mock_interview);
-        props.setBehavioralMockInterview(loggedUser.behavioral_mock_interview);
-        props.setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
-        props.setHostSiteVisit(loggedUser.hosting_site_visit);
-        props.setIndustrySpeaker(loggedUser.industry_speaker);
+        const getVolunteerSkills = async () => {
+            try {
+                const { data } = await axios.get(`api/volunteers/skills/${loggedUser.v_id}`);
+                setVolunteerSkills(data.payload.skills_list);
+            } catch (err) {
+                setFeedback(err)
+            }
+        }
+
         getVolunteerSkills();
-    }, [loggedUser]);
+
+        setFirstName(loggedUser.v_first_name);
+        setLastName(loggedUser.v_last_name);
+        setEmail(loggedUser.v_email);
+        setCompany(loggedUser.company);
+        setTitle(loggedUser.title);
+        setMentor(loggedUser.mentoring);
+        setOfficeHours(loggedUser.office_hours);
+        setTechMockInterview(loggedUser.tech_mock_interview);
+        setBehavioralMockInterview(loggedUser.behavioral_mock_interview);
+        setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
+        setHostSiteVisit(loggedUser.hosting_site_visit);
+        setIndustrySpeaker(loggedUser.industry_speaker);
+    }, [loggedUser, setFirstName, setLastName, setEmail, setCompany, setTitle, setFeedback, setVolunteerSkills, 
+        setMentor, setOfficeHours, setTechMockInterview, setBehavioralMockInterview, setProfessionalSkillsCoach, 
+        setHostSiteVisit, setIndustrySpeaker]);
 
 
     const handleUpdateInfo = async (e) => {
@@ -116,13 +134,13 @@ export default function VolunteerProfile(props) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.v_id}`, profile);
                 props.settleUser(data.payload);
                 props.setPassword('');
-                props.setFeedback({message: 'Profile updated successfully'});
+                setFeedback({message: 'Profile updated successfully'});
             } else {
-                props.setFeedback({message: 'email, password, first and last name, company, and title fields are required'});
+                setFeedback({message: 'email, password, first and last name, company, and title fields are required'});
             }
 
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
     
@@ -151,41 +169,41 @@ export default function VolunteerProfile(props) {
                         <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
-                                setFirstName={props.setFirstName}
+                                setFirstName={setFirstName}
                                 lastName={lastName}
-                                setLastName={props.setLastName}
+                                setLastName={setLastName}
                             />
 
                             <EmailPassword 
                                 email={email}
-                                setEmail={props.setEmail}
+                                setEmail={setEmail}
                                 password={password}
                                 setPassword={props.setPassword}
                             />
 
                             <SignupVolunteerSubForm 
-                                setFeedback={props.setFeedback} 
+                                setFeedback={setFeedback} 
                                 company={company}
-                                setCompany={props.setCompany}
+                                setCompany={setCompany}
                                 title={title}
-                                setTitle={props.setTitle}
+                                setTitle={setTitle}
                                 volunteerSkills={volunteerSkills}
                                 setVolunteerSkills={props.setVolunteerSkills}
                                 skills={skills}
                                 mentor={mentor}
-                                setMentor={props.setMentor}
+                                setMentor={setMentor}
                                 officeHours={officeHours}
-                                setOfficeHours={props.setOfficeHours}
+                                setOfficeHours={setOfficeHours}
                                 techMockInterview={techMockInterview}
-                                setTechMockInterview={props.setTechMockInterview}
+                                setTechMockInterview={setTechMockInterview}
                                 behavioralMockInterview={behavioralMockInterview}
-                                setBehavioralMockInterview={props.setBehavioralMockInterview}
+                                setBehavioralMockInterview={setBehavioralMockInterview}
                                 professionalSkillsCoach={professionalSkillsCoach}
-                                setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                                setProfessionalSkillsCoach={setProfessionalSkillsCoach}
                                 hostSiteVisit={hostSiteVisit}
-                                setHostSiteVisit={props.setHostSiteVisit}
+                                setHostSiteVisit={setHostSiteVisit}
                                 industrySpeaker={industrySpeaker}
-                                setIndustrySpeaker={props.setIndustrySpeaker}
+                                setIndustrySpeaker={setIndustrySpeaker}
                             />
 
                             <div className='col-sm-12'>

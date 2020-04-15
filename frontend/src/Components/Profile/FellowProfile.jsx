@@ -12,12 +12,17 @@ import FileUpload from './FileUpload';
 export default function FellowProfile(props) {
     const {
         loggedUser,
+        setFeedback,
         email,
+        setEmail,
         password,
         firstName,
+        setFirstName,
         lastName,
+        setLastName,
         newPassword,
         cohortId,
+        setCohortId,
         confirmPassword
     } = props;
 
@@ -31,22 +36,24 @@ export default function FellowProfile(props) {
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const getCohortsList = async () => {
-        try {
-            const { data } = await axios.get(`api/cohorts`);
-            setCohortsList(data.payload);
-        } catch (err) {
-            props.setFeedback(err)
-        }
-    }
-
+    
     useEffect(() => {
-        props.setFirstName(loggedUser.f_first_name);
-        props.setLastName(loggedUser.f_last_name);
-        props.setEmail(loggedUser.f_email);
-        props.setCohortId(loggedUser.cohort_id);
+        const getCohortsList = async () => {
+            try {
+                const { data } = await axios.get(`api/cohorts`);
+                setCohortsList(data.payload);
+            } catch (err) {
+                setFeedback(err);
+            }
+        }
+
         getCohortsList();
-    }, [loggedUser])
+        
+        setFirstName(loggedUser.f_first_name);
+        setLastName(loggedUser.f_last_name);
+        setEmail(loggedUser.f_email);
+        setCohortId(loggedUser.cohort_id);
+    }, [loggedUser, setFirstName, setLastName, setEmail, setCohortId, setFeedback])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -85,14 +92,14 @@ export default function FellowProfile(props) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.f_id}`, profile);
                 props.settleUser(data.payload);
                 props.setPassword('');
-                props.setFeedback({message: 'Profile updated successfully'});
+                setFeedback({message: 'Profile updated successfully'});
 
             } else {
-                props.setFeedback({message: 'email, password, cohort, first and last name fields are required'});
+                setFeedback({message: 'email, password, cohort, first and last name fields are required'});
             }
 
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
     
@@ -121,20 +128,20 @@ export default function FellowProfile(props) {
                         <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
-                                setFirstName={props.setFirstName}
+                                setFirstName={setFirstName}
                                 lastName={lastName}
-                                setLastName={props.setLastName}
+                                setLastName={setLastName}
                             />
 
                             <EmailPassword 
                                 email={email}
-                                setEmail={props.setEmail}
+                                setEmail={setEmail}
                                 password={password}
                                 setPassword={props.setPassword}
                             />
 
                             <div className='col-sm-6'>
-                                <select className='mb-2' onChange={e => props.setCohortId(e.target.value)} value={cohortId}>
+                                <select className='mb-2' onChange={e => setCohortId(e.target.value)} value={cohortId}>
                                     <option value={0}> -- Cohort --</option>
                                     {cohortsList.map(cohort => <option key={cohort.cohort_id+cohort.cohort} value={cohort.cohort_id}>{cohort.cohort}</option>)}
                                 </select>
