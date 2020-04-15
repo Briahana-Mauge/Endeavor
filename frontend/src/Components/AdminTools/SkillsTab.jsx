@@ -4,9 +4,11 @@ import axios from 'axios';
 
 export default function Skills(props) {
     const { setFeedback } = props;
+
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillName, setSkillName ] = useState('');
     const [ tracker, setTracker ] = useState({});
+    const [ reload, setReload ] = useState(0);
 
     const getSkillsList = () => {
         axios.get('/api/skills')
@@ -21,15 +23,16 @@ export default function Skills(props) {
             .catch(err => setFeedback(err))
         ;
     }
-    useEffect(getSkillsList, []);
+    useEffect(getSkillsList, [reload]);
 
     const deleteSkill = async (skillId) => {
         try {
             const { data } = await axios.delete(`/api/skills/del/${skillId}`);
-            getSkillsList();
-            props.setFeedback(data);
+            // getSkillsList();
+            setReload(reload + 1);
+            setFeedback(data);
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -43,13 +46,14 @@ export default function Skills(props) {
         try {
             if (text) {
                 const { data } = await axios.put(`/api/skills/edit/${skillId}`, {skill: text});
-                getSkillsList();
-                props.setFeedback(data);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a skill'});
+                setFeedback({message: 'Please enter a skill'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -57,13 +61,14 @@ export default function Skills(props) {
         try {
             if (skillName) {
                 const { data } = await axios.post(`/api/skills/add`, {skill: skillName});
-                getSkillsList();
-                props.setFeedback(data);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a skill'});
+                setFeedback({message: 'Please enter a skill'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 

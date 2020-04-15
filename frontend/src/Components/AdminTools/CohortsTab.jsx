@@ -4,12 +4,15 @@ import axios from 'axios';
 
 export default function Cohorts(props) {
     const { setFeedback } = props;
+
     const [ cohortsList, setCohortsList ] = useState([]);
     const [ cohortName, setCohortName ] = useState('');
     const [ tracker, setTracker ] = useState({});
+    const [ reload, setReload ] = useState(0);
 
-    const getCohortsList = () => {
-        axios.get('/api/cohorts')
+    useEffect(() => {
+        const getCohortsList = async () => {
+            axios.get('/api/cohorts')
             .then(res => {
                 setCohortsList(res.data.payload);
                 const map = {};
@@ -18,18 +21,20 @@ export default function Cohorts(props) {
                 }
                 setTracker(map);
             })
-            .catch(err => setFeedback(err))
-        ;
-    }
-    useEffect(getCohortsList, []);
+            .catch(err => setFeedback(err));
+        }
+
+        getCohortsList();
+    }, [setFeedback, reload]);
 
     const deleteCohort = async (cohortId) => {
         try {
             const { data } = await axios.delete(`/api/cohorts/del/${cohortId}`);
-            getCohortsList();
-            props.setFeedback(data);
+            // getCohortsList();
+            setReload(reload + 1);
+            setFeedback(data);
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -43,13 +48,14 @@ export default function Cohorts(props) {
         try {
             if (text) {
                 const { data } = await axios.put(`/api/cohorts/edit/${cohortId}`, {cohort: text});
-                getCohortsList();
-                props.setFeedback(data);
+                // getCohortsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a cohort'});
+                setFeedback({message: 'Please enter a cohort'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 
@@ -57,13 +63,14 @@ export default function Cohorts(props) {
         try {
             if (cohortName) {
                 const { data } = await axios.post(`/api/cohorts/add`, {cohort: cohortName});
-                getCohortsList();
-                props.setFeedback(data);
+                // getCohortsList();
+                setReload(reload + 1);
+                setFeedback(data);
             } else {
-                props.setFeedback({message: 'Please enter a cohort'});
+                setFeedback({message: 'Please enter a cohort'});
             }
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
 

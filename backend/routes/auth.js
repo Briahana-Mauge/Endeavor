@@ -271,6 +271,7 @@ const updateFellowUser = async (userId, request, response, next) => {
 
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
             if (actualEmail !== formattedRequestBody.email) {
+
                 await usersQueries.updateEmail(actualEmail, formattedRequestBody.email);
             }
 
@@ -279,6 +280,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             }
 
             await fellowsQueries.updateFellow(formattedRequestBody);
+
             // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
             if (request.file && request.user.f_picture && request.user.f_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.f_picture)

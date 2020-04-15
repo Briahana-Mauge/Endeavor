@@ -122,9 +122,9 @@ function App() {
   let showAdmins = null;
   if (loggedUser && loggedUser.a_id) {
     showAdmins = (
-      <Route path='/tools'>
+      <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
-      </Route>
+      </PrivateRouteGate>
     );
   }
 
@@ -154,6 +154,10 @@ function App() {
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
+          <ProfileRender {...userProps} />
+        </PrivateRouteGate>
+
+        <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 

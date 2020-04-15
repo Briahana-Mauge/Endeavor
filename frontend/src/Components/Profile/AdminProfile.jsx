@@ -12,25 +12,24 @@ export default function AdminProfile(props) {
     const {
         loggedUser,
         email,
+        setEmail,
         password,
         firstName,
+        setFirstName,
         lastName,
+        setLastName,
         newPassword,
         confirmPassword,
-        setFirstName,
-        setLastName,
-        setEmail
     } = props;
 
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const loadFields = () => {
+    useEffect(() => {
         setFirstName(loggedUser.a_first_name);
         setLastName(loggedUser.a_last_name);
         setEmail(loggedUser.a_email);
-    }
-    useEffect(loadFields, [loggedUser])
+    }, [loggedUser, setFirstName, setLastName, setEmail]);
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();

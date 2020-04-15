@@ -28,6 +28,21 @@ const getAllCohorts = async (req, res, next) => {
   }
 };
 
+const getCohortById = async (req, res, next) => {
+  try {
+    const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
+    const cohort = await queries.selectCohortById(cohortId);
+    res.status(200);
+    res.json({
+        status: "success",
+        message: `cohort.${cohortId} retrieved`,
+        payload: cohort
+    });
+  } catch (err) {
+    handleError(err, req, res, next);
+  }
+};
+
 const postCohort = async (req, res, next) => {
   try {
     if (req.user && req.user.a_id) {
@@ -91,6 +106,7 @@ const delCohort = async (req, res, next) => {
 
 /* ENDPOINT HANDLERS */
 router.get("/", getAllCohorts);
+router.get("/id/:cohort_id", getCohortById);
 router.post("/add/", postCohort);
 router.put("/edit/:cohort_id", putCohort);
 router.delete("/del/:cohort_id", delCohort);

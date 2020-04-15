@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,18 +12,18 @@ import FileUpload from './FileUpload';
 export default function FellowProfile(props) {
     const {
         loggedUser,
+        setFeedback,
         email,
+        setEmail,
         password,
         firstName,
+        setFirstName,
         lastName,
+        setLastName,
         newPassword,
         cohortId,
-        confirmPassword,
-        setFirstName,
-        setLastName,
-        setEmail,
         setCohortId,
-        setFeedback
+        confirmPassword
     } = props;
 
     const [ wantMentor, setWantMentor ] = useState(loggedUser.want_mentor);
@@ -36,21 +36,24 @@ export default function FellowProfile(props) {
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const loadFields = useCallback(() => {
+    
+    useEffect(() => {
+        const getCohortsList = async () => {
+            try {
+                const { data } = await axios.get(`api/cohorts`);
+                setCohortsList(data.payload);
+            } catch (err) {
+                setFeedback(err);
+            }
+        }
+
+        getCohortsList();
+        
         setFirstName(loggedUser.f_first_name);
         setLastName(loggedUser.f_last_name);
         setEmail(loggedUser.f_email);
         setCohortId(loggedUser.cohort_id);
-    }, [ setFirstName, setLastName, setEmail, setCohortId, loggedUser ]);
-    useEffect(loadFields, []);
-
-    const getCohortsList = useCallback(() => {
-        axios.get(`api/cohorts`)
-            .then(res => setCohortsList(res.data.payload))
-            .catch(err => setFeedback(err))
-        ;
-    }, [setFeedback]);
-    useEffect(getCohortsList, []);
+    }, [loggedUser, setFirstName, setLastName, setEmail, setCohortId, setFeedback])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -89,14 +92,14 @@ export default function FellowProfile(props) {
                 const { data } = await axios.put(`/api/auth/${loggedUser.f_id}`, profile);
                 props.settleUser(data.payload);
                 props.setPassword('');
-                props.setFeedback({message: 'Profile updated successfully'});
+                setFeedback({message: 'Profile updated successfully'});
 
             } else {
-                props.setFeedback({message: 'email, password, cohort, first and last name fields are required'});
+                setFeedback({message: 'email, password, cohort, first and last name fields are required'});
             }
 
         } catch (err) {
-            props.setFeedback(err);
+            setFeedback(err);
         }
     }
     
@@ -125,33 +128,34 @@ export default function FellowProfile(props) {
                         <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
-                                setFirstName={props.setFirstName}
+                                setFirstName={setFirstName}
                                 lastName={lastName}
-                                setLastName={props.setLastName}
+                                setLastName={setLastName}
                             />
 
                             <EmailPassword 
                                 email={email}
-                                setEmail={props.setEmail}
+                                setEmail={setEmail}
                                 password={password}
                                 setPassword={props.setPassword}
                             />
 
                             <div className='col-sm-6'>
-                                <select className='mb-2' onChange={e => props.setCohortId(e.target.value)} value={cohortId}>
+                                <select className='mb-2' onChange={e => setCohortId(e.target.value)} value={cohortId}>
                                     <option value={0}> -- Cohort --</option>
                                     {cohortsList.map(cohort => <option key={cohort.cohort_id+cohort.cohort} value={cohort.cohort_id}>{cohort.cohort}</option>)}
                                 </select>
                             </div>
 
-                            <div className='col-sm-6 row'>
-                                <span className='col-9'>Do you want to have a mentor?</span>
-                                <span className='col-3 px-1'>
-                                    <label className='switch'>
-                                        <input type='checkbox' checked={wantMentor} onChange={e => setWantMentor(e.target.checked)}/>
-                                        <span className='slider round'></span>
-                                    </label>
-                                </span>
+
+                            <div className='col-sm-6'>
+                                <div className='custom-control custom-switch'>
+                                    <input 
+                                        type='checkbox' className='custom-control-input' id='wantMentor'
+                                        checked={wantMentor} onChange={e => setWantMentor(e.target.checked)}
+                                    />
+                                    <label className='custom-control-label' htmlFor='wantMentor'>Do you want to have a mentor?</label>
+                                </div>
                             </div>
 
                             <div className='col-sm-12'>

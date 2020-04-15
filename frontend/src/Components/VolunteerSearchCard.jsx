@@ -7,7 +7,7 @@ const VolunteerSearchCard = (props) => {
     }
     return (
         <div className="card" style={{ width: 400 }}>
-            <img className="card-img-top" src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}`} />
+            <img className="card-img-top" src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`} />
             <div className="card-body">
                 <h4 className="card-title">{props.volunteer.v_first_name} {props.volunteer.v_last_name}</h4>
                 <p className="card-text">{props.volunteer.title} at {props.volunteer.company}</p>
