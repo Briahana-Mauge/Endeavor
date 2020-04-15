@@ -12,7 +12,6 @@ import axios from 'axios';
 import './App.scss';
 import LoginSignupGate from './Components/LoginSignupGate';
 import PrivateRouteGate from './Components/PrivateRouteGate';
-import NavBar from './Components/NavBar';
 import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
@@ -90,10 +89,7 @@ function App() {
   /* PREP RETURN */
   const gateProps = {
     loggedUser,
-    isUserStateReady
-  }
-  const navProps = {
-    loggedUser,
+    isUserStateReady,
     logout
   }
   const userProps = {
@@ -127,7 +123,6 @@ function App() {
   if (loggedUser && loggedUser.a_id) {
     showAdmins = (
       <Route path='/tools'>
-        <NavBar {...navProps} />
         <AdminTools {...userProps} />
       </Route>
     );
@@ -145,29 +140,24 @@ function App() {
         </Route>
 
         <PrivateRouteGate path='/home' {...gateProps}>
-          <NavBar {...navProps} />
           <Dashboard />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
-          <NavBar {...navProps} />
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
         {showAdmins}
 
         <PrivateRouteGate path='/volunteers/search' {...gateProps}>
-          <NavBar {...navProps} />
           <VolunteerSearch {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
-          <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/events/search' {...gateProps}>
-          <NavBar {...navProps} />
           <Events {...userProps} />
         </PrivateRouteGate>
 

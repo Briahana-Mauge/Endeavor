@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const EventsSearchCard = (props) => {
     console.log(props)
@@ -18,8 +18,7 @@ const EventsSearchCard = (props) => {
                 <p class="card-text">Volunteers: {props.event.volunteers}</p>
                 : <p class="card-text">Volunteers: TBA</p>
                 }
-                
-       
+
 
                 {/* <h5>Skills:</h5>
                 <ul>
