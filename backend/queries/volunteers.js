@@ -12,9 +12,9 @@ const timeQueries = require('./time');
 // const mentorPairsQueries = require('./mentorPairs');
 const volunteerSkillsQueries = require('./volunteerSkills');
 
-const formatStr = str => {
-  return str.toLowerCase().replace(/[^a-z0-9]/g, '')
-}
+const { formatStr } = require('../helpers/helpers');
+
+
 
 /* QUERIES */
 
