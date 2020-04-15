@@ -16,7 +16,6 @@ export default function FellowProfilePage(props) {
                 if (fellowId) {
                     const { data } = await axios.get(`/api/fellows/id/${fellowId}`);
                     setFellow(data.payload);
-                    console.log(data.payload)
         
                     const promises = [];
                     promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
