@@ -147,14 +147,15 @@ export default function FellowProfile(props) {
                                 </select>
                             </div>
 
-                            <div className='col-sm-6 row'>
-                                <span className='col-9'>Do you want to have a mentor?</span>
-                                <span className='col-3 px-1'>
-                                    <label className='switch'>
-                                        <input type='checkbox' checked={wantMentor} onChange={e => setWantMentor(e.target.checked)}/>
-                                        <span className='slider round'></span>
-                                    </label>
-                                </span>
+
+                            <div className='col-sm-6'>
+                                <div className='custom-control custom-switch'>
+                                    <input 
+                                        type='checkbox' className='custom-control-input' id='wantMentor'
+                                        checked={wantMentor} onChange={e => setWantMentor(e.target.checked)}
+                                    />
+                                    <label className='custom-control-label' htmlFor='wantMentor'>Do you want to have a mentor?</label>
+                                </div>
                             </div>
 
                             <div className='col-sm-12'>
