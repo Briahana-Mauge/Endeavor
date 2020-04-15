@@ -69,7 +69,7 @@ class VolunteerSearch extends React.Component {
         filter: '',
         submitted: false,
         targetVolunteerId: 0,
-        displayTargetVolunteer: false
+        displayTargetUser: false
     }
     
     componentDidMount = () => {
@@ -131,13 +131,13 @@ class VolunteerSearch extends React.Component {
 
     displayProfile = () => {
         this.setState({
-            displayTargetVolunteer: true
+            displayTargetUser: true
         })
     }
 
     hideProfile = () => {
         this.setState({
-            displayTargetVolunteer: false
+            displayTargetUser: false
         })
     }
 
@@ -172,7 +172,7 @@ class VolunteerSearch extends React.Component {
                 </div>
 
                 {
-                    this.state.displayTargetVolunteer 
+                    this.state.displayTargetUser 
                     ? <ProfileRender 
                         volunteerId={this.state.targetVolunteerId} 
                         hideProfile={this.hideProfile} 

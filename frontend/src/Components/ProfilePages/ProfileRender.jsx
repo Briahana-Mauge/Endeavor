@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import VolunteerProfilePage from './VolunteerProfilePage';
+import FellowProfilePage from './FellowProfilePage';
 
 export default function ProfileRender(props) {
     const { volunteerId, fellowId } = useParams();
-    console.log(volunteerId, fellowId)
+    console.log(1000, volunteerId, fellowId)
     const [ pageForm, setPageForm ] = useState('lightBox');
 
     useEffect(() => {
@@ -25,11 +26,26 @@ export default function ProfileRender(props) {
                     </div>
                 : null
             }
-            <VolunteerProfilePage 
-                volunteerId={volunteerId || props.volunteerId} 
-                setFeedback={props.setFeedback}
-                loggedUser={props.loggedUser}
-            />
+
+            {
+                volunteerId || props.volunteerId
+                ?   <VolunteerProfilePage 
+                        volunteerId={volunteerId || props.volunteerId} 
+                        setFeedback={props.setFeedback}
+                        loggedUser={props.loggedUser}
+                    />
+                : null
+            }
+
+            {
+                fellowId || props.fellowId
+                ?   <FellowProfilePage 
+                        fellowId={fellowId || props.fellowId} 
+                        setFeedback={props.setFeedback}
+                        loggedUser={props.loggedUser}
+                    />
+                : null
+            }
         </div>
     )
 }

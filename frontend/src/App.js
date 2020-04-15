@@ -171,7 +171,7 @@ function App() {
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/fellow/:fellowId' {...gateProps}> 
+        <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
           <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>

@@ -202,6 +202,18 @@ const getPastEventsByVolunteerId = async (id) => {
   return await db.any(selectQuery, id);
 }
 
+// Get all past events by volunteer Id
+const getPastEventsByFellowId = async (id) => {
+  const selectQuery = `
+    SELECT event_id, topic, event_start
+    FROM events 
+    INNER JOIN event_fellows ON event_id = ef_id
+    WHERE event_start < now() AND fellow_id = $1
+    ORDER BY event_start ASC
+  `;
+  return await db.any(selectQuery, id);
+}
+
 
 /* EXPORT */
 module.exports = {
@@ -212,5 +224,6 @@ module.exports = {
   getUpcomingEvents,
   getPastEvents,
   getPastEventsByVolunteerId,
+  getPastEventsByFellowId,
   deleteEvent
 }
