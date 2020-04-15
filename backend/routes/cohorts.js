@@ -31,7 +31,7 @@ const getAllCohorts = async (req, res, next) => {
 const getCohortById = async (req, res, next) => {
   try {
     const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
-    const cohort = await queries.selectCohortById();
+    const cohort = await queries.selectCohortById(cohortId);
     res.status(200);
     res.json({
         status: "success",

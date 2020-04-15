@@ -23,10 +23,9 @@ const selectCohortById = async (id) => {
   const getQuery = `
     SELECT *
     FROM cohorts
-    WHERE cohort_id = $/id/
-    ORDER BY cohort_id ASC;
+    WHERE cohort_id = $/id/;
   `;
-  return await db.any(getQuery, {id});
+  return await db.one(getQuery, {id});
 }
 
 const insertCohort = async (cohort) => {

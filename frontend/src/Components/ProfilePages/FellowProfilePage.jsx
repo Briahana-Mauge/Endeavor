@@ -21,11 +21,15 @@ export default function FellowProfilePage(props) {
                     const promises = [];
                     promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
                     promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
-                    promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
+                    promises.push(axios.get(`/api/cohorts/id/${data.payload.cohort_id}`));
                     const response = await Promise.all(promises);
     
                     setMentors(response[0].data.payload);
                     setEvents(response[1].data.payload);
+                    setCohort(response[2].data.payload.cohort);
+                    console.log('MENTORS: ', response[0].data.payload);
+                    console.log('EVENTS: ', response[1].data.payload);
+                    console.log('COHORT: ', response[2].data.payload.cohort);
                 }
             } catch (err) {
                 setFeedback(err);
@@ -50,7 +54,6 @@ export default function FellowProfilePage(props) {
                         src={fellow.f_picture} 
                         alt={`${fellow.f_first_name} ${fellow.f_last_name}`}
                     />
-                    <span className='d-block'><strong>fellow Hours: </strong>{fellow.banked_time}</span>
                 </div>
 
                 <div className='col-sm-6'>
@@ -58,50 +61,31 @@ export default function FellowProfilePage(props) {
                     <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
                         {fellow.f_email} 
                     </a>
-                    {/* <span className='d-block'><strong>Company: </strong>{fellow.company}</span>
-                    <span className='d-block'><strong>Title: </strong>{fellow.title}</span>
-                    <div className='row'>
-                        <div className='col-sm-4'>Skills:</div>
-                        <div className='col-sm-8'>
-                            { fellow.skills
-                                ? fellow.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)
-                                : null
-                            }   
-                        </div>
-                    </div> */}
+                    <span className='d-block'><strong>Cohort: </strong>{cohort}</span>
+                    <div className='d-flex flex-wrap justify-content-start'>
+                        <strong className='d-block mx-2'>Mentors: </strong>
+                        {
+                            mentors.map(mentor => 
+                                <span key={mentor.v_id + mentor.v_first_name + mentor.v_lst_name} className='d-block mx-2'>
+                                    <span className={mentor.m_active ? '' : 'text-muted'}>
+                                        {mentor.v_first_name + ' ' + mentor.v_last_name}    
+                                    </span>
+                                </span>
+                            )          
+                        }
+
+                        {
+                            props.loggedUser && props.loggedUser.a_id
+                            ? <button className='btn btn-primary'>Manage Mentoring</button>
+                            : null
+                        }
+                    </div>
                 </div>
 
                 <div className='col-sm-12'>
                     <span className='d-block'><strong>LinkedIn: </strong>{fellow.f_linkedin}</span>
+                    <span className='d-block'><strong>Github: </strong>{fellow.f_github}</span>
                     <span className='d-block'><strong>Bio: </strong>{fellow.f_bio}</span>
-                </div>
-
-                <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                    {/* <strong className='d-block mx-2'>Interested in: </strong>
-                    {
-                        tasks.map((interest, index) => 
-                            <span key={index + interest[0]} className='d-block mx-2'>
-                                {interest[0]}
-                            </span>
-                        )          
-                    }   */}
-                </div>
-
-                <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                    {/* <strong className='d-block mx-2'>Mentoring: </strong>
-                    {
-                        mentors.map(mentor => 
-                            <span key={mentor.f_id + mentor.f_first_name + mentor.f_lst_name} className='d-block mx-2'>
-                                {mentor.f_first_name + ' ' + mentor.f_last_name}
-                            </span>
-                        )          
-                    } */}
-
-                    {
-                        props.loggedUser && props.loggedUser.a_id
-                        ? <button className='btn btn-primary'>Manage Mentoring</button>
-                        : null
-                    }
                 </div>
 
                 <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
