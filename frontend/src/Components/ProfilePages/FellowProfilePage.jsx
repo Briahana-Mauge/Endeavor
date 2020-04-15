@@ -27,9 +27,6 @@ export default function FellowProfilePage(props) {
                     setMentors(response[0].data.payload);
                     setEvents(response[1].data.payload);
                     setCohort(response[2].data.payload.cohort);
-                    console.log('MENTORS: ', response[0].data.payload);
-                    console.log('EVENTS: ', response[1].data.payload);
-                    console.log('COHORT: ', response[2].data.payload.cohort);
                 }
             } catch (err) {
                 setFeedback(err);
