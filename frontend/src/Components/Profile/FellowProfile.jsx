@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -18,7 +18,12 @@ export default function FellowProfile(props) {
         lastName,
         newPassword,
         cohortId,
-        confirmPassword
+        confirmPassword,
+        setFirstName,
+        setLastName,
+        setEmail,
+        setCohortId,
+        setFeedback
     } = props;
 
     const [ wantMentor, setWantMentor ] = useState(loggedUser.want_mentor);
@@ -31,22 +36,21 @@ export default function FellowProfile(props) {
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const getCohortsList = async () => {
-        try {
-            const { data } = await axios.get(`api/cohorts`);
-            setCohortsList(data.payload);
-        } catch (err) {
-            props.setFeedback(err)
-        }
-    }
+    const loadFields = useCallback(() => {
+        setFirstName(loggedUser.f_first_name);
+        setLastName(loggedUser.f_last_name);
+        setEmail(loggedUser.f_email);
+        setCohortId(loggedUser.cohort_id);
+    }, [setFirstName, setLastName, setEmail, setCohortId, loggedUser]);
+    useEffect(loadFields, []);
 
-    useEffect(() => {
-        props.setFirstName(loggedUser.f_first_name);
-        props.setLastName(loggedUser.f_last_name);
-        props.setEmail(loggedUser.f_email);
-        props.setCohortId(loggedUser.cohort_id);
-        getCohortsList();
-    }, [loggedUser])
+    const getCohortsList = useCallback(() => {
+        axios.get(`api/cohorts`)
+            .then(res => setCohortsList(res.data.payload))
+            .catch(err => setFeedback(err))
+        ;
+    }, [setFeedback]);
+    useEffect(getCohortsList, []);
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();

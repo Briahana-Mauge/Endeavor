@@ -68,7 +68,7 @@ export default function ProfilePage(props) {
     return (
         <>
             {
-                props.loggedUser.a_id
+                loggedUser.a_id
                 ? <AdminProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
@@ -92,7 +92,7 @@ export default function ProfilePage(props) {
             }
 
             {
-                props.loggedUser.f_id
+                loggedUser.f_id
                 ? <FellowProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
@@ -118,7 +118,7 @@ export default function ProfilePage(props) {
             }
 
             {
-                props.loggedUser.v_id
+                loggedUser.v_id
                 ? <VolunteerProfile
                     loggedUser={loggedUser}
                     setFeedback={props.setFeedback} 
