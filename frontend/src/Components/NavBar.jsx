@@ -23,6 +23,7 @@ const NavBar = ({ loggedUser, logout }) => {
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Working Pages</a>
           <div className="dropdown-menu">
+            <NavLink className="dropdown-item" to='/home'>Home Dashboard</NavLink>
             <NavLink className="dropdown-item" to='/profile'>My Profile</NavLink>
             {showATools}
             <NavLink className="dropdown-item" to='/volunteers/search'>Volunteers Search</NavLink>
