@@ -169,6 +169,11 @@ function App() {
           <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
+
+        <PrivateRouteGate path='/events/search' {...gateProps}> 
+          <EventsSearch {...userProps} />
+        </PrivateRouteGate>
+    
       </Switch>
 
       {

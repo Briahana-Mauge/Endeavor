@@ -41,7 +41,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   WHERE events.deleted IS NULL
   
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort     
+    events.instructor, events.number_of_volunteers, cohorts.cohort`     
 
   let endOfQuery = `GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort     
