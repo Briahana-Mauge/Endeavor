@@ -7,6 +7,7 @@ export default function FellowProfilePage(props) {
     const [ fellow, setFellow ] = useState({});
     const [ events, setEvents ] = useState([]);
     const [ mentors, setMentors ] = useState([]);
+    const [ cohort, setCohort ] = useState('');
 
     
     useEffect(() => {
@@ -19,6 +20,7 @@ export default function FellowProfilePage(props) {
         
                     const promises = [];
                     promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
+                    promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
                     promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
                     const response = await Promise.all(promises);
     
@@ -45,18 +47,18 @@ export default function FellowProfilePage(props) {
                 <div className='col-sm-6'>
                     <img 
                         className='d-block w-100'
-                        src={fellow.v_picture} 
-                        alt={`${fellow.v_first_name} ${fellow.v_last_name}`}
+                        src={fellow.f_picture} 
+                        alt={`${fellow.f_first_name} ${fellow.f_last_name}`}
                     />
                     <span className='d-block'><strong>fellow Hours: </strong>{fellow.banked_time}</span>
                 </div>
 
                 <div className='col-sm-6'>
-                    <span className='d-block h3'>{`${fellow.v_first_name} ${fellow.v_last_name}`}</span>
-                    <a className='d-block' href={`mailto:${fellow.v_email}`} target='_blank' rel='noopener noreferrer'>
-                        {fellow.v_email} 
+                    <span className='d-block h3'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</span>
+                    <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
+                        {fellow.f_email} 
                     </a>
-                    <span className='d-block'><strong>Company: </strong>{fellow.company}</span>
+                    {/* <span className='d-block'><strong>Company: </strong>{fellow.company}</span>
                     <span className='d-block'><strong>Title: </strong>{fellow.title}</span>
                     <div className='row'>
                         <div className='col-sm-4'>Skills:</div>
@@ -66,17 +68,17 @@ export default function FellowProfilePage(props) {
                                 : null
                             }   
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className='col-sm-12'>
-                    <span className='d-block'><strong>LinkedIn: </strong>{fellow.v_linkedin}</span>
-                    <span className='d-block'><strong>Bio: </strong>{fellow.v_bio}</span>
+                    <span className='d-block'><strong>LinkedIn: </strong>{fellow.f_linkedin}</span>
+                    <span className='d-block'><strong>Bio: </strong>{fellow.f_bio}</span>
                 </div>
 
                 <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                    <strong className='d-block mx-2'>Interested in: </strong>
-                    {/* {
+                    {/* <strong className='d-block mx-2'>Interested in: </strong>
+                    {
                         tasks.map((interest, index) => 
                             <span key={index + interest[0]} className='d-block mx-2'>
                                 {interest[0]}
@@ -86,14 +88,14 @@ export default function FellowProfilePage(props) {
                 </div>
 
                 <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                    <strong className='d-block mx-2'>Mentoring: </strong>
+                    {/* <strong className='d-block mx-2'>Mentoring: </strong>
                     {
                         mentors.map(mentor => 
-                            <span key={mentor.v_id + mentor.v_first_name + mentor.v_lst_name} className='d-block mx-2'>
-                                {mentor.v_first_name + ' ' + mentor.v_last_name}
+                            <span key={mentor.f_id + mentor.f_first_name + mentor.f_lst_name} className='d-block mx-2'>
+                                {mentor.f_first_name + ' ' + mentor.f_last_name}
                             </span>
                         )          
-                    }
+                    } */}
 
                     {
                         props.loggedUser && props.loggedUser.a_id

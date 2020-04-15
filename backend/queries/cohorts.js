@@ -19,6 +19,16 @@ const selectAllCohorts = async () => {
   return await db.any(getQuery);
 }
 
+const selectCohortById = async (id) => {
+  const getQuery = `
+    SELECT *
+    FROM cohorts
+    WHERE cohort_id = $/id/
+    ORDER BY cohort_id ASC;
+  `;
+  return await db.any(getQuery, {id});
+}
+
 const insertCohort = async (cohort) => {
   return await db.task( async t => {
       const checkQuery = `
@@ -87,6 +97,7 @@ const deleteCohort = async (cohortId) => {
 /* EXPORT */
 module.exports = {
   selectAllCohorts,
+  selectCohortById,
   insertCohort,
   updateCohort,
   deleteCohort
