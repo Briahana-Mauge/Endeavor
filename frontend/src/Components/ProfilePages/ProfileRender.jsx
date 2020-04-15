@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import VolunteerProfilePage from './VolunteerProfilePage';
 
 export default function ProfileRender(props) {
-    const { volunteerId } = useParams();
+    const { volunteerId, fellowId } = useParams();
+    console.log(volunteerId, fellowId)
     const [ pageForm, setPageForm ] = useState('lightBox');
 
     useEffect(() => {

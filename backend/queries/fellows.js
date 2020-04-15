@@ -86,7 +86,7 @@ const updateFellow = async (userObj) => {
         f_linkedin = $/linkedIn/,
         f_github = $/github/,
         cohort_id = $/cohortId/,
-        want_mentor = $/wantMentor/
+        want_mentor = $/wantMentor/,
         deleted = NULL
     WHERE f_id = $/userId/
     RETURNING *;
