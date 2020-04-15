@@ -9,6 +9,8 @@ const db = require('../db/db');
 
 const volunteerSkillsQuery = require('./volunteerSkills');
 
+const { formatStr } = require('../helpers/helpers');
+
 
 /* QUERIES */
 const selectAllSkills = async () => {
@@ -22,6 +24,7 @@ const selectAllSkills = async () => {
 }
 
 const insertSkill = async (skill) => {
+  const formattedSkill = formatStr(skill);
   return await db.task( async t => {
     const checkQuery = `
       SELECT *
@@ -31,10 +34,10 @@ const insertSkill = async (skill) => {
     const existingSkill = await t.oneOrNone(checkQuery, skill);
     if (!existingSkill) {
       const postQuery = `
-        INSERT INTO skills ( skill ) VALUES ( $1 )
+        INSERT INTO skills ( skill, parsed_skill ) VALUES ( $1, $2 )
         RETURNING *;
       `;
-      return await t.one(postQuery, skill);
+      return await t.one(postQuery, [skill, formattedSkill]);
     } else if (existingSkill && existingSkill.deleted) {
       const updateQuery = `
       UPDATE skills 
@@ -42,7 +45,7 @@ const insertSkill = async (skill) => {
       WHERE skill_id = $1
       RETURNING *;
     `;
-    return await t.one(updateQuery, existingSkill.skill_id);
+      return await t.one(updateQuery, existingSkill.skill_id);
     } else {
       throw new Error('403__skill already exists');
     }
@@ -50,19 +53,22 @@ const insertSkill = async (skill) => {
 }
 
 const updateSkill = async (skillObj) => {
+  skillObj.formattedSkill = formatStr(skillObj.skill);
+
   return await db.task( async t => {
       // check if wanted name exists first aside from target id
       const checkQuery = `
         SELECT 1
         FROM skills
-        WHERE skill_id <> $/skillId/ AND skill = $/skill/;
+        WHERE skill_id <> $/skillId/ AND parsed_skill = $/formattedSkill/;
       `;
       const existingSkill = await t.oneOrNone(checkQuery, skillObj);
+      
       // if wanted name already exists aside from target id, throw error to prev duplicate
       if (!existingSkill || existingSkill.deleted) {
         const updateQuery = `
           UPDATE skills
-          SET skill = $/skill/
+          SET skill = $/skill/, parsed_skill= $/formattedSkill/
           WHERE skill_id = $/skillId/
           RETURNING *;
         `;

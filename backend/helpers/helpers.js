@@ -86,10 +86,15 @@ const handleErrors = (err, request, response) => {
     }
 }
 
+const formatStr = str => {
+    return str.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
 module.exports = {
     checkValidId,
     checkValidParams,
     checkValidEmail,
     checkBool,
     handleErrors,
+    formatStr
 }
