@@ -38,10 +38,10 @@ class EventSearch extends React.Component {
 
         }
         else if (filter === 'skill') {
-            basic = await axios.get(`/api/events/all/?upcoming=${search}`);
+            basic = await axios.get(`/api/events/all/?upcoming=${filter}`);
 
         } else {
-            basic = await axios.get(`/api/events/all/?past=${search}`);
+            basic = await axios.get(`/api/events/all/?past=${filter}`);
         }
 
 

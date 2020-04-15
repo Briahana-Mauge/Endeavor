@@ -25,31 +25,31 @@ import Feedback from './Components/Feedback';
 
 function App() {
   // USER states
-  const [ loggedUser, setLoggedUser ] = useState({});
-  const [ isUserStateReady, setIsUserStateReady ] = useState(false);
-  const [ feedback, setFeedback ] = useState(null);
+  const [loggedUser, setLoggedUser] = useState({});
+  const [isUserStateReady, setIsUserStateReady] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   // LOGIN/SIGNUP states
-  const [ formType, setFormType ] = useState('login');
-  const [ userType, setUserType ] = useState('');
+  const [formType, setFormType] = useState('login');
+  const [userType, setUserType] = useState('');
 
   // LOGIN/SIGNUP & PROFILE states
-  const [ email, setEmail ] = useState('alexis@pursuit.org');
-  const [ password, setPassword ] = useState('1234');
-  const [ newPassword, setNewPassword ] = useState('');
-  const [ firstName, setFirstName ] = useState('');
-  const [ lastName, setLastName ] = useState('');
-  const [ cohortId, setCohortId ] = useState(0);
-  const [ company, setCompany ] = useState('');
-  const [ title, setTitle ] = useState('');
-  const [ volunteerSkills, setVolunteerSkills ] = useState([]);
-  const [ mentor, setMentor ] = useState(false);
-  const [ officeHours, setOfficeHours ] = useState(false);
-  const [ techMockInterview, setTechMockInterview ] = useState(false);
-  const [ behavioralMockInterview, setBehavioralMockInterview ] = useState(false);
-  const [ professionalSkillsCoach, setProfessionalSkillsCoach ] = useState(false);
-  const [ hostSiteVisit, setHostSiteVisit ] = useState(false);
-  const [ industrySpeaker, setIndustrySpeaker ] = useState(false);
+  const [email, setEmail] = useState('alexis@pursuit.org');
+  const [password, setPassword] = useState('1234');
+  const [newPassword, setNewPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [cohortId, setCohortId] = useState(0);
+  const [company, setCompany] = useState('');
+  const [title, setTitle] = useState('');
+  const [volunteerSkills, setVolunteerSkills] = useState([]);
+  const [mentor, setMentor] = useState(false);
+  const [officeHours, setOfficeHours] = useState(false);
+  const [techMockInterview, setTechMockInterview] = useState(false);
+  const [behavioralMockInterview, setBehavioralMockInterview] = useState(false);
+  const [professionalSkillsCoach, setProfessionalSkillsCoach] = useState(false);
+  const [hostSiteVisit, setHostSiteVisit] = useState(false);
+  const [industrySpeaker, setIndustrySpeaker] = useState(false);
 
   const location = useLocation();
   const history = useHistory();
@@ -60,16 +60,16 @@ function App() {
   }
 
   useEffect(() => {
-      checkForLoggedInUser()
-        .then(settleUser)
-        .catch (err => {
-            if (err.response && err.response.status === 401) {
-              setIsUserStateReady(true);
-              history.push('/', { from: location });
-            } else {
-              setFeedback(err);
-            }
-        })
+    checkForLoggedInUser()
+      .then(settleUser)
+      .catch(err => {
+        if (err.response && err.response.status === 401) {
+          setIsUserStateReady(true);
+          history.push('/', { from: location });
+        } else {
+          setFeedback(err);
+        }
+      })
       ;
   }, [history]);
 
@@ -84,7 +84,7 @@ function App() {
       .then(res => {
         settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
       })
-      .catch (err => setFeedback(err));
+      .catch(err => setFeedback(err));
   }
 
   const resetFeedback = () => {
@@ -166,7 +166,7 @@ function App() {
           <VolunteerSearch {...userProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}> 
+        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
           <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
@@ -176,17 +176,17 @@ function App() {
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/events/search' {...gateProps}> 
+        <PrivateRouteGate path='/events/search' {...gateProps}>
           <NavBar {...navProps} />
           <Events {...userProps} />
         </PrivateRouteGate>
-    
+
       </Switch>
 
       {
         (feedback)
-        ? <Feedback feedback={feedback} resetFeedback={resetFeedback}/>
-        : null
+          ? <Feedback feedback={feedback} resetFeedback={resetFeedback} />
+          : null
       }
     </div>
   );
