@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -30,6 +30,20 @@ export default function VolunteerProfile(props) {
         professionalSkillsCoach,
         hostSiteVisit,
         industrySpeaker,
+        setFeedback,
+        setFirstName,
+        setLastName,
+        setEmail,
+        setCompany,
+        setTitle,
+        setVolunteerSkills,
+        setMentor,
+        setOfficeHours,
+        setTechMockInterview,
+        setBehavioralMockInterview,
+        setProfessionalSkillsCoach,
+        setHostSiteVisit,
+        setIndustrySpeaker
     } = props;
 
     const [ bio, setBio ] = useState(loggedUser.v_bio);
@@ -39,30 +53,43 @@ export default function VolunteerProfile(props) {
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
-    const getVolunteerSkills = async () => {
-        try {
-            const { data } = await axios.get(`api/volunteers/skills/${loggedUser.v_id}`);
-            props.setVolunteerSkills(data.payload.skills_list);
-        } catch (err) {
-            props.setFeedback(err)
-        }
-    }
+    const loadFields = useCallback(() => {
+            setFirstName(loggedUser.v_first_name);
+            setLastName(loggedUser.v_last_name);
+            setEmail(loggedUser.v_email);
+            setCompany(loggedUser.company);
+            setTitle(loggedUser.title);
+            setMentor(loggedUser.mentoring);
+            setOfficeHours(loggedUser.office_hours);
+            setTechMockInterview(loggedUser.tech_mock_interview);
+            setBehavioralMockInterview(loggedUser.behavioral_mock_interview);
+            setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
+            setHostSiteVisit(loggedUser.hosting_site_visit);
+            setIndustrySpeaker(loggedUser.industry_speaker);
+        }, [
+            loggedUser,
+            setFirstName,
+            setLastName,
+            setEmail,
+            setCompany,
+            setTitle,
+            setMentor,
+            setOfficeHours,
+            setTechMockInterview,
+            setBehavioralMockInterview,
+            setProfessionalSkillsCoach,
+            setHostSiteVisit,
+            setIndustrySpeaker
+    ]);
+    useEffect(loadFields, []);
 
-    useEffect(() => {
-        props.setFirstName(loggedUser.v_first_name);
-        props.setLastName(loggedUser.v_last_name);
-        props.setEmail(loggedUser.v_email);
-        props.setCompany(loggedUser.company);
-        props.setTitle(loggedUser.title);
-        props.setMentor(loggedUser.mentoring);
-        props.setOfficeHours(loggedUser.office_hours);
-        props.setTechMockInterview(loggedUser.tech_mock_interview);
-        props.setBehavioralMockInterview(loggedUser.behavioral_mock_interview);
-        props.setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
-        props.setHostSiteVisit(loggedUser.hosting_site_visit);
-        props.setIndustrySpeaker(loggedUser.industry_speaker);
-        getVolunteerSkills();
-    }, [loggedUser]);
+    const getVolunteerSkills = () => {
+        axios.get(`api/volunteers/skills/${loggedUser.v_id}`)
+            .then(res => setVolunteerSkills(res.data.payload.skills_list))
+            .catch(err => setFeedback(err))
+        ;
+    }
+    useEffect(getVolunteerSkills, [loggedUser]);
 
 
     const handleUpdateInfo = async (e) => {

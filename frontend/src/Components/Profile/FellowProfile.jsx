@@ -41,7 +41,7 @@ export default function FellowProfile(props) {
         setLastName(loggedUser.f_last_name);
         setEmail(loggedUser.f_email);
         setCohortId(loggedUser.cohort_id);
-    }, [setFirstName, setLastName, setEmail, setCohortId, loggedUser]);
+    }, [ setFirstName, setLastName, setEmail, setCohortId, loggedUser ]);
     useEffect(loadFields, []);
 
     const getCohortsList = useCallback(() => {
