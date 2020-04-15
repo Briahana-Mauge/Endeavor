@@ -26,6 +26,7 @@ const NavBar = ({ loggedUser, logout }) => {
             <NavLink className="dropdown-item" to='/profile'>My Profile</NavLink>
             {showATools}
             <NavLink className="dropdown-item" to='/volunteers/search'>Volunteers Search</NavLink>
+            <NavLink className="dropdown-item" to='/events/search'>Events Search</NavLink>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="/" onClick={logout}>Logout</a>
           </div>
