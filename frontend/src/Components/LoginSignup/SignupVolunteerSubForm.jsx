@@ -70,7 +70,7 @@ export default function SignupVolunteerSubForm(props) {
             <div className='col-12 d-flex flex-wrap justify-content-between'>
                 {skillsList.map(skill => 
                         <div className='form-group form-check' key={skill.skill+skill.skill_id}>
-                            <label className='form-check-label'>
+                            <label className='form-check-label mr-4'>
                                 <input 
                                     className='form-check-input' 
                                     type='checkbox' 
@@ -84,74 +84,74 @@ export default function SignupVolunteerSubForm(props) {
                     )}
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in mentoring a Pursuit Fellow?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.mentor} onChange={e => props.setMentor(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='mentoring'
+                        checked={props.mentor} onChange={e => props.setMentor(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='mentoring'>Interested in mentoring a Pursuit Fellow?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in being an Office Hours mentor?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='officeHours'
+                        checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='officeHours'>Interested in being an Office Hours mentor?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in administering mock technical interviews?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.techMockInterview} onChange={e => props.setTechMockInterview(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='mockTechInterview'
+                        checked={props.techMockInterview} onChange={e => props.setTechMockInterview(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='mockTechInterview'>Interested in administering mock technical interviews?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in behavioral interviewing?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.behavioralMockInterview} onChange={e => props.setBehavioralMockInterview(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='behavioralInterview'
+                        checked={props.behavioralMockInterview} onChange={e => props.setBehavioralMockInterview(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='behavioralInterview'>Interested in behavioral interviewing?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in being a professional skills coach?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.professionalSkillsCoach} onChange={e => props.setProfessionalSkillsCoach(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='professionalSkills'
+                        checked={props.professionalSkillsCoach} onChange={e => props.setProfessionalSkillsCoach(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='professionalSkills'>Interested in being a professional skills coach?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in hosting a Site Visit at your office?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.hostSiteVisit} onChange={e => props.setHostSiteVisit(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='siteVisit'
+                        checked={props.hostSiteVisit} onChange={e => props.setHostSiteVisit(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='siteVisit'>Interested in hosting a Site Visit at your office?</label>
+                </div>
             </div>
 
-            <div className='col-sm-6 row'>
-                <span className='col-9'>Interested in being an Industry Speaker?</span>
-                <span className='col-3 px-1'>
-                    <label className='switch'>
-                        <input type='checkbox' checked={props.industrySpeaker} onChange={e => props.setIndustrySpeaker(e.target.checked)}/>
-                        <span className='slider round'></span>
-                    </label>
-                </span>
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='industrySpeaker'
+                        checked={props.industrySpeaker} onChange={e => props.setIndustrySpeaker(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='industrySpeaker'>Interested in being an Industry Speaker?</label>
+                </div>
             </div>
         </>
     )
