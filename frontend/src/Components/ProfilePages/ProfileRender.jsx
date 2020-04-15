@@ -6,7 +6,7 @@ import FellowProfilePage from './FellowProfilePage';
 
 export default function ProfileRender(props) {
     const { volunteerId, fellowId } = useParams();
-
+    
     const [ pageForm, setPageForm ] = useState('lightBox');
 
     useEffect(() => {
