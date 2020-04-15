@@ -53,7 +53,7 @@ const insertSkill = async (skill) => {
 }
 
 const updateSkill = async (skillObj) => {
-  skillObj.formattedSkill = formatStr(skill);
+  skillObj.formattedSkill = formatStr(skillObj.skill);
 
   return await db.task( async t => {
       // check if wanted name exists first aside from target id
