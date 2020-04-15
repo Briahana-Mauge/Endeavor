@@ -12,18 +12,16 @@ export default function Cohorts(props) {
 
     useEffect(() => {
         const getCohortsList = async () => {
-            try {
-                const { data } = await axios.get('/api/cohorts');
-                setCohortsList(data.payload);
+            axios.get('/api/cohorts')
+            .then(res => {
+                setCohortsList(res.data.payload);
                 const map = {};
-                for (let elem of data.payload) {
+                for (let elem of res.data.payload) {
                     map[elem.cohort_id] = elem.cohort;
                 }
                 setTracker(map);
-    
-            } catch (err) {
-                setFeedback(err);
-            }
+            })
+            .catch(err => setFeedback(err));
         }
 
         getCohortsList();

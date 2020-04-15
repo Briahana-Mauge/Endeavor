@@ -3,9 +3,19 @@ import axios from 'axios';
 
 export default function SignupVolunteerSubForm(props) {
     const { setFeedback } = props;
-    
+
     const [ skillsList, setSkillsList ] = useState([]);
     const [ skillsTracker, setSkillsTracker ] = useState({});
+
+    useEffect(() => {
+        const getSkillsList = () => {
+            axios.get(`api/skills`)
+            .then(res => setSkillsList(res.data.payload))
+            .catch(err => setFeedback(err));
+        }
+
+        getSkillsList();
+    }, [setFeedback]);
 
     const manageSkills = (e, skillId) => {
         const list = {...skillsTracker};
@@ -21,19 +31,6 @@ export default function SignupVolunteerSubForm(props) {
         }
         props.setVolunteerSkills(arr);
     }
-
-    useEffect(() => {
-        const getSkillsList = async () => {
-            try {
-                const { data } = await axios.get(`api/skills`);
-                setSkillsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
-
-        getSkillsList();
-    }, [setFeedback]);
 
     useEffect(() => {
         const tracker = {};

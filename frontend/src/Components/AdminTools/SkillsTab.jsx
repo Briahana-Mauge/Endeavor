@@ -9,25 +9,21 @@ export default function Skills(props) {
     const [ skillName, setSkillName ] = useState('');
     const [ tracker, setTracker ] = useState({});
     const [ reload, setReload ] = useState(0);
-    
-    useEffect(() => {
-        const getSkillsList = async () => {
-            try {
-                const { data } = await axios.get('/api/skills');
-                setSkillsList(data.payload);
+
+    const getSkillsList = () => {
+        axios.get('/api/skills')
+            .then(res => {
+                setSkillsList(res.data.payload);
                 const map = {};
-                for (let elem of data.payload) {
+                for (let elem of res.data.payload) {
                     map[elem.skill_id] = elem.skill;
                 }
                 setTracker(map);
-    
-            } catch (err) {
-                setFeedback(err);
-            }
-        }
-
-        getSkillsList();
-    }, [setFeedback, reload]);
+            })
+            .catch(err => setFeedback(err))
+        ;
+    }
+    useEffect(getSkillsList, [reload]);
 
     const deleteSkill = async (skillId) => {
         try {

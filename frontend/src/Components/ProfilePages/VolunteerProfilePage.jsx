@@ -9,7 +9,6 @@ export default function VolunteerProfilePage(props) {
     const [ mentees, setMentees ] = useState([]);
     const [ tasks, setTasks ] = useState([]);
 
-    
     useEffect(() => {
         const getVolunteerData = async () => {
             try { 
@@ -42,6 +41,7 @@ export default function VolunteerProfilePage(props) {
 
         getVolunteerData();
     }, [volunteerId, setFeedback])
+
 
     return (
         <>

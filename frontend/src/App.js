@@ -12,7 +12,6 @@ import axios from 'axios';
 import './App.scss';
 import LoginSignupGate from './Components/LoginSignupGate';
 import PrivateRouteGate from './Components/PrivateRouteGate';
-import NavBar from './Components/NavBar';
 import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
@@ -54,24 +53,19 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  const checkForLoggedInUser = async () => {
-    const { data } = await axios.get('/api/auth/is_logged');
-    return data.payload;
-  }
-
-  useEffect(() => {
-    checkForLoggedInUser()
-      .then(settleUser)
+  const checkForLoggedInUser = () => {
+    axios.get('/api/auth/is_logged')
+      .then(res => settleUser(res.data.payload))
       .catch(err => {
-        if (err.response && err.response.status === 401) {
-          setIsUserStateReady(true);
-          history.push('/', { from: location });
-        } else {
-          setFeedback(err);
-        }
-      })
-      ;
-  }, [history]);
+          if (err.response && err.response.status === 401) {
+            setIsUserStateReady(true);
+            history.push('/', { from: location });
+          } else {
+            setFeedback(err);
+          }
+      });
+  }
+  useEffect(checkForLoggedInUser, []);
 
   const settleUser = (user) => {
     setLoggedUser(user);
@@ -95,10 +89,7 @@ function App() {
   /* PREP RETURN */
   const gateProps = {
     loggedUser,
-    isUserStateReady
-  }
-  const navProps = {
-    loggedUser,
+    isUserStateReady,
     logout
   }
   const userProps = {
@@ -131,10 +122,9 @@ function App() {
   let showAdmins = null;
   if (loggedUser && loggedUser.a_id) {
     showAdmins = (
-      <Route path='/tools'>
-        <NavBar {...navProps} />
+      <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
-      </Route>
+      </PrivateRouteGate>
     );
   }
 
@@ -150,34 +140,28 @@ function App() {
         </Route>
 
         <PrivateRouteGate path='/home' {...gateProps}>
-          <NavBar {...navProps} />
           <Dashboard />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
-          <NavBar {...navProps} />
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
         {showAdmins}
 
         <PrivateRouteGate path='/volunteers/search' {...gateProps}>
-          <NavBar {...navProps} />
           <VolunteerSearch {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
-          <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
-          <NavBar {...navProps} />
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/events/search' {...gateProps}>
-          <NavBar {...navProps} />
           <Events {...userProps} />
         </PrivateRouteGate>
 
