@@ -17,6 +17,7 @@ import Dashboard from './Components/Dashboard';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
+import Events from './Components/Events';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Feedback from './Components/Feedback';
@@ -171,7 +172,7 @@ function App() {
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/events/search' {...gateProps}> 
-          <EventsSearch {...userProps} />
+          <Events {...userProps} />
         </PrivateRouteGate>
     
       </Switch>
