@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export default function VolunteerProfilePage(props) {
+    const { volunteerId, setFeedback } = props;
     const [ volunteer, setVolunteer ] = useState({});
     const [ events, setEvents ] = useState([]);
     const [ mentees, setMentees ] = useState([]);
     const [ tasks, setTasks ] = useState([]);
 
-    const getVolunteerData = async (volunteerId) => {
-        try { 
-            if (volunteerId) {
-                const { data } = await axios.get(`/api/volunteers/id/${volunteerId}`);
-                setVolunteer(data.payload);
-                
-                setTasks([
-                    ['mentoring', data.payload.mentoring], 
-                    ['being an Office Hours mentor', data.payload.office_hours], 
-                    ['administering mock technical interviews', data.payload.tech_mock_interview], 
-                    ['behavioral interviewing', data.payload.behavioral_mock_interview], 
-                    ['being a professional skills coach', data.payload.professional_skills_coach],
-                    ['hosting a Site Visit at your office', data.payload.hosting_site_visit],
-                    ['being an Industry Speaker', data.payload.industry_speaker]
-                ].filter(task => task[1]));
-    
-                const promises = [];
-                promises.push(axios.get(`/api/mentor_pairs/volunteer/${volunteerId}`));
-                promises.push(axios.get(`/api/events/past/volunteer/${volunteerId}`));
-                const response = await Promise.all(promises);
-
-                setMentees(response[0].data.payload);
-                setEvents(response[1].data.payload);
-            }
-        } catch (err) {
-            props.setFeedback(err);
+    const getVolunteerData = useCallback((volunteerId) => {
+        if (volunteerId) {
+            axios.get(`/api/volunteers/id/${volunteerId}`)
+                .then(res => {
+                    setVolunteer(res.data.payload);
+                    setTasks([
+                        ['mentoring', res.data.payload.mentoring],
+                        ['being an Office Hours mentor', res.data.payload.office_hours],
+                        ['administering mock technical interviews', res.data.payload.tech_mock_interview],
+                        ['behavioral interviewing', res.data.payload.behavioral_mock_interview],
+                        ['being a professional skills coach', res.data.payload.professional_skills_coach],
+                        ['hosting a Site Visit at your office', res.data.payload.hosting_site_visit],
+                        ['being an Industry Speaker', res.data.payload.industry_speaker]
+                    ].filter(task => task[1]));
+                    const promises = [];
+                    promises.push(axios.get(`/api/mentor_pairs/volunteer/${volunteerId}`));
+                    promises.push(axios.get(`/api/events/past/volunteer/${volunteerId}`));
+                    Promise.all(promises)
+                        .then(res => {
+                            setMentees(res[0].data.payload);
+                            setEvents(res[1].data.payload);
+                        })
+                    ;
+                })
+                .catch(err => setFeedback(err))
+            ;
         }
-    }
-
+    }, [setFeedback]);
     useEffect(() => {
-        getVolunteerData(props.volunteerId);
-    }, [props.volunteerId])
+        getVolunteerData(volunteerId)
+    }, [getVolunteerData, volunteerId]);
 
     return (
         <>
