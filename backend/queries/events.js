@@ -45,40 +45,26 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 
   let condition = ' WHERE events.deleted IS NULL ';
 
-  // if (!vName && !topic && !instructor && !upcoming && !past) {
-  //   return await db.any(selectQuery +" WHERE events.deleted IS NULL " + endOfQuery);
-  // }
-
-  // else if (!topic && !instructor && !upcoming && !past) {
-    if (vName) {
+  if (vName) {
     condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
-    // return await db.any(`${selectQuery} WHERE  events.deleted IS NULL AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/
-    //  ${endOfQuery}`, { vName });
   }
 
-  // else if (vName === '' && instructor === '' && upcoming === '' && past === '') {
-   if (topic) {
+  if (topic) {
     condition += `AND lower(events.topic) LIKE '%' || $/topic/ || '%' `
-    // return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.topic) LIKE '%' || $/topic/ || '%' ${endOfQuery}`, { topic });
   }
-  // else if (vName === '' && topic === '' && upcoming === '' && past === '') {
-   if (instructor) {
+
+  if (instructor) {
       condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
-    // return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' ${endOfQuery}`, { instructor });
   }
-  // else if (vName === '' && topic === '' && instructor === '' && past === '') {
+
   if (upcoming) {
     condition += `AND event_start > now() `
-    // return await getUpcomingEvents();
   } 
-  // else {
-    if (past) {
-      condition += `AND event_start <= now() `
-    // return await getPastEvents();
+  if (past) {
+    condition += `AND event_start <= now() `
   }
-  const requestQuery = selectQuery + condition + endOfQuery;
-  // console.log(requestQuery)
-  return await db.any(requestQuery, { vName, topic, instructor });
+  
+  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
 const getSingleEvent = async (eId) => {
@@ -155,7 +141,7 @@ const getSingleEventAdmin = async (eId) => {
 }
 
 // Get all upcoming events
-async function getUpcomingEvents() {
+const getUpcomingEvents = async () => {
   const selectQuery = `
   SELECT * 
   FROM events 
@@ -166,7 +152,7 @@ async function getUpcomingEvents() {
 }
 
 // Get all past events
-async function getPastEvents() {
+const getPastEvents = async () => {
   const selectQuery = `
   SELECT * 
   FROM events 

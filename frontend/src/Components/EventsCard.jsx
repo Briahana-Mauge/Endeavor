@@ -2,7 +2,6 @@ import React from 'react';
 // import { Link } from 'react-router-dom';
 
 const EventsSearchCard = (props) => {
-    console.log(props)
     return (
         <div className='card' style={{ width: 400 }}>
             <div className='card-body'>

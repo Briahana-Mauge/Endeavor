@@ -4,35 +4,34 @@ import EventsSearchCard from './EventsCard';
 
 
 export default function EventSearch(props) {
+    const { setFeedback } = props;
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
     const [filter, setFilter] = useState('');
     const [dateFilter, setDateFilter] = useState('');
+    const [reload, setReload] = useState(0); 
     // const [targetEventId, setTargetEventId] = useState(0);
     // const [displayTargetEvent, setDisplayTargetEvent] = useState(false);
    
-    // componentDidMount = () => {
 
-    //     this.getAllEvents();
-    // }
-
-    const getAllEvents = async () => {
-        try {
-            const route = `/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`
-            console.log(route)
-            const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-            setResults(data.payload);
-        } catch (err) {
-
+    
+    useEffect(() => {
+        const getAllEvents = async () => {
+            try {
+                const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                setResults(data.payload);
+            } catch (err) {
+                setFeedback(err)
+            }
         }
-    }
 
-    useEffect(getAllEvents, [])
+        getAllEvents()
+    }, [setFeedback, reload]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        getAllEvents();
+        setReload(reload + 1);
     }
 
     return (
