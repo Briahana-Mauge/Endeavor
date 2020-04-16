@@ -9,7 +9,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 // import { Route, Redirect } from 'react-router-dom';
 
-import NavBar from './NavBar';
+import NavBar from './NavBar/NavBar';
 
 
 const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...rest }) => {

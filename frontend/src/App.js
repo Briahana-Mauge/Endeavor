@@ -130,7 +130,7 @@ function App() {
 
 
   return (
-    <div className="app container-fluid p-3">
+    <div className="g1App container-fluid p-3">
       <Switch>
 
         <Route exact path='/'>
