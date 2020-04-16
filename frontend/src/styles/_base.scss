@@ -14,12 +14,17 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
 
 :root {
     // font-size: 10px;
+    // --fs-body: 1.6rem;
 
     --ff-body1: 'Quicksand', sans-serif;
     --ff-body2: 'Muli', sans-serif;
     // --ff-accent: cursive;
 
-    // --fs-body: 1.6rem;
+    --color-primary: #27237c;
+    --color-yellow: #8d8558;
+    --color-purple: #483569;
+    --color-white: #e2e2e2;
+    --color-black: #323232;
 }
 
 body {
