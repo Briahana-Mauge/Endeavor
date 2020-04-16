@@ -37,23 +37,23 @@ export default function EventSearch(props) {
 
     return (
         <div className=''>
-            <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
+            <form className='form-inline' onSubmit={handleSubmit}>
+                <input className='form-control mb-2 mr-sm-2 w-25' type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
                 
-                <select className='' value={filter} onChange={e => setFilter(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
                     <option value='topic'>Event Name</option>
                     <option value='v_name'>Volunteer</option>
                     <option value='instructor'>Instructor</option>
                 </select>
 
-                <select className='' value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
                     <option value=''>Any date</option>
                     <option value='upcoming'>Upcoming events</option>
                     <option value='past'>Past events</option>
                 </select>
 
-                <button className='btn btn-primary'>Send</button>
+                <button className='btn btn-primary mb-2'>Send</button>
             </form>
             
             <div className='d-flex flex-wrap justify-content-around'>
