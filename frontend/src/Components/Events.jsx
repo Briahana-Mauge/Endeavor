@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EventsSearchCard from './EventsCard';
+import EventsCard from './EventsCard';
 
 import EventForm from './EventForm';
 
@@ -14,32 +14,137 @@ export default function EventSearch(props) {
     const [displayEventForm, setDisplayEventForm] = useState(false);
     // const [targetEventId, setTargetEventId] = useState(0);
     // const [displayTargetEvent, setDisplayTargetEvent] = useState(false);
-   
 
-    
+    const [ startDate, setStartDate ] = useState('');
+    const [ startTime, setStartTime ] = useState('');
+    const [ endDate, setEndDate ] = useState('');
+    const [ endTime, setEndTime ] = useState('');
+    const [ topic, setTopic ] = useState('');
+    const [ description, setDescription ] = useState('');
+    const [ attendees, setAttendees ] = useState('');
+    const [ location, setLocation ] = useState('');
+    const [ instructor, setInstructor ] = useState('');
+    const [ numberOfVolunteers, setNumberOfVolunteers ] = useState('');
+    const [ materialsUrl, setMaterialsUrl ] = useState('');
+
+
+    const eventInputs = {
+        startDate, 
+        setStartDate,
+        startTime, 
+        setStartTime,
+        endDate, 
+        setEndDate,
+        endTime, 
+        setEndTime,
+        topic, 
+        setTopic,
+        description, 
+        setDescription,
+        attendees, 
+        setAttendees,
+        location, 
+        setLocation,
+        instructor, 
+        setInstructor,
+        numberOfVolunteers, 
+        setNumberOfVolunteers,
+        materialsUrl, 
+        setMaterialsUrl,
+    }
+
+
+
     useEffect(() => {
         const getAllEvents = async () => {
             try {
-                const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-                setResults(data.payload);
+                if (props.loggedUser && props.loggedUser.a_id) {
+                    const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    setResults(data.payload);
+                }
+                else {
+                    const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    setResults(data.payload);
+                }
+
             } catch (err) {
                 setFeedback(err)
             }
         }
 
-        getAllEvents()
+        getAllEvents();
     }, [setFeedback, reload]);
 
-    const handleSubmit = (event) => {
+    const handleSearch = (event) => {
         event.preventDefault();
-
         setReload(reload + 1);
+    }
+
+    const handleDeleteEvent = async (event, id) => {
+        try {
+            event.preventDefault();
+            await axios.delete(`/api/events/${id}`)
+            setReload(reload + 1);
+        } catch (err) {
+            setFeedback(err);
+        }
     }
 
     const hideEventForm = () => {
         setDisplayEventForm(false);
         setReload(reload + 1);
     }
+
+    const clearInputs = () => {
+        setStartDate('');
+        setStartTime('');
+        setEndDate('');
+        setEndTime('');
+        setTopic('');
+        setDescription('');
+        setAttendees('');
+        setLocation('');
+        setInstructor('');
+        setNumberOfVolunteers('');
+        setMaterialsUrl('');
+    }
+
+    const handleAddEvent = async (e) => {
+        e.preventDefault();
+
+        try {
+            if (startDate && startTime && endDate && endTime 
+                && topic && description && attendees && location 
+                && instructor && numberOfVolunteers && materialsUrl) {
+                    const timeZone = new Date().getTimezoneOffset() / 60;
+                    const start = `${startDate} ${startTime}-${timeZone}`;
+                    const end = `${endDate} ${endTime}-${timeZone}`;
+
+                    const event = {
+                        start,
+                        end,
+                        topic,
+                        description,
+                        attendees,
+                        location,
+                        instructor,
+                        numberOfVolunteers,
+                        materialsUrl
+                    }
+
+                    await axios.post('/api/events/add', event);
+                    // clearInputs();
+                    hideEventForm();
+
+                } else {
+                    props.setFeedback({message: 'All fields are required'});
+                }
+        } catch (err) {
+            props.setFeedback(err);
+        }
+    }
+
+
 
     return (
         <div className=''>
@@ -51,7 +156,11 @@ export default function EventSearch(props) {
                     </div>
                     {
                         displayEventForm
-                        ? <EventForm setFeedback={setFeedback} hideEventForm={hideEventForm} />
+                        ? <EventForm
+                            setFeedback={setFeedback} 
+                            hideEventForm={hideEventForm} 
+                            {...eventInputs} 
+                            handleAddEvent={handleAddEvent}/>
                         : null
                     }
                 </>
@@ -59,8 +168,9 @@ export default function EventSearch(props) {
             }
 
             <hr />
+
             <h3>Events: </h3>
-            <form className='form-inline' onSubmit={handleSubmit}>
+            <form className='form-inline' onSubmit={handleSearch}>
                 <input className='form-control mb-2 mr-sm-2 w-25' type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
                 
                 <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
@@ -83,13 +193,13 @@ export default function EventSearch(props) {
                 {results.map(event => {
                     return (
                         <div key={event.event_id}>
-                            <EventsSearchCard event={event} />
+                            <EventsCard role={loggedUser && loggedUser.admin} event={event} delete={handleDeleteEvent} /* edit = {} */ />
                         </div>
                     )
                 })}
             </div>
 
-
         </div>
     );
 }
+

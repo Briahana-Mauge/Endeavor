@@ -2,18 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function EventForm (props) {
-    const [ startDate, setStartDate ] = useState('');
-    const [ startTime, setStartTime ] = useState('');
-    const [ endDate, setEndDate ] = useState('');
-    const [ endTime, setEndTime ] = useState('');
-    const [ topic, setTopic ] = useState('');
-    const [ description, setDescription ] = useState('');
     const [ cohortsList, setCohortsList ] = useState([]);
-    const [ attendees, setAttendees ] = useState('');
-    const [ location, setLocation ] = useState('');
-    const [ instructor, setInstructor ] = useState('');
-    const [ numberOfVolunteers, setNumberOfVolunteers ] = useState('');
-    const [ materialsUrl, setMaterialsUrl ] = useState('');
 
     const getCohortsList = () => {
         axios.get(`/api/cohorts`)
@@ -22,47 +11,13 @@ export default function EventForm (props) {
     }
     useEffect(getCohortsList, []);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            if (startDate && startTime && endDate && endTime 
-                && topic && description && attendees && location 
-                && instructor && numberOfVolunteers && materialsUrl) {
-                    const timeZone = new Date().getTimezoneOffset() / 60;
-                    const start = `${startDate} ${startTime}-${timeZone}`;
-                    const end = `${endDate} ${endTime}-${timeZone}`;
-
-                    const event = {
-                        start,
-                        end,
-                        topic,
-                        description,
-                        attendees,
-                        location,
-                        instructor,
-                        numberOfVolunteers,
-                        materialsUrl
-                    }
-
-                    const { data } = await axios.post('/api/events/add', event);
-                    console.log(data)
-                    props.hideEventForm();
-                } else {
-                    props.setFeedback({message: 'All fields are required'});
-                }
-        } catch (err) {
-            props.setFeedback(err);
-        }
-    }
-
 
     return (
         <>
             <div className='text-right m-2'>
                 <button className='btn-sm btn-danger' onClick={props.hideEventForm}>X</button>
             </div>
-            <form className='form-row mt-3' onSubmit={handleSubmit}>
+            <form className='form-row mt-3' onSubmit={props.handleAddEvent}>
                 <div className='col-sm-6'>
                     <strong>Start:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
@@ -70,15 +25,15 @@ export default function EventForm (props) {
                             className='form-control mb-2 w-50' 
                             type='date' 
                             placeholder='Start Date' 
-                            value={startDate}
-                            onChange={e => setStartDate(e.target.value)}
+                            value={props.startDate}
+                            onChange={e => props.setStartDate(e.target.value)}
                         />
                         <input 
                             className='form-control mb-2 w-50' 
                             type='time' 
                             placeholder='Start time' 
-                            value={startTime}
-                            onChange={e => setStartTime(e.target.value)}
+                            value={props.startTime}
+                            onChange={e => props.setStartTime(e.target.value)}
                         />
                     </span>
                 </div>
@@ -90,15 +45,15 @@ export default function EventForm (props) {
                             className='form-control mb-2 w-50' 
                             type='date' 
                             placeholder='End Date' 
-                            value={endDate}
-                            onChange={e => setEndDate(e.target.value)}
+                            value={props.endDate}
+                            onChange={e => props.setEndDate(e.target.value)}
                         />
                         <input 
                             className='form-control mb-2 w-50' 
                             type='time' 
                             placeholder='End time' 
-                            value={endTime}
-                            onChange={e => setEndTime(e.target.value)}
+                            value={props.endTime}
+                            onChange={e => props.setEndTime(e.target.value)}
                         />
                     </span>
                 </div>
@@ -108,15 +63,20 @@ export default function EventForm (props) {
                         className='form-control mb-2' 
                         type='text' 
                         placeholder='Title / Topic' 
-                        value={topic}
-                        onChange={e => setTopic(e.target.value)}
+                        value={props.topic}
+                        onChange={e => props.setTopic(e.target.value)}
                     />
                 </div>
 
                 <div className='col-sm-6'>
-                    <select className='form-control mb-2' onChange={e => setAttendees(e.target.value)} value={attendees}>
+                    <select className='form-control mb-2' onChange={e => props.setAttendees(e.target.value)} value={props.attendees}>
                         <option value=''> -- Cohort --</option>
-                        {cohortsList.map(cohort => <option key={cohort.cohort_id+cohort.cohort} value={cohort.cohort_id}>{cohort.cohort}</option>)}
+                        {cohortsList.map(cohort => 
+                            <option 
+                                key={cohort.cohort_id+cohort.cohort} 
+                                value={cohort.cohort_id}>
+                                    {cohort.cohort}
+                            </option>)}
                     </select>
                 </div>
 
@@ -124,8 +84,8 @@ export default function EventForm (props) {
                     <textarea 
                         className='form-control mb-2' 
                         placeholder='Description' 
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
+                        value={props.description}
+                        onChange={e => props.setDescription(e.target.value)}
                     />
                 </div>
 
@@ -134,8 +94,8 @@ export default function EventForm (props) {
                         className='form-control mb-2' 
                         type='text' 
                         placeholder='Location / Address' 
-                        value={location}
-                        onChange={e => setLocation(e.target.value)}
+                        value={props.location}
+                        onChange={e => props.setLocation(e.target.value)}
                     />
                 </div>
 
@@ -144,8 +104,8 @@ export default function EventForm (props) {
                         className='form-control mb-2' 
                         type='text' 
                         placeholder='Instructor / Host' 
-                        value={instructor}
-                        onChange={e => setInstructor(e.target.value)}
+                        value={props.instructor}
+                        onChange={e => props.setInstructor(e.target.value)}
                     />
                 </div>
 
@@ -154,8 +114,8 @@ export default function EventForm (props) {
                         className='form-control mb-2' 
                         type='number' 
                         placeholder='Number of needed volunteers' 
-                        value={numberOfVolunteers}
-                        onChange={e => setNumberOfVolunteers(e.target.value)}
+                        value={props.numberOfVolunteers}
+                        onChange={e => props.setNumberOfVolunteers(e.target.value)}
                     />
                 </div>
 
@@ -165,8 +125,8 @@ export default function EventForm (props) {
                             className='form-control mb-2 w-75' 
                             type='url' 
                             placeholder='Materials Link' 
-                            value={materialsUrl}
-                            onChange={e => setMaterialsUrl(e.target.value)}
+                            value={props.materialsUrl}
+                            onChange={e => props.setMaterialsUrl(e.target.value)}
                         />
 
                         <button className='btn btn-primary'>Submit</button>
