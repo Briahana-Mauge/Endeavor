@@ -17,7 +17,8 @@ export default function EventForm (props) {
             <div className='text-right m-2'>
                 <button className='btn-sm btn-danger' onClick={props.hideEventForm}>X</button>
             </div>
-            <form className='form-row mt-3' onSubmit={props.handleAddEvent}>
+            
+            <form className='form-row mt-3' onSubmit={props.handleSubmitForm}>
                 <div className='col-sm-6'>
                     <strong>Start:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
