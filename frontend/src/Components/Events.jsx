@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EventsSearchCard from './EventsCard';
+import EventsCard from './EventsCard';
 
 
 export default function EventSearch(props) {
@@ -83,7 +83,7 @@ export default function EventSearch(props) {
         {results.map(event => {
             return (
                 <div key={event.event_id}>
-                    <EventsSearchCard role = {props.loggedUser.admin} event={event} delete={handleDelete} /* edit = {} */ />
+                    <EventsCard role = {props.loggedUser.admin} event={event} delete={handleDelete} /* edit = {} */ />
                 </div>
             )
         })}
