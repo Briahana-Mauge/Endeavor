@@ -2,9 +2,6 @@ import React from 'react';
 // import { Link } from 'react-router-dom';
 
 const EventsSearchCard = (props) => {
-  if(props.event.volunteers[0] !== null){
-    console.log('not empty',props.event.volunteers.join(', '))
-  }
     return (
         <div className='card' style={{ width: 400 }}>
             {props.role ?
@@ -23,16 +20,10 @@ const EventsSearchCard = (props) => {
                 <p className='card-text'>{props.event.description} </p>
                 <p className='card-text'>Class: {props.event.cohort} </p>
                 {
-                    (props.event.volunteers[0] === null) ?
+                    (props.event.volunteers[0] === null) ? //if there are no volunteers, show TBA. Otherwise, show thet volunteers
                         <p className='card-text'>Volunteers: TBA</p>
                         :<p className='card-text'>Volunteers: {props.event.volunteers.join(', ')}
-                        {/* {props.event.volunteers.forEach(e =>{
-                        
-                            console.log(e)
-                            return <p className='card-text'>Volunteers: {e} </p>;
-                        })} */}
                         </p>
-                        
                 }
 
 
