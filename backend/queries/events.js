@@ -20,8 +20,6 @@ const formatStr = str => {
 
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
-
-
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort,
@@ -39,36 +37,34 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
 `     
 
-  let endOfQuery = `GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort     
-  ORDER BY (
-    CASE WHEN DATE(event_start) > now()
-        THEN 1
-        ELSE 0
-        END
-        ) 
-  DESC, event_start ASC
+  const endOfQuery = `
+    GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
+      events.instructor, events.number_of_volunteers, cohorts.cohort     
+    ORDER BY event_start DESC
   `
-  if (vName === '' && topic === '' && instructor === '' && upcoming === '' && past === '') {
-    return await db.any(selectQuery +" WHERE events.deleted IS NULL " + endOfQuery);
-  }
-  else if (topic === '' && instructor === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE  events.deleted IS NULL AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/
-     ${endOfQuery}`, { vName });
-  }
-  else if (vName === '' && instructor === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.topic) LIKE '%' || $/topic/ || '%' ${endOfQuery}`, { topic });
-  }
-  else if (vName === '' && topic === '' && upcoming === '' && past === '') {
-    return await db.any(`${selectQuery} WHERE events.deleted IS NULL AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' ${endOfQuery}`, { instructor });
-  }
-  else if (vName === '' && topic === '' && instructor === '' && past === '') {
-    return await getUpcomingEvents();
-  } else {
-    return await getPastEvents();
+
+  let condition = ' WHERE events.deleted IS NULL ';
+
+  if (vName) {
+    condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
   }
 
+  if (topic) {
+    condition += `AND lower(events.topic) LIKE '%' || $/topic/ || '%' `
+  }
 
+  if (instructor) {
+      condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
+  }
+
+  if (upcoming) {
+    condition += `AND event_start > now() `
+  } 
+  if (past) {
+    condition += `AND event_start <= now() `
+  }
+  
+  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
 const getSingleEvent = async (eId) => {
@@ -93,13 +89,7 @@ const getSingleEvent = async (eId) => {
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers, cohorts.cohort     
 
-  ORDER BY (
-    CASE WHEN DATE(event_start) > now()
-        THEN 1
-        ELSE 0
-        END
-        ) 
-  DESC, event_start ASC
+  ORDER BY event_start DESC
   `;
   return await db.any(selectQuery, { eId });
 }
@@ -151,7 +141,7 @@ const getSingleEventAdmin = async (eId) => {
 }
 
 // Get all upcoming events
-async function getUpcomingEvents() {
+const getUpcomingEvents = async () => {
   const selectQuery = `
   SELECT * 
   FROM events 
@@ -162,7 +152,7 @@ async function getUpcomingEvents() {
 }
 
 // Get all past events
-async function getPastEvents() {
+const getPastEvents = async () => {
   const selectQuery = `
   SELECT * 
   FROM events 
