@@ -95,15 +95,12 @@ class EventSearch extends React.Component {
                     </select>
                     <input type='button' value='Send' onClick={this.handleSubmit} />
                 </form>
-                <div>
+                <div className='d-flex flex-wrap justify-content-around'>
                     {results.map(event => {
                         return (
-
                             <div key={event.event_id}>
                                 <EventsSearchCard event={event} />
-
                             </div>
-
                         )
                     })}
                 </div>
