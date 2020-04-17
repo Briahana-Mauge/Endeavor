@@ -4,6 +4,9 @@ import React from 'react';
 const EventsSearchCard = (props) => {
     return (
         <div className='card' style={{ width: 400 }}>
+            <button onClick = {e => props.delete(e, props.event.event_id)}>Delete</button>
+            {/* <button onClick = {e => props.edit(e, props.event.event_id)}>Edit</button> */}
+
             <div className='card-body'>
                 <h4 className='card-title'>{props.event.topic}</h4>
                 <p>{new Date(props.event.event_start).toLocaleString()} - {new Date(props.event.event_end).toLocaleString()}</p>
