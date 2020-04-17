@@ -1,7 +1,7 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 
-const EventsSearchCard = (props) => {
+const EventsCard = (props) => {
     return (
         <div className='card' style={{ width: 400 }}>
             {props.role ?
@@ -42,4 +42,4 @@ const EventsSearchCard = (props) => {
     );
 }
 
-export default EventsSearchCard;
+export default EventsCard;
