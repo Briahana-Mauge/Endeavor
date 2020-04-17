@@ -1,117 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventsSearchCard from './EventsCard';
-import { Link, Route, Switch } from 'react-router-dom';
 
-//Class component
-class EventSearch extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            search: '',
-            loading: true,
-            results: [],
-            filter: '',
-            submitted: false
-        }
-    }
-    componentDidMount = () => {
 
-        this.getAllEvents();
-    }
+export default function EventSearch(props) {
+    const { setFeedback } = props;
+    const [search, setSearch] = useState('');
+    const [results, setResults] = useState([]);
+    const [filter, setFilter] = useState('');
+    const [dateFilter, setDateFilter] = useState('');
+    const [reload, setReload] = useState(0); 
+    // const [targetEventId, setTargetEventId] = useState(0);
+    // const [displayTargetEvent, setDisplayTargetEvent] = useState(false);
+   
 
-    getAllEvents = async () => {
-
-        let { filter, search } = this.state
-        let basic = ''
-        if (filter === '') {
-            basic = await axios.get(`/api/events/all/`);
-
-        } else if (filter === 'v_name') {
-            basic = await axios.get(`/api/events/all/?v_name=${search}`);
-
-        } else if (filter === 'instructor') {
-            basic = await axios.get(`/api/events/all/?instructor=${search}`);
-
-        }else if (filter === 'topic') {
-            basic = await axios.get(`/api/events/all/?topic=${search}`);
-
-        }
-        else if (filter === 'skill') {
-            basic = await axios.get(`/api/events/all/?upcoming=${filter}`);
-
-        } else {
-            basic = await axios.get(`/api/events/all/?past=${filter}`);
+    
+    useEffect(() => {
+        const getAllEvents = async () => {
+            try {
+                const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                setResults(data.payload);
+            } catch (err) {
+                setFeedback(err)
+            }
         }
 
+        getAllEvents()
+    }, [setFeedback, reload]);
 
-        this.setState({
-            results: basic.data.payload
-        })
-    }
-
-    handleInput = (event) => {
-        const { name, value } = event.target
-        // if(event.name)
-        this.setState({
-            [name]: value,
-            loading: true
-        })
-    }
-    handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({
-            loading: false,
-            filter: ''
-        })
 
-        this.getAllEvents();
-
-
+        setReload(reload + 1);
     }
-    render = () => {
 
-        const { results, filter } = this.state
-        console.log(results)
-        return (
-            <div className="Search">
-        
-                <form>
-                    {
-                    this.state.filter === 'upcoming' || this.state.filter === 'past'? 
-                    <input type='text' name='search' placeholder='Press Send' onChange={this.handleInput} value={this.setState.search} disabled/>
-                   : <input type='text' name='search' placeholder='Search' onChange={this.handleInput} value={this.setState.search} />
+    return (
+        <div className=''>
+            <form className='form-inline' onSubmit={handleSubmit}>
+                <input className='form-control mb-2 mr-sm-2 w-25' type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
+                
+                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
+                    <option value=''>Choose a search filter</option>
+                    <option value='topic'>Event Name</option>
+                    <option value='v_name'>Volunteer</option>
+                    <option value='instructor'>Instructor</option>
+                </select>
 
-                    }
-                    
-                    <select className='filter' name='filter' onChange={this.handleInput}>
-                        <option value={false} key='null'>Choose a search filter</option>
-                        <option value='topic' key='name'>Event Name</option>
-                        <option value='v_name' key='v_name'>Volunteer</option>
-                        <option value='instructor' key='instructor'>Instructor</option>
-                        <option value='upcoming' key='upcoming'>Upcoming events</option>
-                        <option value='past' key='past'>Past events</option>
-                        
-                    </select>
-                    <input type='button' value='Send' onClick={this.handleSubmit} />
-                </form>
-                <div>
-                    {results.map(event => {
-                        return (
+                <select className='form-control mb-2 mr-sm-2' value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
+                    <option value=''>Any date</option>
+                    <option value='upcoming'>Upcoming events</option>
+                    <option value='past'>Past events</option>
+                </select>
 
-                            <div key={event.event_id}>
-                                <EventsSearchCard event={event} />
-
-                            </div>
-
-                        )
-                    })}
-                </div>
-
-
+                <button className='btn btn-primary mb-2'>Send</button>
+            </form>
+            
+            <div className='d-flex flex-wrap justify-content-around'>
+                {results.map(event => {
+                    return (
+                        <div key={event.event_id}>
+                            <EventsSearchCard event={event} />
+                        </div>
+                    )
+                })}
             </div>
-        );
-    }
-}
 
-export default EventSearch;
+
+        </div>
+    );
+}
