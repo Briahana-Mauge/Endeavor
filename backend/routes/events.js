@@ -51,16 +51,24 @@ router.get('/event/:e_id', async (req, res, next) => {
 
 //Get all events  (admin)
 router.get('/admin/all', async (req, res, next) => {
-    try {
-        let allEventsAdmin = await eventsQueries.getAllEventsAdmin();
-        res.json({
-            payload: allEventsAdmin,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
+    try{
+        const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowerCase();
+    const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowerCase();
+    const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
+    const upcoming = processInput(req.query.upcoming, "softVC", "upcoming events", 60);
+    const past = processInput(req.query.past, "softVC", "past events", 60);
+
+    let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past);
+    res.status(200)
+    .json({
+        payload: allEventsAdmin,
+        message: "Success",
+        err: false
+    });
+} catch (err) {
+    handleError(err, req, res, next);
+}
+    
 });
 
 //Get single event (admin only)
