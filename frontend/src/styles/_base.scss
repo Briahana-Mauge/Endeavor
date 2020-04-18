@@ -32,36 +32,37 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
     // --fs-body: 1.6rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-body2: 'Lato', sans-serif;
+    --ff-logo: 'Red Hat Display', sans-serif;
     --ff-accent: 'Lato-Black', serif;
 
     --color-primary: #27237c;
     --color-yellow: #8d8558;
     --color-purple: #483569;
-        --color-purple-rgb: 137, 183, 214;
-        // --color-purple-rgb: 72, 53, 105;
     --color-white: #e2e2e2;
     --color-black: #323232;
 
-    --color: 240, 240, 240;
+    $color-body-gradient: #27237c;
+    $color-navbar-gradient: #20182d;
 }
 
-$color-body-gradient: #27237c;
-$color-navbar-gradient: #20182d;
+
 
 body {
-    background-image: linear-gradient(180deg, rgba($color-body-gradient, .35) 11%, rgba($color-body-gradient, .8) 89%);
+    position: fixed;
+    background-image: linear-gradient(180deg, #1a1635 11%, #696a81 50%, #908fa1 89%);
+    // background-image: linear-gradient(180deg, rgba($color-body-gradient, .35) 11%, rgba($color-body-gradient, .8) 89%);
 
     font-family: var(--ff-body1);
-    // font-size: var(--fs-body);
     color: var(--color-black);
+    // font-size: var(--fs-body);
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 .g1App {
-    padding-top: calc(1rem + 61px) !important;
+    overflow-y: auto;
+    padding-top: 0 !important;
 }
 
 code {
@@ -97,20 +98,20 @@ html, body, #root, .g1App {
 }
 
 .g1Navbar {
-    position: fixed;
-    top: -.05rem;
+    position: sticky;
+    top: 0;
     left: 0;
     height: 62px;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
     align-items: baseline;
+    z-index: 100;
 
-    background-color: #fff;
-    background-image: linear-gradient(170deg, rgba($color-navbar-gradient, .89) 8%, rgba($color-navbar-gradient, 1) 64%);
-    box-shadow: 0px 6px 29px 2px #000a;
+    // background-color: /* #1a1534 */;
+    // background-image: linear-gradient(170deg, rgba($color-navbar-gradient, .89) 8%, rgba($color-navbar-gradient, 1) 64%);
+    // box-shadow: 0px 6px 29px 2px #000a;
 
     .nav-item a {
-        font-family: var(--ff-body2);
+        font-family: var(--ff-logo);
     }
 
     a {
@@ -128,18 +129,20 @@ html, body, #root, .g1App {
     margin-right: 2rem;
 
     color: var(--color-white);
-    font-family: var(--ff-body2);
+    font-family: var(--ff-logo);
     font-weight: normal;
     font-size: 2.6rem;
     letter-spacing: -1px;
+    text-transform: uppercase;
 
     span {
-        font-size: 84%; // creates small-caps
+        color: var(--color-yellow);
     }
 }
 
-.g1FakeALink {
-
+.g1BtnAsLink {
+    position: relative;
+    top: -.08rem;
     border: none;
     background-color: transparent;
     color: var(--color-white);
