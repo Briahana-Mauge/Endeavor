@@ -1,7 +1,21 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const EventsCard = (props) => {
+    let start = props.event.event_start;
+    let newStart = moment.utc(start).format('YYYYMMDD[T]HHmmss[Z]');
+
+    let end = props.event.event_end;
+    let newEnd = moment.utc(end).format('YYYYMMDD[T]HHmmss[Z]');
+
+    let vEmails = '';
+    if (props.event.v_email) {
+        props.event.v_email.forEach(email => {
+            vEmails += `&add=${email}`;
+        });
+    }
+
+
     return (
         <div className='card' style={{ width: 400 }}>
             {props.role ?
@@ -20,23 +34,20 @@ const EventsCard = (props) => {
                 <p className='card-text'>{props.event.description} </p>
                 <p className='card-text'>Class: {props.event.cohort} </p>
                 {
-                    (props.event.volunteers[0] === null) ? //if there are no volunteers, show TBA. Otherwise, show thet volunteers
+                    (props.event.volunteers[0] === null) ? //if there are no volunteers, show TBA. Otherwise, show the volunteers
                         <p className='card-text'>Volunteers: TBA</p>
-                        :<p className='card-text'>Volunteers: {props.event.volunteers.join(', ')}
+                        : <p className='card-text'>Volunteers: {props.event.volunteers.join(', ')}
                         </p>
                 }
 
 
-                {/* <h5>Skills:</h5>
-                <ul>
-                    <p className='card-text'>{props.volunteer.skills[0]}</p>
-                    <p className='card-text'>{props.volunteer.skills[1]}</p>
-                    <p className='card-text'>{props.volunteer.skills[2]}</p>
-                </ul>
-                <h5>Next Event: {props.volunteer.topics[0]} (make this a link)</h5>
-                <Link to={`/volunteers/${props.volunteer.v_id}`}>
-                    <a href='#' className='btn btn-primary'>See Profile</a>
-                    </Link> */}
+                {/* Look for a way to edit an added event with using an api */}
+                {props.role ?
+                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${props.event.topic}&dates=${newStart}/${newEnd}&details=${props.event.description}&location=${props.event.location}&sf=true&output=xml${vEmails}`}
+                        target="_blank" rel="nofollow"><button>Add To Cal</button></a>
+                    : null
+                }
+
             </div>
         </div>
     );
