@@ -100,8 +100,8 @@ const EventsCard = (props) => {
     return (
         <div className='card' style={{ width: 400 }}>
             {
-                props.role 
-                ?   <div className='d-flex flex-wrap justify-content-between'>
+                loggedUser && loggedUser.admin
+                ?   <div className='d-flex justify-content-between'>
                         <button className='btn btn-outline-danger flex-fill' onClick={e => props.delete(event.event_id)}>Delete</button>
                         <span className='flex-fill'></span>
                         <button className='btn btn-outline-warning flex-fill' onClick={e => props.edit(event)}>Edit</button>
@@ -123,17 +123,25 @@ const EventsCard = (props) => {
                     : null
                 }
                 <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
+                {
+                    loggedUser && loggedUser.a_id
+                    ? <div className='card-text float-right'><a>ADD TO CALENDAR LINK (PLACE HOLDER)</a></div>
+                    : null
+                }
+                
+                
+
 
                 {
                     loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
                     ? loggedVolunteerRequestAccepted 
-                        ?   <div className='card-text d-flex flex-wrap justify-content-between'>
-                                <button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button>
-                                <a>ADD TO CALENDAR LINK (PLACE HOLDER</a>
+                        ?   <div className='card-text d-flex'>
+                                <a>ADD TO CALENDAR LINK (PLACE HOLDER)</a>
+                                <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                             </div>
-                        :   <div className='card-text d-flex flex-wrap justify-content-between'>
+                        :   <div className='card-text'>
                                 <span>Request pending</span>
-                                <button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button>
+                                <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                             </div>
                     :   loggedUser && loggedUser.v_id
                         ?   <div className='card-text text-right'>
