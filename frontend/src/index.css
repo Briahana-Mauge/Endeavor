@@ -6,14 +6,8 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'Lato';
-  src: url('./assets/fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-family: 'Red Hat Display';
+  src: url('./assets/fonts/Red_Hat_Display/RedHatDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Lato-Black';
-  src: url('./assets/fonts/Lato/Lato-Black.ttf') format('truetype');
-  font-weight: 900;
   font-style: normal;
 }
