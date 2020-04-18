@@ -35,7 +35,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-`     
+`
 
   const endOfQuery = `
     GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
@@ -54,16 +54,16 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   }
 
   if (instructor) {
-      condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
+    condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
   }
 
   if (upcoming) {
     condition += `AND event_start > now() `
-  } 
+  }
   if (past) {
     condition += `AND event_start <= now() `
   }
-  
+
   return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
@@ -98,7 +98,13 @@ const getAllEventsAdmin = async () => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
     events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort, 
-    ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
+    ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers, ARRAY_AGG ( 
+      DISTINCT
+      CASE 
+        WHEN event_volunteers.confirmed = TRUE 
+        THEN volunteers.v_email
+        END
+    ) AS v_email
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
