@@ -6,30 +6,40 @@ NavBar Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useHistory } from 'react-router-dom';
 
 
 /* BOOTSTRAP NAVBAR CLASSES */
 const liPadding = "px-3";
-const bgThemeChoices = ["", "bg-dark", "bg-light"]
-const bgTheme = bgThemeChoices[1];
-
 
 
 /* MAIN */
 const NavBar = ({ loggedUser, logout }) => {
-  const isAdmin = !!(loggedUser && loggedUser.a_id);
+  const history = useHistory();
 
-  let showAdminDropdown = null;
-  if (isAdmin === true) {
-    showAdminDropdown = (
-      <NavDropdown topText="Admin">
-        <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
-        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
-        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
-      </NavDropdown>
-    );
+  const is = {};
+  if (loggedUser) {
+    if (loggedUser.admin) {
+      is["admin"] = true;
+    } else if (loggedUser.a_id) {
+      is["staff"] = true;
+    } else if (loggedUser.v_id) {
+      is["volunteer"] = true;
+    } else {
+      is["fellow"] = true;
+    }
+  } else {
+    history.push('/');
   }
+
+
+  const adminDropdown = (
+    <NavDropdown topText="Admin">
+      <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
+      <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
+      <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
+    </NavDropdown>
+  );
 
 
   return (
@@ -54,7 +64,7 @@ const NavBar = ({ loggedUser, logout }) => {
             <NAV_DD_LINK to='/fellows/search' text="Fellows Search" />
           </NavDropdown>
 
-          {showAdminDropdown}
+          {is.admin ? adminDropdown : null}
 
           <NAV_LINK to='/profile' text="My Profile" liClassName="ml-auto" />
 
@@ -122,7 +132,7 @@ const NavDropdown = (props) => {
       >
         {topText}
       </NavLink>
-      <div className={`dropdown-menu ${bgTheme}`}>
+      <div className={`dropdown-menu bg-dark`}>
         {children}
       </div>
     </li>
