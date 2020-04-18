@@ -41,6 +41,9 @@ const EventsCard = (props) => {
         try {
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
             setReload(reload + 1);
+            if (props.setReload) {
+                props.setReload(props.reload + 1);
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -100,7 +103,7 @@ const EventsCard = (props) => {
     return (
         <div className='card' style={{ width: 400 }}>
             {
-                loggedUser && loggedUser.admin
+                loggedUser && loggedUser.admin && props.delete && props.edit
                 ?   <div className='d-flex justify-content-between'>
                         <button className='btn btn-outline-danger flex-fill' onClick={e => props.delete(event.event_id)}>Delete</button>
                         <span className='flex-fill'></span>

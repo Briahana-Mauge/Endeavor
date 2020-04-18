@@ -65,7 +65,8 @@ export default function EventSearch(props) {
                     setResults(data.payload);
                 }
                 else {
-                    const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
                     setResults(data.payload);
                 }
 
@@ -82,9 +83,8 @@ export default function EventSearch(props) {
         setReload(reload + 1);
     }
 
-    const handleDeleteEvent = async (event, id) => {
+    const handleDeleteEvent = async (id) => {
         try {
-            event.preventDefault();
             await axios.delete(`/api/events/${id}`)
             setReload(reload + 1);
         } catch (err) {

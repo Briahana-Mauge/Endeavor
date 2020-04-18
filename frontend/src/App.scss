@@ -27,6 +27,8 @@
     position: fixed;
     width: 80vw;
     top: 10vh;
+    max-height: 85vh;
+    overflow: scroll;
     left: 10vw;
     right: 10vw;
     background-color: #eeeeee;

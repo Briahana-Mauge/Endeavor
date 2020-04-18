@@ -12,13 +12,12 @@ const volunteerQueries = require('../queries/volunteers');
 const volunteerSkillsQueries = require('../queries/volunteerSkills');
 
 
-router.get('/all', async (req, res, next) => { //change email to name
-
+router.get('/all', async (req, res, next) => {
     try {
-        const vEmail = processInput(req.query.v_email, "softVC", "volunteer email", 50);
-        const company = processInput(req.query.company, "softVC", "volunteer company", 50);
-        const skill = processInput(req.query.skill, "softVC", "volunteer skill", 100);
-        const name = processInput(req.query.name, "softVC", "volunteer name", 60);
+        const vEmail = processInput(req.query.v_email, "softVC", "volunteer email", 50).toLowerCase();
+        const company = processInput(req.query.company, "softVC", "volunteer company", 50).toLowerCase();
+        const skill = processInput(req.query.skill, "softVC", "volunteer skill", 100).toLowerCase();
+        const name = processInput(req.query.name, "softVC", "volunteer name", 60).toLowerCase();
 
         const allVolunteers = await volunteerQueries.getAllVolunteers(vEmail, company, skill, name);
         res.status(200)
@@ -88,6 +87,25 @@ router.get('/skills/:volunteer_id', async (req, res, next) => {
             message: `All volunteer with id ${volunteerId} skills retrieved`,
             payload: allVolunteerSkills || {skills_list: []} // if volunteer didn't select any skill from the list of skills
         });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+})
+
+// Accept a volunteer into the platform
+router.patch('/confirm/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        if (req.user && req.user.admin) {
+            const confirmedVolunteer = await volunteerQueries.confirmVolunteer(volunteerId);
+            res.json({
+                error: false,
+                message: `Volunteer with id ${volunteerId} has been confirmed`,
+                payload: confirmedVolunteer 
+            });
+        } else {
+            throw new Error('403_You are not authorized to perform this operation');
+        }
     } catch (err) {
         handleError(err, req, res, next);
     }
