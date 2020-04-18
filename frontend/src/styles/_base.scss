@@ -40,16 +40,21 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
-
-    $color-body-gradient: #27237c;
-    $color-navbar-gradient: #20182d;
 }
 
 
+// SCSS VARS
+$navbar-height: 62px;
+
+$color-body-gradient: #27237c;
+$color-navbar-gradient: #20182d;
+
 
 body {
-    position: fixed;
-    background-image: linear-gradient(180deg, #1a1635 11%, #696a81 50%, #908fa1 89%);
+    position: fixed; // prevents background drift
+
+    padding-top: $navbar-height;
+    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
     // background-image: linear-gradient(180deg, rgba($color-body-gradient, .35) 11%, rgba($color-body-gradient, .8) 89%);
 
     font-family: var(--ff-body1);
@@ -62,7 +67,12 @@ body {
 
 .g1App {
     overflow-y: auto;
-    padding-top: 0 !important;
+    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
+    color: var(--color-white);
+}
+
+.card-body {
+    color: var(--color-black);
 }
 
 code {
@@ -98,13 +108,8 @@ html, body, #root, .g1App {
 }
 
 .g1Navbar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    height: 62px;
-    padding: 0;
+    height: $navbar-height;
     align-items: baseline;
-    z-index: 100;
 
     // background-color: /* #1a1534 */;
     // background-image: linear-gradient(170deg, rgba($color-navbar-gradient, .89) 8%, rgba($color-navbar-gradient, 1) 64%);
@@ -123,15 +128,17 @@ html, body, #root, .g1App {
     }
 }
 
-.g1Brand {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-right: 2rem;
+@media (min-width: 992px) {
+    div#navbarSupportedContent {
+        background-color: transparent !important;
+    }
+}
 
+.g1Brand {
     color: var(--color-white);
     font-family: var(--ff-logo);
     font-weight: normal;
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     letter-spacing: -1px;
     text-transform: uppercase;
 

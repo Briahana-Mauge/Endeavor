@@ -10,7 +10,7 @@ import { NavLink, Link } from 'react-router-dom';
 
 
 /* BOOTSTRAP NAVBAR CLASSES */
-const liPadding = "p-3";
+const liPadding = "px-3";
 const bgThemeChoices = ["", "bg-dark", "bg-light"]
 const bgTheme = bgThemeChoices[1];
 
@@ -24,41 +24,39 @@ const NavBar = ({ loggedUser, logout }) => {
   if (isAdmin === true) {
     showAdminDropdown = (
       <NavDropdown topText="Admin">
-        <NavLink className="dropdown-item" to='/tools/users'>Edit App Users</NavLink>
-        <NavLink className="dropdown-item" to='/tools/cohorts'>Edit Cohorts</NavLink>
-        <NavLink className="dropdown-item" to='/tools/skills'>Edit Volunteer Skills</NavLink>
+        <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
+        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
+        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
       </NavDropdown>
     );
   }
 
 
   return (
-    <nav className={`g1Navbar navbar navbar-expand-md navbar-dark container-fluid`}>
+    // <nav className={`g1Navbar navbar navbar-expand-lg navbar-dark container-fluid`}>
+    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-0 container-fluid`}>
       <Logo />
       <Burger />
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="container-md navbar-nav">
+      <div className="collapse navbar-collapse bg-dark" id="navbarSupportedContent">
+        <ul className="container-lg navbar-nav align-items-end">
 
-          <NavOneLink to="/home" text="Home" />
+          <NAV_LINK to="/home" text="Home" />
 
           <NavDropdown topText="Volunteers">
-            <NavLink className="dropdown-item" to='/volunteers/search'>Volunteers Search</NavLink>
-            <Divider />
+            <NAV_DD_LINK to='/volunteers/search' text="Volunteers Search" />
           </NavDropdown>
 
           <NavDropdown topText="Events">
-            <NavLink className="dropdown-item" to='/events/search'>Events Search</NavLink>
-            <Divider />
+            <NAV_DD_LINK to='/events/search' text="Events Search" />
           </NavDropdown>
 
           <NavDropdown topText="Fellows">
-            <NavLink className="dropdown-item" to='/volunteers/search'>Volunteers Search</NavLink>
-            <Divider />
+            <NAV_DD_LINK to='/fellows/search' text="Fellows Search" />
           </NavDropdown>
 
           {showAdminDropdown}
 
-          <NavOneLink to='/profile' text="My Profile" liClassName="ml-auto" />
+          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-auto" />
 
           <Logout logout={logout} />
 
@@ -72,7 +70,7 @@ const NavBar = ({ loggedUser, logout }) => {
 /* HELPER COMPONENTS */
 const Logo = () => {
   return(
-    <Link className="g1Brand navbar-brand" to="/home">
+    <Link className="g1Brand navbar-brand py-0 mr-5" to="/home">
       Endea<span>V</span>or
     </Link>
   );
@@ -94,11 +92,17 @@ const Burger = () => {
   );
 }
 
-const NavOneLink = ({ to, text, liClassName }) => {
+const NAV_LINK = ({ to, text, liClassName }) => {
   return(
     <li className={`nav-item ${liClassName}`}>
       <NavLink className={`nav-link ${liPadding}`} to={to}>{text}</NavLink>
     </li>
+  );
+}
+
+const NAV_DD_LINK = ({ to, text }) => {
+  return(
+    <NavLink className="dropdown-item px-3" to={to}>{text}</NavLink>
   );
 }
 
@@ -131,7 +135,7 @@ const Logout = ({logout}) => {
   return(
     <li className="nav-item">
       <button
-        className="nav-link g1BtnAsLink"
+        className={`nav-link g1BtnAsLink ${liPadding} pr-lg-0`}
         onClick={logout}
       >
         Logout
