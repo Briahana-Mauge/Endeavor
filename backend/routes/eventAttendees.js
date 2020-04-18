@@ -30,18 +30,72 @@ router.get('/volunteers/:event_id', async (request, response, next) => {
 // Confirm or un-confirm a volunteer request to be at en event
 router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, response, next) => {
     try {
-        const updateData = {
-            eventId: processInput(request.params.event_id, 'idNum', 'event id'),
-            volunteerId: processInput(request.params.volunteer_id, 'idNum', 'volunteer id'),
-            confirmed: processInput(request.body.confirmed, 'bool', 'volunteer confirmed')
+        if (request.user && request.user.admin) {
+            const updateData = {
+                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
+                volunteerId: processInput(request.params.volunteer_id, 'idNum', 'volunteer id'),
+                confirmed: processInput(request.body.confirmed, 'bool', 'volunteer confirmed')
+            }
+            const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
+    
+            response.json({
+                err: false,
+                message: `Successfully updated volunteer.${updateData.volunteerId} attending event.${updateData.eventId}`,
+                payload: volunteer,
+            });
+        } else {
+            throw new Error('403__Not allowed to perform this operation');
         }
-        const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
+    } catch (err) {
+        handleError(err, request, response, next);
+    }
+});
 
-        response.json({
-            err: false,
-            message: `Successfully updated volunteer.${updateData.volunteerId} attending event.${updateData.eventId}`,
-            payload: volunteer,
-        });
+// Volunteer request to attend an event
+router.post('/event/:event_id/add/:volunteer_id', async (request, response, next) => {
+    try {
+        const volunteerId = processInput(request.params.volunteer_id, 'idNum', 'volunteer id');
+        if (request.user && request.user.v_id && request.user.v_id === volunteerId) {
+            const postData = {
+                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
+                volunteerId
+            }
+            const volunteerRequest = await eventAttendeesQueries.signupVolunteerForEvent(postData);
+    
+            response.json({
+                err: false,
+                message: `Successfully added volunteer.${volunteerId} request to attend event.${postData.eventId}`,
+                payload: volunteerRequest,
+            });
+
+        } else {
+            throw new Error('403__Not allowed to perform this operation');
+        }
+    } catch (err) {
+        handleError(err, request, response, next);
+    }
+});
+
+// Volunteer request to attend an event
+router.delete('/event/:event_id/delete/:volunteer_id', async (request, response, next) => {
+    try {
+        const volunteerId = processInput(request.params.volunteer_id, 'idNum', 'volunteer id');
+        if (request.user && request.user.v_id && request.user.v_id === volunteerId) {
+            const deleteData = {
+                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
+                volunteerId
+            }
+            const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent(deleteData);
+    
+            response.json({
+                err: false,
+                message: `Successfully deleted volunteer.${volunteerId} request to attend event.${deleteData.eventId}`,
+                payload: volunteerRequest,
+            });
+
+        } else {
+            throw new Error('403__Not allowed to perform this operation');
+        }
     } catch (err) {
         handleError(err, request, response, next);
     }

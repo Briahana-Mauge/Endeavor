@@ -5,17 +5,36 @@ import axios from 'axios';
 const EventsCard = (props) => {
     const { setFeedback, loggedUser, event } = props;
     const [ volunteersList, setVolunteersList ] = useState([]);
+    const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
+    const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ reload, setReload ] = useState(0);
 
     const getVolunteersList = () => {
         axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
-            .then(response => {
-                console.log(response.data.payload); 
-                setVolunteersList(response.data.payload);
-            })
+            .then(response => setVolunteersList(response.data.payload))
             .catch(err => setFeedback(err))
     }
     useEffect(getVolunteersList, [reload]);
+
+    useEffect(() => {
+        const checkIfVolunteerSignedForEvent = () => {
+            let found = false;
+            let accepted = false;
+            for (let volunteer of volunteersList) {
+                if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) {
+                    found = true;
+                    if (volunteer.volunteer_request_accepted) {
+                        accepted = true
+                    }
+                    break;
+                }
+            }
+            setLoggedVolunteerPartOfEvent(found);
+            setLoggedVolunteerRequestAccepted(accepted);
+        }
+        
+        checkIfVolunteerSignedForEvent();
+    }, [volunteersList])
 
 
     const manageVolunteersRequests = async (e, volunteerId) => {
@@ -25,7 +44,24 @@ const EventsCard = (props) => {
         } catch (err) {
             setFeedback(err);
         }
+    }
 
+    const volunteerForEvent = async () => {
+        try {
+            await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
+            setReload(reload + 1);
+        } catch (err) {
+            setFeedback(err);
+        }
+    }
+
+    const deleteVolunteerForEvent = async () => {
+        try {
+            await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
+            setReload(reload + 1);
+        } catch (err) {
+            setFeedback(err);
+        }
     }
 
     let displayVolunteersList = 'TBA'
@@ -48,6 +84,17 @@ const EventsCard = (props) => {
                     </div>
                 </div>
             )
+    } else if (volunteersList.length) {
+        displayVolunteersList = volunteersList.map(volunteer => 
+            <div key={volunteer.v_id + volunteer.v_last_name}>
+                {
+                    volunteer.volunteer_request_accepted 
+                    ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span> 
+                    : null
+                }
+                
+            </div>
+        )
     }
 
     return (
@@ -75,9 +122,22 @@ const EventsCard = (props) => {
                     ? <p className='card-text'><strong>Number of needed volunteers: </strong>{event.volunteers_needed} </p>
                     : null
                 }
-                <p className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </p>
+                <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
 
-
+                {
+                    loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
+                    ? loggedVolunteerRequestAccepted 
+                        ?   <div className='card-text text-right'><button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button></div>
+                        :   <div className='card-text d-flex flex-wrap justify-content-between'>
+                                <span>Request pending</span>
+                                <button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button>
+                            </div>
+                    :   loggedUser && loggedUser.v_id
+                        ?   <div className='card-text text-right'>
+                                <button className='btn btn-primary' onClick={volunteerForEvent}>Volunteer for this event</button>
+                            </div>
+                        : null
+                }
                 {/* <h5>Skills:</h5>
                 <ul>
                     <p className='card-text'>{props.volunteer.skills[0]}</p>

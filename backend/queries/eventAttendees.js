@@ -6,6 +6,8 @@ Events Route Queries | Capstone App (Pursuit Volunteer Mgr)
 /* DB CONNECTION */
 const db = require('../db/db');
 
+const eventsQueries = require('./events');
+
 
 /* QUERIES */
 
@@ -37,8 +39,65 @@ const manageVolunteerRequest = async (requestObject) => {
     return await db.one(updateQuery, requestObject);
 }
 
+// Signup volunteer to attend en event
+const signupVolunteerForEvent = async (requestObject) => {
+    return await db.task(async (t) => {
+        const checkEventQuery = `
+            SELECT (CASE
+                    WHEN DATE(event_start) > NOW()
+                    THEN TRUE
+                    ELSE FALSE
+                END) AS event_available
+            FROM events
+            WHERE event_id = $/eventId/
+        `
+        const eventAvailable = await t.one(checkEventQuery, requestObject);
+        console.log(eventAvailable)
+        if (eventAvailable.event_available) {
+            const postQuery = `
+                INSERT INTO event_volunteers (eventv_id, volunteer_id)
+                VALUES ($/eventId/, $/volunteerId/)
+                RETURNING *
+            `
+            return await t.one(postQuery, requestObject);
+        } else {
+            throw new Error('403__Sorry, this event has passed and you can not sign up for it');
+        } 
+    });
+}
+
+// Signup volunteer to attend en event
+const deleteVolunteerFromEvent = async (requestObject) => {
+    return await db.task(async (t) => {
+        const checkEventQuery = `
+            SELECT (CASE
+                    WHEN DATE(event_start) > NOW()
+                    THEN TRUE
+                    ELSE FALSE
+                END) AS event_available
+            FROM events
+            WHERE event_id = $/eventId/
+        `
+        const eventAvailable = await t.one(checkEventQuery, requestObject);
+        console.log(eventAvailable)
+        if (eventAvailable.event_available) {
+            const deleteQuery = `
+                DELETE FROM event_volunteers
+                WHERE eventv_id = $/eventId/ AND volunteer_id = $/volunteerId/
+                RETURNING *
+            `
+            return await t.one(deleteQuery, requestObject);
+        } else {
+            throw new Error('403__Sorry, this event has passed and you can not update it');
+        }
+    });
+
+}
+
 
 module.exports = {
     getEventVolunteersByEventId,
     manageVolunteerRequest,
+    signupVolunteerForEvent,
+    deleteVolunteerFromEvent,
 }
