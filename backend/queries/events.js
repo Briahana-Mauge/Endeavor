@@ -10,19 +10,21 @@ const db = require('../db/db');
 // const eventVolunteersQueries = require('./eventVolunteers');
 
 
-/* HELPER FUNCTION */
-const formatStr = str => {
-  return str.toLowerCase()
-}
-
 /* QUERIES */
-
 
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
-  SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort,
+  SELECT 
+	  events.event_id, 
+	  events.topic, 
+	  events.event_start, 
+	  events.event_end, 
+	  events.description, 
+	  events.location, 
+    events.instructor, 
+    events.number_of_volunteers AS volunteers_needed, 
+    cohorts.cohort,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -30,16 +32,24 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
     ) AS volunteers
-  FROM events
-
-  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-`
+    
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+`     
 
   const endOfQuery = `
-    GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-      events.instructor, events.number_of_volunteers, cohorts.cohort     
+    GROUP BY  
+      events.event_id, 
+      events.topic, 
+      events.event_start, 
+      events.event_end, 
+      events.description, 
+      events.location, 
+      events.instructor, 
+      events.number_of_volunteers, 
+      cohorts.cohort
     ORDER BY event_start DESC
   `
 
@@ -70,7 +80,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -81,8 +91,8 @@ const getSingleEvent = async (eId) => {
     
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
   WHERE events.event_id = $/eId/ AND event.deleted IS NULL
 
@@ -97,13 +107,13 @@ const getSingleEvent = async (eId) => {
 const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort, 
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, 
     ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id`
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id`
 
   const endOfQuery = `
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
@@ -138,13 +148,13 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-  events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort, 
+  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
   
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
@@ -174,6 +184,35 @@ const getPastEvents = async () => {
   ORDER BY event_start ASC
   `;
   return await db.any(selectQuery);
+}
+
+// Add new event
+const postEvent = async (eventObj) => {
+  const insertQuery = `
+    INSERT INTO events (
+      event_start,
+      event_end,
+      topic,
+      description,
+      attendees,
+      location,
+      instructor,
+      number_of_volunteers,
+      materials_url
+    ) VALUES (
+      $/start/,
+      $/end/,
+      $/topic/,
+      $/description/,
+      $/attendees/,
+      $/location/,
+      $/instructor/,
+      $/numberOfVolunteers/,
+      $/materialsUrl/
+    )
+    RETURNING *
+  `
+  return await db.one(insertQuery, eventObj);
 }
 
 // delete events
@@ -229,5 +268,6 @@ module.exports = {
   getPastEvents,
   getPastEventsByVolunteerId,
   getPastEventsByFellowId,
+  postEvent,
   deleteEvent
 }
