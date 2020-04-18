@@ -139,7 +139,7 @@ const NavDropdown = (props) => {
   );
 }
 
-const Divider = () => <div className="dropdown-divider"></div>
+// const Divider = () => <div className="dropdown-divider"></div>
 
 const Logout = ({logout}) => {
   return(
