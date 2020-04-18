@@ -77,6 +77,7 @@ function App() {
     axios.get('/api/auth/logout')
       .then(res => {
         settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
+        history.push('/');
       })
       .catch(err => setFeedback(err));
   }
@@ -130,7 +131,7 @@ function App() {
 
 
   return (
-    <div className=".container-fluid p-3 mt-4">
+    <div className="g1App container-fluid p-3">
       <Switch>
 
         <Route exact path='/'>
