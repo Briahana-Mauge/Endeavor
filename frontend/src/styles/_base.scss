@@ -12,22 +12,67 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
     box-sizing: border-box;
 }
 
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// @media (min-width: 576px) { ... }
+// sm :  SMALL devices (landscape phones, 576px and up)
+
+// @media (min-width: 768px) { ... }
+// md :  MEDIUM devices (tablets, 768px and up)
+
+// @media (min-width: 992px) { ... }
+// lg :  LARGE devices (desktops, 992px and up)
+
+// @media (min-width: 1200px) { ... }
+// xl :  EXTRA large devices (large desktops, 1200px and up)
+
 :root {
     // font-size: 10px;
+    // --fs-body: 1.6rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-body2: 'Muli', sans-serif;
-    // --ff-accent: cursive;
+    --ff-logo: 'Red Hat Display', sans-serif;
+    --ff-accent: 'Lato-Black', serif;
 
-    // --fs-body: 1.6rem;
+    --color-primary: #27237c;
+    --color-yellow: #8d8558;
+    --color-purple: #483569;
+    --color-white: #e2e2e2;
+    --color-black: #323232;
 }
 
+
+// SCSS VARS
+$navbar-height: 62px;
+
+$color-body-gradient: #27237c;
+$color-navbar-gradient: #20182d;
+
+
 body {
+    position: fixed; // prevents background drift
+
+    padding-top: $navbar-height;
+    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+    // background-image: linear-gradient(180deg, rgba($color-body-gradient, .35) 11%, rgba($color-body-gradient, .8) 89%);
+
     font-family: var(--ff-body1);
+    color: var(--color-black);
     // font-size: var(--fs-body);
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.g1App {
+    overflow-y: auto;
+    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
+    color: var(--color-white);
+}
+
+.card-body {
+    color: var(--color-black);
 }
 
 code {
@@ -41,6 +86,82 @@ code {
     ;
 }
 
-html, body, #root {
-    min-height: 100vh;
+html, body, #root, .g1App {
+    width: 100%;
+    height: 100vh;
 }
+
+@mixin link-states() {
+    &:link, &:visited {
+        color: var(--color-white);
+    }
+    &:hover, &:active {
+        color: var(--color-primary);
+    }
+}
+
+@mixin link-states-disabled() {
+    &, &:link, &:visited, &:hover, &:active {
+        cursor: default;
+        color: #666;
+    }
+}
+
+.g1Navbar {
+    height: $navbar-height;
+    align-items: baseline;
+
+    // background-color: /* #1a1534 */;
+    // background-image: linear-gradient(170deg, rgba($color-navbar-gradient, .89) 8%, rgba($color-navbar-gradient, 1) 64%);
+    // box-shadow: 0px 6px 29px 2px #000a;
+
+    .nav-item a {
+        font-family: var(--ff-logo);
+    }
+
+    a {
+        @include link-states();
+
+        &.g1DisableLink {
+            @include link-states-disabled();
+        }
+    }
+}
+
+@media (min-width: 992px) {
+    div#navbarSupportedContent {
+        background-color: transparent !important;
+    }
+}
+
+.g1Brand {
+    color: var(--color-white);
+    font-family: var(--ff-logo);
+    font-weight: normal;
+    font-size: 2.4rem;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+
+    span {
+        color: var(--color-yellow);
+    }
+}
+
+.g1BtnAsLink {
+    position: relative;
+    top: -.08rem;
+    border: none;
+    background-color: transparent;
+    color: var(--color-white);
+
+    @include link-states();
+
+    &:focus {
+        outline: none;
+    }
+
+    &.g1DisableLink {
+        @include link-states-disabled();
+    }
+}
+
