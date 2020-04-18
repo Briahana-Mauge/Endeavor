@@ -127,7 +127,10 @@ const EventsCard = (props) => {
                 {
                     loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
                     ? loggedVolunteerRequestAccepted 
-                        ?   <div className='card-text text-right'><button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button></div>
+                        ?   <div className='card-text d-flex flex-wrap justify-content-between'>
+                                <button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button>
+                                <a>ADD TO CALENDAR LINK (PLACE HOLDER</a>
+                            </div>
                         :   <div className='card-text d-flex flex-wrap justify-content-between'>
                                 <span>Request pending</span>
                                 <button className='btn btn-primary' onClick={deleteVolunteerForEvent}>Remove</button>
