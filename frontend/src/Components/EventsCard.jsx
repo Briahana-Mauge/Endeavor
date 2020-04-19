@@ -18,12 +18,15 @@ const EventsCard = (props) => {
 
     return (
         <div className='card' style={{ width: 400 }}>
-            {props.role ?
-                <button onClick={e => props.delete(e, props.event.event_id)}>Delete</button>
+            {
+                props.role 
+                ?   <div className='d-flex flex-wrap justify-content-between'>
+                        <button className='btn btn-outline-danger flex-fill' onClick={e => props.delete(props.event.event_id)}>Delete</button>
+                        <span className='flex-fill'></span>
+                        <button className='btn btn-outline-warning flex-fill' onClick={e => props.edit(props.event)}>Edit</button>
+                    </div>
                 : null
             }
-            {/* // <button onClick = {e => props.delete(e, props.event.event_id)}>Delete</button> */}
-            {/* <button onClick = {e => props.edit(e, props.event.event_id)}>Edit</button> */}
 
             <div className='card-body'>
                 <h4 className='card-title'>{props.event.topic}</h4>

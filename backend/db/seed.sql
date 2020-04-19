@@ -110,8 +110,8 @@ CREATE TABLE events (
     location VARCHAR (200) NOT NULL,
     instructor VARCHAR (100) NOT NULL,
     number_of_volunteers INT NOT NULL,
-    g_calendar_id VARCHAR,
-    materials_url VARCHAR,
+    g_calendar_id VARCHAR NOT NULL DEFAULT '',
+    materials_url VARCHAR NOT NULL DEFAULT '',
     deleted DATE DEFAULT NULL
 );
 

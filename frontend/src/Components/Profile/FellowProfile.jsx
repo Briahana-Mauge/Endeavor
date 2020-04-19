@@ -40,7 +40,7 @@ export default function FellowProfile(props) {
     useEffect(() => {
         const getCohortsList = async () => {
             try {
-                const { data } = await axios.get(`api/cohorts`);
+                const { data } = await axios.get(`/api/cohorts`);
                 setCohortsList(data.payload);
             } catch (err) {
                 setFeedback(err);

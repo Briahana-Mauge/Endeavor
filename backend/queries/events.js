@@ -10,19 +10,21 @@ const db = require('../db/db');
 // const eventVolunteersQueries = require('./eventVolunteers');
 
 
-/* HELPER FUNCTION */
-const formatStr = str => {
-  return str.toLowerCase()
-}
-
 /* QUERIES */
-
 
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
-  SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort,
+  SELECT 
+	  events.event_id, 
+	  events.topic, 
+	  events.event_start, 
+	  events.event_end, 
+	  events.description, 
+	  events.location, 
+    events.instructor, 
+    events.number_of_volunteers AS volunteers_needed, 
+    cohorts.cohort, materials_url,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -30,16 +32,24 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
     ) AS volunteers
-  FROM events
-
-  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-`
+    
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+`     
 
   const endOfQuery = `
-    GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-      events.instructor, events.number_of_volunteers, cohorts.cohort     
+    GROUP BY  
+      events.event_id, 
+      events.topic, 
+      events.event_start, 
+      events.event_end, 
+      events.description, 
+      events.location, 
+      events.instructor, 
+      events.number_of_volunteers, 
+      cohorts.cohort
     ORDER BY event_start DESC
   `
 
@@ -70,7 +80,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -81,8 +91,8 @@ const getSingleEvent = async (eId) => {
     
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
   WHERE events.event_id = $/eId/ AND event.deleted IS NULL
 
@@ -94,49 +104,57 @@ const getSingleEvent = async (eId) => {
   return await db.any(selectQuery, { eId });
 }
 
-const getAllEventsAdmin = async () => {
+const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort, 
-    ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers, ARRAY_AGG ( 
-      DISTINCT
-      CASE 
-        WHEN event_volunteers.confirmed = TRUE 
-        THEN volunteers.v_email
-        END
-    ) AS v_email
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
+    ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-            
-  WHERE events.deleted IS NULL
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id`
 
+  const endOfQuery = `
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort
-         
-  ORDER BY (CASE WHEN DATE(event_start) > now()
-    THEN 1
-    ELSE 0
-    END
-    ) 
-  DESC, event_start ASC
+      events.instructor, events.number_of_volunteers, cohorts.cohort     
+    ORDER BY event_start DESC
   `;
-  return await db.any(selectQuery);
+  let condition = ' WHERE events.deleted IS NULL ';
+
+  if (vName) {
+    condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
+  }
+
+  if (topic) {
+    condition += `AND lower(events.topic) LIKE '%' || $/topic/ || '%' `
+  }
+
+  if (instructor) {
+    condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
+  }
+
+  if (upcoming) {
+    condition += `AND event_start > now() `
+  }
+  if (past) {
+    condition += `AND event_start <= now() `
+  }
+
+  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
 //Get Single Event for Admin
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-  events.instructor, events.number_of_volunteers AS volunteers_needed, ARRAY_AGG (DISTINCT cohorts.cohort) AS cohort, 
+  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  INNER JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  INNER JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
+  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
+  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
   
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
@@ -166,6 +184,54 @@ const getPastEvents = async () => {
   ORDER BY event_start ASC
   `;
   return await db.any(selectQuery);
+}
+
+// Add new event
+const postEvent = async (eventObj) => {
+  const insertQuery = `
+    INSERT INTO events (
+      event_start,
+      event_end,
+      topic,
+      description,
+      attendees,
+      location,
+      instructor,
+      number_of_volunteers,
+      materials_url
+    ) VALUES (
+      $/start/,
+      $/end/,
+      $/topic/,
+      $/description/,
+      $/attendees/,
+      $/location/,
+      $/instructor/,
+      $/numberOfVolunteers/,
+      $/materialsUrl/
+    )
+    RETURNING *
+  `
+  return await db.one(insertQuery, eventObj);
+}
+
+// Edit event
+const editEvent = async (eventObj) => {
+  const updateQuery = `
+    UPDATE events SET
+      event_start = $/start/,
+      event_end = $/end/,
+      topic = $/topic/,
+      description = $/description/,
+      attendees = $/attendees/,
+      location = $/location/,
+      instructor = $/instructor/,
+      number_of_volunteers = $/numberOfVolunteers/,
+      materials_url = $/materialsUrl/
+    WHERE event_id = $/eventId/
+    RETURNING *
+  `
+  return await db.one(updateQuery, eventObj);
 }
 
 // delete events
@@ -221,5 +287,7 @@ module.exports = {
   getPastEvents,
   getPastEventsByVolunteerId,
   getPastEventsByFellowId,
+  postEvent,
+  editEvent,
   deleteEvent
 }
