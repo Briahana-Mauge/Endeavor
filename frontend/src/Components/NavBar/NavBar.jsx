@@ -15,8 +15,8 @@ const liPadding = "px-3";
 
 /* MAIN */
 const NavBar = ({ loggedUser, logout }) => {
-
-  // determine user type and assign variable
+  // IS VARIABLE: determine user type and assign variable
+  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name display on navbar
   const is = {};
   if (loggedUser && loggedUser.admin) {
     is["admin"] = true;
@@ -29,8 +29,7 @@ const NavBar = ({ loggedUser, logout }) => {
   }
 
 
-/* ACCESS STRATEGY
-Admins, Staff, Volunteers, Fellows
+/* ACCESS STRATEGY (Admins, Staff, Volunteers, Fellows)
 
 VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
 => possible alternate YOUR MENTOR(S) PAGE: Fellows
@@ -44,6 +43,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 */
 
 
+  /* BUILD NAVS */
   const
     volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" />,
     // fellowsLink = <NAV_LINK to='/fellows/home' text="Fellows" />,
@@ -56,6 +56,8 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
     )
   ;
 
+
+  /* TOGGLE NAV DISPLAYS */
   let
     showVolunteersLink = null,
     // showFellowsLink = null,
@@ -99,7 +101,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 }
 
 
-/* HELPER COMPONENTS */
+/* NAV COMPONENTS */
 const Logo = () => {
   return(
     <Link className="g1Brand navbar-brand py-0 mr-5" to="/home">

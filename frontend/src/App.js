@@ -120,13 +120,74 @@ function App() {
     hostSiteVisit, setHostSiteVisit,
     industrySpeaker, setIndustrySpeaker
   }
-  let allowedAdminTools = null;
-  if (loggedUser && loggedUser.a_id) {
-    allowedAdminTools = (
+
+
+  /* ACCESS STRATEGY ( Admins, Staff, Volunteers, Fellows )
+
+  VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
+  => possible alternate YOUR MENTOR(S) PAGE: Fellows
+  
+  EVENTS PAGE/DASHBOARD: All
+  
+  FELLOWS PAGE/DASHBOARD: Admins, Staff
+  => possible alternate YOUR MENTEE(S) PAGE: Volunteers
+  
+  ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
+  */
+
+
+  /* IS VARIABLE: determines user type and assigns simple variable */
+  const is = {};
+  if (loggedUser && loggedUser.admin) {
+    is["admin"] = true;
+  } else if (loggedUser && loggedUser.a_id) {
+    is["staff"] = true;
+  } else if (loggedUser && loggedUser.v_id) {
+    is["volunteer"] = true;
+  } else {
+    is["fellow"] = true;
+  }
+
+
+  /* CREATE ROUTES */
+  const
+    volunteersSection = (
+      <>
+        <PrivateRouteGate path='/volunteers/home' {...gateProps}>
+          <VolunteerSearch {...userProps} />
+        </PrivateRouteGate>
+
+        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
+          <ProfileRender {...userProps} />
+        </PrivateRouteGate>
+      </>
+    ),
+    // fellowsSection = (
+    //   <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
+    //     <ProfileRender {...userProps} />
+    //   </PrivateRouteGate>
+    // ),
+    adminTools = (
       <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
-    );
+    )
+  ;
+
+
+  /* TOGGLE ROUTE ACCESSES */
+  let
+    allowedVolunteersSection = null,
+    // allowedFellowsSection = null,
+    allowedAdminTools = null
+  ;
+
+  if (is.admin || is.staff) {
+    allowedVolunteersSection = volunteersSection;
+    // allowedFellowsSection = fellowsSection;
+  }
+  if (is.admin) {
+    allowedAdminTools = adminTools;
   }
 
 
@@ -142,24 +203,15 @@ function App() {
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
-        {allowedAdminTools}
-
-        <PrivateRouteGate path='/volunteers/home' {...gateProps}>
-          <VolunteerSearch {...userProps} />
-        </PrivateRouteGate>
-
-        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
-          <ProfileRender {...userProps} />
-        </PrivateRouteGate>
-
-        {/* <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
-          <ProfileRender {...userProps} />
-        </PrivateRouteGate> */}
-
         <PrivateRouteGate path='/events/home' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
 
+        {allowedVolunteersSection}
+
+        {allowedAdminTools}
+
+        {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/'>
           <LoginSignupGate {...gateProps}>
             <LoginSignup {...userProps} {...signupProps} {...profileProps} />
