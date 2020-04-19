@@ -6,7 +6,7 @@ NavBar Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 
 /* BOOTSTRAP NAVBAR CLASSES */
@@ -15,31 +15,59 @@ const liPadding = "px-3";
 
 /* MAIN */
 const NavBar = ({ loggedUser, logout }) => {
-  const history = useHistory();
 
+  // determine user type and assign variable
   const is = {};
-  if (loggedUser) {
-    if (loggedUser.admin) {
-      is["admin"] = true;
-    } else if (loggedUser.a_id) {
-      is["staff"] = true;
-    } else if (loggedUser.v_id) {
-      is["volunteer"] = true;
-    } else {
-      is["fellow"] = true;
-    }
+  if (loggedUser && loggedUser.admin) {
+    is["admin"] = true;
+  } else if (loggedUser && loggedUser.a_id) {
+    is["staff"] = true;
+  } else if (loggedUser && loggedUser.v_id) {
+    is["volunteer"] = true;
   } else {
-    history.push('/');
+    is["fellow"] = true;
   }
 
 
-  const adminDropdown = (
-    <NavDropdown topText="Admin">
-      <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
-      <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
-      <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
-    </NavDropdown>
-  );
+/* ACCESS STRATEGY
+Admins, Staff, Volunteers, Fellows
+
+VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
+=> possible alternate YOUR MENTOR(S) PAGE: Fellows
+
+EVENTS PAGE/DASHBOARD: All
+
+FELLOWS PAGE/DASHBOARD: Admins, Staff
+=> possible alternate YOUR MENTEE(S) PAGE: Volunteers
+
+ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
+*/
+
+
+  const
+    volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" />,
+    // fellowsLink = <NAV_LINK to='/fellows/home' text="Fellows" />,
+    adminDropdown = (
+      <NavDropdown topText="Admin">
+        <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
+        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
+        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
+      </NavDropdown>
+    )
+  ;
+
+  let
+    showVolunteersLink = null,
+    // showFellowsLink = null,
+    showAdminDropdown = null
+  ;
+  if (is.admin || is.staff) {
+    showVolunteersLink = volunteersLink;
+    // showFellowsLink = fellowsLink;
+  }
+  if (is.admin) {
+    showAdminDropdown = adminDropdown;
+  }
 
 
   return (
@@ -52,19 +80,13 @@ const NavBar = ({ loggedUser, logout }) => {
 
           <NAV_LINK to="/home" text="Home" />
 
-          <NavDropdown topText="Volunteers">
-            <NAV_DD_LINK to='/volunteers/search' text="Volunteers Search" />
-          </NavDropdown>
+          {showVolunteersLink}
 
-          <NavDropdown topText="Events">
-            <NAV_DD_LINK to='/events/search' text="Events Search" />
-          </NavDropdown>
+          <NAV_LINK to='/events/home' text="Events" />
 
-          <NavDropdown topText="Fellows">
-            <NAV_DD_LINK to='/fellows/search' text="Fellows Search" />
-          </NavDropdown>
+          {/* {showFellowsLink} */}
 
-          {is.admin ? adminDropdown : null}
+          {showAdminDropdown}
 
           <NAV_LINK to='/profile' text="My Profile" liClassName="ml-auto" />
 
