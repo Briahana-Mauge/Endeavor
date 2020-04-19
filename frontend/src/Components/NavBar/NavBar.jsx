@@ -16,16 +16,16 @@ const liPadding = "px-3";
 /* MAIN */
 const NavBar = ({ loggedUser, logout }) => {
   // IS VARIABLE: determine user type and assign variable
-  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name display on navbar
-  const is = {};
+  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name dnavModeplay on navbar
+  const navMode = {};
   if (loggedUser && loggedUser.admin) {
-    is["admin"] = true;
+    navMode["admin"] = true;
   } else if (loggedUser && loggedUser.a_id) {
-    is["staff"] = true;
+    navMode["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
-    is["volunteer"] = true;
+    navMode["volunteer"] = true;
   } else {
-    is["fellow"] = true;
+    navMode["fellow"] = true;
   }
 
 
@@ -63,11 +63,11 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
     // showFellowsLink = null,
     showAdminDropdown = null
   ;
-  if (is.admin || is.staff) {
+  if (navMode.admin || navMode.staff) {
     showVolunteersLink = volunteersLink;
     // showFellowsLink = fellowsLink;
   }
-  if (is.admin) {
+  if (navMode.admin) {
     showAdminDropdown = adminDropdown;
   }
 

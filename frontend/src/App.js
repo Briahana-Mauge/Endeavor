@@ -137,15 +137,15 @@ function App() {
 
 
   /* IS VARIABLE: determines user type and assigns simple variable */
-  const is = {};
+  const appRoute = {};
   if (loggedUser && loggedUser.admin) {
-    is["admin"] = true;
+    appRoute["admin"] = true;
   } else if (loggedUser && loggedUser.a_id) {
-    is["staff"] = true;
+    appRoute["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
-    is["volunteer"] = true;
+    appRoute["volunteer"] = true;
   } else {
-    is["fellow"] = true;
+    appRoute["fellow"] = true;
   }
 
 
@@ -182,12 +182,12 @@ function App() {
     allowedAdminTools = null
   ;
 
-  if (is.admin || is.staff) {
+  if (appRoute.admin || appRoute.staff) {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
   }
-  if (is.admin) {
+  if (appRoute.admin) {
     allowedAdminTools = adminTools;
   }
 
