@@ -20,7 +20,9 @@ const VolunteerSearchCard = (props) => {
                         <p className="card-text">{props.volunteer.skills[2]}</p>
                     </ul>
                     <h5>Next Event: {props.volunteer.topics[0]} (make this a link)</h5>
-                    <button className='btn btn-primary float-right' onClick={viewProfile}>See Profile</button>
+                    <div className='text-right'>
+                        <button className='btn btn-primary' onClick={viewProfile}>See Profile</button>
+                    </div>
                 </div>
             </div>
         </div>

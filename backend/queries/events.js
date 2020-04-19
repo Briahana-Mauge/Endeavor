@@ -127,7 +127,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     cohort,
     cohort_id,
     materials_url
-    
+
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
