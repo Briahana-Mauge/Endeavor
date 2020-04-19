@@ -37,12 +37,14 @@ const EventsCard = (props) => {
     }, [loggedUser, volunteersList])
 
 
+
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
             setReload(reload + 1);
             if (props.setReload) {
                 props.setReload(props.reload + 1);
+
             }
         } catch (err) {
             setFeedback(err);
@@ -118,7 +120,7 @@ const EventsCard = (props) => {
                         </div>
                     : null
                 }
-
+              
                 <div className='card-body'>
                     <h4 className='card-title'>{event.topic}</h4>
                     <p>{formatEventDate(event.event_start)} - {formatEventDate(event.event_end)}</p>
@@ -157,6 +159,7 @@ const EventsCard = (props) => {
                             : null
                     }
                 </div>
+
             </div>
         </div>
     );
