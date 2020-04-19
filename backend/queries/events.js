@@ -60,6 +60,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         ELSE 0
       END
     ) DESC, event_start ASC
+
   `
 
   let condition = ' WHERE events.deleted IS NULL ';
