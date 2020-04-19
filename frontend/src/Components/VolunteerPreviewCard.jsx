@@ -19,7 +19,9 @@ export default function VolunteerPreviewCard(props) {
                 <ul className='skillsUl'> <strong>Skills / Workshops:</strong>
                     { volunteer.skills.map(skill => <li key={skill}>{skill}</li>) }
                 </ul>
-                <button className='btn btn-primary float-right' onClick={e => props.acceptVolunteer(volunteer.v_id)}>Accept</button>
+                <div className='text-right'>
+                    <button className='btn btn-primary' onClick={e => props.acceptVolunteer(volunteer.v_id)}>Accept</button>
+                </div>
             </div>
         </div>
     )

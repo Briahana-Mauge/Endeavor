@@ -135,7 +135,7 @@ const EventsCard = (props) => {
                     <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
                     {
                         loggedUser && loggedUser.a_id
-                        ? <div className='card-text float-right'><a>ADD TO CALENDAR LINK (PLACE HOLDER)</a></div>
+                        ? <div className='card-text text-right'><a>ADD TO CALENDAR LINK (PLACE HOLDER)</a></div>
                         : null
                     }
                     
