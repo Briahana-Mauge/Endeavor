@@ -120,9 +120,9 @@ function App() {
     hostSiteVisit, setHostSiteVisit,
     industrySpeaker, setIndustrySpeaker
   }
-  let showAdmins = null;
+  let allowedAdminTools = null;
   if (loggedUser && loggedUser.a_id) {
-    showAdmins = (
+    allowedAdminTools = (
       <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
@@ -134,12 +134,6 @@ function App() {
     <div className="g1App container-fluid p-3">
       <Switch>
 
-        <Route exact path='/'>
-          <LoginSignupGate {...gateProps}>
-            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
-          </LoginSignupGate>
-        </Route>
-
         <PrivateRouteGate path='/home' {...gateProps}>
           <Dashboard />
         </PrivateRouteGate>
@@ -148,9 +142,9 @@ function App() {
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
-        {showAdmins}
+        {allowedAdminTools}
 
-        <PrivateRouteGate path='/volunteers/search' {...gateProps}>
+        <PrivateRouteGate path='/volunteers/home' {...gateProps}>
           <VolunteerSearch {...userProps} />
         </PrivateRouteGate>
 
@@ -158,13 +152,19 @@ function App() {
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
+        {/* <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
           <ProfileRender {...userProps} />
-        </PrivateRouteGate>
+        </PrivateRouteGate> */}
 
-        <PrivateRouteGate path='/events/search' {...gateProps}>
+        <PrivateRouteGate path='/events/home' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
+
+        <Route path='/'>
+          <LoginSignupGate {...gateProps}>
+            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          </LoginSignupGate>
+        </Route>
 
       </Switch>
 
