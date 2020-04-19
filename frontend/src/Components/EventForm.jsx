@@ -123,12 +123,23 @@ export default function EventForm (props) {
                 <div className='col-sm-12'>
                     <span className='d-flex flex-wrap justify-content-between'>
                         <input 
-                            className='form-control mb-2 w-75' 
+                            className='form-control mb-2 w-50' 
                             type='url' 
                             placeholder='Materials Link' 
                             value={props.materialsUrl}
                             onChange={e => props.setMaterialsUrl(e.target.value)}
                         />
+                        {
+                            props.mustEnterDuration
+                            ? <input 
+                                className='form-control w-25' 
+                                type='number' 
+                                placeholder='Event duration (H)' 
+                                value={props.eventDuration}
+                                onChange={e => props.setEventDuration(e.target.value)}
+                            />
+                            : null
+                        }
 
                         <button className='btn btn-primary'>Submit</button>
                     </span>

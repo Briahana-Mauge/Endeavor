@@ -28,6 +28,8 @@ export default function EventSearch(props) {
     const [ instructor, setInstructor ] = useState('');
     const [ numberOfVolunteers, setNumberOfVolunteers ] = useState('');
     const [ materialsUrl, setMaterialsUrl ] = useState('');
+    const [ eventDuration, setEventDuration ] = useState(0);
+    const [ mustEnterDuration, setMustEnterDuration ] = useState(true);
 
 
     const eventInputs = {
@@ -53,6 +55,9 @@ export default function EventSearch(props) {
         setNumberOfVolunteers,
         materialsUrl, 
         setMaterialsUrl,
+        eventDuration,
+        setEventDuration,
+        mustEnterDuration
     }
 
 
@@ -78,6 +83,14 @@ export default function EventSearch(props) {
         getAllEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setFeedback, reload]);
+
+    useEffect(() => {
+        if (startDate === endDate) {
+            setMustEnterDuration(false);
+        } else {
+            setMustEnterDuration(true);
+        }
+    }, [startDate, endDate])
 
     const handleSearch = (event) => {
         event.preventDefault();
@@ -107,6 +120,7 @@ export default function EventSearch(props) {
         setInstructor('');
         setNumberOfVolunteers('');
         setMaterialsUrl('');
+        setEventDuration(0);
     }
 
     const hideEventForm = () => {
@@ -153,12 +167,28 @@ export default function EventSearch(props) {
         setAttendees(event.cohort_id + '');
         setLocation(event.location);
         setInstructor(event.instructor);
+        setNumberOfVolunteers(event.volunteers_needed)
         setMaterialsUrl(event.materials_url);
+        setEventDuration(event.event_duration);
     }
 
     const handleEditButton = (event) => {
         preFillEvent(event);
         setDisplayEventForm(true);
+    }
+
+    const calcHours = (date1, date2) => {
+        const now = new Date().getTime();
+        const d1 = new Date(date1).getTime();
+        const d2 = new Date(date2).getTime();
+        const time = d2 - d1;
+        if (time <= 0) {
+            throw new Error('End date must be later then the start date');
+        }
+        if (d1 < now || d2 < now) {
+            throw new Error('Events cannot be created for past times');
+        }
+        return Math.ceil(time / 3600000);
     }
 
     const handleSubmitForm = async (e) => {
@@ -172,6 +202,15 @@ export default function EventSearch(props) {
                     const start = `${startDate} ${startTime}-${timeZone}`;
                     const end = `${endDate} ${endTime}-${timeZone}`;
 
+                    let evDuration = eventDuration;
+                    if (mustEnterDuration && !eventDuration) {
+                        throw new Error('Please enter an estimated duration for the event');
+                    } else {
+                        const duration = calcHours(start, end);
+                        setEventDuration(duration);
+                        evDuration = duration;
+                    }
+
                     const event = {
                         start,
                         end,
@@ -181,16 +220,17 @@ export default function EventSearch(props) {
                         location,
                         instructor,
                         numberOfVolunteers,
-                        materialsUrl
+                        materialsUrl,
+                        eventDuration: evDuration
                     }
-
+                    console.log(event)
                     if (formType === 'edit') {
                         await axios.put(`/api/events/edit/${eventId}`, event);
                     } else {
                         await axios.post('/api/events/add', event);
                     }
-                    clearInputs();
                     hideEventForm();
+
 
                 } else {
                     props.setFeedback({message: 'All fields are required'});

@@ -52,7 +52,8 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
       events.instructor, 
       events.number_of_volunteers, 
       cohorts.cohort,
-      cohorts.cohort_id
+      cohorts.cohort_id,
+      event_duration
     ORDER BY (
       CASE 
         WHEN DATE(event_start) > NOW()
@@ -89,7 +90,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, event_duration
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -126,7 +127,8 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     number_of_volunteers AS volunteers_needed, 
     cohort,
     cohort_id,
-    materials_url
+    materials_url,
+    event_duration
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -263,7 +265,7 @@ const editEvent = async (eventObj) => {
       location = $/location/,
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
-      materials_url = $/materialsUrl/
+      materials_url = $/materialsUrl/,
       event_duration = $/eventDuration/
     WHERE event_id = $/eventId/
     RETURNING *

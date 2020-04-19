@@ -129,6 +129,7 @@ const EventsCard = (props) => {
                     </p>
                     <p className='card-text'>{event.description} </p>
                     <p className='card-text'><strong>Class: </strong>{event.cohort} </p>
+                    <p className='card-text'><strong>Duration: </strong>{event.event_duration} </p>
                     {
                         loggedUser && loggedUser.a_id
                         ? <p className='card-text'><strong>Number of needed volunteers: </strong>{event.volunteers_needed} </p>
