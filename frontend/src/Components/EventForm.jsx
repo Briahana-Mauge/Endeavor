@@ -23,14 +23,14 @@ export default function EventForm (props) {
                     <strong>Start:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
                         <input 
-                            className='form-control mb-2 w-50' 
+                            className='form-control mb-2 min-w-50' 
                             type='date' 
                             placeholder='Start Date' 
                             value={props.startDate}
                             onChange={e => props.setStartDate(e.target.value)}
                         />
                         <input 
-                            className='form-control mb-2 w-50' 
+                            className='form-control mb-2 min-w-50' 
                             type='time' 
                             placeholder='Start time' 
                             value={props.startTime}
@@ -43,14 +43,14 @@ export default function EventForm (props) {
                     <strong>End:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
                         <input 
-                            className='form-control mb-2 w-50' 
+                            className='form-control mb-2 min-w-50' 
                             type='date' 
                             placeholder='End Date' 
                             value={props.endDate}
                             onChange={e => props.setEndDate(e.target.value)}
                         />
                         <input 
-                            className='form-control mb-2 w-50' 
+                            className='form-control mb-2 min-w-50' 
                             type='time' 
                             placeholder='End time' 
                             value={props.endTime}

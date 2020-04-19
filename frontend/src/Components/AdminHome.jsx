@@ -74,11 +74,13 @@ const Dashboard = (props) => {
     return (
         <>
             <h3>New Volunteers:</h3>
-            {
-                newVolunteersList.map(volunteer => <div key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id} >
-                    <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
-                </div>)
-            }
+            <div className='d-flex flex-row'>
+                {
+                    newVolunteersList.map(volunteer => <div key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id} >
+                        <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
+                    </div>)
+                }
+            </div>
 
             <hr />
             <h3>Upcoming Events:</h3>
