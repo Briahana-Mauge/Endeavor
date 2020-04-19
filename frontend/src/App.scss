@@ -3,7 +3,13 @@
 
 
 .feedbackContainer {
-    position: absolute;
+    position: fixed;
+    width: 80vw;
+    top: 10vh;
+    left: 10vw;
+    right: 10vw;
+    background-color: #eeeeee;
+    border: 1px black;
 }
 
 .appLogo {
@@ -15,4 +21,14 @@
     background-color: inherit;
     border: inherit;
     border-bottom: dashed 1px;
+}
+
+.lightBox {
+    position: fixed;
+    width: 80vw;
+    top: 10vh;
+    left: 10vw;
+    right: 10vw;
+    background-color: #eeeeee;
+    border: 1px black;
 }

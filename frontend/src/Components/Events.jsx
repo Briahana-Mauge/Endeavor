@@ -247,10 +247,11 @@ export default function EventSearch(props) {
                     return (
                         <div key={event.event_id}>
                             <EventsCard 
-                                role={loggedUser && loggedUser.admin} 
+                                loggedUser={loggedUser} 
                                 event={event} 
                                 delete={handleDeleteEvent} 
                                 edit={handleEditButton}
+                                setFeedback={setFeedback}
                             />
                         </div>
                     )
