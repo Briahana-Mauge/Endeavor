@@ -27,6 +27,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
     cohorts.cohort,
     cohorts.cohort_id,
     materials_url,
+    event_declaration,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -52,7 +53,9 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
       events.instructor, 
       events.number_of_volunteers, 
       cohorts.cohort,
-      cohorts.cohort_id
+      cohorts.cohort_id,
+      event_declaration
+
     ORDER BY (
       CASE 
         WHEN DATE(event_start) > NOW()
@@ -96,7 +99,8 @@ const getSingleEvent = async (eId) => {
         WHEN event_volunteers.confirmed = TRUE 
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
-    ) AS volunteers
+    ) AS volunteers,
+    event_declaration
     
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
@@ -126,7 +130,8 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     number_of_volunteers AS volunteers_needed, 
     cohort,
     cohort_id,
-    materials_url
+    materials_url,
+    event_declaration
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -145,7 +150,9 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
       events.instructor, 
       events.number_of_volunteers, 
       cohorts.cohort,
-      cohorts.cohort_id
+      cohorts.cohort_id,
+      event_declaration
+
     ORDER BY (
       CASE 
       	WHEN DATE(event_start) > NOW()
@@ -183,7 +190,7 @@ const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
   events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
-  ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
+  ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers, event_declaration
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
@@ -193,7 +200,7 @@ const getSingleEventAdmin = async (eId) => {
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort
+    events.instructor, events.number_of_volunteers, cohorts.cohort, event_declaration
   `
   return await db.one(selectQuery, { eId });
 }
@@ -232,7 +239,8 @@ const postEvent = async (eventObj) => {
       location,
       instructor,
       number_of_volunteers,
-      materials_url
+      materials_url, 
+      event_declaration
     ) VALUES (
       $/start/,
       $/end/,
@@ -242,7 +250,8 @@ const postEvent = async (eventObj) => {
       $/location/,
       $/instructor/,
       $/numberOfVolunteers/,
-      $/materialsUrl/
+      $/materialsUrl/,
+      $/event_declaration/
     )
     RETURNING *
   `
@@ -261,7 +270,8 @@ const editEvent = async (eventObj) => {
       location = $/location/,
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
-      materials_url = $/materialsUrl/
+      materials_url = $/materialsUrl/,
+      event_declaration = $/event_declaration/
     WHERE event_id = $/eventId/
     RETURNING *
   `
