@@ -13,7 +13,7 @@ export default function Feedback(props) {
 
 
     return(
-        <div className='w-75 mx-auto mt-5 p-2 text-center feedbackContainer'>
+        <div className='p-2 text-center feedbackContainer'>
             <div className='text-right m-2'>
                 <button className='btn-sm btn-danger' onClick={props.resetFeedback}>X</button>
             </div>

@@ -90,7 +90,7 @@ export default function Skills(props) {
                         type='text' 
                         className='inputFormText mb-2 mr-sm-2 flex-grow-1' 
                         placeholder='Enter skill'
-                        value={tracker[skill.skill_id]}
+                        value={tracker[skill.skill_id] || ''}
                         onChange={e => handleInputEdit(e, skill.skill_id)}
                     />
                     <div className=''>
