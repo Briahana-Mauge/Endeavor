@@ -161,11 +161,11 @@ function App() {
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
     ),
-    // fellowsSection = (
-    //   <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
-    //     <ProfileRender {...userProps} />
-    //   </PrivateRouteGate>
-    // ),
+    fellowsProfile = (
+      <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}>
+        <ProfileRender {...userProps} />
+      </PrivateRouteGate>
+    ),
     adminTools = (
       <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
@@ -178,14 +178,14 @@ function App() {
   let
     allowedVolunteersHome = null,
     allowedVolunteersProfile = null,
-    // allowedFellowsHome = null,
+    allowedFellowsProfile = null,
     allowedAdminTools = null
   ;
 
   if (is.admin || is.staff) {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
-    // allowedFellowsHome = fellowsHome;
+    allowedFellowsProfile = fellowsProfile;
   }
   if (is.admin) {
     allowedAdminTools = adminTools;
@@ -210,6 +210,8 @@ function App() {
 
         {allowedVolunteersHome}
         {allowedVolunteersProfile}
+
+        {allowedFellowsProfile}
 
         {allowedAdminTools}
 
