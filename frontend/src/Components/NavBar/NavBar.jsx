@@ -43,7 +43,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 */
 
 
-  /* BUILD NAVS */
+  /* BUILD LIMITED ACCESS NAVS */
   const
     volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" />,
     // fellowsLink = <NAV_LINK to='/fellows/home' text="Fellows" />,

@@ -151,16 +151,15 @@ function App() {
 
   /* CREATE ROUTES */
   const
-    volunteersSection = (
-      <>
+    volunteersHome = (
         <PrivateRouteGate path='/volunteers/home' {...gateProps}>
           <VolunteerSearch {...userProps} />
         </PrivateRouteGate>
-
+    ),
+    volunteersProfile = (
         <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
           <ProfileRender {...userProps} />
         </PrivateRouteGate>
-      </>
     ),
     // fellowsSection = (
     //   <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
@@ -177,14 +176,16 @@ function App() {
 
   /* TOGGLE ROUTE ACCESSES */
   let
-    allowedVolunteersSection = null,
-    // allowedFellowsSection = null,
+    allowedVolunteersHome = null,
+    allowedVolunteersProfile = null,
+    // allowedFellowsHome = null,
     allowedAdminTools = null
   ;
 
   if (is.admin || is.staff) {
-    allowedVolunteersSection = volunteersSection;
-    // allowedFellowsSection = fellowsSection;
+    allowedVolunteersHome = volunteersHome;
+    allowedVolunteersProfile = volunteersProfile;
+    // allowedFellowsHome = fellowsHome;
   }
   if (is.admin) {
     allowedAdminTools = adminTools;
@@ -207,7 +208,8 @@ function App() {
           <Events {...userProps} />
         </PrivateRouteGate>
 
-        {allowedVolunteersSection}
+        {allowedVolunteersHome}
+        {allowedVolunteersProfile}
 
         {allowedAdminTools}
 
