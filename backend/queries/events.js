@@ -232,7 +232,8 @@ const postEvent = async (eventObj) => {
       location,
       instructor,
       number_of_volunteers,
-      materials_url
+      materials_url,
+      event_duration
     ) VALUES (
       $/start/,
       $/end/,
@@ -243,6 +244,7 @@ const postEvent = async (eventObj) => {
       $/instructor/,
       $/numberOfVolunteers/,
       $/materialsUrl/
+      $/eventDuration/
     )
     RETURNING *
   `
@@ -262,6 +264,7 @@ const editEvent = async (eventObj) => {
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
       materials_url = $/materialsUrl/
+      event_duration = $/eventDuration/
     WHERE event_id = $/eventId/
     RETURNING *
   `
