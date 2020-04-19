@@ -1,17 +1,5 @@
 @import './styles/base';
 
-
-
-.feedbackContainer {
-    position: fixed;
-    width: 80vw;
-    top: 10vh;
-    left: 10vw;
-    right: 10vw;
-    background-color: #eeeeee;
-    border: 1px black;
-}
-
 .appLogo {
     height: 10vh;
 }
@@ -23,12 +11,24 @@
     border-bottom: dashed 1px;
 }
 
-.lightBox {
+.lightBox, .feedbackContainer {
     position: fixed;
     width: 80vw;
     top: 10vh;
+    max-height: 88vh;
+    overflow: scroll;
     left: 10vw;
     right: 10vw;
-    background-color: #eeeeee;
-    border: 1px black;
+    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+}
+
+.imageIcon {
+    width: 150px;
+    height: 150px;
+    object-fit: scale-down;
+}
+
+.skillsUl {
+    list-style: none;
+
 }

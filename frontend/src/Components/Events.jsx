@@ -65,7 +65,8 @@ export default function EventSearch(props) {
                     setResults(data.payload);
                 }
                 else {
-                    const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                    // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
                     setResults(data.payload);
                 }
 
@@ -75,6 +76,7 @@ export default function EventSearch(props) {
         }
 
         getAllEvents();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setFeedback, reload]);
 
     const handleSearch = (event) => {
@@ -82,19 +84,13 @@ export default function EventSearch(props) {
         setReload(reload + 1);
     }
 
-    const handleDeleteEvent = async (event, id) => {
+    const handleDeleteEvent = async (id) => {
         try {
-            event.preventDefault();
             await axios.delete(`/api/events/${id}`)
             setReload(reload + 1);
         } catch (err) {
             setFeedback(err);
         }
-    }
-
-    const hideEventForm = () => {
-        setDisplayEventForm(false);
-        setReload(reload + 1);
     }
 
     const clearInputs = () => {
@@ -111,6 +107,12 @@ export default function EventSearch(props) {
         setInstructor('');
         setNumberOfVolunteers('');
         setMaterialsUrl('');
+    }
+
+    const hideEventForm = () => {
+        clearInputs();
+        setDisplayEventForm(false);
+        setReload(reload + 1);
     }
 
     const preFillEvent = (event) => {
@@ -148,6 +150,7 @@ export default function EventSearch(props) {
         setEndTime(formatTime(event.event_end));
         setTopic(event.topic);
         setDescription(event.description);
+        setAttendees(event.cohort_id + '');
         setLocation(event.location);
         setInstructor(event.instructor);
         setMaterialsUrl(event.materials_url);
@@ -224,7 +227,8 @@ export default function EventSearch(props) {
 
             <h3>Events: </h3>
             <form className='form-inline' onSubmit={handleSearch}>
-                <input className='form-control mb-2 mr-sm-2 w-25' type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
+                <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
+                    placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
                 
                 <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
@@ -239,23 +243,19 @@ export default function EventSearch(props) {
                     <option value='past'>Past events</option>
                 </select>
 
-                <button className='btn btn-primary mb-2'>Send</button>
+                <button className='btn btn-primary mb-2'>Search</button>
             </form>
             
-            <div className='d-flex flex-wrap justify-content-around'>
-                {results.map(event => {
-                    return (
-                        <div key={event.event_id}>
-                            <EventsCard 
+            <div className='row m-1'>
+                {results.map(event => <EventsCard 
+                                key={event.event_id}
                                 loggedUser={loggedUser} 
                                 event={event} 
                                 delete={handleDeleteEvent} 
                                 edit={handleEditButton}
                                 setFeedback={setFeedback}
                             />
-                        </div>
-                    )
-                })}
+                )}
             </div>
 
         </div>

@@ -22,16 +22,12 @@ const { formatStr } = require('../helpers/helpers');
 const getAllVolunteers = async (vEmail, company, skill, name) => {
   let parsedCompany = '';
   let parsedSkill = '';
-  let lowercaseName = ''
+
   if (company) {
     parsedCompany = formatStr(company);
-    console.log(parsedCompany)
   }
   if (skill) {
     parsedSkill = formatStr(skill);
-  }
-  if (name) {
-    lowercaseName = name.toLowerCase();
   }
 
   const selectQuery = `
@@ -51,34 +47,45 @@ const getAllVolunteers = async (vEmail, company, skill, name) => {
     GROUP BY volunteers.v_id
     ORDER BY v_first_name ASC
   `
-  if (vEmail === '' && parsedCompany === '' && parsedSkill === '' && lowercaseName === '') { //use name instead of email
-    return await db.any(selectQuery + endOfQuery);
 
-  }
-  else if (parsedCompany === '' && parsedSkill === '' && lowercaseName === '') {
-    return await db.any(`${selectQuery} WHERE volunteers.v_email = $/vEmail/ ${endOfQuery}`, { vEmail });
-  }
-  else if (vEmail === '' && parsedSkill === '' && lowercaseName === '') {
-    return await db.any(`${selectQuery} WHERE volunteers.parsed_company = $/parsedCompany/ ${endOfQuery}`, { parsedCompany });
-  } else if (vEmail === '' && parsedCompany === '' && lowercaseName === '') {
-    return await db.any(`${selectQuery} WHERE skills.parsed_skill = $/parsedSkill/ ${endOfQuery}`, { parsedSkill });
-  }
-  else {
-    return await db.any(`${selectQuery} WHERE lower(volunteers.v_first_name) = $/lowercaseName/ OR lower(volunteers.v_last_name) = $/lowercaseName/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/lowercaseName/
-  ${endOfQuery}`, { lowercaseName });
+  let condition = ' WHERE volunteers.confirmed = TRUE AND volunteers.deleted IS NULL ';
 
+  if (vEmail) {
+    condition += ' AND volunteers.v_email = $/vEmail/ '
   }
+  if (parsedCompany) {
+    condition += ' AND volunteers.parsed_company = $/parsedCompany/ '
+  }
+  if (parsedSkill) {
+    condition += ' AND skills.parsed_skill = $/parsedSkill/ '
+  }
+  if (name) {
+    condition += ` AND LOWER(volunteers.v_first_name) = $/name/ OR LOWER(volunteers.v_last_name) = $/name/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/name/ `
+  }
+
+  return await db.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
 }
 
 
 // Get all new (unconfirmed) volunteers
 const getNewVolunteers = async () => {
   const selectQuery = `
-      SELECT *
-      FROM volunteers
-      WHERE confirmed = FALSE
-      ORDER BY v_first_name ASC
-    `;
+    SELECT 
+      v_id, 
+      v_first_name, 
+      v_last_name, 
+      v_picture, 
+      v_email, 
+      company, 
+      title, 
+      ARRAY_AGG(DISTINCT skills.skill) AS skills  
+    FROM volunteers 
+    INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
+    INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
+    WHERE confirmed = FALSE
+    GROUP BY v_id
+    ORDER BY signup_date ASC
+  `;
   return await db.any(selectQuery);
 }
 
@@ -238,6 +245,16 @@ const deleteVolunteerByEmail = async (email, promise) => {
   return await deleteVolunteer(volunteer.v_id);
 }
 
+const confirmVolunteer = async (id) => {
+  const confirmQuery = `
+    UPDATE volunteers
+    SET confirmed = TRUE
+    WHERE v_id = $/id/
+    RETURNING *
+  `
+  return await db.one(confirmQuery, {id});
+}
+
 /* EXPORT */
 module.exports = {
   getAllVolunteers,
@@ -246,6 +263,7 @@ module.exports = {
   getVolunteerById,
   addVolunteer,
   updateVolunteer,
+  confirmVolunteer,
   deleteVolunteer,
   deleteVolunteerByEmail
 }

@@ -38,6 +38,7 @@ export default function VolunteerSearch(props) {
             }
         }
         getAllVolunteers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setFeedback, reload]);
 
     const handleSubmit = async (event) => {
@@ -60,10 +61,11 @@ export default function VolunteerSearch(props) {
 
     return (
         <div className="Search">
-            <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
+            <form className='form-inline' onSubmit={handleSubmit}>
+                <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
+                    placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
 
-                <select className='filter' value={filter} onChange={e => setFilter(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
                     <option value='name'>Name</option>
                     <option value='v_email'>Email</option>
@@ -71,19 +73,16 @@ export default function VolunteerSearch(props) {
                     <option value='skill'>Skill</option>
                 </select>
 
-                <button>Send</button>
+                <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='d-flex flex-wrap justify-content-around'>
-                {results.map(volunteer =>
-                    <div className='border align-self-stretch'
-                        key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}>
-                        <VolunteerCard
-                            volunteer={volunteer}
-                            displayProfile={displayProfile}
-                            setTargetVolunteerId={makeTargetVolunteerId}
-                        />
-                    </div>
+            <div className='row m-1'>
+                {results.map(volunteer => <VolunteerCard
+                        key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
+                        volunteer={volunteer}
+                        displayProfile={displayProfile}
+                        setTargetVolunteerId={makeTargetVolunteerId}
+                    />
                 )}
             </div>
 

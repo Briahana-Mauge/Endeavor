@@ -60,7 +60,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         ELSE 0
       END
     ) DESC, event_start ASC
-
   `
 
   let condition = ' WHERE events.deleted IS NULL ';
@@ -128,7 +127,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     cohort,
     cohort_id,
     materials_url
-    
+
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
