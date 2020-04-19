@@ -34,7 +34,7 @@ const EventsCard = (props) => {
         }
         
         checkIfVolunteerSignedForEvent();
-    }, [volunteersList])
+    }, [loggedUser, volunteersList])
 
 
     const manageVolunteersRequests = async (e, volunteerId) => {

@@ -76,6 +76,7 @@ export default function EventSearch(props) {
         }
 
         getAllEvents();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setFeedback, reload]);
 
     const handleSearch = (event) => {
@@ -224,7 +225,8 @@ export default function EventSearch(props) {
 
             <h3>Events: </h3>
             <form className='form-inline' onSubmit={handleSearch}>
-                <input className='form-control mb-2 mr-sm-2 w-25' type='text' placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
+                <input className='form-control mb-2 mr-sm-2 w-25' type='text' 
+                    placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
                 
                 <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>

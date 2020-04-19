@@ -38,6 +38,7 @@ export default function VolunteerSearch(props) {
             }
         }
         getAllVolunteers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setFeedback, reload]);
 
     const handleSubmit = async (event) => {
@@ -60,8 +61,9 @@ export default function VolunteerSearch(props) {
 
     return (
         <div className="Search">
-            <form onSubmit={handleSubmit}>
-                <input type='text' placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
+            <form className='form-inline' onSubmit={handleSubmit}>
+                <input className='form-control mb-2 mr-sm-2 w-25' type='text' 
+                    placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
 
                 <select className='filter' value={filter} onChange={e => setFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
