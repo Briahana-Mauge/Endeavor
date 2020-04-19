@@ -24,7 +24,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 	  events.location, 
     events.instructor, 
     events.number_of_volunteers AS volunteers_needed, 
-    cohorts.cohort,
+    cohorts.cohort, materials_url,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -80,7 +80,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -107,7 +107,7 @@ const getSingleEvent = async (eId) => {
 const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, 
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
     ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
@@ -148,7 +148,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, 
+  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
@@ -215,6 +215,25 @@ const postEvent = async (eventObj) => {
   return await db.one(insertQuery, eventObj);
 }
 
+// Edit event
+const editEvent = async (eventObj) => {
+  const updateQuery = `
+    UPDATE events SET
+      event_start = $/start/,
+      event_end = $/end/,
+      topic = $/topic/,
+      description = $/description/,
+      attendees = $/attendees/,
+      location = $/location/,
+      instructor = $/instructor/,
+      number_of_volunteers = $/numberOfVolunteers/,
+      materials_url = $/materialsUrl/
+    WHERE event_id = $/eventId/
+    RETURNING *
+  `
+  return await db.one(updateQuery, eventObj);
+}
+
 // delete events
 const deleteEvent = async (id) => {
   const deleteQuery = `
@@ -269,5 +288,6 @@ module.exports = {
   getPastEventsByVolunteerId,
   getPastEventsByFellowId,
   postEvent,
+  editEvent,
   deleteEvent
 }

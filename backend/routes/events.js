@@ -159,11 +159,42 @@ router.post('/add', async (req, res, next) => {
                 location: processInput(req.body.location, 'hardVC', 'location', 200),
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
-                materialsUrl: processInput(req.body.materialsUrl, 'hardVC', 'materials url')
+                materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url')
             }
-            console.log(eventData)
     
             const events = await eventsQueries.postEvent(eventData);
+            res.json({
+                payload: events,
+                message: "Success",
+                err: false
+            });
+        } else {
+            throw new Error('403__Not allowed to perform this operation');
+        }
+
+      } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
+// Edit event by Id
+router.put('/edit/:event_id', async (req, res, next) => {
+    try {
+        if (req.user && req.user.a_id) {
+            const eventData = {
+                eventId: processInput(req.params.event_id, 'idNum', 'event Id'),
+                start: processInput(req.body.start, 'hardVC', 'event start date and time', 25),
+                end: processInput(req.body.end, 'hardVC', 'event end date and time', 25),
+                topic: processInput(req.body.topic, 'hardVC', 'topic', 100),
+                description: processInput(req.body.description, 'hardVC', 'description'),
+                attendees: processInput(req.body.attendees, 'idNum', 'attendees id'),
+                location: processInput(req.body.location, 'hardVC', 'location', 200),
+                instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
+                numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
+                materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url')
+            }
+    
+            const events = await eventsQueries.editEvent(eventData);
             res.json({
                 payload: events,
                 message: "Success",

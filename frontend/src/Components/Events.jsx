@@ -15,6 +15,8 @@ export default function EventSearch(props) {
     // const [targetEventId, setTargetEventId] = useState(0);
     // const [displayTargetEvent, setDisplayTargetEvent] = useState(false);
 
+    const [ formType, setFormType ] = useState('add');
+    const [ eventId, setEventId ] = useState(0);
     const [ startDate, setStartDate ] = useState('');
     const [ startTime, setStartTime ] = useState('');
     const [ endDate, setEndDate ] = useState('');
@@ -96,6 +98,8 @@ export default function EventSearch(props) {
     }
 
     const clearInputs = () => {
+        setFormType('add');
+        setEventId(0);
         setStartDate('');
         setStartTime('');
         setEndDate('');
@@ -109,13 +113,58 @@ export default function EventSearch(props) {
         setMaterialsUrl('');
     }
 
-    const handleAddEvent = async (e) => {
+    const preFillEvent = (event) => {
+        const formatDate = (strDate) => {
+            const date = new Date(strDate);
+            const y = date.getFullYear();
+            let m = date.getMonth() + 1 + '';
+            if (m.length === 1) {
+                m = '0' + m;
+            }
+            let d = date.getDate() + '';
+            if (d.length === 1) {
+                d = '0' + d;
+            }
+            return `${y}-${m}-${d}`;
+        }
+
+        const formatTime = (date) => {
+            const t = new Date(date).toLocaleTimeString();
+            const amOrPm = t.split(' ')[1];
+            let h = t.split(':')[0];
+            const m = t.split(':')[1];
+            if (amOrPm === 'pm' || amOrPm === 'Pm' || amOrPm === 'PM') {
+                h = parseInt(h) + 12;
+            }
+            return `${h}:${m}`
+        }
+
+        setFormType('edit');
+        setEventId(event.event_id);
+        setStartDate(event.event_start)
+        setStartDate(formatDate(event.event_start));
+        setStartTime(formatTime(event.event_start));
+        setEndDate(formatDate(event.event_end));
+        setEndTime(formatTime(event.event_end));
+        setTopic(event.topic);
+        setDescription(event.description);
+        setLocation(event.location);
+        setInstructor(event.instructor);
+        setMaterialsUrl(event.materials_url);
+    }
+
+    const handleEditButton = (event) => {
+        preFillEvent(event);
+        setDisplayEventForm(true);
+    }
+
+    const handleSubmitForm = async (e) => {
         e.preventDefault();
 
         try {
             if (startDate && startTime && endDate && endTime 
                 && topic && description && attendees && location 
-                && instructor && numberOfVolunteers && materialsUrl) {
+                && instructor && numberOfVolunteers) {
                     const timeZone = new Date().getTimezoneOffset() / 60;
                     const start = `${startDate} ${startTime}-${timeZone}`;
                     const end = `${endDate} ${endTime}-${timeZone}`;
@@ -132,8 +181,12 @@ export default function EventSearch(props) {
                         materialsUrl
                     }
 
-                    await axios.post('/api/events/add', event);
-                    // clearInputs();
+                    if (formType === 'edit') {
+                        await axios.put(`/api/events/edit/${eventId}`, event);
+                    } else {
+                        await axios.post('/api/events/add', event);
+                    }
+                    clearInputs();
                     hideEventForm();
 
                 } else {
@@ -160,7 +213,7 @@ export default function EventSearch(props) {
                             setFeedback={setFeedback} 
                             hideEventForm={hideEventForm} 
                             {...eventInputs} 
-                            handleAddEvent={handleAddEvent}/>
+                            handleSubmitForm={handleSubmitForm}/>
                         : null
                     }
                 </>
@@ -193,7 +246,12 @@ export default function EventSearch(props) {
                 {results.map(event => {
                     return (
                         <div key={event.event_id}>
-                            <EventsCard role={loggedUser && loggedUser.admin} event={event} delete={handleDeleteEvent} /* edit = {} */ />
+                            <EventsCard 
+                                role={loggedUser && loggedUser.admin} 
+                                event={event} 
+                                delete={handleDeleteEvent} 
+                                edit={handleEditButton}
+                            />
                         </div>
                     )
                 })}
