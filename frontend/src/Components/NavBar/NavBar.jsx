@@ -57,7 +57,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
   ;
 
 
-  /* TOGGLE NAV DISPLAYS */
+  /* TOGGLE LIMITED ACCESS NAV DISPLAYS */
   let
     showVolunteersLink = null,
     // showFellowsLink = null,
@@ -73,7 +73,6 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
 
   return (
-    // <nav className={`g1Navbar navbar navbar-expand-lg navbar-dark container-fluid`}>
     <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-0 container-fluid`}>
       <Logo />
       <Burger />

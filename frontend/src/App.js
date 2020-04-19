@@ -149,7 +149,7 @@ function App() {
   }
 
 
-  /* CREATE ROUTES */
+  /* BUILD LIMITED ACCESS ROUTES */
   const
     volunteersHome = (
         <PrivateRouteGate path='/volunteers/home' {...gateProps}>
@@ -174,7 +174,7 @@ function App() {
   ;
 
 
-  /* TOGGLE ROUTE ACCESSES */
+  /* TOGGLE LIMITED ROUTE ACCESSES */
   let
     allowedVolunteersHome = null,
     allowedVolunteersProfile = null,
