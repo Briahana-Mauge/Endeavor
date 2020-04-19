@@ -197,7 +197,7 @@ function App() {
       <Switch>
 
         <PrivateRouteGate path='/home' {...gateProps}>
-          <Dashboard />
+          <Dashboard {...userProps} />
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
