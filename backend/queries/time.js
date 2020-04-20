@@ -57,7 +57,6 @@ const updateVolunteerHours = async (v_id, event_duration) => {
 /* EXPORT */
 module.exports = {
     allBankedHours,
-    allPlannedHours,
     allHours,
     deleteHoursByVolunteerId, 
     updateVolunteerHours
