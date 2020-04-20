@@ -19,7 +19,8 @@ const getEventVolunteersByEventId = async (id) => {
             v_first_name,
             v_last_name,
             volunteers.deleted,
-            ev_id AS event_volunteer_id,
+            ev_id AS event_volunteer_id, 
+            volunteers.v_email,
             event_volunteers.confirmed AS volunteer_request_accepted
         FROM event_volunteers INNER JOIN volunteers ON volunteer_id = v_id
         WHERE eventv_id = $/id/
