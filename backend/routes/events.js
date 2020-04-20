@@ -17,7 +17,7 @@ const calcHours = (date1, date2) => {
     const d1 = new Date(date1).getTime();
     const d2 = new Date(date2).getTime();
     const time = d2 - d1;
-    if (time <= 0) {
+    if (time < 0) {
         throw new Error('400__End date must be later then the start date');
     }
     if (d1 < now || d2 < now) {
