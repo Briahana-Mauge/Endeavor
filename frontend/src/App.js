@@ -12,7 +12,10 @@ import axios from 'axios';
 import './App.scss';
 import LoginSignupGate from './Components/LoginSignupGate';
 import PrivateRouteGate from './Components/PrivateRouteGate';
-import Dashboard from './Components/Dashboard';
+import DashboardAdmin from './Components/Dashboards/DashboardAdmin';
+import DashboardStaff from './Components/Dashboards/DashboardStaff';
+import DashboardVolunteers from './Components/Dashboards/DashboardVolunteers';
+import DashboardFellows from './Components/Dashboards/DashboardFellows';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
@@ -151,15 +154,19 @@ function App() {
 
   /* BUILD LIMITED ACCESS ROUTES */
   const
+    adminDashboard = <DashboardAdmin />,
+    staffDashboard = <DashboardStaff />,
+    volunteersDashboard = <DashboardVolunteers />,
+    fellowsDashboard = <DashboardFellows />,
     volunteersHome = (
-        <PrivateRouteGate path='/volunteers/home' {...gateProps}>
-          <VolunteerSearch {...userProps} />
-        </PrivateRouteGate>
+      <PrivateRouteGate path='/volunteers/home' {...gateProps}>
+        <VolunteerSearch {...userProps} />
+      </PrivateRouteGate>
     ),
     volunteersProfile = (
-        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
-          <ProfileRender {...userProps} />
-        </PrivateRouteGate>
+      <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
+        <ProfileRender {...userProps} />
+      </PrivateRouteGate>
     ),
     fellowsProfile = (
       <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}>
@@ -176,18 +183,26 @@ function App() {
 
   /* TOGGLE LIMITED ROUTE ACCESSES */
   let
+    allowedDashboard = fellowsDashboard,
     allowedVolunteersHome = null,
     allowedVolunteersProfile = null,
     allowedFellowsProfile = null,
     allowedAdminTools = null
   ;
 
+  if (appRoute.volunteer) {
+    allowedDashboard = volunteersDashboard;
+  }
+  if (appRoute.staff) {
+    allowedDashboard = staffDashboard;
+  }
   if (appRoute.admin || appRoute.staff) {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
   }
   if (appRoute.admin) {
+    allowedDashboard = adminDashboard;
     allowedAdminTools = adminTools;
   }
 
@@ -197,7 +212,7 @@ function App() {
       <Switch>
 
         <PrivateRouteGate path='/home' {...gateProps}>
-          <Dashboard {...userProps} />
+          {allowedDashboard}
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
