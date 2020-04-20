@@ -34,13 +34,20 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
         WHEN event_volunteers.confirmed = TRUE 
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
-    ) AS volunteers
+    ) AS volunteers, 
+    ARRAY_AGG ( 
+      DISTINCT
+      CASE 
+        WHEN event_volunteers.confirmed = TRUE 
+        THEN volunteers.v_email
+        END
+    ) AS v_email
     
     FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
     LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
     LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-`     
+`
 
   const endOfQuery = `
     GROUP BY  
@@ -131,7 +138,14 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     cohort,
     cohort_id,
     materials_url,
-    events.event_duration
+    events.event_duration,
+    ARRAY_AGG ( 
+      DISTINCT
+      CASE 
+        WHEN event_volunteers.confirmed = TRUE 
+        THEN volunteers.v_email
+        END
+    ) AS v_email
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
