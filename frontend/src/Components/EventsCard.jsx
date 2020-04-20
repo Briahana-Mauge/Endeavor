@@ -6,7 +6,7 @@ const EventsCard = (props) => {
     const { setFeedback, loggedUser, event } = props;
     const [volunteersList, setVolunteersList] = useState([]);
     const [loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent] = useState(false);
-    const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState('');
+    const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState(false);
     const [reload, setReload] = useState(0);
 
     const getVolunteersList = () => {
@@ -17,7 +17,7 @@ const EventsCard = (props) => {
     useEffect(getVolunteersList, [reload]);
 
     useEffect(() => {
-        const checkIfVolunteerSignedForEvent = async () => {
+        const checkIfVolunteerSignedForEvent = () => {
             let found = false;
             let accepted = '';
 
@@ -39,13 +39,13 @@ const EventsCard = (props) => {
     }, [loggedUser, volunteersList])
 
     const addHours = async (event_duration, v_id) => {
-        let vHours = await (await axios.get(`/api/time/hours/${v_id}`)).data.payload.banked_time;
-        let newHours = parseInt(vHours) + parseInt(event_duration);
+        let vHours = await axios.get(`/api/time/hours/${v_id}`)
+        let newHours = parseInt(vHours.data.payload.banked_time) + parseInt(event_duration);
         await axios.patch(`/api/time/update`, { v_id: v_id, hours: newHours });
     }
     const subHours = async (event_duration, v_id) => {
-        let vHours = await (await axios.get(`/api/time/hours/${v_id}`)).data.payload.banked_time;
-        let newHours = parseInt(vHours) - parseInt(event_duration);
+        let vHours = await axios.get(`/api/time/hours/${v_id}`)
+        let newHours = parseInt(vHours.data.payload.banked_time) - parseInt(event_duration);
         await axios.patch(`/api/time/update`, { v_id: v_id, hours: newHours });
     }
 
@@ -60,9 +60,9 @@ const EventsCard = (props) => {
             } else {
                 subHours(event.event_duration, volunteerId);
             }
-            
+
             setReload(reload + 1);
-            
+
             if (props.setReload) {
                 props.setReload(props.reload + 1);
             }
