@@ -180,7 +180,7 @@ router.post('/add', async (req, res, next) => {
             }
     
             const calcEventTime = calcHours(eventData.start, eventData.end);
-            if (calcEventTime < calcEventTime.eventDuration) {
+            if (calcEventTime < eventData.eventDuration) {
                 throw new Error('400__Please double check the event hours');
             }
 
@@ -218,7 +218,7 @@ router.put('/edit/:event_id', async (req, res, next) => {
             }
             
             const calcEventTime = calcHours(eventData.start, eventData.end);
-            if (calcEventTime < calcEventTime.eventDuration) {
+            if (calcEventTime < eventData.eventDuration) {
                 throw new Error('400__Please double check the event hours');
             }
             
