@@ -10,6 +10,7 @@ const EventsCard = (props) => {
     const [loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent] = useState(false);
     const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState(false);
     const [reload, setReload] = useState(0);
+    const [finalEmails, setFinalEmails] = useState([]);
 
     const getVolunteersList = () => {
         axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
@@ -22,29 +23,39 @@ const EventsCard = (props) => {
         const checkIfVolunteerSignedForEvent = () => {
             let found = false;
             let accepted = false;
+            let eventEmails = [];
 
             for (let volunteer of volunteersList) {
                 if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) {
                     found = true;
+
                     if (volunteer.volunteer_request_accepted) {
                         accepted = true
                     }
+
                     break;
                 }
+                /*push the emails of the accepted users into the event email array*/
+                if (volunteer.volunteer_request_accepted) {
+                    eventEmails.push(volunteer.v_email)
+                }
             }
-
+            setFinalEmails(eventEmails)
             setLoggedVolunteerPartOfEvent(found);
             setLoggedVolunteerRequestAccepted(accepted);
+
         }
 
         checkIfVolunteerSignedForEvent();
     }, [loggedUser, volunteersList])
+
 
     const addHours = async (event_duration, v_id) => {
         let vHours = await axios.get(`/api/time/hours/${v_id}`);
         let newHours = parseInt(vHours.data.payload.banked_time) + parseInt(event_duration);
         await axios.patch(`/api/time/update`, { v_id: v_id, hours: newHours });
     }
+
     const subHours = async (event_duration, v_id) => {
         let vHours = await axios.get(`/api/time/hours/${v_id}`);
         let newHours = parseInt(vHours.data.payload.banked_time) - parseInt(event_duration);
@@ -66,6 +77,7 @@ const EventsCard = (props) => {
             setReload(reload + 1);
 
             if (props.setReload) {
+                getVolunteersList()
                 props.setReload(props.reload + 1);
             }
         } catch (err) {
@@ -91,8 +103,6 @@ const EventsCard = (props) => {
         }
     }
 
-
-
     let displayVolunteersList = 'TBA'
     if (volunteersList.length && loggedUser && loggedUser.admin) {
         displayVolunteersList = volunteersList.map(volunteer =>
@@ -117,9 +127,9 @@ const EventsCard = (props) => {
         displayVolunteersList = volunteersList.map(volunteer =>
             <div key={volunteer.v_id + volunteer.v_last_name}>
                 {
-                    volunteer.volunteer_request_accepted 
-                    ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span> 
-                    : null
+                    volunteer.volunteer_request_accepted
+                        ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
+                        : null
                 }
             </div>
         )
@@ -130,15 +140,15 @@ const EventsCard = (props) => {
         const t = new Date(date).toLocaleTimeString();
         return `${d} ${t.slice(0, -6)} ${t.slice(-2)}`;
     }
-        
+
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
 
-    let vEmails = '';
-    if (event.v_email) {
-        event.v_email.forEach(email => vEmails += `&add=${email}`);
-    }
-        
+    /* For each email saved in the state, create a string of params to add to the event guest list */
+    let vEmailParam = '';
+    finalEmails.forEach(email => vEmailParam += `&add=${email}`);
+
+
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
             <div className='border border-dark rounded bg-light m-1'>
@@ -168,17 +178,17 @@ const EventsCard = (props) => {
                     <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
                     {
                         loggedUser && loggedUser.a_id
-                        ?   <div className='card-text text-right'>
-                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${vEmails}`}
+                            ? <div className='card-text text-right'>
+                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${vEmailParam}`}
                                     className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
                             </div>
-                        : null
+                            : null
                     }
 
                     {
                         loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
-                        ? loggedVolunteerRequestAccepted 
-                            ?   <div className='card-text d-flex'>
+                            ? loggedVolunteerRequestAccepted
+                                ? <div className='card-text d-flex'>
                                     <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
                                         className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
