@@ -144,7 +144,7 @@ function App() {
     appRoute["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
     appRoute["volunteer"] = true;
-  } else {
+  } else if (loggedUser && loggedUser.f_id) {
     appRoute["fellow"] = true;
   }
 
