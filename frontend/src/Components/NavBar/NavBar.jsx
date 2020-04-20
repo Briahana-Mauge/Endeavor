@@ -25,7 +25,7 @@ const NavBar = ({ loggedUser, logout }) => {
     navMode["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
     navMode["volunteer"] = true;
-  } else {
+  } else if (loggedUser && loggedUser.f_id) {
     navMode["fellow"] = true;
   }
 
