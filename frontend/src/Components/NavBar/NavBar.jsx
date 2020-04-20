@@ -55,6 +55,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
         <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
       </NavDropdown>
     )
+    // vSheet = <NAV_LINK to="/" text="My V-Sheet" />
   ;
 
 
@@ -63,7 +64,11 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
     showVolunteersLink = null,
     // showFellowsLink = null,
     showAdminDropdown = null
+    // showVSheet = null
   ;
+  if (navMode.volunteer) {
+    // showVSheet = vSheet;
+  }
   if (navMode.admin || navMode.staff) {
     showVolunteersLink = volunteersLink;
     // showFellowsLink = fellowsLink;
@@ -91,6 +96,8 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
           {showAdminDropdown}
 
           <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" />
+
+          {/* {showVSheet} */}
 
           <Logout logout={logout} />
 
