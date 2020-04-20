@@ -92,7 +92,7 @@ export default function Cohorts(props) {
                         type='text' 
                         className='inputFormText mb-2 mr-sm-2 flex-grow-1' 
                         placeholder='Enter cohort'
-                        value={tracker[cohort.cohort_id]}
+                        value={tracker[cohort.cohort_id] || ''}
                         onChange={e => handleInputEdit(e, cohort.cohort_id)}
                     />
                     <div className=''>
