@@ -120,9 +120,6 @@ const EventsCard = (props) => {
         
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
-
-    // let vEmails = '';
-    // volunteersEmailList.forEach(email => vEmails += `&add=${email}`);
         
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
