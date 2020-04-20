@@ -238,7 +238,6 @@ const deleteVolunteer = async (id) => {
 
 const deleteVolunteerByEmail = async (email, promise) => {
   const volunteer = await db.one('SELECT * FROM volunteers WHERE v_email = $1', email);
-  console.log(volunteer)
   if (promise) {
     return deleteVolunteer(volunteer.v_id);
   }

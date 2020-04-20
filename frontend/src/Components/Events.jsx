@@ -223,7 +223,7 @@ export default function EventSearch(props) {
                         materialsUrl,
                         eventDuration: evDuration
                     }
-                    console.log(event)
+                    
                     if (formType === 'edit') {
                         await axios.put(`/api/events/edit/${eventId}`, event);
                     } else {

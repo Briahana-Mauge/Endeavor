@@ -28,7 +28,6 @@ router.get('/all', async (req, res, next) => {
             });
     } catch (err) {
         handleError(err, req, res, next);
-        console.log(err)
     }
 });
 
