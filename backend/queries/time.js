@@ -19,15 +19,6 @@ const allBankedHours = async (volunteer) => {
     return await db.one(selectQuery, {volunteer});
 }
 
-// Get all hours planned by a volunteer
-const allPlannedHours = async (volunteer) => {
-    const selectQuery = `
-    SELECT planned_time 
-    FROM volunteers_hours 
-    WHERE volunteer_id = $/volunteer/ AND deleted IS NULL
-    `;
-    return await db.one(selectQuery, {volunteer});
-}
 
 //Get the number of hours by all volunteers (response is an array of objects)
 const allHours = async () => {
@@ -54,8 +45,14 @@ const deleteHoursByVolunteerId = async (id, promise) => {
   return await db.any(deleteQuery, id);
 }
 
-const updateVolunteerHours = async (id, number) => {
-  return await db.one('UPDATE volunteers_hours SET banked_time = $/number/ WHERE volunteer_id = $/id/  RETURNING *', {id:id, number:number});
+const updateVolunteerHours = async (v_id, event_duration) => {
+  const updateQuery = `
+  UPDATE volunteers_hours 
+  SET banked_time = $/event_duration/ 
+  WHERE volunteer_id = $/v_id/  
+  RETURNING *
+  `
+  return await db.one(updateQuery, {id:v_id, number:event_duration});
 }
 /* EXPORT */
 module.exports = {
