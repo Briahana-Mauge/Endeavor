@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import { Link } from 'react-router-dom';
+import moment from 'moment';
+
 
 const EventsCard = (props) => {
     const { setFeedback, loggedUser, event } = props;
@@ -115,11 +117,10 @@ const EventsCard = (props) => {
         displayVolunteersList = volunteersList.map(volunteer =>
             <div key={volunteer.v_id + volunteer.v_last_name}>
                 {
-                    volunteer.volunteer_request_accepted
-                        ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                        : null
+                    volunteer.volunteer_request_accepted 
+                    ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span> 
+                    : null
                 }
-
             </div>
         )
     }
@@ -129,7 +130,15 @@ const EventsCard = (props) => {
         const t = new Date(date).toLocaleTimeString();
         return `${d} ${t.slice(0, -6)} ${t.slice(-2)}`;
     }
+        
+    const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
+    const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
 
+    let vEmails = '';
+    if (event.v_email) {
+        event.v_email.forEach(email => vEmails += `&add=${email}`);
+    }
+        
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
             <div className='border border-dark rounded bg-light m-1'>
@@ -159,15 +168,19 @@ const EventsCard = (props) => {
                     <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
                     {
                         loggedUser && loggedUser.a_id
-                            ? <div className='card-text text-right'><a>ADD TO CALENDAR LINK (PLACE HOLDER)</a></div>
-                            : null
+                        ?   <div className='card-text text-right'>
+                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${vEmails}`}
+                                    className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
+                            </div>
+                        : null
                     }
 
                     {
                         loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
-                            ? loggedVolunteerRequestAccepted
-                                ? <div className='card-text d-flex'>
-                                    <a>ADD TO CALENDAR LINK (PLACE HOLDER)</a>
+                        ? loggedVolunteerRequestAccepted 
+                            ?   <div className='card-text d-flex'>
+                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
+                                        className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                                 </div>
                                 : <div className='card-text'>
@@ -181,7 +194,6 @@ const EventsCard = (props) => {
                                 : null
                     }
                 </div>
-
             </div>
         </div>
     );
