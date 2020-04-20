@@ -11,6 +11,7 @@ import { NavLink, Link } from 'react-router-dom';
 
 /* BOOTSTRAP NAVBAR CLASSES */
 const liPadding = "px-3";
+const logoutLiPadding = "pl-3";
 
 
 /* MAIN */
@@ -73,11 +74,11 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
 
   return (
-    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-0 container-fluid`}>
+    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 container-fluid`}>
       <Logo />
       <Burger />
-      <div className="collapse navbar-collapse bg-dark" id="navbarSupportedContent">
-        <ul className="container-lg navbar-nav align-items-end">
+      <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
+        <ul className="container-lg navbar-nav align-items-start pr-0">
 
           <NAV_LINK to="/home" text="Home" />
 
@@ -89,7 +90,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
           {showAdminDropdown}
 
-          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-auto" />
+          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" />
 
           <Logout logout={logout} />
 
@@ -103,7 +104,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 /* NAV COMPONENTS */
 const Logo = () => {
   return(
-    <Link className="g1Brand navbar-brand py-0 mr-5" to="/home">
+    <Link className="g1Brand navbar-brand py-0" to="/home">
       Endea<span>V</span>or
     </Link>
   );
@@ -112,7 +113,7 @@ const Logo = () => {
 const Burger = () => {
   return(
     <button
-      className="navbar-toggler"
+      className="g1NavbarToggler navbar-toggler"
       type="button"
       data-toggle="collapse"
       data-target="#navbarSupportedContent"
@@ -125,9 +126,9 @@ const Burger = () => {
   );
 }
 
-const NAV_LINK = ({ to, text, liClassName }) => {
+const NAV_LINK = ({ to, text, liClassName = "" }) => {
   return(
-    <li className={`nav-item ${liClassName}`}>
+    <li className={`nav-item g1MobileTextALign ${liClassName}`}>
       <NavLink className={`nav-link ${liPadding}`} to={to}>{text}</NavLink>
     </li>
   );
@@ -143,11 +144,11 @@ const NavDropdown = (props) => {
   const { topText, children } = props;
 
   return (
-    <li className="nav-item dropdown">
+    <li className="g1MobileTextALign nav-item dropdown">
       <NavLink
         to="/home" // does not affect execution because preventDefault but pointing at /home just in case
         onClick={(e) => e.preventDefault()}
-        className={`nav-link dropdown-toggle ${liPadding}`}
+        className={`nav-link dropdown-toggle g1MobileTextALign ${liPadding}`}
         data-toggle="dropdown"
         role="button"
         aria-haspopup="true"
@@ -155,7 +156,7 @@ const NavDropdown = (props) => {
       >
         {topText}
       </NavLink>
-      <div className={`dropdown-menu bg-dark`}>
+      <div className={`g1DropdownMenu dropdown-menu bg-dark`}>
         {children}
       </div>
     </li>
@@ -166,9 +167,9 @@ const NavDropdown = (props) => {
 
 const Logout = ({logout}) => {
   return(
-    <li className="nav-item">
+    <li className={`nav-item g1MobileTextALign`}>
       <button
-        className={`nav-link g1BtnAsLink ${liPadding} pr-lg-0`}
+        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-3 pr-lg-auto`}
         onClick={logout}
       >
         Logout
