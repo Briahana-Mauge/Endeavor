@@ -181,32 +181,34 @@ nav button {
     margin-top: .2rem;  // used in conjunction with burger margin-top to even out top of page
 }
 
-.g1DropdownMenu {   // regular navmenu dropdowns
-    text-align: left;
-    background-color: #000 !important;
-    background-image: linear-gradient(180deg, #8d8557, #8d855773);
+.g1DropdownMenu {
+    @media (max-width: 992px) {   // sub-dropdown menus
+        border-radius: 0;
+        text-align: right;
+    }
+    @media (min-width: 992px) {   // regular navmenu dropdowns
+        text-align: left;
+        // background-color: #000 !important;
+        // background-image: linear-gradient(180deg, #8d8557, #8d855773);
+    }
 }
 
 .g1Collapse {
-    background-color: transparent !important;
+    @media (max-width: 992px) {
+        margin-left: 25%;   // sizes dropdown menu width, removing left width
+        border-radius: .75rem 0 .75rem .75rem;
+        // background-color: #000 !important;
+        // background-image: linear-gradient(180deg, #8d8557, #8d855773);
+    }
+    @media (min-width: 992px) {
+        background-color: transparent !important;
+    }
 }
 
 @media (max-width: 992px) {
     .g1MobileTextALign {
         width: 100%;
         text-align: left;   // MASTER TEXT-ALIGN for small device nav dropdown
-    }
-
-    .g1Collapse {
-        margin-left: 25%;   // sizes dropdown menu width, removing left width
-        background-color: #000 !important;
-        background-image: linear-gradient(180deg, #8d8557, #8d855773);
-        border-radius: 1.25rem 0 1.25rem 1.25rem;
-    }
-
-    .g1DropdownMenu {   // sub-dropdown menus
-        border-radius: 0;
-        text-align: right
     }
 }
 
