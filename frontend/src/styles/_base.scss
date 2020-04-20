@@ -18,12 +18,16 @@ html, body, #root, .g1App {
     height: 100%;
 }
 
+// font-family: 'Josefin Sans', sans-serif;
+// font-family: 'Cabin', sans-serif;
+// font-family: 'Catamaran', sans-serif;
+
 :root {
     font-size: 16px;
     --fs-body: 1rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-accent: 'Muli', serif;
+    --ff-accent: 'Catamaran', sans-serif;
     --ff-top: 'Red Hat Display', sans-serif;
 
     --fw-bold: 800;
