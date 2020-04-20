@@ -47,16 +47,20 @@ router.get('/', async (req, res, next) => {
 
 router.patch('/update', async (req, res, next) => {
     try {
-        let vId = processInput(req.body.v_id, 'idNum', 'volunteer id');
-        let hours = processInput(req.body.hours, 'idNum', 'num of hours')
-        let updateHours = await timeQueries.updateVolunteerHours(vId, hours)
-        res.status(200)
-            .json({
-                payload: updateHours,
-                message: "Success",
-                err: false
-            });
-    }catch(err){
+        if (req.user && req.user.admin) {
+            let vId = processInput(req.body.v_id, 'idNum', 'volunteer id');
+            let hours = processInput(req.body.hours, 'idNum', 'num of hours')
+            let updateHours = await timeQueries.updateVolunteerHours(vId, hours)
+            res.status(200)
+                .json({
+                    payload: updateHours,
+                    message: 'Success',
+                    err: false
+                });
+        } else {
+            throw new Error('403__Not allowed to perform this operaion');
+        }
+    } catch (err) {
         handleError(err, req, res, next);
     }
 })
