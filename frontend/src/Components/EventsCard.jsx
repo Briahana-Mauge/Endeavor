@@ -41,12 +41,12 @@ const EventsCard = (props) => {
     }, [loggedUser, volunteersList])
 
     const addHours = async (event_duration, v_id) => {
-        let vHours = await axios.get(`/api/time/hours/${v_id}`)
+        let vHours = await axios.get(`/api/time/hours/${v_id}`);
         let newHours = parseInt(vHours.data.payload.banked_time) + parseInt(event_duration);
         await axios.patch(`/api/time/update`, { v_id: v_id, hours: newHours });
     }
     const subHours = async (event_duration, v_id) => {
-        let vHours = await axios.get(`/api/time/hours/${v_id}`)
+        let vHours = await axios.get(`/api/time/hours/${v_id}`);
         let newHours = parseInt(vHours.data.payload.banked_time) - parseInt(event_duration);
         await axios.patch(`/api/time/update`, { v_id: v_id, hours: newHours });
     }
