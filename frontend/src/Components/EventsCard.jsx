@@ -21,7 +21,7 @@ const EventsCard = (props) => {
     useEffect(() => {
         const checkIfVolunteerSignedForEvent = () => {
             let found = false;
-            let accepted = '';
+            let accepted = false;
 
             for (let volunteer of volunteersList) {
                 if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) {
