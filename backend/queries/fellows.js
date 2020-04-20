@@ -95,7 +95,6 @@ const updateFellow = async (userObj) => {
 }
 
 const deleteFellow = async (fId) => {
-  console.log('ID: ', fId)
   const deleteQuery = `
     UPDATE fellows
     SET deleted = NOW()
@@ -114,7 +113,6 @@ const deleteFellow = async (fId) => {
 
 const deleteFollowByEmail = async (email, promise) => {
   const fellow = await db.one('SELECT * FROM fellows WHERE f_email = $1', email);
-  console.log(fellow)
   if (promise) {
     return deleteFellow(fellow.f_id);
   }

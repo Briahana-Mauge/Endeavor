@@ -18,6 +18,7 @@ const getEventVolunteersByEventId = async (id) => {
             v_id,
             v_first_name,
             v_last_name,
+            v_email,
             volunteers.deleted,
             ev_id AS event_volunteer_id,
             event_volunteers.confirmed AS volunteer_request_accepted
@@ -52,7 +53,6 @@ const signupVolunteerForEvent = async (requestObject) => {
             WHERE event_id = $/eventId/
         `
         const eventAvailable = await t.one(checkEventQuery, requestObject);
-        console.log(eventAvailable)
         if (eventAvailable.event_available) {
             const postQuery = `
                 INSERT INTO event_volunteers (eventv_id, volunteer_id)
@@ -79,7 +79,6 @@ const deleteVolunteerFromEvent = async (requestObject) => {
             WHERE event_id = $/eventId/
         `
         const eventAvailable = await t.one(checkEventQuery, requestObject);
-        console.log(eventAvailable)
         if (eventAvailable.event_available) {
             const deleteQuery = `
                 DELETE FROM event_volunteers
