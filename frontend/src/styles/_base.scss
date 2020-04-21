@@ -4,6 +4,7 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
+/* BASE & VARIABLES */
 *,
 *::after,
 *::before {
@@ -12,67 +13,61 @@ APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
     box-sizing: border-box;
 }
 
-// Extra small devices (portrait phones, less than 576px)
-// No media query for `xs` since this is the default in Bootstrap
+html, body, #root, .g1App {
+    width: 100%;
+    height: 100%;
+}
 
-// @media (min-width: 576px) { ... }
-// sm :  SMALL devices (landscape phones, 576px and up)
-
-// @media (min-width: 768px) { ... }
-// md :  MEDIUM devices (tablets, 768px and up)
-
-// @media (min-width: 992px) { ... }
-// lg :  LARGE devices (desktops, 992px and up)
-
-// @media (min-width: 1200px) { ... }
-// xl :  EXTRA large devices (large desktops, 1200px and up)
+// font-family: 'Josefin Sans', sans-serif;
+// font-family: 'Cabin', sans-serif;
+// font-family: 'Catamaran', sans-serif;
 
 :root {
-    // font-size: 10px;
-    // --fs-body: 1.6rem;
+    font-size: 16px;
+    --fs-body: 1rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-logo: 'Red Hat Display', sans-serif;
-    --ff-accent: 'Lato-Black', serif;
+    --ff-accent: 'Catamaran', sans-serif;
+    --ff-top: 'Red Hat Display', sans-serif;
+
+    --fw-bold: 800;
 
     --color-primary: #27237c;
     --color-yellow: #8d8558;
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
+
+    --navbar-height: 62px;
 }
 
+    // MEDIA QUERY SIZING
+    // Bootstrap reference
+    // DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
+    // @media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
+    // @media (min-width: 768px) {} : md : MEDIUM devices (tablets, 768px and up)
+    // @media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
+    // @media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)
 
-// SCSS VARS
-$navbar-height: 62px;
-
-$color-body-gradient: #27237c;
-$color-navbar-gradient: #20182d;
+    @media (min-width: 992px) {
+        // placeholder
+    }
 
 
+/* BASE ELEMENT STYLING */
 body {
-    position: fixed; // prevents background drift
+    position: fixed; // prevents background scrolling with scroll
 
-    padding-top: $navbar-height;
+    padding-top: var(--navbar-height);
+    background-color: #1a1635;  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
     background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
-    // background-image: linear-gradient(180deg, rgba($color-body-gradient, .35) 11%, rgba($color-body-gradient, .8) 89%);
 
     font-family: var(--ff-body1);
+    font-size: var(--fs-body);
     color: var(--color-black);
-    // font-size: var(--fs-body);
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-.g1App {
-    overflow-y: auto;
-    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
-    color: var(--color-white);
-}
-
-.card-body {
-    color: var(--color-black);
 }
 
 code {
@@ -86,12 +81,27 @@ code {
     ;
 }
 
-html, body, #root, .g1App {
-    width: 100%;
-    height: 100vh;
-    overflow: scroll;
+strong {
+    font-weight: var(--fw-bold);
 }
 
+nav button {
+    outline: none;
+    background-color: transparent;
+    transition: background .6s ease-out, border-radius 1s ease;
+
+    &:focus {
+        outline: none;
+    }
+
+    &[aria-expanded=true] {
+        border-radius: .25rem .25rem 0 0;
+        background-color: var(--color-yellow);
+    }
+}
+
+/* HELPERS */
+// for consistent styles between nav LINKS and nav BUTTONS
 @mixin link-states() {
     &:link, &:visited {
         color: var(--color-white);
@@ -108,51 +118,19 @@ html, body, #root, .g1App {
     }
 }
 
-.g1Navbar {
-    height: $navbar-height;
-    align-items: baseline;
 
-    // background-color: /* #1a1534 */;
-    // background-image: linear-gradient(170deg, rgba($color-navbar-gradient, .89) 8%, rgba($color-navbar-gradient, 1) 64%);
-    // box-shadow: 0px 6px 29px 2px #000a;
-
-    .nav-item a {
-        font-family: var(--ff-logo);
-    }
-
-    a {
-        @include link-states();
-
-        &.g1DisableLink {
-            @include link-states-disabled();
-        }
-    }
-}
-
-@media (min-width: 992px) {
-    div#navbarSupportedContent {
-        background-color: transparent !important;
-    }
-}
-
-.g1Brand {
+/* CLASS STYLINGS */
+.g1App {
+    overflow-y: auto;
+    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
     color: var(--color-white);
-    font-family: var(--ff-logo);
-    font-weight: normal;
-    font-size: 2.4rem;
-    letter-spacing: -1px;
-    text-transform: uppercase;
-
-    span {
-        color: var(--color-yellow);
-    }
 }
 
-.g1BtnAsLink {
-    position: relative;
-    top: -.08rem;
+.g1BtnAsLink {  // for buttons used as what look like links
     border: none;
+    width: 100%;
     background-color: transparent;
+    text-align: inherit;
     color: var(--color-white);
 
     @include link-states();
@@ -166,3 +144,82 @@ html, body, #root, .g1App {
     }
 }
 
+.g1Navbar {
+    height: var(--navbar-height);
+    align-items: flex-start;
+    // box-shadow: 0px 6px 29px 2px #000a; // optional, save for later idea
+
+    font-family: var(--ff-top);
+
+    a {
+        @include link-states();
+
+        &.g1DisableLink {
+            @include link-states-disabled();
+        }
+    }
+}
+
+.g1Brand {  // the logo text
+    color: var(--color-white);
+    font-family: 'Red Hat Display', sans-serif;
+    font-weight: normal;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    font-size: 240%;
+    line-height: 2.4rem;
+    margin-top: .1rem;  // used in conjunction with burger margin-top to even out top of page
+
+    span {  // the accented "V"
+        color: var(--color-yellow);
+    }
+}
+
+.g1NavbarToggler {   // burger positioning
+    padding: 0 .75rem;
+    height: 76%;
+    margin-top: .2rem;  // used in conjunction with burger margin-top to even out top of page
+}
+
+.g1DropdownMenu {
+    @media (max-width: 992px) {   // sub-dropdown menus
+        border-radius: 0;
+        text-align: right;
+    }
+    @media (min-width: 992px) {   // regular navmenu dropdowns
+        text-align: left;
+        // background-color: #000 !important;
+        // background-image: linear-gradient(180deg, #8d8557, #8d855773);
+    }
+}
+
+.g1Collapse {
+    @media (max-width: 992px) {
+        margin-left: 25%;   // sizes dropdown menu width, removing left width
+        border-radius: .75rem 0 .75rem .75rem;
+        // background-color: #000 !important;
+        // background-image: linear-gradient(180deg, #8d8557, #8d855773);
+    }
+    @media (min-width: 992px) {
+        background-color: transparent !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .g1MobileTextALign {
+        width: 100%;
+        text-align: left;   // MASTER TEXT-ALIGN for small device nav dropdown
+    }
+}
+
+.card-body {
+    color: var(--color-black);
+}
+
+// MEDIA QUERY MORE SPECIFIC STYLING
+    // Bootstrap reference
+    // DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
+    // @media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
+    // @media (min-width: 768px) {} : md : MEDIUM devices (tablets, 768px and up)
+    // @media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
+    // @media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)

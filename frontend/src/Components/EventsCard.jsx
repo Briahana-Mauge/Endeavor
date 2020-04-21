@@ -5,12 +5,12 @@ import moment from 'moment';
 
 
 const EventsCard = (props) => {
-    const { setFeedback, loggedUser, event } = props;
-    const [volunteersList, setVolunteersList] = useState([]);
-    const [loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent] = useState(false);
-    const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState(false);
-    const [reload, setReload] = useState(0);
-    const [finalEmails, setFinalEmails] = useState([]);
+    const { setFeedback, loggedUser, event } = props; 
+    const [ volunteersList, setVolunteersList ] = useState([]);
+    const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
+    const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
+    const [ volunteersEmailList, setVolunteersEmailList] = useState('');
+    const [ reload, setReload ] = useState(0);
 
     const getVolunteersList = () => {
         axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
@@ -40,14 +40,20 @@ const EventsCard = (props) => {
                     eventEmails.push(volunteer.v_email)
                 }
             }
-            setFinalEmails(eventEmails)
             setLoggedVolunteerPartOfEvent(found);
             setLoggedVolunteerRequestAccepted(accepted);
 
+            let list = '';
+            for (let volunteer of volunteersList) {
+                if (volunteer.volunteer_request_accepted) {
+                    list += `&add=${volunteer.v_email}`;
+                }
+            }
+            setVolunteersEmailList(list);
         }
 
         checkIfVolunteerSignedForEvent();
-    }, [loggedUser, volunteersList])
+    }, [loggedUser, volunteersList]);
 
 
     const addHours = async (event_duration, v_id) => {
@@ -143,12 +149,7 @@ const EventsCard = (props) => {
 
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
-
-    /* For each email saved in the state, create a string of params to add to the event guest list */
-    let vEmailParam = '';
-    finalEmails.forEach(email => vEmailParam += `&add=${email}`);
-
-
+        
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
             <div className='border border-dark rounded bg-light m-1'>
@@ -170,6 +171,7 @@ const EventsCard = (props) => {
                     </p>
                     <p className='card-text'>{event.description} </p>
                     <p className='card-text'><strong>Class: </strong>{event.cohort} </p>
+                    <p className='card-text'><strong>Duration: </strong>{event.event_duration} </p>
                     {
                         loggedUser && loggedUser.a_id
                             ? <p className='card-text'><strong>Number of needed volunteers: </strong>{event.volunteers_needed} </p>
@@ -178,8 +180,8 @@ const EventsCard = (props) => {
                     <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
                     {
                         loggedUser && loggedUser.a_id
-                            ? <div className='card-text text-right'>
-                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${vEmailParam}`}
+                        ?   <div className='card-text text-right'>
+                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${volunteersEmailList}`}
                                     className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
                             </div>
                             : null

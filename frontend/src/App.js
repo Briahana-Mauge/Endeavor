@@ -12,7 +12,10 @@ import axios from 'axios';
 import './App.scss';
 import LoginSignupGate from './Components/LoginSignupGate';
 import PrivateRouteGate from './Components/PrivateRouteGate';
-import Dashboard from './Components/Dashboard';
+import DashboardAdmin from './Components/Dashboards/DashboardAdmin';
+import DashboardStaff from './Components/Dashboards/DashboardStaff';
+import DashboardVolunteers from './Components/Dashboards/DashboardVolunteers';
+import DashboardFellows from './Components/Dashboards/DashboardFellows';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
@@ -120,13 +123,87 @@ function App() {
     hostSiteVisit, setHostSiteVisit,
     industrySpeaker, setIndustrySpeaker
   }
-  let showAdmins = null;
-  if (loggedUser && loggedUser.a_id) {
-    showAdmins = (
+
+
+  /* ACCESS STRATEGY ( Admins, Staff, Volunteers, Fellows )
+
+  VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
+  => possible alternate YOUR MENTOR(S) PAGE: Fellows
+  
+  EVENTS PAGE/DASHBOARD: All
+  
+  FELLOWS PAGE/DASHBOARD: Admins, Staff
+  => possible alternate YOUR MENTEE(S) PAGE: Volunteers
+  
+  ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
+  */
+
+
+  /* IS VARIABLE: determines user type and assigns simple variable */
+  const appRoute = {};
+  if (loggedUser && loggedUser.admin) {
+    appRoute["admin"] = true;
+  } else if (loggedUser && loggedUser.a_id) {
+    appRoute["staff"] = true;
+  } else if (loggedUser && loggedUser.v_id) {
+    appRoute["volunteer"] = true;
+  } else if (loggedUser && loggedUser.f_id) {
+    appRoute["fellow"] = true;
+  }
+
+
+  /* BUILD LIMITED ACCESS ROUTES */
+  const
+    adminDashboard = <DashboardAdmin />,
+    staffDashboard = <DashboardStaff />,
+    volunteersDashboard = <DashboardVolunteers />,
+    fellowsDashboard = <DashboardFellows />,
+    volunteersHome = (
+      <PrivateRouteGate path='/volunteers/home' {...gateProps}>
+        <VolunteerSearch {...userProps} />
+      </PrivateRouteGate>
+    ),
+    volunteersProfile = (
+      <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
+        <ProfileRender {...userProps} />
+      </PrivateRouteGate>
+    ),
+    fellowsProfile = (
+      <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}>
+        <ProfileRender {...userProps} />
+      </PrivateRouteGate>
+    ),
+    adminTools = (
       <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
-    );
+    )
+  ;
+
+
+  /* TOGGLE LIMITED ROUTE ACCESSES */
+  let
+    allowedDashboard = fellowsDashboard,
+    allowedVolunteersHome = null,
+    allowedVolunteersProfile = null,
+    allowedFellowsProfile = null,
+    allowedAdminTools = null
+  ;
+
+  if (appRoute.volunteer) {
+    allowedDashboard = volunteersDashboard;
+  }
+  if (appRoute.staff) {
+    allowedDashboard = staffDashboard;
+  }
+  if (appRoute.admin || appRoute.staff) {
+    allowedVolunteersHome = volunteersHome;
+    allowedVolunteersProfile = volunteersProfile;
+    allowedFellowsProfile = fellowsProfile;
+  }
+  if (appRoute.admin) {
+    allowedDashboard = adminDashboard;
+    allowedAdminTools = adminTools;
   }
 
 
@@ -134,37 +211,31 @@ function App() {
     <div className="g1App container-fluid p-3">
       <Switch>
 
-        <Route exact path='/'>
-          <LoginSignupGate {...gateProps}>
-            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
-          </LoginSignupGate>
-        </Route>
-
         <PrivateRouteGate path='/home' {...gateProps}>
-          <Dashboard {...userProps} />
+          {allowedDashboard}
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
-        {showAdmins}
-
-        <PrivateRouteGate path='/volunteers/search' {...gateProps}>
-          <VolunteerSearch {...userProps} />
-        </PrivateRouteGate>
-
-        <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
-          <ProfileRender {...userProps} />
-        </PrivateRouteGate>
-
-        <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}> 
-          <ProfileRender {...userProps} />
-        </PrivateRouteGate>
-
-        <PrivateRouteGate path='/events/search' {...gateProps}>
+        <PrivateRouteGate path='/events/home' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
+
+        {allowedVolunteersHome}
+        {allowedVolunteersProfile}
+
+        {allowedFellowsProfile}
+
+        {allowedAdminTools}
+
+        {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
+        <Route path='/'>
+          <LoginSignupGate {...gateProps}>
+            <LoginSignup {...userProps} {...signupProps} {...profileProps} />
+          </LoginSignupGate>
+        </Route>
 
       </Switch>
 
