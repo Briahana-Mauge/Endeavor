@@ -1,6 +1,6 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-Dashboard Component | Capstone App (Pursuit Volunteer Mgr)
+DashboardAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
