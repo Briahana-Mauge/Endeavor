@@ -106,6 +106,7 @@ CREATE TABLE events (
     event_end TIMESTAMPTZ NOT NULL,
     topic VARCHAR (100) NOT NULL,
     description VARCHAR NOT NULL,
+    staff_description VARCHAR,
     attendees INT NOT NULL REFERENCES cohorts(cohort_id),
     location VARCHAR (200) NOT NULL,
     instructor VARCHAR (100) NOT NULL,
@@ -121,6 +122,7 @@ CREATE TABLE event_volunteers (
     eventv_id INT NOT NULL REFERENCES events(event_id),
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+    volunteered_time INT NOT NULL DEFAULT 0,
     deleted DATE DEFAULT NULL
 );
 
