@@ -67,6 +67,34 @@ const signupVolunteerForEvent = async (requestObject) => {
 }
 
 // Signup volunteer to attend en event
+const manageVolunteerHours = async (requestObject) => {
+    return await db.task(async (t) => {
+        const volunteerHoursQuery = `
+            SELECT volunteered_time,
+            confirmed
+            FROM event_volunteers
+            WHERE volunteer_id = $/volunteerId/ AND eventv_id = $/eventId/
+        `
+        const volunteer = await t.one(volunteerHoursQuery, requestObject);
+        console.log(volunteer)
+
+        if (volunteer.confirmed) {
+            requestObject.time = (volunteer.volunteered_time || 0 ) + requestObject.volunteeredHours;
+
+            const updateQuery = `
+                UPDATE event_volunteers 
+                SET volunteered_time = $/time/
+                WHERE volunteer_id = $/volunteerId/ AND eventv_id = $/eventId/
+                RETURNING *
+            `
+            return await t.one(updateQuery, requestObject);
+        } else {
+            throw new Error('403__Sorry, volunteer not confirmed for the event');
+        } 
+    });
+}
+
+// Signup volunteer to attend en event
 const deleteVolunteerFromEvent = async (requestObject) => {
     return await db.task(async (t) => {
         const checkEventQuery = `
@@ -98,5 +126,6 @@ module.exports = {
     getEventVolunteersByEventId,
     manageVolunteerRequest,
     signupVolunteerForEvent,
+    manageVolunteerHours,
     deleteVolunteerFromEvent,
 }

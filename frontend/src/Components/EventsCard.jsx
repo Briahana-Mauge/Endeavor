@@ -82,6 +82,19 @@ const EventsCard = (props) => {
         }
     }
 
+    const attributeHoursForVolunteer = async (e, volunteerId) => {
+        try {
+            e.preventDefault();
+
+
+            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
+            setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
+            setVolunteerHours('');
+        } catch (err) {
+            setFeedback(err)
+        }
+    }
+
     let displayVolunteersList = null;
     if (volunteersList.length && loggedUser && loggedUser.admin) {
         displayVolunteersList = volunteersList.map(volunteer => 
@@ -100,6 +113,19 @@ const EventsCard = (props) => {
                         </span>
                     </label>
                     <span className='btn btn-link'> See </span>
+                    {
+                        volunteer.volunteer_request_accepted
+                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer.v_id)}>
+                                <input 
+                                    className='form-control mb-2 mr-sm-2' 
+                                    type='number' 
+                                    placeholder='Hours' 
+                                    value={volunteerHours}
+                                    onChange={e => setVolunteerHours(e.target.value)}
+                                />
+                            </form>
+                        : null
+                    }
                 </div>
             )
     } 
