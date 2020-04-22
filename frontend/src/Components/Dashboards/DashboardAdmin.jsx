@@ -10,7 +10,7 @@ import axios from 'axios';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
 import EventPreviewCard from '../EventPreviewCard';
-import EventsCard from '../EventsCard';
+import EventCard from '../EventCard';
 
 const DashboardAdmin = (props) => {
     const { setFeedback, loggedUser } = props;
@@ -20,6 +20,7 @@ const DashboardAdmin = (props) => {
     const [ showEvent, setShowEvent ] = useState(false);
     const [ targetEvent, setTargetEvent ] = useState({});
     const [ reload, setReload ] = useState(false);
+
 
     useEffect(() => {
         const getNewVolunteer = async () => {
@@ -38,7 +39,7 @@ const DashboardAdmin = (props) => {
     useEffect(() => {
         const getEvents = async () => {
             try {
-                const {data} = await axios.get('/api/events/all?upcoming=true');
+                const {data} = await axios.get('/api/events/admin/all?upcoming=true');
                 setEventsList(data.payload);
             } catch (err) {
                 setFeedback(err)
@@ -59,16 +60,10 @@ const DashboardAdmin = (props) => {
         }
     }
 
-    const displayEvent = (event) => {
-        setTargetEvent(event);
-        setShowEvent(true);
-    }
-
     const hideEvent = () => {
         setTargetEvent({});
         setShowEvent(false);
     }
-
 
 
     return (
@@ -88,7 +83,9 @@ const DashboardAdmin = (props) => {
                 eventsList.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start} 
                         event={event}
-                        displayEvent={displayEvent}
+                        setShowEvent={setShowEvent}
+                        setFeedback={setFeedback}
+                        setTargetEvent={setTargetEvent}
                     />)
             }
 
@@ -98,13 +95,10 @@ const DashboardAdmin = (props) => {
                         <div className='text-right m-2'>
                             <button className='btn-sm btn-danger' onClick={hideEvent}>X</button>
                         </div>
-                        <EventsCard 
+                        <EventCard 
                             loggedUser={loggedUser} 
                             event={targetEvent}
                             setFeedback={setFeedback}
-                            reload={reload}
-                            setReload={setReload}
-
                         />
                     </div>
                 : null

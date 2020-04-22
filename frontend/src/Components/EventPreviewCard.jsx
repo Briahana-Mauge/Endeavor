@@ -1,36 +1,137 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 export default function EventPreviewCard(props) {
-    const { event } = props;
+    const { setFeedback, loggedUser, event } = props; 
 
+    const [ volunteersList, setVolunteersList ] = useState([]);
+    const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
+    const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
+    const [ volunteersEmailList, setVolunteersEmailList] = useState('');
+    const [ reload, setReload ] = useState(false);
+
+    // const [ eventData, setEventData ] = useState({});
+
+    const getVolunteersList = () => {
+        axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
+            .then(response => setVolunteersList(response.data.payload))
+            .catch(err => setFeedback(err))
+    }
+    useEffect(getVolunteersList, [reload]);
+
+    const checkIfVolunteerSignedForEvent = () => {
+        let found = false;
+        let accepted = false;
+        let emailList = '';
+        for (let volunteer of volunteersList) {
+            if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) { 
+                found = true;
+                if (volunteer.volunteer_request_accepted) {
+                    accepted = true
+                }
+            }
+            if (volunteer.volunteer_request_accepted) {
+                emailList += `&add=${volunteer.v_email}`
+            }
+        }
+        setLoggedVolunteerPartOfEvent(found);
+        setLoggedVolunteerRequestAccepted(accepted);
+        setVolunteersEmailList(emailList);
+    }
+    useEffect(checkIfVolunteerSignedForEvent, [loggedUser, volunteersList]);
+
+    const setEventAsTarget = () => {
+        const eventDataObj = Object.assign({}, event, {
+            volunteersList,
+            loggedVolunteerPartOfEvent,
+            loggedVolunteerRequestAccepted,
+            volunteersEmailList,
+            reload,
+            setReload,
+        });
+        props.setTargetEvent(eventDataObj);
+    }
+    useEffect(setEventAsTarget, [loggedUser, volunteersList, loggedVolunteerPartOfEvent, loggedVolunteerRequestAccepted, volunteersEmailList]);
+
+    const handleClickOnEvent = () => {
+        setEventAsTarget();
+        props.setShowEvent(true); 
+    }
+    // const manageVolunteersRequests = async (e, volunteerId) => {
+    //     try {
+    //         await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
+    //         setReload(reload + 1);
+    //         if (props.setReload) {
+    //             props.setReload(props.reload + 1);
+
+    //         }
+    //     } catch (err) {
+    //         setFeedback(err);
+    //     }
+    // }
+
+    // const volunteerForEvent = async () => {
+    //     try {
+    //         await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
+    //         setReload(reload + 1);
+    //     } catch (err) {
+    //         setFeedback(err);
+    //     }
+    // }
+
+    // const deleteVolunteerForEvent = async () => {
+    //     try {
+    //         await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
+    //         setReload(reload + 1);
+    //     } catch (err) {
+    //         setFeedback(err);
+    //     }
+    // }
+
+    // const attributeHoursForVolunteer = async (e, volunteerId) => {
+    //     try {
+    //         e.preventDefault();
+
+
+    //         await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
+    //         setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
+    //         setVolunteerHours('');
+    //     } catch (err) {
+    //         setFeedback(err)
+    //     }
+    // }
+
+    
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
         const t = new Date(date).toLocaleTimeString();
-        return `${d} ${t.slice(0, -6)} ${t.slice(-2)}`;
+        return [d, `${t.slice(0, -6)} ${t.slice(-2)}`];
     }
+
+    const eventStart = formatEventDate(event.event_start);
+    const eventEnd = formatEventDate(event.event_end);
 
     return (
         <div className='row border rounded-lg m-2'>
             <div className='col-6'>
-                <p className='' onClick={e => props.displayEvent(event)}><strong>Topic: </strong>{event.topic}</p>
-                <p><strong>Starts: </strong>{formatEventDate(event.event_start)}</p>
-                <p><strong>Ends: </strong>{formatEventDate(event.event_end)}</p>
+                {/* <p className='' onClick={e => props.displayEvent(eventData)}><strong>Topic: </strong>{event.topic}</p> */}
+                <p className='' onClick={handleClickOnEvent}><strong>Topic: </strong>{event.topic}</p>
+                {
+                    eventStart[0] === eventEnd[0]
+                    ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+                    :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
+                }
                 <p><strong>Host: </strong>{event.instructor}</p>
-                <p><strong>Open to: </strong>{event.cohort}</p>
+                <p><strong>For: </strong>{event.cohort}</p>
             </div>
 
             <div className='col-6'>
-                <ul> <strong>Volunteers: </strong>
-                    {
-                        event.volunteers.length === 1 && event.volunteers[0] === null
-                        ? '0 / ' + event.volunteers_needed
-                        : <>
-                            {event.volunteers.length + ' / ' + event.volunteers_needed}
-                            {event.volunteers.map(volunteers => <li key={volunteers}>{volunteers}</li>)}
-                        </>
-                    }
-                </ul>
+                <p>
+                    <strong>Volunteers: </strong>{volunteersEmailList.split('&add=').length - 1 + ' / ' + event.number_of_volunteers} 
+                    <span> ({volunteersList.length - volunteersEmailList.split('&add=').length + 1} pending) </span> 
+
+                </p>
             </div>
         </div>
     )

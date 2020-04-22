@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventsCard from './EventsCard';
+import EventCard from './EventCard';
 import EventForm from './EventForm';
 
 
@@ -291,7 +291,7 @@ export default function EventSearch(props) {
             </form>
             
             <div className='row m-1'>
-                {results.map(event => <EventsCard 
+                {results.map(event => <EventCard 
                                 key={event.event_id}
                                 loggedUser={loggedUser} 
                                 event={event} 
