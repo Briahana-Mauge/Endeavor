@@ -18,8 +18,8 @@
     max-height: 88vh;
     overflow: scroll;
     left: 10vw;
-    right: 10vw;
     background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+    z-index: 5;
 }
 
 .imageIcon {

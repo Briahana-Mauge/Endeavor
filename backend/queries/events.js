@@ -151,9 +151,11 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     ORDER BY (
       CASE 
       	WHEN DATE(event_start) > NOW()
+          THEN 2
+        WHEN DATE(event_end) > NOW()
           THEN 1
-          ELSE 0
-         END
+        ELSE 0
+        END
       ) DESC, event_start ASC
   `;
   let condition = ' WHERE events.deleted IS NULL ';
@@ -230,6 +232,7 @@ const postEvent = async (eventObj) => {
       event_end,
       topic,
       description,
+      staff_description,
       attendees,
       location,
       instructor,
@@ -241,12 +244,13 @@ const postEvent = async (eventObj) => {
       $/end/,
       $/topic/,
       $/description/,
+      $/staffDescription/,
       $/attendees/,
       $/location/,
       $/instructor/,
       $/numberOfVolunteers/,
-      $/materialsUrl/
-      $/eventDuration/
+      $/materialsUrl/,
+      0
     )
     RETURNING *
   `
@@ -261,12 +265,13 @@ const editEvent = async (eventObj) => {
       event_end = $/end/,
       topic = $/topic/,
       description = $/description/,
+      staff_description = $/staffDescription/,
       attendees = $/attendees/,
       location = $/location/,
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
       materials_url = $/materialsUrl/,
-      event_duration = $/eventDuration/
+      event_duration = 0
     WHERE event_id = $/eventId/
     RETURNING *
   `
