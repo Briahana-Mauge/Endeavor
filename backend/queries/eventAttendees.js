@@ -76,7 +76,6 @@ const manageVolunteerHours = async (requestObject) => {
             WHERE volunteer_id = $/volunteerId/ AND eventv_id = $/eventId/
         `
         const volunteer = await t.one(volunteerHoursQuery, requestObject);
-        console.log(volunteer)
 
         if (volunteer.confirmed) {
             requestObject.time = (volunteer.volunteered_time || 0 ) + requestObject.volunteeredHours;
