@@ -103,7 +103,6 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
   return (
     <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 container-fluid`}>
-      {console.log("render")}
       <Logo />
       <Burger />
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
