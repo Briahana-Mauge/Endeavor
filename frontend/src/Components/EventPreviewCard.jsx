@@ -113,8 +113,8 @@ export default function EventPreviewCard(props) {
     const eventEnd = formatEventDate(event.event_end);
 
     return (
-        <div className='row border rounded-lg m-2'>
-            <div className='col-6'>
+        <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
+            <div className='border rounded-lg p-2'>
                 {/* <p className='' onClick={e => props.displayEvent(eventData)}><strong>Topic: </strong>{event.topic}</p> */}
                 <p className='' onClick={handleClickOnEvent}><strong>Topic: </strong>{event.topic}</p>
                 {
@@ -124,14 +124,25 @@ export default function EventPreviewCard(props) {
                 }
                 <p><strong>Host: </strong>{event.instructor}</p>
                 <p><strong>For: </strong>{event.cohort}</p>
-            </div>
-
-            <div className='col-6'>
-                <p>
-                    <strong>Volunteers: </strong>{volunteersEmailList.split('&add=').length - 1 + ' / ' + event.number_of_volunteers} 
-                    <span> ({volunteersList.length - volunteersEmailList.split('&add=').length + 1} pending) </span> 
-
-                </p>
+                {
+                    loggedUser && loggedUser.a_id
+                    ?   <p>
+                            <strong>Volunteers: </strong>{volunteersEmailList.split('&add=').length - 1 + ' / ' + event.number_of_volunteers}
+                            {
+                                volunteersList.length - volunteersEmailList.split('&add=').length + 1
+                                ? <span className='text-warning'> ({volunteersList.length - volunteersEmailList.split('&add=').length + 1} pending)</span>
+                                : null
+                            }
+                        </p>
+                    :   null
+                }
+                {
+                    loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
+                    ?   loggedVolunteerRequestAccepted
+                        ?   <strong>I'm part of this event</strong>
+                        :   <strong>Request pending</strong>
+                    :   null
+                }
             </div>
         </div>
     )

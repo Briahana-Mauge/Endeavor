@@ -19,7 +19,7 @@ const DashboardAdmin = (props) => {
     const [ eventsList, setEventsList ] = useState([]);
     const [ showEvent, setShowEvent ] = useState(false);
     const [ targetEvent, setTargetEvent ] = useState({});
-    const [ reload, setReload ] = useState(false);
+    const [ reloadDashboard, setReloadDashboard ] = useState(false);
 
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const DashboardAdmin = (props) => {
 
         getNewVolunteer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
+    }, [reloadDashboard]);
 
     useEffect(() => {
         const getEvents = async () => {
@@ -48,13 +48,13 @@ const DashboardAdmin = (props) => {
 
         getEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
+    }, [reloadDashboard]);
 
 
     const acceptVolunteer = async (id) => {
         try {
             await axios.patch(`/api/volunteers/confirm/${id}`);
-            setReload(!reload);
+            setReloadDashboard(!reloadDashboard);
         } catch (err) {
             setFeedback(err)
         }
@@ -79,26 +79,29 @@ const DashboardAdmin = (props) => {
 
             <hr />
             <h3>Upcoming Events:</h3>
-            {
-                eventsList.map(event => <EventPreviewCard 
-                        key={event.event_id + event.event_end + event.event_start} 
-                        event={event}
-                        setShowEvent={setShowEvent}
-                        setFeedback={setFeedback}
-                        setTargetEvent={setTargetEvent}
-                    />)
-            }
+            <div className='d-flex flex-wrap'>
+                {
+                    eventsList.map(event => <EventPreviewCard 
+                            key={event.event_id + event.event_end + event.event_start}
+                            loggedUser={loggedUser}
+                            event={event}
+                            setShowEvent={setShowEvent}
+                            setFeedback={setFeedback}
+                            setTargetEvent={setTargetEvent}
+                        />)
+                }
+            </div>
 
             {
                 showEvent 
                 ?   <div className='lightBox'>
-                        <div className='text-right m-2'>
-                            <button className='btn-sm btn-danger' onClick={hideEvent}>X</button>
-                        </div>
                         <EventCard 
                             loggedUser={loggedUser} 
                             event={targetEvent}
                             setFeedback={setFeedback}
+                            reloadParent={reloadDashboard}
+                            setReloadParent={setReloadDashboard}
+                            hideEvent={hideEvent}
                         />
                     </div>
                 : null

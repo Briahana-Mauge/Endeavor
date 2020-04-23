@@ -26,7 +26,7 @@ const EventsCard = (props) => {
     const volunteerForEvent = async () => {
         try {
             await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
-            setReload(!reload);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -35,7 +35,7 @@ const EventsCard = (props) => {
     const deleteVolunteerForEvent = async () => {
         try {
             await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
-            setReload(reload);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -52,6 +52,21 @@ const EventsCard = (props) => {
         } catch (err) {
             setFeedback(err)
         }
+    }
+
+
+    const handleDeleteEvent = async () => {
+        try {
+            await axios.delete(`/api/events/${event.event_id}`)
+            props.setReloadParent(!props.reloadParent);
+            props.hideEvent();
+        } catch (err) {
+            setFeedback(err);
+        }
+    }
+
+    const handleEditButton = () => {
+
     }
 
     let displayVolunteersList = null;
@@ -107,7 +122,11 @@ const EventsCard = (props) => {
     const eventEnd = formatEventDate(event.event_end);
 
     return (
-        // <div className='container-fluid'>
+        <div className='container-fluid'>
+            <div className='text-right m-2'>
+                 <button className='btn-sm btn-danger' onClick={props.hideEvent}>X</button>
+            </div>
+
             <div className='border border-dark rounded bg-light m-1'>
                 <div className='card-body'>
                     <h4 className='card-title text-center'>{event.topic}</h4>
@@ -137,7 +156,7 @@ const EventsCard = (props) => {
                     {
                         loggedUser && loggedUser.v_id && event.loggedVolunteerPartOfEvent
                         ?   event.loggedVolunteerRequestAccepted
-                            ?   <div className='card-text d-flex'>
+                            ?   <div className='card-text d-flex justify-content-between'>
                                     <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
@@ -158,14 +177,14 @@ const EventsCard = (props) => {
                 {
                     loggedUser && loggedUser.admin /*&& props.delete && props.edit*/
                     ?   <div className='d-flex justify-content-between m-2'>
-                            <button className='btn btn-outline-danger flex-fill' onClick={e => props.delete(event.event_id)}>Delete</button>
+                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
                             <span className='flex-fill'></span>
-                            <button className='btn btn-outline-warning flex-fill' onClick={e => props.edit(event)}>Edit</button>
+                            <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
                         </div>
                     : null
                 }
             </div>
-        // </div>
+        </div>
     );
 }
 
