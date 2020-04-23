@@ -101,15 +101,6 @@ export default function EventSearch(props) {
         setReload(!reload);
     }
 
-    // const handleDeleteEvent = async (id) => {
-    //     try {
-    //         await axios.delete(`/api/events/${id}`)
-    //         setReload(!reload);
-    //     } catch (err) {
-    //         setFeedback(err);
-    //     }
-    // }
-
     const clearInputs = () => {
         setFormType('add');
         setEventId(0);
@@ -176,11 +167,6 @@ export default function EventSearch(props) {
         // setEventDuration(event.event_duration);
     }
 
-    // const handleEditButton = (event) => {
-    //     preFillEvent(event);
-    //     setDisplayEventForm(true);
-    // }
-
     const calcHours = (date1, date2) => { // Function to validate the event's date
         const now = new Date().getTime();
         const d1 = new Date(date1).getTime();
@@ -207,14 +193,6 @@ export default function EventSearch(props) {
                     const end = `${endDate} ${endTime || '23:59'}-${timeZone}`;
 
                     calcHours(start, end);
-                    // let evDuration = eventDuration;
-                    // if (mustEnterDuration && !eventDuration) {
-                    //     throw new Error('Please enter an estimated duration for the event');
-                    // } else {
-                    //     const duration = calcHours(start, end);
-                    //     setEventDuration(duration);
-                    //     evDuration = duration;
-                    // }
 
                     const event = {
                         start,
@@ -225,8 +203,7 @@ export default function EventSearch(props) {
                         location,
                         instructor,
                         numberOfVolunteers,
-                        materialsUrl,
-                        // eventDuration: evDuration
+                        materialsUrl
                     }
                     
                     if (formType === 'edit') {
@@ -253,7 +230,7 @@ export default function EventSearch(props) {
 
 
     return (
-        <div className=''>
+        <>
             {
                 loggedUser && loggedUser.a_id
                 ? <>
@@ -295,18 +272,7 @@ export default function EventSearch(props) {
 
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
-            
-            {/* <div className='row m-1'>
-                {results.map(event => <EventCard 
-                                key={event.event_id}
-                                loggedUser={loggedUser} 
-                                event={event} 
-                                // delete={handleDeleteEvent} 
-                                // edit={handleEditButton}
-                                setFeedback={setFeedback}
-                            />
-                )}
-            </div> */}
+
             <div className='d-flex flex-wrap'>
                 {
                     results.map(event => <EventPreviewCard 
@@ -334,8 +300,7 @@ export default function EventSearch(props) {
                     </div>
                 :   null
             }
-
-        </div>
+        </>
     );
 }
 

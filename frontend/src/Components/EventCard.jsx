@@ -8,7 +8,6 @@ const EventsCard = (props) => {
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
     const [ volunteersList, setVolunteersList] = useState([]);
-    const [ reload, setReload ] = useState(false);
     
     useEffect(() => {
         setVolunteersList(event.volunteersList);
@@ -175,7 +174,7 @@ const EventsCard = (props) => {
                 <hr />
 
                 {
-                    loggedUser && loggedUser.admin /*&& props.delete && props.edit*/
+                    loggedUser && loggedUser.admin
                     ?   <div className='d-flex justify-content-between m-2'>
                             <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
                             <span className='flex-fill'></span>

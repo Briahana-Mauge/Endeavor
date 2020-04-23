@@ -11,8 +11,7 @@ export default function EventPreviewCard(props) {
     const [ volunteersEmailList, setVolunteersEmailList] = useState('');
     const [ reload, setReload ] = useState(false);
 
-    // const [ eventData, setEventData ] = useState({});
-
+    
     const getVolunteersList = () => {
         axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
             .then(response => setVolunteersList(response.data.payload))
@@ -58,50 +57,6 @@ export default function EventPreviewCard(props) {
         setEventAsTarget();
         props.setShowEvent(true); 
     }
-    // const manageVolunteersRequests = async (e, volunteerId) => {
-    //     try {
-    //         await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
-    //         setReload(reload + 1);
-    //         if (props.setReload) {
-    //             props.setReload(props.reload + 1);
-
-    //         }
-    //     } catch (err) {
-    //         setFeedback(err);
-    //     }
-    // }
-
-    // const volunteerForEvent = async () => {
-    //     try {
-    //         await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
-    //         setReload(reload + 1);
-    //     } catch (err) {
-    //         setFeedback(err);
-    //     }
-    // }
-
-    // const deleteVolunteerForEvent = async () => {
-    //     try {
-    //         await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
-    //         setReload(reload + 1);
-    //     } catch (err) {
-    //         setFeedback(err);
-    //     }
-    // }
-
-    // const attributeHoursForVolunteer = async (e, volunteerId) => {
-    //     try {
-    //         e.preventDefault();
-
-
-    //         await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
-    //         setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
-    //         setVolunteerHours('');
-    //     } catch (err) {
-    //         setFeedback(err)
-    //     }
-    // }
-
     
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -115,7 +70,6 @@ export default function EventPreviewCard(props) {
     return (
         <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
             <div className='border rounded-lg p-2'>
-                {/* <p className='' onClick={e => props.displayEvent(eventData)}><strong>Topic: </strong>{event.topic}</p> */}
                 <p className='' onClick={handleClickOnEvent}><strong>Topic: </strong>{event.topic}</p>
                 {
                     eventStart[0] === eventEnd[0]
