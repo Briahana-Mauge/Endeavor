@@ -5,7 +5,7 @@ NavBar Component | Capstone App (Pursuit Volunteer Mgr)
 
 
 /* IMPORTS */
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 
@@ -16,7 +16,29 @@ const logoutLiPadding = "pl-3";
 
 /* MAIN */
 const NavBar = ({ loggedUser, logout }) => {
-  // IS VARIABLE: determine user type and assign variable
+  // SCREEN WIDTH RESPONSE SYSTEM: needed to make navbar dropdown on mobile devices disappear on click
+  const isClient = typeof window === 'object';
+  const checkWidth = useCallback(() => {
+    const screenWidth = isClient ? window.innerWidth : undefined;
+    return screenWidth <= 992;
+  }, [isClient]);
+
+  const [isBurgerOn, setIsBurgerOn] = useState(checkWidth);
+
+  useEffect(() => {
+    if (!isClient) {
+      return false;
+    }
+    function handleResize() {
+      setIsBurgerOn(checkWidth());
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isClient, checkWidth]);
+  // END SCREEN WIDTH RESPONSE SYSTEM
+
+
+  // USERMODE VARIABLE: determine user type and assign variable
   // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name dnavModeplay on navbar
   const navMode = {};
   if (loggedUser && loggedUser.admin) {
@@ -28,6 +50,7 @@ const NavBar = ({ loggedUser, logout }) => {
   } else if (loggedUser && loggedUser.f_id) {
     navMode["fellow"] = true;
   }
+  // END USERMODE VARIABLE
 
 
 /* ACCESS STRATEGY (Admins, Staff, Volunteers, Fellows)
@@ -46,13 +69,13 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
   /* BUILD LIMITED ACCESS NAVS */
   const
-    volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" />,
+    volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" isBurgerOn={isBurgerOn} />,
     // fellowsLink = <NAV_LINK to='/fellows/home' text="Fellows" />,
     adminDropdown = (
       <NavDropdown topText="Admin">
-        <NAV_DD_LINK to='/tools/users' text="Edit App Users" />
-        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" />
-        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" />
+        <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
+        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
+        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
       </NavDropdown>
     )
     // vSheet = <NAV_LINK to="/" text="My V-Sheet" />
@@ -80,22 +103,23 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
   return (
     <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 container-fluid`}>
+      {console.log("render")}
       <Logo />
       <Burger />
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
 
-          <NAV_LINK to="/home" text="Home" />
+          <NAV_LINK to="/home" text="Home" isBurgerOn={isBurgerOn} />
 
           {showVolunteersLink}
 
-          <NAV_LINK to='/events/home' text="Events" />
+          <NAV_LINK to='/events/home' text="Events" isBurgerOn={isBurgerOn} />
 
           {/* {showFellowsLink} */}
 
           {showAdminDropdown}
 
-          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" />
+          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" isBurgerOn={isBurgerOn} />
 
           {/* {showVSheet} */}
 
@@ -133,17 +157,21 @@ const Burger = () => {
   );
 }
 
-const NAV_LINK = ({ to, text, liClassName = "" }) => {
+const NAV_LINK = ({ to, text, liClassName = "", isBurgerOn }) => {
   return(
     <li className={`nav-item g1MobileTextALign ${liClassName}`}>
-      <NavLink className={`nav-link ${liPadding}`} to={to}>{text}</NavLink>
+      <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
+        <NavLink className={`nav-link ${liPadding}`} to={to}>{text}</NavLink>
+      </span>
     </li>
   );
 }
 
-const NAV_DD_LINK = ({ to, text }) => {
+const NAV_DD_LINK = ({ to, text, isBurgerOn }) => {
   return(
-    <NavLink className="dropdown-item px-3" to={to}>{text}</NavLink>
+    <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
+      <NavLink className="dropdown-item px-3" to={to}>{text}</NavLink>
+    </span>
   );
 }
 
@@ -170,7 +198,7 @@ const NavDropdown = (props) => {
   );
 }
 
-// const Divider = () => <div className="dropdown-divider"></div>
+// const Divider = () => <div className="dropdown-divider"></div> // HIDDEN BECAUSE UNUSED
 
 const Logout = ({logout}) => {
   return(
