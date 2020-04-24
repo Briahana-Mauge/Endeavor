@@ -80,12 +80,12 @@ const EventsCard = (props) => {
                         onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
                         disabled={volunteer.deleted}
                     />
-                    <label className='custom-control-label' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
+                    <label className='custom-control-label  mt-2' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
                         <span className={volunteer.deleted ? 'd-block text-muted' : 'd-block'}>
                             {`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                         </span>
                     </label>
-                    <span className='btn btn-link'> See </span>
+                    <span className='btn btn-link mb-2 mx-3'>Profile</span> {/* WILL BE A LINK TO VOLUNTEER PROFILE */}
                     {
                         volunteer.volunteer_request_accepted
                         ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer.v_id)}>
@@ -96,6 +96,7 @@ const EventsCard = (props) => {
                                     value={volunteerHours}
                                     onChange={e => setVolunteerHours(e.target.value)}
                                 />
+                                <button className='btn btn-primary  mb-2'>Save</button>
                             </form>
                         : null
                     }
@@ -121,8 +122,8 @@ const EventsCard = (props) => {
     const eventEnd = formatEventDate(event.event_end);
 
     return (
-        <div className='container-fluid'>
-            <div className='text-right m-2'>
+        <div className='lightBox'>
+            <div className='text-right m-2 closeButton'>
                  <button className='btn-sm btn-danger' onClick={props.hideEvent}>X</button>
             </div>
 
@@ -138,6 +139,11 @@ const EventsCard = (props) => {
                         <strong>Hosted by: </strong>{event.instructor}
                     </p>
                     <p className='card-text'>{event.description} </p>
+                    {
+                        loggedUser && loggedUser.a_id
+                        ? <p className='card-text'><strong>Details: </strong>{event.staff_description} </p>
+                        : null
+                    }
                     <p className='card-text'><strong>Class: </strong>{event.cohort} </p>
                     {
                         loggedUser && loggedUser.a_id

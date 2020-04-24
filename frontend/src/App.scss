@@ -22,6 +22,11 @@
     z-index: 5;
 }
 
+.closeButton {
+    position: sticky;
+    top: 0;
+}
+
 .imageIcon {
     width: 150px;
     height: 150px;
@@ -30,5 +35,4 @@
 
 .skillsUl {
     list-style: none;
-
 }

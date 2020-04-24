@@ -288,16 +288,14 @@ export default function EventSearch(props) {
             
             {
                 showEvent 
-                ?   <div className='lightBox'>
-                        <EventCard 
-                            loggedUser={loggedUser} 
-                            event={targetEvent}
-                            setFeedback={setFeedback}
-                            reloadParent={reload}
-                            setReloadParent={setReload}
-                            hideEvent={hideEvent}
-                        />
-                    </div>
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reload}
+                        setReloadParent={setReload}
+                        hideEvent={hideEvent}
+                    />
                 :   null
             }
         </>

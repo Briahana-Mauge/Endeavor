@@ -94,16 +94,14 @@ const DashboardAdmin = (props) => {
 
             {
                 showEvent 
-                ?   <div className='lightBox'>
-                        <EventCard 
-                            loggedUser={loggedUser} 
-                            event={targetEvent}
-                            setFeedback={setFeedback}
-                            reloadParent={reloadDashboard}
-                            setReloadParent={setReloadDashboard}
-                            hideEvent={hideEvent}
-                        />
-                    </div>
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reloadDashboard}
+                        setReloadParent={setReloadDashboard}
+                        hideEvent={hideEvent}
+                    />
                 : null
             }
         </>

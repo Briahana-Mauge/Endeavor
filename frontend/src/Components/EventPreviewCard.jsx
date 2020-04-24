@@ -70,7 +70,7 @@ export default function EventPreviewCard(props) {
     return (
         <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
             <div className='border rounded-lg p-2'>
-                <p className='' onClick={handleClickOnEvent}><strong>Topic: </strong>{event.topic}</p>
+                <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
                 {
                     eventStart[0] === eventEnd[0]
                     ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>

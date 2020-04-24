@@ -13,8 +13,8 @@ export default function Feedback(props) {
 
 
     return(
-        <div className='p-2 text-center feedbackContainer'>
-            <div className='text-right m-2'>
+        <div className='p-2 text-center feedbackContainer col-12 col-md-11 col-lg-10 col-xl-8 p-0 mx-auto'>
+            <div className='text-right m-2 closeButton'>
                 <button className='btn-sm btn-danger' onClick={props.resetFeedback}>X</button>
             </div>
             <div>

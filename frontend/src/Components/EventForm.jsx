@@ -14,7 +14,7 @@ export default function EventForm (props) {
 
     return (
         <div className='lightBox'>
-            <div className='text-right m-2'>
+            <div className='text-right m-2 closeButton'>
                 <button className='btn-sm btn-danger' onClick={props.hideEventForm}>X</button>
             </div>
             
