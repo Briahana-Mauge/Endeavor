@@ -224,6 +224,7 @@ function App() {
 
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
+    allowedVolunteersProfile = volunteersProfile;
   }
   if (appRoute.staff) {
     allowedDashboard = staffDashboard;

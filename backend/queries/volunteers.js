@@ -124,7 +124,6 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       behavioral_mock_interview, professional_skills_coach,
       hosting_site_visit, industry_speaker,
       signup_date, inactive_date, volunteers.deleted,
-      banked_time, planned_time, 
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
       ARRAY_AGG (DISTINCT events.event_id) AS event_ids,
       ARRAY_AGG (DISTINCT mentor_pairs.mentee) AS mentee_ids
