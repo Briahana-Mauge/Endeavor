@@ -232,6 +232,16 @@ const getPastEvents = async () => {
   `;
   return await db.any(selectQuery);
 }
+//Get all important events
+const getImportantEvents = async () => {
+  const selectQuery = `
+  SELECT *
+    FROM events 
+    WHERE event_start > now() AND important = TRUE
+    ORDER BY event_start ASC
+    `;
+    return await db.any(selectQuery);
+}
 
 // Add new event
 const postEvent = async (eventObj) => {
@@ -355,6 +365,7 @@ module.exports = {
   getPastEventsByVolunteerId,
   getUpcomingEventsByVolunteerId,
   getPastEventsByFellowId,
+  getImportantEvents,
   postEvent,
   editEvent,
   deleteEvent

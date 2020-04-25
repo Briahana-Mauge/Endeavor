@@ -132,6 +132,20 @@ router.get('/past', async (req, res, next) => {
     }
 });
 
+// Get all important events
+router.get('/important', async (req, res, next) => {
+    try {
+        let allEvents = await eventsQueries.getImportantEvents();
+        res.json({
+            payload: allEvents,
+            message: "Success",
+            err: false
+        });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
 // Get all past events by volunteer id
 router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
     try {
