@@ -116,7 +116,6 @@ CREATE TABLE events (
     event_duration INT NOT NULL,
     important BOOLEAN NOT NULL,
     deleted DATE DEFAULT NULL
-    
 );
 
 CREATE TABLE event_volunteers (
@@ -410,7 +409,7 @@ INSERT INTO events
 
     ('2020-02-22 13:00-04', '2020-02-22 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1), FALSE,   -- -- -- 5
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),   -- -- -- 5
 
     ('2020-02-29 13:00-04', '2020-02-29 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
