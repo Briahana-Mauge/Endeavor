@@ -21,7 +21,6 @@ const { formatStr } = require('../helpers/helpers');
 // Get all volunteers with filter cases
 const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly, volunteerId) => {
   return await db.task(async (t) => {
-
     let parsedCompany = '';
     let parsedSkill = '';
 
@@ -36,14 +35,12 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
       SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
           volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
           ARRAY_AGG(DISTINCT skills.skill) AS skills,  
-          ARRAY_AGG(DISTINCT events.topic) AS topics,
+          ARRAY_AGG(DISTINCT event_volunteers.eventv_id) AS topic_ids,
           volunteers.active
       FROM volunteers 
       INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
       INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
       INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-      INNER JOIN events ON events.event_id = event_volunteers.eventv_id
-
     `
     const endOfQuery = `
       GROUP BY volunteers.v_id
@@ -67,13 +64,13 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
 
     let volunteersList = null;
     if (publicProfilesOnly) {
-      volunteersList = await t.any(selectQuery + condition + ' AND public_profile IS TRUE' + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+      volunteersList = await t.any(selectQuery + condition + ' AND public_profile = TRUE ' + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
     } else {
       volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
     }
 
     if (volunteerId) {
-      const userProfile = t.oneOrNone(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name})
+      const userProfile = await t.oneOrNone(selectQuery + condition + ` AND volunteers.v_id = $/volunteerId/ ` + endOfQuery, {vEmail, parsedCompany, parsedSkill, name, volunteerId})
       if (userProfile && !userProfile.public_profile && Array.isArray(volunteersList)) {
         volunteersList.push(userProfile);
       }
@@ -106,7 +103,7 @@ const getNewVolunteers = async () => {
   return await db.any(selectQuery);
 }
 
-// Get volunteer by email 
+// Get volunteer by email (FOR AUTH purpose)
 const getVolunteerByEmail = async (vEmail) => {
   const selectQuery = `
   SELECT *
@@ -116,8 +113,8 @@ const getVolunteerByEmail = async (vEmail) => {
   return await db.one(selectQuery, { vEmail });
 }
 
-// Get volunteer by Id 
-const getVolunteerById = async (id) => {
+// Get volunteer by Id Or email
+const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerId) => {
   const selectQuery = `
     SELECT 
 	    v_id, v_first_name, v_last_name, v_email,
@@ -136,12 +133,26 @@ const getVolunteerById = async (id) => {
     INNER JOIN skills on volunteer_skills.skill_id = skills.skill_id
     INNER JOIN event_volunteers ON v_id = event_volunteers.volunteer_id
     INNER JOIN events ON eventv_id = event_id
-    INNER JOIN volunteers_hours ON v_id = volunteers_hours.volunteer_id
-    LEFT JOIN mentor_pairs ON v_id = mentor_pairs.mentor
-    WHERE v_id = $1
-    GROUP BY volunteers.v_id, volunteers_hours.banked_time, volunteers_hours.planned_time
+    LEFT JOIN mentor_pairs ON v_id = mentor_pairs.mentor 
   `;
-  return await db.one(selectQuery, id);
+
+  let condition = '';
+  const endOfQuery = ` GROUP BY volunteers.v_id `
+  
+  if (id) {
+    condition = ' WHERE v_id = $/id/ '
+  } else if (email) {
+    condition = ' WHERE v_email = $/email/ '
+  }
+
+  if (publicProfilesOnly) {
+    condition += ' AND public_profile = TRUE '
+  }
+  const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
+  if (publicProfilesOnly && !volunteer.public_profile && volunteerId !== volunteer.v_id){
+    return new Error('403__Not accessible');
+  }
+  return volunteer;
 }
 
 
@@ -164,7 +175,8 @@ const addVolunteer = async (user, password) => {
         behavioral_mock_interview, 
         professional_skills_coach, 
         hosting_site_visit, 
-        industry_speaker
+        industry_speaker,
+        public_profile
       )
       VALUES (
         $/firstName/,
@@ -179,7 +191,8 @@ const addVolunteer = async (user, password) => {
         $/behavioralMockInterview/, 
         $/professionalSkillsCoach/, 
         $/hostSiteVisit/, 
-        $/industrySpeaker/
+        $/industrySpeaker/,
+        $/publicProfile/
       )
       RETURNING *
   `;
@@ -219,7 +232,8 @@ const updateVolunteer = async (user) => {
       behavioral_mock_interview = $/behavioralMockInterview/,
       professional_skills_coach = $/professionalSkillsCoach/,
       hosting_site_visit = $/hostSiteVisit/,
-      industry_speaker = $/industrySpeaker/
+      industry_speaker = $/industrySpeaker/,
+      public_profile = $/publicProfile/
     WHERE v_id = $/userId/
     RETURNING *
   `;
@@ -276,7 +290,7 @@ module.exports = {
   getAllVolunteers,
   getNewVolunteers,
   getVolunteerByEmail,
-  getVolunteerById,
+  getVolunteerByIdOrEmail,
   addVolunteer,
   updateVolunteer,
   confirmVolunteer,

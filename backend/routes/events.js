@@ -105,32 +105,32 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 })
 
 // Get all upcoming events
-router.get('/upcoming', async (req, res, next) => {
-    try {
-        let allEvents = await eventsQueries.getUpcomingEvents();
-        res.json({
-            payload: allEvents,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+// router.get('/upcoming', async (req, res, next) => {
+//     try {
+//         let allEvents = await eventsQueries.getUpcomingEvents();
+//         res.json({
+//             payload: allEvents,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
 // Get all past events
-router.get('/past', async (req, res, next) => {
-    try {
-        let allEvents = await eventsQueries.getPastEvents();
-        res.json({
-            payload: allEvents,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+// router.get('/past', async (req, res, next) => {
+//     try {
+//         let allEvents = await eventsQueries.getPastEvents();
+//         res.json({
+//             payload: allEvents,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
 // Get all past events by volunteer id
 router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {

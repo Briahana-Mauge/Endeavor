@@ -44,13 +44,17 @@ router.get('/all', async (req, res, next) => {
 // Get all new (unconfirmed) volunteers
 router.get('/new', async (req, res, next) => {
     try {
-        let newVolunteers = await volunteerQueries.getNewVolunteers();
-        res.status(200)
-            .json({
-                payload: newVolunteers,
-                message: "Success",
-                err: false
-            });
+        if (req.user && req.user.a_id) {
+            const newVolunteers = await volunteerQueries.getNewVolunteers();
+            res.status(200)
+                .json({
+                    payload: newVolunteers,
+                    message: "Success",
+                    err: false
+                });
+        } else {
+            throw new Error('403_Admin right only');
+        }
     } catch (err) {
         handleError(err, req, res, next);
     }
@@ -59,8 +63,19 @@ router.get('/new', async (req, res, next) => {
 // Get volunteer by email
 router.get('/email/:v_email', async (req, res, next) => {
     try {
-        const vEmail = processInput(req.params.v_email, "hardVC", "volunteer email", 50);
-        let volunteer = await volunteerQueries.getVolunteerByEmail(vEmail);
+        const email = processInput(req.params.v_email, "hardVC", "volunteer email", 50);
+
+        let publicProfilesOnly = true;
+        if (req.user && req.user.a_id) {
+            publicProfilesOnly = false;
+        }
+
+        let volunteerId = null;
+        if (req.user && req.user.v_id) {
+            volunteerId = req.user.v_id;
+        }
+
+        const volunteer = await volunteerQueries.getVolunteerByIdOrEmail(null, email, publicProfilesOnly, volunteerId);
         res.json({
                 payload: volunteer,
                 message: "Successfully retrieved volunteer's info",
@@ -74,8 +89,19 @@ router.get('/email/:v_email', async (req, res, next) => {
 // Get volunteer by email
 router.get('/id/:volunteer_id', async (req, res, next) => {
     try {
-        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-        const volunteer = await volunteerQueries.getVolunteerById(volunteerId);
+        const id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+
+        let publicProfilesOnly = true;
+        if (req.user && req.user.a_id) {
+            publicProfilesOnly = false;
+        }
+
+        let volunteerId = null;
+        if (req.user && req.user.v_id) {
+            volunteerId = req.user.v_id;
+        }
+
+        const volunteer = await volunteerQueries.getVolunteerByIdOrEmail(id, null, publicProfilesOnly, volunteerId);
         res.json({
                 payload: volunteer,
                 message: "Successfully retrieved volunteer's info",

@@ -291,7 +291,7 @@ const deleteEvent = async (id) => {
 // Get all past events by volunteer Id
 const getPastEventsByVolunteerId = async (id) => {
   const selectQuery = `
-    SELECT event_id, topic, event_start
+    SELECT event_id, topic, event_start, volunteered_time
     FROM events 
     INNER JOIN event_volunteers ON event_id = ev_id
     WHERE event_start < now() AND volunteer_id = $1 AND confirmed = TRUE

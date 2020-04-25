@@ -80,6 +80,8 @@ export default function CommonSubForm(props) {
                                 setHostSiteVisit={props.setHostSiteVisit}
                                 industrySpeaker={props.industrySpeaker}
                                 setIndustrySpeaker={props.setIndustrySpeaker}
+                                publicProfile={props.publicProfile}
+                                setPublicProfile={props.setPublicProfile}
                                 />
                             : null
                         }

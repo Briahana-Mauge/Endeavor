@@ -82,6 +82,7 @@ export default function VolunteerSearch(props) {
                         volunteer={volunteer}
                         displayProfile={displayProfile}
                         setTargetVolunteerId={makeTargetVolunteerId}
+                        setFeedback={setFeedback}
                     />
                 )}
             </div>
