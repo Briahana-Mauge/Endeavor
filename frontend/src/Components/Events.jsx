@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventsCard from './EventsCard';
+import EventPreviewCard from './EventPreviewCard';
+import EventCard from './EventCard';
 import EventForm from './EventForm';
 
 
@@ -14,8 +15,9 @@ export default function EventSearch(props) {
     const [dateFilter, setDateFilter] = useState('');
     const [reload, setReload] = useState(false); 
     const [displayEventForm, setDisplayEventForm] = useState(false);
-    // const [targetEventId, setTargetEventId] = useState(0);
-    // const [displayTargetEvent, setDisplayTargetEvent] = useState(false);
+    
+    const [targetEvent, setTargetEvent] = useState(0);
+    const [showEvent, setShowEvent] = useState(false);
 
     const [ formType, setFormType ] = useState('add');
     const [ eventId, setEventId ] = useState(0);
@@ -99,15 +101,6 @@ export default function EventSearch(props) {
         setReload(!reload);
     }
 
-    const handleDeleteEvent = async (id) => {
-        try {
-            await axios.delete(`/api/events/${id}`)
-            setReload(!reload);
-        } catch (err) {
-            setFeedback(err);
-        }
-    }
-
     const clearInputs = () => {
         setFormType('add');
         setEventId(0);
@@ -174,11 +167,6 @@ export default function EventSearch(props) {
         // setEventDuration(event.event_duration);
     }
 
-    const handleEditButton = (event) => {
-        preFillEvent(event);
-        setDisplayEventForm(true);
-    }
-
     const calcHours = (date1, date2) => { // Function to validate the event's date
         const now = new Date().getTime();
         const d1 = new Date(date1).getTime();
@@ -205,14 +193,6 @@ export default function EventSearch(props) {
                     const end = `${endDate} ${endTime || '23:59'}-${timeZone}`;
 
                     calcHours(start, end);
-                    // let evDuration = eventDuration;
-                    // if (mustEnterDuration && !eventDuration) {
-                    //     throw new Error('Please enter an estimated duration for the event');
-                    // } else {
-                    //     const duration = calcHours(start, end);
-                    //     setEventDuration(duration);
-                    //     evDuration = duration;
-                    // }
 
                     const event = {
                         start,
@@ -223,8 +203,7 @@ export default function EventSearch(props) {
                         location,
                         instructor,
                         numberOfVolunteers,
-                        materialsUrl,
-                        // eventDuration: evDuration
+                        materialsUrl
                     }
                     
                     if (formType === 'edit') {
@@ -244,10 +223,14 @@ export default function EventSearch(props) {
         }
     }
 
+    const hideEvent = () => {
+        setTargetEvent({});
+        setShowEvent(false);
+    }
 
 
     return (
-        <div className=''>
+        <>
             {
                 loggedUser && loggedUser.a_id
                 ? <>
@@ -289,20 +272,33 @@ export default function EventSearch(props) {
 
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
-            
-            <div className='row m-1'>
-                {results.map(event => <EventsCard 
-                                key={event.event_id}
-                                loggedUser={loggedUser} 
-                                event={event} 
-                                delete={handleDeleteEvent} 
-                                edit={handleEditButton}
-                                setFeedback={setFeedback}
-                            />
-                )}
-            </div>
 
-        </div>
+            <div className='d-flex flex-wrap'>
+                {
+                    results.map(event => <EventPreviewCard 
+                        key={event.event_id + event.event_end + event.event_start}
+                        loggedUser={loggedUser}
+                        event={event}
+                        setShowEvent={setShowEvent}
+                        setFeedback={setFeedback}
+                        setTargetEvent={setTargetEvent}
+                    />)
+                }
+            </div>
+            
+            {
+                showEvent 
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reload}
+                        setReloadParent={setReload}
+                        hideEvent={hideEvent}
+                    />
+                :   null
+            }
+        </>
     );
 }
 

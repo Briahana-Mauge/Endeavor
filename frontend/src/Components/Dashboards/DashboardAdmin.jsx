@@ -10,7 +10,7 @@ import axios from 'axios';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
 import EventPreviewCard from '../EventPreviewCard';
-import EventsCard from '../EventsCard';
+import EventCard from '../EventCard';
 
 const DashboardAdmin = (props) => {
     const { setFeedback, loggedUser } = props;
@@ -19,7 +19,8 @@ const DashboardAdmin = (props) => {
     const [ eventsList, setEventsList ] = useState([]);
     const [ showEvent, setShowEvent ] = useState(false);
     const [ targetEvent, setTargetEvent ] = useState({});
-    const [ reload, setReload ] = useState(false);
+    const [ reloadDashboard, setReloadDashboard ] = useState(false);
+
 
     useEffect(() => {
         const getNewVolunteer = async () => {
@@ -33,12 +34,12 @@ const DashboardAdmin = (props) => {
 
         getNewVolunteer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
+    }, [reloadDashboard]);
 
     useEffect(() => {
         const getEvents = async () => {
             try {
-                const {data} = await axios.get('/api/events/all?upcoming=true');
+                const {data} = await axios.get('/api/events/admin/all?upcoming=true');
                 setEventsList(data.payload);
             } catch (err) {
                 setFeedback(err)
@@ -47,28 +48,22 @@ const DashboardAdmin = (props) => {
 
         getEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
+    }, [reloadDashboard]);
 
 
     const acceptVolunteer = async (id) => {
         try {
             await axios.patch(`/api/volunteers/confirm/${id}`);
-            setReload(!reload);
+            setReloadDashboard(!reloadDashboard);
         } catch (err) {
             setFeedback(err)
         }
-    }
-
-    const displayEvent = (event) => {
-        setTargetEvent(event);
-        setShowEvent(true);
     }
 
     const hideEvent = () => {
         setTargetEvent({});
         setShowEvent(false);
     }
-
 
 
     return (
@@ -84,29 +79,29 @@ const DashboardAdmin = (props) => {
 
             <hr />
             <h3>Upcoming Events:</h3>
-            {
-                eventsList.map(event => <EventPreviewCard 
-                        key={event.event_id + event.event_end + event.event_start} 
-                        event={event}
-                        displayEvent={displayEvent}
-                    />)
-            }
+            <div className='d-flex flex-wrap'>
+                {
+                    eventsList.map(event => <EventPreviewCard 
+                            key={event.event_id + event.event_end + event.event_start}
+                            loggedUser={loggedUser}
+                            event={event}
+                            setShowEvent={setShowEvent}
+                            setFeedback={setFeedback}
+                            setTargetEvent={setTargetEvent}
+                        />)
+                }
+            </div>
 
             {
                 showEvent 
-                ?   <div className='lightBox'>
-                        <div className='text-right m-2'>
-                            <button className='btn-sm btn-danger' onClick={hideEvent}>X</button>
-                        </div>
-                        <EventsCard 
-                            loggedUser={loggedUser} 
-                            event={targetEvent}
-                            setFeedback={setFeedback}
-                            reload={reload}
-                            setReload={setReload}
-
-                        />
-                    </div>
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reloadDashboard}
+                        setReloadParent={setReloadDashboard}
+                        hideEvent={hideEvent}
+                    />
                 : null
             }
         </>

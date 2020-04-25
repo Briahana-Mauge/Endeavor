@@ -56,7 +56,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
       event_duration
     ORDER BY (
       CASE 
-        WHEN DATE(event_start) > NOW()
+        WHEN event_start > NOW()
         THEN 1
         ELSE 0
       END
@@ -122,13 +122,13 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     event_start, 
     event_end, 
     description, 
+    staff_description,
     location, 
     instructor, 
-    number_of_volunteers AS volunteers_needed, 
+    number_of_volunteers, 
     cohort,
     cohort_id,
-    materials_url,
-    event_duration
+    materials_url
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -138,21 +138,13 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 
   const endOfQuery = `
     GROUP BY  
-      events.event_id, 
-      events.topic, 
-      events.event_start, 
-      events.event_end, 
-      events.description, 
-      events.location, 
-      events.instructor, 
-      events.number_of_volunteers, 
-      cohorts.cohort,
-      cohorts.cohort_id
+      event_id,
+      cohort_id
     ORDER BY (
       CASE 
-      	WHEN DATE(event_start) > NOW()
+      	WHEN event_start > NOW()
           THEN 2
-        WHEN DATE(event_end) > NOW()
+        WHEN event_end > NOW()
           THEN 1
         ELSE 0
         END
