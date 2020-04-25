@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
 
 const EventsCard = (props) => {
+    const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
@@ -11,7 +13,7 @@ const EventsCard = (props) => {
     
     useEffect(() => {
         setVolunteersList(event.volunteersList);
-    }, [event.reload]);
+    }, [event.reload, event.volunteersList]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
@@ -65,7 +67,7 @@ const EventsCard = (props) => {
     }
 
     const handleEditButton = () => {
-
+        history.push(`/event/edit/${event.event_id}`);
     }
 
     let displayVolunteersList = null;
