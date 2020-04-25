@@ -76,6 +76,7 @@ const Dashboard = (props) => {
                     displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
+                    setShowEvent = {setShowEvent}
                 />)
             }
 
@@ -91,6 +92,7 @@ const Dashboard = (props) => {
                             setFeedback={setFeedback}
                             reload={reload}
                             setReload={setReload}
+                            
 
                         />
                     </div>
