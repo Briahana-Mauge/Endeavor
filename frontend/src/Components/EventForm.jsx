@@ -95,23 +95,19 @@ console.log(11111, event)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formType, eventId]);
 
-    const clearInputs = () => {
-        // setFormType('add');
-        // setEventId(0);
-        setStartDate('');
-        setStartTime('');
-        setEndDate('');
-        setEndTime('');
-        setTopic('');
-        setDescription('');
-        setAttendees('');
-        setEventLocation('');
-        setInstructor('');
-        setNumberOfVolunteers('');
-        setMaterialsUrl('');
-        // setEventDuration(0);
-    }
-
+    // const clearInputs = () => {
+    //     setStartDate('');
+    //     setStartTime('');
+    //     setEndDate('');
+    //     setEndTime('');
+    //     setTopic('');
+    //     setDescription('');
+    //     setAttendees('');
+    //     setEventLocation('');
+    //     setInstructor('');
+    //     setNumberOfVolunteers('');
+    //     setMaterialsUrl('');
+    // }
 
 
     const calcHours = (date1, date2) => { // Function to validate the event's date
@@ -159,8 +155,6 @@ console.log(11111, event)
                         await axios.post('/api/events/add', event);
                     }
                     history.push('/events/home');
-                    // hideEventForm();
-                    // setReload(!reload);
 
 
                 } else {
@@ -283,17 +277,6 @@ console.log(11111, event)
                             value={materialsUrl}
                             onChange={e => setMaterialsUrl(e.target.value)}
                         />
-                        {/* {
-                            mustEnterDuration
-                            ? <input 
-                                className='form-control w-25' 
-                                type='number' 
-                                placeholder='Event duration (H)' 
-                                value={eventDuration}
-                                onChange={e => setEventDuration(e.target.value)}
-                            />
-                            : null
-                        } */}
 
                         <button className='btn btn-primary'>Submit</button>
                     </span>
