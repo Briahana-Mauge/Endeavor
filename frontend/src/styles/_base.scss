@@ -205,6 +205,21 @@ nav button {
     }
 }
 
+.g1Popover {
+    &, &:hover, &:active, &:focus {
+        all: unset;
+    }
+
+    &.btn-secondary:not(:disabled):not(.disabled):active {
+        color: inherit;
+        background-color: inherit;
+        border: none;
+        box-shadow: none;
+    }
+
+    @include link-states();
+}
+
 @media (max-width: 992px) {
     .g1MobileTextALign {
         width: 100%;
