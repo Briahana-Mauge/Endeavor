@@ -43,7 +43,7 @@ const Dashboard = (props) => {
             try {
                 const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
                 setShowVolunteeredTime(data.payload.sum)
-                
+
             } catch (err) {
                 setFeedback(err)
             }
@@ -77,10 +77,10 @@ const Dashboard = (props) => {
     return (
         <>
             <h3>Upcoming Events:</h3>
-            {eventsList.length === 0?
-            <><p>You are not registered to volunteer at any upcoming events.</p>
-            <p> Visit the Events page to find out more!</p></>
-            :null}
+            {eventsList.length === 0 ?
+                <><p>You are not registered to volunteer at any upcoming events.</p>
+                    <p> Visit the Events page to find out more!</p></>
+                : null}
 
             {
                 eventsList.map(event => <EventPreviewCard
@@ -89,7 +89,7 @@ const Dashboard = (props) => {
                     displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
-                    setShowEvent = {setShowEvent}
+                    setShowEvent={setShowEvent}
                 />)
             }
 
@@ -105,13 +105,18 @@ const Dashboard = (props) => {
                             setFeedback={setFeedback}
                             reload={reload}
                             setReload={setReload}
-                            
+
 
                         />
                     </div>
                     : null
             }
-
+            <br></br>
+            <br></br>
+            <h3>Important Pursuit Events</h3>
+            <p>This is where events marked as important will go</p>
+            <br></br>
+            <br></br>
             <h3>Personal Stats</h3>
             <p>
                 You've got {showVolunteeredTime} volunteer hours!
@@ -124,8 +129,11 @@ const Dashboard = (props) => {
                         ? <p>So far, you've participated in {showPastEvents} events.</p>
                         : <p>So far, you've participated in {showPastEvents} event.</p>
             }
+
+
+
         </>
-    
+
     )
 }
 
