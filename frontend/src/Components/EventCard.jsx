@@ -13,7 +13,7 @@ const EventsCard = (props) => {
     
     useEffect(() => {
         setVolunteersList(event.volunteersList);
-    }, [event.reload]);
+    }, [event.reload, event.volunteersList]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
@@ -67,7 +67,7 @@ const EventsCard = (props) => {
     }
 
     const handleEditButton = () => {
-
+        history.push(`/event/edit/${event.event_id}`);
     }
 
     let displayVolunteersList = null;
@@ -186,7 +186,7 @@ const EventsCard = (props) => {
                     ?   <div className='d-flex justify-content-between m-2'>
                             <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
                             <span className='flex-fill'></span>
-                            <button className='btn btn-outline-warning flex-fill' onClick={e => history.push(`/event/edit/${event.event_id}`)}>Edit</button>
+                            <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
                         </div>
                     : null
                 }

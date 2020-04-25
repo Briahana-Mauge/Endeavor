@@ -19,51 +19,68 @@ const { formatStr } = require('../helpers/helpers');
 /* QUERIES */
 
 // Get all volunteers with filter cases
-const getAllVolunteers = async (vEmail, company, skill, name) => {
-  let parsedCompany = '';
-  let parsedSkill = '';
+const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly, volunteerId) => {
+  return await db.task(async (t) => {
 
-  if (company) {
-    parsedCompany = formatStr(company);
-  }
-  if (skill) {
-    parsedSkill = formatStr(skill);
-  }
+    let parsedCompany = '';
+    let parsedSkill = '';
 
-  const selectQuery = `
-    SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
-        volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
-        ARRAY_AGG(DISTINCT skills.skill) AS skills,  
-        ARRAY_AGG(DISTINCT events.topic) AS topics,
-        volunteers.active
-    FROM volunteers 
-    INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
-    INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
-    INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-    INNER JOIN events ON events.event_id = event_volunteers.eventv_id
-    
-  `
-  const endOfQuery = `
-    GROUP BY volunteers.v_id
-    ORDER BY v_first_name ASC
-  `
+    if (company) {
+      parsedCompany = formatStr(company);
+    }
+    if (skill) {
+      parsedSkill = formatStr(skill);
+    }
 
-  let condition = ' WHERE volunteers.confirmed = TRUE AND volunteers.deleted IS NULL ';
+    const selectQuery = `
+      SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
+          volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
+          ARRAY_AGG(DISTINCT skills.skill) AS skills,  
+          ARRAY_AGG(DISTINCT events.topic) AS topics,
+          volunteers.active
+      FROM volunteers 
+      INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
+      INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
+      INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+      INNER JOIN events ON events.event_id = event_volunteers.eventv_id
 
-  if (vEmail) {
-    condition += ' AND volunteers.v_email = $/vEmail/ '
-  }
-  if (parsedCompany) {
-    condition += ' AND volunteers.parsed_company = $/parsedCompany/ '
-  }
-  if (parsedSkill) {
-    condition += ' AND skills.parsed_skill = $/parsedSkill/ '
-  }
-  if (name) {
-    condition += ` AND LOWER(volunteers.v_first_name) = $/name/ OR LOWER(volunteers.v_last_name) = $/name/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/name/ `
-  }
+    `
+    const endOfQuery = `
+      GROUP BY volunteers.v_id
+      ORDER BY v_first_name ASC
+    `
 
-  return await db.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+    let condition = ' WHERE volunteers.confirmed = TRUE AND volunteers.deleted IS NULL ';
+
+    if (vEmail) {
+      condition += ' AND volunteers.v_email = $/vEmail/ '
+    }
+    if (parsedCompany) {
+      condition += ' AND volunteers.parsed_company = $/parsedCompany/ '
+    }
+    if (parsedSkill) {
+      condition += ' AND skills.parsed_skill = $/parsedSkill/ '
+    }
+    if (name) {
+      condition += ` AND LOWER(volunteers.v_first_name) = $/name/ OR LOWER(volunteers.v_last_name) = $/name/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/name/ `
+    }
+
+    let volunteersList = null;
+    if (publicProfilesOnly) {
+      volunteersList = await t.any(selectQuery + condition + ' AND public_profile IS TRUE' + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+    } else {
+      volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+    }
+
+    if (volunteerId) {
+      const userProfile = t.oneOrNone(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name})
+      if (userProfile && !userProfile.public_profile && Array.isArray(volunteersList)) {
+        volunteersList.push(userProfile);
+      }
+    }
+
+    return volunteersList;
+  })
 }
 
 

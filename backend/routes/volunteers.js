@@ -19,7 +19,17 @@ router.get('/all', async (req, res, next) => {
         const skill = processInput(req.query.skill, "softVC", "volunteer skill", 100).toLowerCase();
         const name = processInput(req.query.name, "softVC", "volunteer name", 60).toLowerCase();
 
-        const allVolunteers = await volunteerQueries.getAllVolunteers(vEmail, company, skill, name);
+        let publicProfilesOnly = true;
+        if (req.user && req.user.a_id) {
+            publicProfilesOnly = false;
+        }
+
+        let volunteerId = null;
+        if (req.user && req.user.v_id) {
+            volunteerId = req.user.v_id;
+        }
+
+        const allVolunteers = await volunteerQueries.getAllVolunteers(vEmail, company, skill, name, publicProfilesOnly, volunteerId);
         res.status(200)
             .json({
                 payload: allVolunteers,
