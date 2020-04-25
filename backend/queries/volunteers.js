@@ -123,7 +123,7 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       mentoring, office_hours, tech_mock_interview,
       behavioral_mock_interview, professional_skills_coach,
       hosting_site_visit, industry_speaker,
-      signup_date, inactive_date, volunteers.deleted,
+      signup_date, inactive_date, volunteers.deleted, public_profile,
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
       ARRAY_AGG (DISTINCT events.event_id) AS event_ids,
       ARRAY_AGG (DISTINCT mentor_pairs.mentee) AS mentee_ids
@@ -144,11 +144,9 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
     condition = ' WHERE v_email = $/email/ '
   }
 
-  if (publicProfilesOnly) {
-    condition += ' AND public_profile = TRUE '
-  }
   const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
-  if (publicProfilesOnly && !volunteer.public_profile && volunteerId !== volunteer.v_id){
+
+  if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
     return new Error('403__Not accessible');
   }
   return volunteer;
