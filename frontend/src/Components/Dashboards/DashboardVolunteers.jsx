@@ -19,6 +19,7 @@ const Dashboard = (props) => {
     const [showEvent, setShowEvent] = useState(false);
     const [showVolunteeredTime, setShowVolunteeredTime] = useState(0);
     const [showPastEvents, setShowPastEvents] = useState('')
+    const [showImportantEvents, setShowImportantEvents] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
     const [reload, setReload] = useState(false);
 
@@ -57,9 +58,26 @@ const Dashboard = (props) => {
                 setFeedback(err)
             }
         }
+        const getImportantEvents = async () => {
+            try {
+                const { data } = await axios.get(`/api/events/important`);
+                console.log(data)
+                let first3 = [];
+                for (let i = 0; i < 3; i++) {
+                    if (data.payload[i]) {
+                        first3.push(data.payload[i])
+                    }
+                }
+                setShowImportantEvents(first3)
+            } catch (err) {
+                setFeedback(err)
+            }
+        }
+
         getEvents();
         getAllVolunteeredTime();
         getNumberOfPastEvents();
+        getImportantEvents();
     }, [reload]);
 
     const displayEvent = (event) => {
@@ -114,7 +132,17 @@ const Dashboard = (props) => {
             <br></br>
             <br></br>
             <h3>Important Pursuit Events</h3>
-            <p>This is where events marked as important will go</p>
+            {
+                showImportantEvents.map(event => <EventPreviewCard
+                    key={event.event_id + event.event_end + event.event_start}
+                    event={event}
+                    displayEvent={displayEvent}
+                    loggedUser={props.loggedUser}
+                    setTargetEvent={setTargetEvent}
+                    setShowEvent={setShowEvent}
+                />)
+            }
+
             <br></br>
             <br></br>
             <h3>Personal Stats</h3>
