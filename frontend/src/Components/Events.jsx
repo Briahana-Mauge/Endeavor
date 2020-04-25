@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventPreviewCard from './EventPreviewCard';
@@ -7,6 +8,7 @@ import EventForm from './EventForm';
 
 
 export default function EventSearch(props) {
+    const history = useHistory();
     const { setFeedback, loggedUser } = props;
 
     const [search, setSearch] = useState('');
@@ -14,55 +16,55 @@ export default function EventSearch(props) {
     const [filter, setFilter] = useState('');
     const [dateFilter, setDateFilter] = useState('');
     const [reload, setReload] = useState(false); 
-    const [displayEventForm, setDisplayEventForm] = useState(false);
+    // const [displayEventForm, setDisplayEventForm] = useState(false);
     
     const [targetEvent, setTargetEvent] = useState(0);
     const [showEvent, setShowEvent] = useState(false);
 
-    const [ formType, setFormType ] = useState('add');
-    const [ eventId, setEventId ] = useState(0);
-    const [ startDate, setStartDate ] = useState('');
-    const [ startTime, setStartTime ] = useState('');
-    const [ endDate, setEndDate ] = useState('');
-    const [ endTime, setEndTime ] = useState('');
-    const [ topic, setTopic ] = useState('');
-    const [ description, setDescription ] = useState('');
-    const [ attendees, setAttendees ] = useState('');
-    const [ location, setLocation ] = useState('');
-    const [ instructor, setInstructor ] = useState('');
-    const [ numberOfVolunteers, setNumberOfVolunteers ] = useState(''); 
-    const [ materialsUrl, setMaterialsUrl ] = useState(''); 
-    // const [ eventDuration, setEventDuration ] = useState(0);
-    // const [ mustEnterDuration, setMustEnterDuration ] = useState(true);
+    // const [ formType, setFormType ] = useState('add');
+    // const [ eventId, setEventId ] = useState(0);
+    // const [ startDate, setStartDate ] = useState('');
+    // const [ startTime, setStartTime ] = useState('');
+    // const [ endDate, setEndDate ] = useState('');
+    // const [ endTime, setEndTime ] = useState('');
+    // const [ topic, setTopic ] = useState('');
+    // const [ description, setDescription ] = useState('');
+    // const [ attendees, setAttendees ] = useState('');
+    // const [ location, setLocation ] = useState('');
+    // const [ instructor, setInstructor ] = useState('');
+    // const [ numberOfVolunteers, setNumberOfVolunteers ] = useState(''); 
+    // const [ materialsUrl, setMaterialsUrl ] = useState(''); 
+    // // const [ eventDuration, setEventDuration ] = useState(0);
+    // // const [ mustEnterDuration, setMustEnterDuration ] = useState(true);
 
 
-    const eventInputs = {
-        startDate, 
-        setStartDate,
-        startTime, 
-        setStartTime,
-        endDate, 
-        setEndDate,
-        endTime, 
-        setEndTime,
-        topic, 
-        setTopic,
-        description, 
-        setDescription,
-        attendees, 
-        setAttendees,
-        location, 
-        setLocation,
-        instructor, 
-        setInstructor,
-        numberOfVolunteers, 
-        setNumberOfVolunteers,
-        materialsUrl, 
-        setMaterialsUrl,
-        // eventDuration,
-        // setEventDuration,
-        // mustEnterDuration
-    }
+    // const eventInputs = {
+    //     startDate, 
+    //     setStartDate,
+    //     startTime, 
+    //     setStartTime,
+    //     endDate, 
+    //     setEndDate,
+    //     endTime, 
+    //     setEndTime,
+    //     topic, 
+    //     setTopic,
+    //     description, 
+    //     setDescription,
+    //     attendees, 
+    //     setAttendees,
+    //     location, 
+    //     setLocation,
+    //     instructor, 
+    //     setInstructor,
+    //     numberOfVolunteers, 
+    //     setNumberOfVolunteers,
+    //     materialsUrl, 
+    //     setMaterialsUrl,
+    //     // eventDuration,
+    //     // setEventDuration,
+    //     // mustEnterDuration
+    // }
 
 
 
@@ -101,127 +103,127 @@ export default function EventSearch(props) {
         setReload(!reload);
     }
 
-    const clearInputs = () => {
-        setFormType('add');
-        setEventId(0);
-        setStartDate('');
-        setStartTime('');
-        setEndDate('');
-        setEndTime('');
-        setTopic('');
-        setDescription('');
-        setAttendees('');
-        setLocation('');
-        setInstructor('');
-        setNumberOfVolunteers('');
-        setMaterialsUrl('');
-        // setEventDuration(0);
-    }
+    // const clearInputs = () => {
+    //     setFormType('add');
+    //     setEventId(0);
+    //     setStartDate('');
+    //     setStartTime('');
+    //     setEndDate('');
+    //     setEndTime('');
+    //     setTopic('');
+    //     setDescription('');
+    //     setAttendees('');
+    //     setLocation('');
+    //     setInstructor('');
+    //     setNumberOfVolunteers('');
+    //     setMaterialsUrl('');
+    //     // setEventDuration(0);
+    // }
 
-    const hideEventForm = () => {
-        clearInputs();
-        setDisplayEventForm(false);
-        // setReload(!reload);
-    }
+    // const hideEventForm = () => {
+    //     clearInputs();
+    //     setDisplayEventForm(false);
+    //     // setReload(!reload);
+    // }
 
-    const preFillEvent = (event) => {
-        const formatDate = (strDate) => {
-            const date = new Date(strDate);
-            const y = date.getFullYear();
-            let m = date.getMonth() + 1 + '';
-            if (m.length === 1) {
-                m = '0' + m;
-            }
-            let d = date.getDate() + '';
-            if (d.length === 1) {
-                d = '0' + d;
-            }
-            return `${y}-${m}-${d}`;
-        }
+    // const preFillEvent = (event) => {
+    //     const formatDate = (strDate) => {
+    //         const date = new Date(strDate);
+    //         const y = date.getFullYear();
+    //         let m = date.getMonth() + 1 + '';
+    //         if (m.length === 1) {
+    //             m = '0' + m;
+    //         }
+    //         let d = date.getDate() + '';
+    //         if (d.length === 1) {
+    //             d = '0' + d;
+    //         }
+    //         return `${y}-${m}-${d}`;
+    //     }
 
-        const formatTime = (date) => {
-            const t = new Date(date).toLocaleTimeString();
-            const amOrPm = t.split(' ')[1];
-            let h = t.split(':')[0];
-            const m = t.split(':')[1];
-            if (amOrPm === 'pm' || amOrPm === 'Pm' || amOrPm === 'PM') {
-                h = parseInt(h) + 12;
-            }
-            return `${h}:${m}`
-        }
+    //     const formatTime = (date) => {
+    //         const t = new Date(date).toLocaleTimeString();
+    //         const amOrPm = t.split(' ')[1];
+    //         let h = t.split(':')[0];
+    //         const m = t.split(':')[1];
+    //         if (amOrPm === 'pm' || amOrPm === 'Pm' || amOrPm === 'PM') {
+    //             h = parseInt(h) + 12;
+    //         }
+    //         return `${h}:${m}`
+    //     }
 
-        setFormType('edit');
-        setEventId(event.event_id);
-        setStartDate(event.event_start)
-        setStartDate(formatDate(event.event_start));
-        setStartTime(formatTime(event.event_start));
-        setEndDate(formatDate(event.event_end));
-        setEndTime(formatTime(event.event_end));
-        setTopic(event.topic);
-        setDescription(event.description);
-        setAttendees(event.cohort_id + '');
-        setLocation(event.location);
-        setInstructor(event.instructor);
-        setNumberOfVolunteers(event.volunteers_needed)
-        setMaterialsUrl(event.materials_url);
-        // setEventDuration(event.event_duration);
-    }
+    //     setFormType('edit');
+    //     setEventId(event.event_id);
+    //     setStartDate(event.event_start)
+    //     setStartDate(formatDate(event.event_start));
+    //     setStartTime(formatTime(event.event_start));
+    //     setEndDate(formatDate(event.event_end));
+    //     setEndTime(formatTime(event.event_end));
+    //     setTopic(event.topic);
+    //     setDescription(event.description);
+    //     setAttendees(event.cohort_id + '');
+    //     setLocation(event.location);
+    //     setInstructor(event.instructor);
+    //     setNumberOfVolunteers(event.volunteers_needed)
+    //     setMaterialsUrl(event.materials_url);
+    //     // setEventDuration(event.event_duration);
+    // }
 
-    const calcHours = (date1, date2) => { // Function to validate the event's date
-        const now = new Date().getTime();
-        const d1 = new Date(date1).getTime();
-        const d2 = new Date(date2).getTime();
-        const time = d2 - d1;
-        if (time <= 0) {
-            throw new Error('End date must be later then the start date');
-        }
-        if ((formType ==='add' && d1 < now) || (formType === 'edit' && d2 < now)) {
-            throw new Error('Events cannot be created / edited for past times ');
-        }
-        return Math.ceil(time / 3600000);
-    }
+    // const calcHours = (date1, date2) => { // Function to validate the event's date
+    //     const now = new Date().getTime();
+    //     const d1 = new Date(date1).getTime();
+    //     const d2 = new Date(date2).getTime();
+    //     const time = d2 - d1;
+    //     if (time <= 0) {
+    //         throw new Error('End date must be later then the start date');
+    //     }
+    //     if ((formType ==='add' && d1 < now) || (formType === 'edit' && d2 < now)) {
+    //         throw new Error('Events cannot be created / edited for past times ');
+    //     }
+    //     return Math.ceil(time / 3600000);
+    // }
 
-    const handleSubmitForm = async (e) => {
-        e.preventDefault();
+    // const handleSubmitForm = async (e) => {
+    //     e.preventDefault();
 
-        try {
-            if (startDate && endDate && topic && description && attendees 
-                && location && instructor && numberOfVolunteers) {
-                    const timeZone = new Date().getTimezoneOffset() / 60;
+    //     try {
+    //         if (startDate && endDate && topic && description && attendees 
+    //             && location && instructor && numberOfVolunteers) {
+    //                 const timeZone = new Date().getTimezoneOffset() / 60;
                     
-                    const start = `${startDate} ${startTime || '00:00'}-${timeZone}`;
-                    const end = `${endDate} ${endTime || '23:59'}-${timeZone}`;
+    //                 const start = `${startDate} ${startTime || '00:00'}-${timeZone}`;
+    //                 const end = `${endDate} ${endTime || '23:59'}-${timeZone}`;
 
-                    calcHours(start, end);
+    //                 calcHours(start, end);
 
-                    const event = {
-                        start,
-                        end,
-                        topic,
-                        description,
-                        attendees,
-                        location,
-                        instructor,
-                        numberOfVolunteers,
-                        materialsUrl
-                    }
+    //                 const event = {
+    //                     start,
+    //                     end,
+    //                     topic,
+    //                     description,
+    //                     attendees,
+    //                     location,
+    //                     instructor,
+    //                     numberOfVolunteers,
+    //                     materialsUrl
+    //                 }
                     
-                    if (formType === 'edit') {
-                        await axios.put(`/api/events/edit/${eventId}`, event);
-                    } else {
-                        await axios.post('/api/events/add', event);
-                    }
-                    hideEventForm();
-                    setReload(!reload);
+    //                 if (formType === 'edit') {
+    //                     await axios.put(`/api/events/edit/${eventId}`, event);
+    //                 } else {
+    //                     await axios.post('/api/events/add', event);
+    //                 }
+    //                 hideEventForm();
+    //                 setReload(!reload);
 
 
-                } else {
-                    props.setFeedback({message: 'All fields are required'});
-                }
-        } catch (err) {
-            props.setFeedback(err);
-        }
-    }
+    //             } else {
+    //                 props.setFeedback({message: 'All fields are required'});
+    //             }
+    //     } catch (err) {
+    //         props.setFeedback(err);
+    //     }
+    // }
 
     const hideEvent = () => {
         setTargetEvent({});
@@ -233,20 +235,21 @@ export default function EventSearch(props) {
         <>
             {
                 loggedUser && loggedUser.a_id
-                ? <>
-                    <div className='text-right'>
-                        <button className='btn btn-primary' onClick={e => setDisplayEventForm(true)}>Add Event</button>
+                // ? <>
+                ?    <div className='text-right'>
+                        {/* <button className='btn btn-primary' onClick={e => setDisplayEventForm(true)}>Add Event</button> */}
+                        <button className='btn btn-primary' onClick={e => history.push('/event/add')}>Add Event</button>
                     </div>
-                    {
-                        displayEventForm
-                        ? <EventForm
-                            setFeedback={setFeedback} 
-                            hideEventForm={hideEventForm} 
-                            {...eventInputs} 
-                            handleSubmitForm={handleSubmitForm}/>
-                        : null
-                    }
-                </>
+                //     {
+                //         displayEventForm
+                //         ? <EventForm
+                //             setFeedback={setFeedback} 
+                //             hideEventForm={hideEventForm} 
+                //             {...eventInputs} 
+                //             handleSubmitForm={handleSubmitForm}/>
+                //         : null
+                //     }
+                // </>
                 : null
             }
 

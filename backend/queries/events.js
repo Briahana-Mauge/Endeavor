@@ -90,7 +90,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, event_duration
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, event_duration,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -104,14 +104,14 @@ const getSingleEvent = async (eId) => {
   LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
-  WHERE events.event_id = $/eId/ AND event.deleted IS NULL
+  WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort     
+    events.instructor, events.number_of_volunteers, cohorts.cohort, cohorts.cohort_id    
 
   ORDER BY event_start DESC
   `;
-  return await db.any(selectQuery, { eId });
+  return await db.one(selectQuery, { eId });
 }
 
 const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
@@ -178,7 +178,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
+  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
   
   FROM events
@@ -189,7 +189,7 @@ const getSingleEventAdmin = async (eId) => {
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort
+    events.instructor, events.number_of_volunteers, cohorts.cohort, cohorts.cohort_id 
   `
   return await db.one(selectQuery, { eId });
 }

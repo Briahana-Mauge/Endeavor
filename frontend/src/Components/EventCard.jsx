@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
 
 const EventsCard = (props) => {
+    const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
@@ -184,7 +186,7 @@ const EventsCard = (props) => {
                     ?   <div className='d-flex justify-content-between m-2'>
                             <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
                             <span className='flex-fill'></span>
-                            <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
+                            <button className='btn btn-outline-warning flex-fill' onClick={e => history.push(`/event/edit/${event.event_id}`)}>Edit</button>
                         </div>
                     : null
                 }
