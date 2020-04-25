@@ -13,12 +13,12 @@ export default function EventForm (props) {
 
 
     return (
-        <>
+        <div className='lightBox'>
             <div className='text-right m-2'>
                 <button className='btn-sm btn-danger' onClick={props.hideEventForm}>X</button>
             </div>
             
-            <form className='form-row mt-3' onSubmit={props.handleSubmitForm}>
+            <form className='form-row m-3' onSubmit={props.handleSubmitForm}>
                 <div className='col-sm-6'>
                     <strong>Start:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
@@ -39,7 +39,7 @@ export default function EventForm (props) {
                     </span>
                 </div>
 
-                <div className='col-sm-6'>
+                <div className='col-sm-6 mb-3'>
                     <strong>End:</strong>
                     <span className='d-flex flex-wrap justify-content-center'>
                         <input 
@@ -123,13 +123,13 @@ export default function EventForm (props) {
                 <div className='col-sm-12'>
                     <span className='d-flex flex-wrap justify-content-between'>
                         <input 
-                            className='form-control mb-2 w-50' 
+                            className='form-control mb-2 w-75' 
                             type='url' 
                             placeholder='Materials Link' 
                             value={props.materialsUrl}
                             onChange={e => props.setMaterialsUrl(e.target.value)}
                         />
-                        {
+                        {/* {
                             props.mustEnterDuration
                             ? <input 
                                 className='form-control w-25' 
@@ -139,13 +139,12 @@ export default function EventForm (props) {
                                 onChange={e => props.setEventDuration(e.target.value)}
                             />
                             : null
-                        }
+                        } */}
 
                         <button className='btn btn-primary'>Submit</button>
                     </span>
                 </div>
-
             </form>
-        </>
+        </div>
     )
 }

@@ -12,19 +12,19 @@ const eventsQueries = require('../queries/events');
 
 
 // HELPER FUNCTION TO CALCULATE DIFFERENCE IN HOURS BETWEEN TWO DATES
-const calcHours = (date1, date2) => {
-    const now = new Date().getTime();
-    const d1 = new Date(date1).getTime();
-    const d2 = new Date(date2).getTime();
-    const time = d2 - d1;
-    if (time <= 0) {
-        throw new Error('400__End date must be later then the start date');
-    }
-    if (d1 < now || d2 < now) {
-        throw new Error('400__Events cannot be created for past times');
-    }
-    return Math.ceil(time / 3600000);
-}
+// const calcHours = (date1, date2) => {
+//     const now = new Date().getTime();
+//     const d1 = new Date(date1).getTime();
+//     const d2 = new Date(date2).getTime();
+//     const time = d2 - d1;
+//     if (time <= 0) {
+//         throw new Error('400__End date must be later then the start date');
+//     }
+//     if (d1 < now || d2 < now) {
+//         throw new Error('400__Events cannot be created for past times');
+//     }
+//     return Math.ceil(time / 3600000);
+// }
 
 // Get all events (past events are auto pushed to the back)
 router.get('/all/', async (req, res, next) => {
@@ -147,6 +147,21 @@ router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
     }
 });
 
+// Get all upcoming events by volunteer id
+router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId);
+        res.json({
+            payload: events,
+            message: "Success",
+            err: false
+        });
+      } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
 // Get all past events by fellow id
 router.get('/past/fellow/:fellow_id', async (req, res, next) => {
     try {
@@ -171,18 +186,19 @@ router.post('/add', async (req, res, next) => {
                 end: processInput(req.body.end, 'hardVC', 'event end date and time', 25),
                 topic: processInput(req.body.topic, 'hardVC', 'topic', 100),
                 description: processInput(req.body.description, 'hardVC', 'description'),
+                staffDescription: processInput(req.body.staffDescription, 'softVC', 'staff description'),
                 attendees: processInput(req.body.attendees, 'idNum', 'attendees id'),
                 location: processInput(req.body.location, 'hardVC', 'location', 200),
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
+                // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
             }
     
-            const calcEventTime = calcHours(eventData.start, eventData.end);
-            if (calcEventTime < eventData.eventDuration) {
-                throw new Error('400__Please double check the event duration');
-            }
+            // const calcEventTime = calcHours(eventData.start, eventData.end);
+            // if (calcEventTime < eventData.eventDuration) {
+            //     throw new Error('400__Please double check the event duration');
+            // }
 
             const events = await eventsQueries.postEvent(eventData);
             res.json({
@@ -209,18 +225,19 @@ router.put('/edit/:event_id', async (req, res, next) => {
                 end: processInput(req.body.end, 'hardVC', 'event end date and time', 25),
                 topic: processInput(req.body.topic, 'hardVC', 'topic', 100),
                 description: processInput(req.body.description, 'hardVC', 'description'),
+                staffDescription: processInput(req.body.staffDescription, 'softVC', 'staff description'),
                 attendees: processInput(req.body.attendees, 'idNum', 'attendees id'),
                 location: processInput(req.body.location, 'hardVC', 'location', 200),
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
+                // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
             }
             
-            const calcEventTime = calcHours(eventData.start, eventData.end);
-            if (calcEventTime < eventData.eventDuration) {
-                throw new Error('400__Please double check the event duration');
-            }
+            // const calcEventTime = calcHours(eventData.start, eventData.end);
+            // if (calcEventTime < eventData.eventDuration) {
+            //     throw new Error('400__Please double check the event duration');
+            // }
             
             const events = await eventsQueries.editEvent(eventData);
             res.json({

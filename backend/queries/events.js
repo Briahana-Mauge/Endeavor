@@ -170,9 +170,11 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     ORDER BY (
       CASE 
       	WHEN DATE(event_start) > NOW()
+          THEN 2
+        WHEN DATE(event_end) > NOW()
           THEN 1
-          ELSE 0
-         END
+        ELSE 0
+        END
       ) DESC, event_start ASC
   `;
   let condition = ' WHERE events.deleted IS NULL ';
@@ -249,6 +251,7 @@ const postEvent = async (eventObj) => {
       event_end,
       topic,
       description,
+      staff_description,
       attendees,
       location,
       instructor,
@@ -260,12 +263,13 @@ const postEvent = async (eventObj) => {
       $/end/,
       $/topic/,
       $/description/,
+      $/staffDescription/,
       $/attendees/,
       $/location/,
       $/instructor/,
       $/numberOfVolunteers/,
-      $/materialsUrl/
-      $/eventDuration/
+      $/materialsUrl/,
+      0
     )
     RETURNING *
   `
@@ -280,12 +284,13 @@ const editEvent = async (eventObj) => {
       event_end = $/end/,
       topic = $/topic/,
       description = $/description/,
+      staff_description = $/staffDescription/,
       attendees = $/attendees/,
       location = $/location/,
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
       materials_url = $/materialsUrl/,
-      event_duration = $/eventDuration/
+      event_duration = 0
     WHERE event_id = $/eventId/
     RETURNING *
   `
@@ -322,6 +327,18 @@ const getPastEventsByVolunteerId = async (id) => {
   return await db.any(selectQuery, id);
 }
 
+// Get all upcoming events by volunteer Id
+const getUpcomingEventsByVolunteerId = async (id) => {
+  const selectQuery = `
+   SELECT event_id, topic, event_start, instructor, description, event_end, location
+    FROM events 
+    INNER JOIN event_volunteers ON event_id = ev_id
+    WHERE event_start > now() AND volunteer_id = '10' AND confirmed = TRUE
+    ORDER BY event_start ASC
+  `;
+  return await db.any(selectQuery, id);
+}
+
 // Get all past events by volunteer Id
 const getPastEventsByFellowId = async (id) => {
   const selectQuery = `
@@ -344,6 +361,7 @@ module.exports = {
   getUpcomingEvents,
   getPastEvents,
   getPastEventsByVolunteerId,
+  getUpcomingEventsByVolunteerId,
   getPastEventsByFellowId,
   postEvent,
   editEvent,

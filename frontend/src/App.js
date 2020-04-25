@@ -156,7 +156,7 @@ function App() {
   const
     adminDashboard = <DashboardAdmin />,
     staffDashboard = <DashboardStaff />,
-    volunteersDashboard = <DashboardVolunteers />,
+    volunteersDashboard = <DashboardVolunteers loggedUser = {loggedUser}/>,
     fellowsDashboard = <DashboardFellows />,
     volunteersHome = (
       <PrivateRouteGate path='/volunteers/home' {...gateProps}>

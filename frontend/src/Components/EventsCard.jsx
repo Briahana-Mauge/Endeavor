@@ -6,11 +6,13 @@ import moment from 'moment';
 
 const EventsCard = (props) => {
     const { setFeedback, loggedUser, event } = props; 
+
     const [ volunteersList, setVolunteersList ] = useState([]);
     const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ volunteersEmailList, setVolunteersEmailList] = useState('');
-    const [ reload, setReload ] = useState(0);
+    const [ volunteerHours, setVolunteerHours] = useState('');
+    const [ reload, setReload ] = useState(false);
 
     const getVolunteersList = () => {
         axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
@@ -71,17 +73,8 @@ const EventsCard = (props) => {
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
-            let results = await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, { confirmed: e.target.checked });
-            let confirmed = results.data.payload.confirmed;
-
-            if (confirmed) {
-                addHours(event.event_duration, volunteerId);
-            } else {
-                subHours(event.event_duration, volunteerId);
-            }
-
-            setReload(reload + 1);
-
+            await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
+            setReload(!reload);
             if (props.setReload) {
                 getVolunteersList()
                 props.setReload(props.reload + 1);
@@ -94,7 +87,7 @@ const EventsCard = (props) => {
     const volunteerForEvent = async () => {
         try {
             await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
-            setReload(reload + 1);
+            setReload(!reload);
         } catch (err) {
             setFeedback(err);
         }
@@ -103,43 +96,33 @@ const EventsCard = (props) => {
     const deleteVolunteerForEvent = async () => {
         try {
             await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
-            setReload(reload + 1);
+            setReload(!reload);
         } catch (err) {
             setFeedback(err);
         }
     }
 
-    let displayVolunteersList = 'TBA'
+    let displayVolunteersList = null;
     if (volunteersList.length && loggedUser && loggedUser.admin) {
-        displayVolunteersList = volunteersList.map(volunteer =>
-            <div key={volunteer.v_id + volunteer.v_last_name}>
-                <div className='form-group form-check'>
-                    <label className='form-check-label'>
-                        <input className='form-check-input'
-                            type='checkbox'
-                            checked={volunteer.volunteer_request_accepted}
-                            onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
-                            disabled={volunteer.deleted}
-                        />
+        displayVolunteersList = volunteersList.map(volunteer => 
+                <div className='custom-control custom-switch' key={volunteer.v_id + volunteer.v_last_name + event.event_id}>
+                    <input 
+                        type='checkbox' 
+                        className='custom-control-input' 
+                        id={volunteer.v_id + volunteer.v_last_name + event.event_id}
+                        checked={volunteer.volunteer_request_accepted} 
+                        onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
+                        disabled={volunteer.deleted}
+                    />
+                    <label className='custom-control-label' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
                         <span className={volunteer.deleted ? 'd-block text-muted' : 'd-block'}>
                             {`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                         </span>
-                        {volunteer.deleted ? <span>(Left the platform)</span> : null}
                     </label>
+                    <span className='btn btn-link'> See </span>
                 </div>
-            </div>
-        )
-    } else if (volunteersList.length) {
-        displayVolunteersList = volunteersList.map(volunteer =>
-            <div key={volunteer.v_id + volunteer.v_last_name}>
-                {
-                    volunteer.volunteer_request_accepted
-                        ? <span className='d-block'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                        : null
-                }
-            </div>
-        )
-    }
+            )
+    } 
 
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -149,7 +132,13 @@ const EventsCard = (props) => {
 
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
-        
+
+    let numberOfConfirmedVolunteers = 0;
+    if (volunteersEmailList) {
+        numberOfConfirmedVolunteers = volunteersEmailList.split('&add=').length - 1;
+    }
+
+
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
             <div className='border border-dark rounded bg-light m-1'>
@@ -171,18 +160,15 @@ const EventsCard = (props) => {
                     </p>
                     <p className='card-text'>{event.description} </p>
                     <p className='card-text'><strong>Class: </strong>{event.cohort} </p>
-                    <p className='card-text'><strong>Duration: </strong>{event.event_duration} </p>
                     {
                         loggedUser && loggedUser.a_id
-                            ? <p className='card-text'><strong>Number of needed volunteers: </strong>{event.volunteers_needed} </p>
-                            : null
-                    }
-                    <div className='card-text'><strong>Volunteers: </strong>{displayVolunteersList} </div>
-                    {
-                        loggedUser && loggedUser.a_id
-                        ?   <div className='card-text text-right'>
-                                <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${volunteersEmailList}`}
-                                    className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
+                        ?   <div className='card-text'>
+                                <strong>Volunteers: </strong>{`${numberOfConfirmedVolunteers} / ${event.volunteers_needed}`}
+                                {displayVolunteersList}
+                                <div className='card-text text-right'>
+                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${volunteersEmailList}`}
+                                        className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
+                                </div>
                             </div>
                             : null
                     }
@@ -192,7 +178,7 @@ const EventsCard = (props) => {
                             ? loggedVolunteerRequestAccepted
                                 ? <div className='card-text d-flex'>
                                     <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
-                                        className='btn btn-primary' target='_blank' rel='nofollow'>Add To Calendar</a>
+                                        className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                                 </div>
                                 : <div className='card-text'>
