@@ -73,8 +73,12 @@ export default function EventPreviewCard(props) {
                 <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
                 {
                     eventStart[0] === eventEnd[0]
-                    ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
-                    :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
+                    ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                        ?   <p>{eventStart[0]}</p>
+                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+                    :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                        ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
+                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
                 }
                 <p><strong>Host: </strong>{event.instructor}</p>
                 <p><strong>For: </strong>{event.cohort}</p>

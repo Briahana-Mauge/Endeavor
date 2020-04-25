@@ -20,6 +20,7 @@ export default function EventForm (props) {
     const [ instructor, setInstructor ] = useState('');
     const [ numberOfVolunteers, setNumberOfVolunteers ] = useState(''); 
     const [ materialsUrl, setMaterialsUrl ] = useState(''); 
+    const [ important, setImportant ] = useState(false);
     const [ cohortsList, setCohortsList ] = useState([]);
 
 
@@ -67,6 +68,7 @@ export default function EventForm (props) {
         setInstructor(event.instructor);
         setNumberOfVolunteers(event.volunteers_needed);
         setMaterialsUrl(event.materials_url);
+        setImportant(event.important);
     }
 
     useEffect(() => {
@@ -121,7 +123,8 @@ export default function EventForm (props) {
                         location: eventLocation,
                         instructor,
                         numberOfVolunteers,
-                        materialsUrl
+                        materialsUrl,
+                        important
                     }
                     
                     if (formType === 'edit') {
@@ -252,6 +255,14 @@ export default function EventForm (props) {
                             value={materialsUrl}
                             onChange={e => setMaterialsUrl(e.target.value)}
                         />
+
+                        <div className='custom-control custom-switch mt-2'>
+                            <input 
+                                type='checkbox' className='custom-control-input' id='publicProfile'
+                                checked={important} onChange={e => setImportant(e.target.checked)}
+                            />
+                            <label className='custom-control-label' htmlFor='publicProfile'>Important?</label>
+                        </div>
 
                         <button className='btn btn-primary'>Submit</button>
                     </span>

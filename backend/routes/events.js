@@ -11,21 +11,6 @@ const processInput = require('../helpers/processInput');
 const eventsQueries = require('../queries/events');
 
 
-// HELPER FUNCTION TO CALCULATE DIFFERENCE IN HOURS BETWEEN TWO DATES
-// const calcHours = (date1, date2) => {
-//     const now = new Date().getTime();
-//     const d1 = new Date(date1).getTime();
-//     const d2 = new Date(date2).getTime();
-//     const time = d2 - d1;
-//     if (time <= 0) {
-//         throw new Error('400__End date must be later then the start date');
-//     }
-//     if (d1 < now || d2 < now) {
-//         throw new Error('400__Events cannot be created for past times');
-//     }
-//     return Math.ceil(time / 3600000);
-// }
-
 // Get all events (past events are auto pushed to the back)
 router.get('/all/', async (req, res, next) => {
     try {
@@ -177,13 +162,8 @@ router.post('/add', async (req, res, next) => {
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
+                important: processInput(req.body.important, 'bool', 'event importance')
             }
-    
-            // const calcEventTime = calcHours(eventData.start, eventData.end);
-            // if (calcEventTime < eventData.eventDuration) {
-            //     throw new Error('400__Please double check the event duration');
-            // }
 
             const events = await eventsQueries.postEvent(eventData);
             res.status(201).json({
@@ -216,13 +196,8 @@ router.put('/edit/:event_id', async (req, res, next) => {
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
+                important: processInput(req.body.important, 'bool', 'event importance')
             }
-            
-            // const calcEventTime = calcHours(eventData.start, eventData.end);
-            // if (calcEventTime < eventData.eventDuration) {
-            //     throw new Error('400__Please double check the event duration');
-            // }
             
             const events = await eventsQueries.editEvent(eventData);
             res.json({
