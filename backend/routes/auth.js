@@ -189,6 +189,10 @@ const updateAdminUser = async (userId, request, response, next) => {
 
 const updateVolunteerUser = async (userId, request, response, next) => {
     try {
+        let skillsList = request.body.skills
+        if (!Array.isArray(skillsList)) {
+            skillsList = skillsList.split(',');
+        }
         const actualEmail = request.user.v_email;
         const formattedRequestBody = {
             userId,
@@ -200,7 +204,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
-            skills: processInput(request.body.skills, 'array', 'skills list', 25),
+            skills: processInput(skillsList, 'array', 'skills list', 25),
             mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
             officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
             techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),

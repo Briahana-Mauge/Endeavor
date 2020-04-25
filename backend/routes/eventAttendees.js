@@ -101,5 +101,29 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
     }
 });
 
+// Manage a volunteer volunteered hours for a specific event
+router.put('/event/:event_id/volunteer/:volunteer_id', async (request, response, next) => {
+    try {
+        if (request.user && request.user.admin) {
+            const updateData = {
+                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
+                volunteerId: processInput(request.params.volunteer_id, 'idNum', 'volunteer id'),
+                volunteeredHours: processInput(request.body.volunteeredHours, 'idNum', 'volunteered hours')
+            }
+            const volunteer = await eventAttendeesQueries.manageVolunteerHours(updateData);
+    
+            response.json({
+                err: false,
+                message: `Successfully updated volunteer.${updateData.volunteerId} hours`,
+                payload: volunteer,
+            });
+        } else {
+            throw new Error('403__Not allowed to perform this operation');
+        }
+    } catch (err) {
+        handleError(err, request, response, next);
+    }
+});
+
 
 module.exports = router;

@@ -20,6 +20,7 @@ import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
 import VolunteerSearch from './Components/VolunteerSearch';
 import Events from './Components/Events';
+import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Feedback from './Components/Feedback';
@@ -154,10 +155,17 @@ function App() {
 
   /* BUILD LIMITED ACCESS ROUTES */
   const
+<<<<<<< HEAD
     adminDashboard = <DashboardAdmin />,
     staffDashboard = <DashboardStaff />,
     volunteersDashboard = <DashboardVolunteers loggedUser = {loggedUser}/>,
     fellowsDashboard = <DashboardFellows />,
+=======
+    adminDashboard = <DashboardAdmin {...userProps} />,
+    staffDashboard = <DashboardStaff {...userProps} />,
+    volunteersDashboard = <DashboardVolunteers {...userProps} />,
+    fellowsDashboard = <DashboardFellows {...userProps} />,
+>>>>>>> 67672f86628382d2be165feb6fe8c2bb450c096c
     volunteersHome = (
       <PrivateRouteGate path='/volunteers/home' {...gateProps}>
         <VolunteerSearch {...userProps} />
@@ -177,6 +185,17 @@ function App() {
       <PrivateRouteGate path='/tools' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
+    ),
+    adminEventForm = (
+      <>
+        <PrivateRouteGate path='/event/add' {...gateProps}>
+          <EventForm {...userProps} />
+        </PrivateRouteGate>
+
+        <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
+          <EventForm {...userProps} />
+        </PrivateRouteGate>
+      </>
     )
   ;
 
@@ -187,7 +206,8 @@ function App() {
     allowedVolunteersHome = null,
     allowedVolunteersProfile = null,
     allowedFellowsProfile = null,
-    allowedAdminTools = null
+    allowedAdminTools = null,
+    allowedManageEvent = null
   ;
 
   if (appRoute.volunteer) {
@@ -200,6 +220,7 @@ function App() {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
+    allowedManageEvent = adminEventForm; // For now add and edit event is allowed to admin and staff, this may move to only admin
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
@@ -229,6 +250,7 @@ function App() {
         {allowedFellowsProfile}
 
         {allowedAdminTools}
+        {allowedManageEvent}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/'>

@@ -201,7 +201,7 @@ router.post('/add', async (req, res, next) => {
             // }
 
             const events = await eventsQueries.postEvent(eventData);
-            res.json({
+            res.status(201).json({
                 payload: events,
                 message: "Success",
                 err: false

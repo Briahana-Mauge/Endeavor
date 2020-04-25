@@ -1,40 +1,103 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
 export default function EventPreviewCard(props) {
-    const { event } = props;
-    console.log(props)
+    const { setFeedback, loggedUser, event } = props; 
 
+    const [ volunteersList, setVolunteersList ] = useState([]);
+    const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
+    const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
+    const [ volunteersEmailList, setVolunteersEmailList] = useState('');
+    const [ reload, setReload ] = useState(false);
+
+    
+    const getVolunteersList = () => {
+        axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
+            .then(response => setVolunteersList(response.data.payload))
+            .catch(err => setFeedback(err))
+    }
+    useEffect(getVolunteersList, [reload]);
+
+    const checkIfVolunteerSignedForEvent = () => {
+        let found = false;
+        let accepted = false;
+        let emailList = '';
+        for (let volunteer of volunteersList) {
+            if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) { 
+                found = true;
+                if (volunteer.volunteer_request_accepted) {
+                    accepted = true
+                }
+            }
+            if (volunteer.volunteer_request_accepted) {
+                emailList += `&add=${volunteer.v_email}`
+            }
+        }
+        setLoggedVolunteerPartOfEvent(found);
+        setLoggedVolunteerRequestAccepted(accepted);
+        setVolunteersEmailList(emailList);
+    }
+    useEffect(checkIfVolunteerSignedForEvent, [loggedUser, volunteersList]);
+
+    const setEventAsTarget = () => {
+        const eventDataObj = Object.assign({}, event, {
+            volunteersList,
+            loggedVolunteerPartOfEvent,
+            loggedVolunteerRequestAccepted,
+            volunteersEmailList,
+            reload,
+            setReload,
+        });
+        props.setTargetEvent(eventDataObj);
+    }
+    useEffect(setEventAsTarget, [loggedUser, volunteersList, loggedVolunteerPartOfEvent, loggedVolunteerRequestAccepted, volunteersEmailList]);
+
+    const handleClickOnEvent = () => {
+        setEventAsTarget();
+        props.setShowEvent(true); 
+    }
+    
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
         const t = new Date(date).toLocaleTimeString();
-        return `${d} ${t.slice(0, -6)} ${t.slice(-2)}`;
+        return [d, `${t.slice(0, -6)} ${t.slice(-2)}`];
     }
 
-    return (
-        <div className='row border rounded-lg m-2'>
-            <div className='col-6'>
-                <p className='' onClick={e => props.displayEvent(event)}><strong>Topic: </strong>{event.topic}</p>
-                <p><strong>Starts: </strong>{formatEventDate(event.event_start)}</p>
-                <p><strong>Ends: </strong>{formatEventDate(event.event_end)}</p>
-                <p><strong>Host: </strong>{event.instructor}</p>
-                <p><strong>Location:</strong>{event.location}</p>
-            </div>
+    const eventStart = formatEventDate(event.event_start);
+    const eventEnd = formatEventDate(event.event_end);
 
-            {(props.loggedUser && props.loggedUser.a_id) ? <div className='col-6'>
-                <p><strong>Open to: </strong>{event.cohort}</p>
-                <ul> <strong>Volunteers: </strong>
-                    {
-                        event.volunteers.length === 1 && event.volunteers[0] === null
-                            ? '0 / ' + event.volunteers_needed
-                            : <>
-                                {event.volunteers.length + ' / ' + event.volunteers_needed}
-                                {event.volunteers.map(volunteers => <li key={volunteers}>{volunteers}</li>)}
-                            </>
-                    }
-                </ul>
-            </div> 
-            : null}
+    return (
+        <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
+            <div className='border rounded-lg p-2'>
+                <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
+                {
+                    eventStart[0] === eventEnd[0]
+                    ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+                    :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
+                }
+                <p><strong>Host: </strong>{event.instructor}</p>
+                <p><strong>For: </strong>{event.cohort}</p>
+                {
+                    loggedUser && loggedUser.a_id
+                    ?   <p>
+                            <strong>Volunteers: </strong>{volunteersEmailList.split('&add=').length - 1 + ' / ' + event.number_of_volunteers}
+                            {
+                                volunteersList.length - volunteersEmailList.split('&add=').length + 1
+                                ? <span className='text-warning'> ({volunteersList.length - volunteersEmailList.split('&add=').length + 1} pending)</span>
+                                : null
+                            }
+                        </p>
+                    :   null
+                }
+                {
+                    loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
+                    ?   loggedVolunteerRequestAccepted
+                        ?   <strong>I'm part of this event</strong>
+                        :   <strong>Request pending</strong>
+                    :   null
+                }
+            </div>
         </div>
     )
 }

@@ -64,7 +64,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
       event_duration
     ORDER BY (
       CASE 
-        WHEN DATE(event_start) > NOW()
+        WHEN event_start > NOW()
         THEN 1
         ELSE 0
       END
@@ -98,7 +98,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, event_duration
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, event_duration,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -113,14 +113,14 @@ const getSingleEvent = async (eId) => {
   LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
        
-  WHERE events.event_id = $/eId/ AND event.deleted IS NULL
+  WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort     
+    events.instructor, events.number_of_volunteers, cohorts.cohort, cohorts.cohort_id    
 
   ORDER BY event_start DESC
   `;
-  return await db.any(selectQuery, { eId });
+  return await db.one(selectQuery, { eId });
 }
 
 const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
@@ -131,13 +131,13 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     event_start, 
     event_end, 
     description, 
+    staff_description,
     location, 
     instructor, 
-    number_of_volunteers AS volunteers_needed, 
+    number_of_volunteers, 
     cohort,
     cohort_id,
-    materials_url,
-    event_duration
+    materials_url
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -155,6 +155,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   
   const endOfQuery = `
     GROUP BY  
+<<<<<<< HEAD
       events.event_id, 
       events.topic, 
       events.event_start, 
@@ -167,11 +168,15 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
       cohorts.cohort_id,
       events.event_duration
 
+=======
+      event_id,
+      cohort_id
+>>>>>>> 67672f86628382d2be165feb6fe8c2bb450c096c
     ORDER BY (
       CASE 
-      	WHEN DATE(event_start) > NOW()
+      	WHEN event_start > NOW()
           THEN 2
-        WHEN DATE(event_end) > NOW()
+        WHEN event_end > NOW()
           THEN 1
         ELSE 0
         END
@@ -205,8 +210,13 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEventAdmin = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
+<<<<<<< HEAD
   events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, materials_url, 
   ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers, events.event_duration
+=======
+  events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, 
+  ARRAY_AGG ( DISTINCT volunteers.v_first_name || ' ' || volunteers.v_last_name) AS volunteers
+>>>>>>> 67672f86628382d2be165feb6fe8c2bb450c096c
   
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
@@ -216,7 +226,11 @@ const getSingleEventAdmin = async (eId) => {
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
+<<<<<<< HEAD
     events.instructor, events.number_of_volunteers, cohorts.cohort, events.event_duration
+=======
+    events.instructor, events.number_of_volunteers, cohorts.cohort, cohorts.cohort_id 
+>>>>>>> 67672f86628382d2be165feb6fe8c2bb450c096c
   `
   return await db.one(selectQuery, { eId });
 }
