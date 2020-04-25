@@ -4,17 +4,11 @@ import axios from 'axios';
 
 export default function EventForm (props) {
     const { setFeedback } = props;
-    const params = useParams();
-    const location = useLocation();
     const history = useHistory();
 
     const formType = useLocation().pathname.split('/')[2];
     const { eventId } = useParams();
 
-    console.log('FORM TYPE: ', location.pathname.split('/')[2])
-    console.log('EVENT ID: ', eventId)
-    // const [ formType, setFormType ] = useState('');
-    // const [ eventId, setEventId ] = useState(0);
     const [ startDate, setStartDate ] = useState('');
     const [ startTime, setStartTime ] = useState('');
     const [ endDate, setEndDate ] = useState('');
@@ -26,8 +20,6 @@ export default function EventForm (props) {
     const [ instructor, setInstructor ] = useState('');
     const [ numberOfVolunteers, setNumberOfVolunteers ] = useState(''); 
     const [ materialsUrl, setMaterialsUrl ] = useState(''); 
-    // const [ eventDuration, setEventDuration ] = useState(0);
-    // const [ mustEnterDuration, setMustEnterDuration ] = useState(true);
     const [ cohortsList, setCohortsList ] = useState([]);
 
 
@@ -63,9 +55,7 @@ export default function EventForm (props) {
             }
             return `${h}:${m}`
         }
-console.log(11111, event)
-        // setFormType('edit');
-        // setEventId(event.event_id);
+
         setStartDate(formatDate(event.event_start));
         setStartTime(formatTime(event.event_start));
         setEndDate(formatDate(event.event_end));
@@ -77,7 +67,6 @@ console.log(11111, event)
         setInstructor(event.instructor);
         setNumberOfVolunteers(event.volunteers_needed);
         setMaterialsUrl(event.materials_url);
-        // setEventDuration(event.event_duration);
     }
 
     useEffect(() => {
@@ -94,20 +83,6 @@ console.log(11111, event)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formType, eventId]);
-
-    // const clearInputs = () => {
-    //     setStartDate('');
-    //     setStartTime('');
-    //     setEndDate('');
-    //     setEndTime('');
-    //     setTopic('');
-    //     setDescription('');
-    //     setAttendees('');
-    //     setEventLocation('');
-    //     setInstructor('');
-    //     setNumberOfVolunteers('');
-    //     setMaterialsUrl('');
-    // }
 
 
     const calcHours = (date1, date2) => { // Function to validate the event's date
