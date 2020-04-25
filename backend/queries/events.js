@@ -152,7 +152,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   //     THEN volunteers.v_email
   //     END
   // ) AS v_email
-  
+
   const endOfQuery = `
     GROUP BY  
       event_id,
@@ -308,11 +308,12 @@ const deleteEvent = async (id) => {
 // Get all past events by volunteer Id
 const getPastEventsByVolunteerId = async (id) => {
   const selectQuery = `
-    SELECT event_id, topic, event_start
-    FROM events 
-    INNER JOIN event_volunteers ON event_id = ev_id
-    WHERE event_start < now() AND volunteer_id = $1 AND confirmed = TRUE
-    ORDER BY event_start ASC
+  SELECT volunteers.v_id, volunteers.v_first_name || ' ' || volunteers.v_last_name AS volunteer, 
+      event_id, topic, event_start, event_end, description, location, instructor
+  FROM volunteers
+  INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+  INNER JOIN events ON event_volunteers.ev_id = events.event_id
+  WHERE event_start < now() AND volunteers.v_id = $1 AND event_volunteers.confirmed = TRUE
   `;
   return await db.any(selectQuery, id);
 }

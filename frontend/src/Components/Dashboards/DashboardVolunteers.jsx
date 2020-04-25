@@ -42,16 +42,24 @@ const Dashboard = (props) => {
         const getAllVolunteeredTime = async () => {
             try {
                 const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
-                console.log(data.payload.sum)
                 setShowVolunteeredTime(data.payload.sum)
-                setShowPastEvents(0)
+                
             } catch (err) {
                 setFeedback(err)
             }
         }
 
+        const getNumberOfPastEvents = async () => {
+            try {
+                const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
+                setShowPastEvents(data.payload.length)
+            } catch (err) {
+                setFeedback(err)
+            }
+        }
         getEvents();
         getAllVolunteeredTime();
+        getNumberOfPastEvents();
     }, [reload]);
 
     const displayEvent = (event) => {
@@ -69,6 +77,11 @@ const Dashboard = (props) => {
     return (
         <>
             <h3>Upcoming Events:</h3>
+            {eventsList.length === 0?
+            <><p>You are not registered to volunteer at any upcoming events.</p>
+            <p> Visit the Events page to find out more!</p></>
+            :null}
+
             {
                 eventsList.map(event => <EventPreviewCard
                     key={event.event_id + event.event_end + event.event_start}
