@@ -15,7 +15,7 @@ const timeQueries = require('../queries/time');
 router.get('/hours/:v_id', async (req, res, next) => {
     try {
         const vId = processInput(req.params.v_id, "idNum", "volunteer id");
-        let allBankedHours = await timeQueries.allBankedHours(vId);
+        let allBankedHours = await timeQueries.allVolunteeredTimeByVolunteerID(vId);
 
         res.status(200)
             .json({

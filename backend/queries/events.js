@@ -344,10 +344,11 @@ const getPastEventsByVolunteerId = async (id) => {
 // Get all upcoming events by volunteer Id
 const getUpcomingEventsByVolunteerId = async (id) => {
   const selectQuery = `
-   SELECT event_id, topic, event_start, instructor, description, event_end, location
+   SELECT event_id, topic, event_start, instructor, description, event_end, location, cohort
     FROM events 
     INNER JOIN event_volunteers ON event_id = ev_id
-    WHERE event_start > now() AND volunteer_id = '10' AND confirmed = TRUE
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    WHERE event_start > now() AND volunteer_id = $1 AND confirmed = TRUE
     ORDER BY event_start ASC
   `;
   return await db.any(selectQuery, id);

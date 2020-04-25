@@ -10,11 +10,11 @@ const db = require('../db/db');
 /* QUERIES */
 
 // Get all hours banked by a volunteer
-const allBankedHours = async (volunteer) => {
+const allVolunteeredTimeByVolunteerID = async (volunteer) => {
     const selectQuery = `
-    SELECT banked_time 
-    FROM volunteers_hours 
-    WHERE volunteer_id = $/volunteer/ AND deleted IS NULL
+    SELECT SUM(volunteered_time)
+    FROM event_volunteers
+    WHERE volunteer_id = $/volunteer/;
   `;
     return await db.one(selectQuery, {volunteer});
 }
@@ -56,7 +56,7 @@ const updateVolunteerHours = async (v_id, newHours) => {
 }
 /* EXPORT */
 module.exports = {
-    allBankedHours,
+    allVolunteeredTimeByVolunteerID,
     allHours,
     deleteHoursByVolunteerId, 
     updateVolunteerHours

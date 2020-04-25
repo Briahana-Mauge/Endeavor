@@ -11,12 +11,14 @@ import axios from 'axios';
 
 // import VolunteerPreviewCard from './VolunteerPreviewCard';
 import EventPreviewCard from '../EventPreviewCard';
-import EventsCard from '../EventsCard';
+import EventsCard from '../EventCard';
 
 const Dashboard = (props) => {
     const { setFeedback, loggedUser } = props;
     const [eventsList, setEventsList] = useState([]);
     const [showEvent, setShowEvent] = useState(false);
+    const [showVolunteeredTime, setShowVolunteeredTime] = useState(0);
+    const [showPastEvents, setShowPastEvents] = useState('')
     const [targetEvent, setTargetEvent] = useState({});
     const [reload, setReload] = useState(false);
 
@@ -25,12 +27,10 @@ const Dashboard = (props) => {
         const getEvents = async () => {
             try {
                 const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}`);
-                console.log(data)
                 let first3 = [];
                 for (let i = 0; i < 3; i++) {
                     if (data.payload[i]) {
                         first3.push(data.payload[i])
-                        console.log(first3)
                     }
                 }
                 setEventsList(first3);
@@ -39,7 +39,19 @@ const Dashboard = (props) => {
             }
         }
 
+        const getAllVolunteeredTime = async () => {
+            try {
+                const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
+                console.log(data.payload.sum)
+                setShowVolunteeredTime(data.payload.sum)
+                setShowPastEvents(0)
+            } catch (err) {
+                setFeedback(err)
+            }
+        }
+
         getEvents();
+        getAllVolunteeredTime();
     }, [reload]);
 
     const displayEvent = (event) => {
@@ -63,6 +75,7 @@ const Dashboard = (props) => {
                     event={event}
                     displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
+                    setTargetEvent={setTargetEvent}
                 />)
             }
 
@@ -83,7 +96,21 @@ const Dashboard = (props) => {
                     </div>
                     : null
             }
+
+            <h3>Personal Stats</h3>
+            <p>
+                You've got {showVolunteeredTime} volunteer hours!
+            </p>
+
+            {
+                showPastEvents < 1
+                    ? <p>You haven't participated in any events yet.</p>
+                    : showPastEvents > 1
+                        ? <p>So far, you've participated in {showPastEvents} events.</p>
+                        : <p>So far, you've participated in {showPastEvents} event.</p>
+            }
         </>
+    
     )
 }
 

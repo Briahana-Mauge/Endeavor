@@ -155,17 +155,10 @@ function App() {
 
   /* BUILD LIMITED ACCESS ROUTES */
   const
-<<<<<<< HEAD
-    adminDashboard = <DashboardAdmin />,
-    staffDashboard = <DashboardStaff />,
-    volunteersDashboard = <DashboardVolunteers loggedUser = {loggedUser}/>,
-    fellowsDashboard = <DashboardFellows />,
-=======
     adminDashboard = <DashboardAdmin {...userProps} />,
     staffDashboard = <DashboardStaff {...userProps} />,
     volunteersDashboard = <DashboardVolunteers {...userProps} />,
     fellowsDashboard = <DashboardFellows {...userProps} />,
->>>>>>> 67672f86628382d2be165feb6fe8c2bb450c096c
     volunteersHome = (
       <PrivateRouteGate path='/volunteers/home' {...gateProps}>
         <VolunteerSearch {...userProps} />
