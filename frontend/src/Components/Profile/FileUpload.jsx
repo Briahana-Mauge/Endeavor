@@ -36,10 +36,9 @@ export default function FileUpload(props) {
         
         {imagePreview 
             ? <img 
-                className='d-block w-75 mx-auto my-2 p-2' 
+                className='d-block w-75 mx-auto mb-2' 
                 src={imagePreview} 
                 alt='User profile preview' 
-                style={{objectFit: 'scale-down'}}
                 />
             : null
         }

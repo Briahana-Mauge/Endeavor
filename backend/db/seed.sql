@@ -66,6 +66,7 @@ CREATE TABLE volunteers (
     hosting_site_visit BOOLEAN NOT NULL DEFAULT FALSE,
     industry_speaker BOOLEAN NOT NULL DEFAULT FALSE,
     signup_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
+    public_profile BOOLEAN NOT NULL DEFAULT FALSE,
     inactive_date DATE,
     deleted DATE DEFAULT NULL
 );
@@ -262,19 +263,20 @@ INSERT INTO volunteers
         behavioral_mock_interview, 
         professional_skills_coach, 
         hosting_site_visit, 
-        industry_speaker
+        industry_speaker,
+        public_profile
     )
     VALUES 
-    ('Daniel', 'Lopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Daniel+Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE),
-    ('Christina', 'Hall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Christina+Hall.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
-    ('Judith', 'Simmons', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Judith+Simmons.jpeg', 'WayFaire', 'wayfaire', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
-    ('Catherine', 'Barnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Catherine+Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE),
-    ('Pamela', 'Young', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Pamela+Young.png', 'JPMorganChase', 'pjmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
-    ('John', 'Evans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/John+Evans.jpg', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
-    ('Bonnie', 'Simpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Bonnie+Simpson.jpeg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE),
-    ('Joseph', 'Parker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Joseph+Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE),
-    ('Kenneth', 'Wood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Kenneth+Wood.jpeg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-    ('Thomas', 'Potter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Thomas+Potter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE);   -- 10
+    ('Daniel', 'Lopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Daniel+Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE),
+    ('Christina', 'Hall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Christina+Hall.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE),
+    ('Judith', 'Simmons', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Judith+Simmons.jpeg', 'WayFaire', 'wayfaire', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE),
+    ('Catherine', 'Barnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Catherine+Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE),
+    ('Pamela', 'Young', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Pamela+Young.png', 'JPMorganChase', 'pjmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
+    ('John', 'Evans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/John+Evans.jpg', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE),
+    ('Bonnie', 'Simpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Bonnie+Simpson.jpeg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    ('Joseph', 'Parker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Joseph+Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    ('Kenneth', 'Wood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Kenneth+Wood.jpeg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    ('Thomas', 'Potter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Thomas+Potter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE);   -- 10
 
 
 INSERT INTO fellows 

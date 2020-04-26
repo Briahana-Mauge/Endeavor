@@ -320,7 +320,7 @@ const deleteEvent = async (id) => {
 const getPastEventsByVolunteerId = async (id) => {
   const selectQuery = `
   SELECT volunteers.v_id, volunteers.v_first_name || ' ' || volunteers.v_last_name AS volunteer, 
-      event_id, topic, event_start, event_end, description, location, instructor
+      event_id, topic, event_start, event_end, description, location, instructor, volunteered_time
   FROM volunteers
   INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   INNER JOIN events ON event_volunteers.ev_id = events.event_id

@@ -150,6 +150,16 @@ export default function SignupVolunteerSubForm(props) {
                     <label className='custom-control-label' htmlFor='industrySpeaker'>Interested in being an Industry Speaker?</label>
                 </div>
             </div>
+
+            <div className='col-sm-6'>
+                <div className='custom-control custom-switch'>
+                    <input 
+                        type='checkbox' className='custom-control-input' id='publicProfile'
+                        checked={props.publicProfile} onChange={e => props.setPublicProfile(e.target.checked)}
+                    />
+                    <label className='custom-control-label' htmlFor='publicProfile'>Would you like to have your profile public?</label>
+                </div>
+            </div>
         </>
     )
 }

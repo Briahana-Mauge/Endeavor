@@ -31,6 +31,7 @@ export default function VolunteerProfile(props) {
         professionalSkillsCoach,
         hostSiteVisit,
         industrySpeaker,
+        publicProfile,
         setFirstName,
         setLastName,
         setEmail,
@@ -43,7 +44,8 @@ export default function VolunteerProfile(props) {
         setBehavioralMockInterview,
         setProfessionalSkillsCoach,
         setHostSiteVisit,
-        setIndustrySpeaker
+        setIndustrySpeaker,
+        setPublicProfile
     } = props;
 
     const [ bio, setBio ] = useState(loggedUser.v_bio);
@@ -78,6 +80,7 @@ export default function VolunteerProfile(props) {
         setProfessionalSkillsCoach(loggedUser.professional_skills_coach);
         setHostSiteVisit(loggedUser.hosting_site_visit);
         setIndustrySpeaker(loggedUser.industry_speaker);
+        setPublicProfile(loggedUser.public_profile);
     }, [loggedUser, setFirstName, setLastName, setEmail, setCompany, setTitle, setFeedback, setVolunteerSkills, 
         setMentor, setOfficeHours, setTechMockInterview, setBehavioralMockInterview, setProfessionalSkillsCoach, 
         setHostSiteVisit, setIndustrySpeaker]);
@@ -127,6 +130,7 @@ export default function VolunteerProfile(props) {
                         professionalSkillsCoach,
                         hostSiteVisit,
                         industrySpeaker,
+                        publicProfile,
                         picture: picFile
                     };
                 }
@@ -204,6 +208,8 @@ export default function VolunteerProfile(props) {
                                 setHostSiteVisit={setHostSiteVisit}
                                 industrySpeaker={industrySpeaker}
                                 setIndustrySpeaker={setIndustrySpeaker}
+                                publicProfile={publicProfile}
+                                setPublicProfile={setPublicProfile}
                             />
 
                             <div className='col-sm-12'>
@@ -233,7 +239,7 @@ export default function VolunteerProfile(props) {
                         </form>
 
                         <br />
-                        <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                        <button className='btn btn-danger mb-4 float-right' onClick={props.deleteAccount}>Delete Account</button>
                     </>
             }
 

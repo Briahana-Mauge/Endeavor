@@ -19,7 +19,8 @@ export default function LoginSignup(props) {
         firstName, 
         lastName,
 
-        cohortId, 
+        cohortId,
+
         company,
         title,
         volunteerSkills,
@@ -29,7 +30,8 @@ export default function LoginSignup(props) {
         behavioralMockInterview,
         professionalSkillsCoach,
         hostSiteVisit,
-        industrySpeaker
+        industrySpeaker,
+        publicProfile
     } = props
 
     const location = useLocation();
@@ -77,7 +79,8 @@ export default function LoginSignup(props) {
                         behavioralMockInterview,
                         professionalSkillsCoach,
                         hostSiteVisit,
-                        industrySpeaker
+                        industrySpeaker,
+                        publicProfile
                     };
 
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
@@ -138,6 +141,8 @@ export default function LoginSignup(props) {
                         setHostSiteVisit={props.setHostSiteVisit}
                     industrySpeaker={industrySpeaker}
                         setIndustrySpeaker={props.setIndustrySpeaker}
+                    publicProfile={publicProfile}
+                        setPublicProfile={props.setPublicProfile}
                 />
 
             </form>

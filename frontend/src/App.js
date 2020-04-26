@@ -53,6 +53,7 @@ function App() {
   const [professionalSkillsCoach, setProfessionalSkillsCoach] = useState(false);
   const [hostSiteVisit, setHostSiteVisit] = useState(false);
   const [industrySpeaker, setIndustrySpeaker] = useState(false);
+  const [publicProfile, setPublicProfile] = useState(false);
 
   const location = useLocation();
   const history = useHistory();
@@ -82,6 +83,23 @@ function App() {
       .then(res => {
         settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
         history.push('/');
+        setEmail('');
+        setPassword('');
+        setNewPassword('');
+        setFirstName('');
+        setLastName('');
+        setCohortId(0);
+        setCompany('');
+        setTitle('');
+        setVolunteerSkills([]);
+        setMentor(false);
+        setOfficeHours(false);
+        setTechMockInterview(false);
+        setBehavioralMockInterview(false);
+        setProfessionalSkillsCoach(false);
+        setHostSiteVisit(false);
+        setIndustrySpeaker(false);
+        setPublicProfile(false);
       })
       .catch(err => setFeedback(err));
   }
@@ -122,7 +140,8 @@ function App() {
     behavioralMockInterview, setBehavioralMockInterview,
     professionalSkillsCoach, setProfessionalSkillsCoach,
     hostSiteVisit, setHostSiteVisit,
-    industrySpeaker, setIndustrySpeaker
+    industrySpeaker, setIndustrySpeaker,
+    publicProfile, setPublicProfile
   }
 
 
@@ -205,6 +224,7 @@ function App() {
 
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
+    allowedVolunteersProfile = volunteersProfile; // Temporarily here to see how it looks like on the volunteers side
   }
   if (appRoute.staff) {
     allowedDashboard = staffDashboard;
