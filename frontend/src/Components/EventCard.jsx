@@ -105,7 +105,7 @@ const EventsCard = (props) => {
                 </div>
             )
     }
-        
+
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
 
@@ -157,9 +157,9 @@ const EventsCard = (props) => {
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                 </div>
                             </div>
-                        : null
+                            : null
                     }
-                    
+
                     {
                         loggedUser && loggedUser.v_id && event.loggedVolunteerPartOfEvent
                         ?   event.loggedVolunteerRequestAccepted
@@ -168,15 +168,15 @@ const EventsCard = (props) => {
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                                 </div>
-                            :   <div className='card-text'>
+                                : <div className='card-text'>
                                     <span>Request pending</span>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
                                 </div>
-                        :   loggedUser && loggedUser.v_id
-                            ?   <div className='card-text text-right'>
+                            : loggedUser && loggedUser.v_id
+                                ? <div className='card-text text-right'>
                                     <button className='btn btn-primary' onClick={volunteerForEvent}>Volunteer for this event</button>
                                 </div>
-                            : null
+                                : null
                     }
                 </div>
                 <hr />
