@@ -49,6 +49,5 @@ const deleteHoursByVolunteerId = async (id, promise) => {
 module.exports = {
     allVolunteeredTimeByVolunteerID,
     allHours,
-    deleteHoursByVolunteerId, 
-    updateVolunteerHours
+    deleteHoursByVolunteerId
 }
