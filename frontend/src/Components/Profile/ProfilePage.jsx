@@ -156,6 +156,8 @@ export default function ProfilePage(props) {
                     setHostSiteVisit={props.setHostSiteVisit}
                     industrySpeaker={industrySpeaker}
                     setIndustrySpeaker={props.setIndustrySpeaker}
+                    publicProfile={props.publicProfile}
+                    setPublicProfile={props.setPublicProfile}
                     handleUpdatePassword={handleUpdatePassword}
                     deleteAccount={deleteAccount}
                   />

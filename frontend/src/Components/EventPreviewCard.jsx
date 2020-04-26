@@ -78,6 +78,7 @@ export default function EventPreviewCard(props) {
                 }
                 <p><strong>Host: </strong>{event.instructor}</p>
                 <p><strong>For: </strong>{event.cohort}</p>
+                <p><strong>Location: </strong>{event.location}</p>
                 {
                     loggedUser && loggedUser.a_id
                     ?   <p>

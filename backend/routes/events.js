@@ -37,11 +37,11 @@ router.get('/all/', async (req, res, next) => {
 
         let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past);
         res.status(200)
-        .json({
-            payload: allEvents,
-            message: "Success",
-            err: false
-        });
+            .json({
+                payload: allEvents,
+                message: "Success",
+                err: false
+            });
     } catch (err) {
         handleError(err, req, res, next);
     }
@@ -67,7 +67,7 @@ router.get('/event/:e_id', async (req, res, next) => {
 
 //Get all events  (admin)
 router.get('/admin/all', async (req, res, next) => {
-    try{
+    try {
         const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowerCase();
         const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowerCase();
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
@@ -76,15 +76,15 @@ router.get('/admin/all', async (req, res, next) => {
 
         let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past);
         res.status(200)
-        .json({
-            payload: allEventsAdmin,
-            message: "Success",
-            err: false
-        });
+            .json({
+                payload: allEventsAdmin,
+                message: "Success",
+                err: false
+            });
     } catch (err) {
         handleError(err, req, res, next);
     }
-    
+
 });
 
 //Get single event (admin only)
@@ -105,23 +105,37 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 })
 
 // Get all upcoming events
-router.get('/upcoming', async (req, res, next) => {
-    try {
-        let allEvents = await eventsQueries.getUpcomingEvents();
-        res.json({
-            payload: allEvents,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+// router.get('/upcoming', async (req, res, next) => {
+//     try {
+//         let allEvents = await eventsQueries.getUpcomingEvents();
+//         res.json({
+//             payload: allEvents,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
 // Get all past events
-router.get('/past', async (req, res, next) => {
+// router.get('/past', async (req, res, next) => {
+//     try {
+//         let allEvents = await eventsQueries.getPastEvents();
+//         res.json({
+//             payload: allEvents,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
+
+// Get all important events
+router.get('/important', async (req, res, next) => {
     try {
-        let allEvents = await eventsQueries.getPastEvents();
+        let allEvents = await eventsQueries.getImportantEvents();
         res.json({
             payload: allEvents,
             message: "Success",
@@ -142,7 +156,29 @@ router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
             message: "Success",
             err: false
         });
-      } catch (err) {
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
+// Get all upcoming events by volunteer id
+router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
+    try {
+
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        if (req.user && req.user.v_id && req.user.v_id === volunteerId) {
+            const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId);
+            res.json({
+                payload: events,
+                message: "Success",
+                err: false
+
+            });
+        }
+        else {
+            throw new Error('403__not authorized');
+        }
+    } catch (err) {
         handleError(err, req, res, next);
     }
 });
@@ -157,7 +193,7 @@ router.get('/past/fellow/:fellow_id', async (req, res, next) => {
             message: "Success",
             err: false
         });
-      } catch (err) {
+    } catch (err) {
         handleError(err, req, res, next);
     }
 });
@@ -179,7 +215,7 @@ router.post('/add', async (req, res, next) => {
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
                 // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
             }
-    
+
             // const calcEventTime = calcHours(eventData.start, eventData.end);
             // if (calcEventTime < eventData.eventDuration) {
             //     throw new Error('400__Please double check the event duration');
@@ -195,7 +231,7 @@ router.post('/add', async (req, res, next) => {
             throw new Error('403__Not allowed to perform this operation');
         }
 
-      } catch (err) {
+    } catch (err) {
         handleError(err, req, res, next);
     }
 });
@@ -218,12 +254,12 @@ router.put('/edit/:event_id', async (req, res, next) => {
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
                 // eventDuration: processInput(req.body.eventDuration, 'idNum', 'event duration')
             }
-            
+
             // const calcEventTime = calcHours(eventData.start, eventData.end);
             // if (calcEventTime < eventData.eventDuration) {
             //     throw new Error('400__Please double check the event duration');
             // }
-            
+
             const events = await eventsQueries.editEvent(eventData);
             res.json({
                 payload: events,
@@ -234,7 +270,7 @@ router.put('/edit/:event_id', async (req, res, next) => {
             throw new Error('403__Not allowed to perform this operation');
         }
 
-      } catch (err) {
+    } catch (err) {
         handleError(err, req, res, next);
     }
 });

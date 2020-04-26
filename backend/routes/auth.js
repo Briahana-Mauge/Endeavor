@@ -81,7 +81,8 @@ const signupVolunteer = async (request, response, next) => {
             behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'bool', 'behavioral mock interview'),
             professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
             hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
-            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker')
+            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker'),
+            publicProfile: processInput(request.body.publicProfile, 'bool', 'public profile')
         }
         const hashedPassword = await hashPassword(formattedRequestBody.password);
 
@@ -212,6 +213,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
             hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
             industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker'),
+            publicProfile: processInput(request.body.publicProfile, 'bool', 'public profile'),
             picture: request.user.v_picture
         }
         

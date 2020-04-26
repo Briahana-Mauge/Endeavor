@@ -66,6 +66,7 @@ CREATE TABLE volunteers (
     hosting_site_visit BOOLEAN NOT NULL DEFAULT FALSE,
     industry_speaker BOOLEAN NOT NULL DEFAULT FALSE,
     signup_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
+    public_profile BOOLEAN NOT NULL DEFAULT FALSE,
     inactive_date DATE,
     deleted DATE DEFAULT NULL
 );
@@ -114,6 +115,7 @@ CREATE TABLE events (
     g_calendar_id VARCHAR NOT NULL DEFAULT '',
     materials_url VARCHAR NOT NULL DEFAULT '',
     event_duration INT NOT NULL,
+    important BOOLEAN NOT NULL,
     deleted DATE DEFAULT NULL
 );
 
@@ -261,19 +263,20 @@ INSERT INTO volunteers
         behavioral_mock_interview, 
         professional_skills_coach, 
         hosting_site_visit, 
-        industry_speaker
+        industry_speaker,
+        public_profile
     )
     VALUES 
-    ('Daniel', 'Lopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Daniel+Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE),
-    ('Christina', 'Hall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Christina+Hall.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE),
-    ('Judith', 'Simmons', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Judith+Simmons.jpeg', 'WayFaire', 'wayfaire', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
-    ('Catherine', 'Barnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Catherine+Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE),
-    ('Pamela', 'Young', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Pamela+Young.png', 'JPMorganChase', 'pjmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
-    ('John', 'Evans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/John+Evans.jpg', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE),
-    ('Bonnie', 'Simpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Bonnie+Simpson.jpeg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE),
-    ('Joseph', 'Parker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Joseph+Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE),
-    ('Kenneth', 'Wood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Kenneth+Wood.jpeg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-    ('Thomas', 'Potter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Thomas+Potter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE);   -- 10
+    ('Daniel', 'Lopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Daniel+Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE),
+    ('Christina', 'Hall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Christina+Hall.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE),
+    ('Judith', 'Simmons', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Judith+Simmons.jpeg', 'WayFaire', 'wayfaire', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE),
+    ('Catherine', 'Barnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Catherine+Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE),
+    ('Pamela', 'Young', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Pamela+Young.png', 'JPMorganChase', 'pjmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
+    ('John', 'Evans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/John+Evans.jpg', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE),
+    ('Bonnie', 'Simpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Bonnie+Simpson.jpeg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    ('Joseph', 'Parker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Joseph+Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE),
+    ('Kenneth', 'Wood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Kenneth+Wood.jpeg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    ('Thomas', 'Potter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Thomas+Potter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE);   -- 10
 
 
 INSERT INTO fellows 
@@ -386,64 +389,65 @@ INSERT INTO events
         location,
         instructor,
         number_of_volunteers,
-        event_duration
+        event_duration,
+        important
     )
     VALUES
     ('2020-03-22 10:00-04', '2020-06-22 20:00-04', 'BE A CAPSTONE TECHNICAL MENTOR', 
     'Each year at the close of our technical curriculum, Pursuit Fellows work in teams to build fully-functional apps that they present at our annual Demo Days. This is a critical milestone in their journeys to become professional software developers: Fellows have the opportunity to work in teams while honing their design and presentation skills. Fellows will have a portfolio-worthy project they can show off to potential employers', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 9, 24),
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 9, 24, TRUE),
 
     ('2020-04-29 13:00-04', '2020-04-29 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-05-12 13:00-04', '2020-05-12 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-05-22 13:00-04', '2020-05-22 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-02-22 13:00-04', '2020-02-22 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),   -- -- -- 5
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),   -- -- -- 5
 
     ('2020-02-29 13:00-04', '2020-02-29 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-03-12 13:00-04', '2020-03-12 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-03-22 13:00-04', '2020-03-22 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-04-22 13:00-04', '2020-04-22 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
-    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1),
+    1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, 1, FALSE),
 
     ('2020-04-02 17:30-04', '2020-04-02 19:30-04', 'Code Review on Hackathon Projects', 
     'Join a group of 4 Fellows on April 2nd at 5:30pm to review their Hackathon projects.You''ll provide feedback to help them to help improve and implement new features. We''ll review the rubric you''ll use to evaluate the projects and then you''ll work with the groups remotely until 7:30pm. A week later, you''ll find time with the group to follow-up and review their final products. Volunteers must know Javascript, React, Node.js, PostgresSQL and Express. We are looking for 6 Volunteers.', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 6, 2),   -- -- -- 10
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 6, 2, TRUE),   -- -- -- 10
 
     ('2020-05-21 18:00-04', '2020-05-21 20:00-04', 'Conduct Virtual Behavioral Interviews', 
     'Volunteers will conduct two 45-minute 1:1 behavioral interviews using a sample job description and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts. We are looking for hiring managers or anyone who conducts interviews regularly. Engineers or tech-adjacent roles are a plus!', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2),
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2, TRUE),
 
     ('2020-05-21 18:00-04', '2020-05-21 20:00-04', 'Conduct Virtual Technical Interviews', 
     'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2),
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2, TRUE),
 
     ('2020-04-28 18:00-04', '2020-04-28 20:00-04', 'Conduct Virtual Behavioral Interviews', 
     'Volunteers will conduct two 45-minute 1:1 behavioral interviews using a sample job description and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts. We are looking for hiring managers or anyone who conducts interviews regularly. Engineers or tech-adjacent roles are a plus!', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2),
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2, TRUE),
 
     ('2020-04-28 18:00-04', '2020-04-28 20:00-04', 'Conduct Virtual Technical Interviews', 
     'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2);
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, 2, TRUE);
     
 
 INSERT INTO event_volunteers (eventv_id, volunteer_id, confirmed) VALUES 

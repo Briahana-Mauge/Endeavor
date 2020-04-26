@@ -7,11 +7,11 @@ import FellowProfilePage from './FellowProfilePage';
 export default function ProfileRender(props) {
     const { volunteerId, fellowId } = useParams();
     
-    const [ pageForm, setPageForm ] = useState('lightBox');
+    const [ pageForm, setPageForm ] = useState('');
 
     useEffect(() => {
         if (volunteerId || fellowId) {
-            setPageForm('container');
+            setPageForm('');
         } else {
             setPageForm('lightBox'); // To be styled with CSS to be a lightbox on top of another page
         }
