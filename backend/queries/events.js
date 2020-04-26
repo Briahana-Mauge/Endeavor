@@ -27,7 +27,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
     cohorts.cohort,
     cohorts.cohort_id,
     materials_url,
-    event_duration,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -105,8 +104,7 @@ const getSingleEvent = async (eId) => {
         WHEN event_volunteers.confirmed = TRUE 
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
-    ) AS volunteers,
-    event_duration
+    ) AS volunteers
     
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
@@ -144,7 +142,6 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
-  // events.event_duration,
   // ARRAY_AGG ( 
   //   DISTINCT
   //   CASE 
