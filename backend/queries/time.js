@@ -45,15 +45,6 @@ const deleteHoursByVolunteerId = async (id, promise) => {
   return await db.any(deleteQuery, id);
 }
 
-const updateVolunteerHours = async (v_id, newHours) => {
-  const updateQuery = `
-  UPDATE volunteers_hours 
-  SET banked_time = $/hours/ 
-  WHERE volunteer_id = $/id/  
-  RETURNING *
-  `
-  return await db.one(updateQuery, {id:v_id, hours:newHours});
-}
 /* EXPORT */
 module.exports = {
     allVolunteeredTimeByVolunteerID,
