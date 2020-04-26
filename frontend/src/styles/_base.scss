@@ -25,9 +25,10 @@ html, body, #root, .g1App {
 :root {
     font-size: 16px;
     --fs-body: 1rem;
+    --fs-h3: .9rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-accent: 'Catamaran', sans-serif;
+    --ff-accent: 'Cabin', sans-serif;
     --ff-top: 'Red Hat Display', sans-serif;
 
     --fw-bold: 800;
@@ -205,6 +206,29 @@ nav button {
     }
 }
 
+
+// Body Cards
+.g1Card {
+    background-color: transparent;
+    background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
+    border-radius: 1px;
+}
+
+.g1CardHeader {
+    background-color: transparent;
+    border-bottom: none;
+
+    color: var(--color-white);
+    font-family: var(--ff-accent);
+    font-size: var(--fs-h3);
+    font-weight: 900;
+
+    span {
+        color: var(--color-primary);
+        color: #476CEF;
+    }
+}
+
 .g1Popover {
     &, &:hover, &:active, &:focus {
         all: unset;
@@ -227,8 +251,9 @@ nav button {
     }
 }
 
+// temporary pre-styling
 .card-body {
-    color: var(--color-black);
+    color: var(--color-white);
 }
 
 // MEDIA QUERY MORE SPECIFIC STYLING
