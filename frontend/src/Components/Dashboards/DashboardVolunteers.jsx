@@ -29,16 +29,19 @@ const Dashboard = (props) => {
             try {
                 const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}`);
                 let first3 = [];
-                for (let i = 0; i < 3; i++) {
-                    if (data.payload[i]) {
-                        first3.push(data.payload[i])
-                    }
+                for (let i = 0; i < Math.min(3, data.payload.length); i++) {
+                    first3.push(data.payload[i])
                 }
                 setEventsList(first3);
             } catch (err) {
                 setFeedback(err)
             }
         }
+
+        getEvents();
+    }, [reload]);
+
+    useEffect(() => {
 
         const getAllVolunteeredTime = async () => {
             try {
@@ -63,10 +66,8 @@ const Dashboard = (props) => {
                 const { data } = await axios.get(`/api/events/important`);
                 console.log(data)
                 let first3 = [];
-                for (let i = 0; i < 3; i++) {
-                    if (data.payload[i]) {
-                        first3.push(data.payload[i])
-                    }
+                for (let i = 0; i < Math.min(3, data.payload.length); i++) {
+                    first3.push(data.payload[i])
                 }
                 setShowImportantEvents(first3)
             } catch (err) {
@@ -74,11 +75,11 @@ const Dashboard = (props) => {
             }
         }
 
-        getEvents();
         getAllVolunteeredTime();
         getNumberOfPastEvents();
         getImportantEvents();
-    }, [reload]);
+    }, []);
+
 
     const displayEvent = (event) => {
         setTargetEvent(event);
