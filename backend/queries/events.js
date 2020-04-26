@@ -239,6 +239,7 @@ const getImportantEvents = async () => {
     FROM events 
     WHERE event_start > now() AND important = TRUE
     ORDER BY event_start ASC
+    LIMIT 3
     `;
     return await db.any(selectQuery);
 }
