@@ -6,8 +6,8 @@ PrivateRouteGate Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
-import { Route } from 'react-router-dom';
-// import { Route, Redirect } from 'react-router-dom';
+// import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import NavBar from './NavBar/NavBar';
 
@@ -19,7 +19,6 @@ const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...r
     showInside = children;
   }
 
-
   return (
     <>
       <NavBar loggedUser={loggedUser} logout={logout} />
@@ -28,14 +27,14 @@ const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...r
         render={({location}) =>
           loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
             ? ( showInside )
-            : null
-            // : ( <Redirect
-            //       to={{
-            //         pathname: "/",
-            //         state: { from: location }
-            //       }}
-            //     />
-            //   )
+            // : null
+            : ( <Redirect
+                  to={{
+                    pathname: '/login',
+                    state: { from: location }
+                  }}
+                />
+              )
         }
       />
     </>

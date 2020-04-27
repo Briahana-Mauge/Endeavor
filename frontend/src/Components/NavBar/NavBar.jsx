@@ -69,8 +69,8 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
   /* BUILD LIMITED ACCESS NAVS */
   const
-    volunteersLink = <NAV_LINK to="/volunteers/home" text="Volunteers" isBurgerOn={isBurgerOn} />,
-    // fellowsLink = <NAV_LINK to='/fellows/home' text="Fellows" />,
+    volunteersLink = <NAV_LINK to="/volunteers" text="Volunteers" isBurgerOn={isBurgerOn} />,
+    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />,
     adminDropdown = (
       <NavDropdown topText="Admin">
         <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
@@ -108,11 +108,11 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
 
-          <NAV_LINK to="/home" text="Home" isBurgerOn={isBurgerOn} />
+          <NAV_LINK to="/" text="Home" isBurgerOn={isBurgerOn} />
 
           {showVolunteersLink}
 
-          <NAV_LINK to='/events/home' text="Events" isBurgerOn={isBurgerOn} />
+          <NAV_LINK to='/events' text="Events" isBurgerOn={isBurgerOn} />
 
           {/* {showFellowsLink} */}
 
@@ -134,7 +134,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 /* NAV COMPONENTS */
 const Logo = () => {
   return(
-    <Link className="g1Brand navbar-brand py-0" to="/home">
+    <Link className="g1Brand navbar-brand py-0" to="/">
       Endea<span>V</span>or
     </Link>
   );
@@ -180,7 +180,7 @@ const NavDropdown = (props) => {
   return (
     <li className="g1MobileTextALign nav-item dropdown">
       <NavLink
-        to="/home" // does not affect execution because preventDefault but pointing at /home just in case
+        to="/" // does not affect execution because preventDefault but pointing at /home just in case
         onClick={(e) => e.preventDefault()}
         className={`nav-link dropdown-toggle g1MobileTextALign ${liPadding}`}
         data-toggle="dropdown"

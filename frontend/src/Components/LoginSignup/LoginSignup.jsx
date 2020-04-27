@@ -8,8 +8,6 @@ import EmailPassword from './EmailPassword';
 
 export default function LoginSignup(props) {
     const {
-        loggedUser,
-
         formType,
         userType,
 
@@ -35,22 +33,19 @@ export default function LoginSignup(props) {
     } = props
 
     const location = useLocation();
-    // unsure if this chunk of code to Redirect away from login screen if already logged in is now redundant because of LoginSignupGate
     const history = useHistory();
-
-    useEffect(() => {
-        if (loggedUser.a_id || loggedUser.v_id || loggedUser.f_id) {
-            history.push('/home');
-        }
-    }, [loggedUser, history]);
-    //
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         try {
+            let { from } = location.state || { from: { pathname: '/' } }; // catches if user wanted to directly go to a specific page
+            if (from.pathname === '/login') {
+                from = { pathname: '/' }
+            }
+            console.log(from)
+
             if (formType === 'login' && email && password) { // LOGIN
-                const { from } = location.state || { from: { pathname: "/" } }; // catches if user wanted to directly go to a specific page
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
                 props.settleUser(data.payload);
                 history.replace(from);
@@ -60,11 +55,15 @@ export default function LoginSignup(props) {
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.settleUser(data.payload);
-                } else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
+                    history.replace(from);
+                } 
+                else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
                     const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
                     props.settleUser(data.payload);
-                } else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
+                    history.replace(from);
+                } 
+                else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
                     const userData = {
                         email, 
                         password, 
@@ -85,6 +84,7 @@ export default function LoginSignup(props) {
 
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
                     props.settleUser(data.payload);
+                    history.replace(from);
                 }
             }
 
