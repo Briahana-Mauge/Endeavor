@@ -90,19 +90,24 @@ const DashboardAdmin = (props) => {
 
 
     return (
-        <>
-            <EventsDash events={{ todays, importants, upcomings }} />
-
-            <h3>New Volunteers:</h3>
-            <div className='d-flex flex-row'>
-                {
-                    newVolunteersList.map(volunteer => <div key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id} >
-                        <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
-                    </div>)
-                }
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-5">
+              <EventsDash events={{ todays, importants, upcomings }} />
             </div>
 
-            <hr />
+            <div className="col-7">
+              <h3>New Volunteers:</h3>
+              <div className='d-flex flex-row'>
+                  {
+                      newVolunteersList.map(volunteer => <div key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id} >
+                          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
+                      </div>)
+                  }
+              </div>
+            </div>
+
+            {/* <hr /> */}
             {/* <h3>Upcoming Events:</h3>
             <div className='d-flex flex-wrap'>
                 {
@@ -119,8 +124,8 @@ const DashboardAdmin = (props) => {
 
             {
                 showEvent 
-                ?   <EventCard 
-                        loggedUser={loggedUser} 
+                ?   <EventCard
+                        loggedUser={loggedUser}
                         event={targetEvent}
                         setFeedback={setFeedback}
                         reloadParent={reloadDashboard}
@@ -129,7 +134,8 @@ const DashboardAdmin = (props) => {
                     />
                 : null
             }
-        </>
+          </div>
+        </div>
     )
 }
 

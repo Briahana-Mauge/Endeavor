@@ -235,6 +235,10 @@ nav button {
     }
 }
 
+.g1CardBody {
+    color: var(--color-white);
+}
+
 .g1TableEvents {
     border: 0;
     color: var(--color-white);
@@ -245,7 +249,8 @@ nav button {
     }
 
     thead {
-        color: #444;
+        color: #cd43a9;
+        // color: #444;
         text-transform: uppercase;
         font-size: calc(var(--fs-body) * .75);
         font-family: var(--ff-accent);
@@ -261,7 +266,7 @@ nav button {
     }
     
     .topicCol {
-        text-align: right;
+        text-align: left;
         padding-right: var(--table-gaps);
     }
 
@@ -273,8 +278,13 @@ nav button {
 
 .g1PopoverBtn {
     &, &:hover, &:active, &:focus {
+        --event-indent: 1.5rem;
+
         all: unset;
         cursor: pointer;
+        text-indent: calc(var(--event-indent) * -1);
+        position: relative;
+        left: (var(--event-indent));
     }
 
     &:hover, &:active {
@@ -288,8 +298,14 @@ nav button {
         box-shadow: none;
     }
 
+
     @include link-states();
 }
+
+// .topicCol .g1PopoverBtn::before {
+//     content: "▪︎ ";
+//     // color: red;▪︎
+// }
 
 .g1PopoverParent {
     .popover {
@@ -311,7 +327,7 @@ nav button {
         }
     }
 
-    .g1PopoverGoLink{
+    .g1PopoverGoLink {
         display: block;
         font-size: .8rem;
         text-transform: lowercase;
@@ -319,15 +335,38 @@ nav button {
 
         @include link-states();
     }
+
+    .bs-popover-auto[x-placement^=right] .g1PopoverGoLink {
+        text-align: left;
+    }
 }
 
-// Popover Arrow: label copied exactly to match specificity
-.bs-popover-auto[x-placement^=left]>.arrow::after,
-.bs-popover-left>.arrow::after {
-    top: 2px;
-    right: 3px;
-    border-width: .4rem 0 .4rem 1.2rem;
-    border-left-color: #476CEF;
+// Popover Arrows
+.g1PopoverParent {
+    --parrow-top: 3px;
+    --parrow-y-squeeze: .4rem;
+    --parrow-x-nudge: 1.2rem;
+    --parrow-color: #476cef;
+
+    .bs-popover-auto[x-placement^=right] {
+        left: 11px !important;
+    }
+
+    .bs-popover-auto[x-placement^=left]>.arrow::after,
+    .bs-popover-left>.arrow::after {
+        top: var(--parrow-top);
+        right: .3rem;
+        border-width: var(--parrow-y-squeeze) 0 var(--parrow-y-squeeze) var(--parrow-x-nudge);
+        border-left-color: var(--parrow-color);
+    }
+
+    .bs-popover-auto[x-placement^=right]>.arrow::after,
+    .bs-popover-right>.arrow::after {
+        top: var(--parrow-top);
+        left: -.4rem;
+        border-width: var(--parrow-y-squeeze) var(--parrow-x-nudge) var(--parrow-y-squeeze) 0;
+        border-right-color: var(--parrow-color);
+    }
 }
 
 .popover-header {
@@ -343,10 +382,6 @@ nav button {
     }
 }
 
-// temporary pre-styling
-.card-body {
-    color: var(--color-white);
-}
 
 // MEDIA QUERY MORE SPECIFIC STYLING
     // Bootstrap reference
