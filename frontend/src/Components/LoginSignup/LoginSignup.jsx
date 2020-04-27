@@ -43,7 +43,6 @@ export default function LoginSignup(props) {
             if (from.pathname === '/login') {
                 from = { pathname: '/' }
             }
-            console.log(from)
 
             if (formType === 'login' && email && password) { // LOGIN
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
