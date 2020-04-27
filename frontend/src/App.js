@@ -291,7 +291,7 @@ function App() {
           <h1 className='text-center'>We can have a message here or a 404 page</h1>
         </Route>
 
-        <Redirect to="/404" />
+        <Redirect to='/404' />
 
       </Switch>
 
