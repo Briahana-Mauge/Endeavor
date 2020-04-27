@@ -16,11 +16,10 @@ const LoginSignupGate = ({ loggedUser, isUserStateReady, children }) => {
     showLoginSignup = children;
   }
 
-
   return(
     <>
       {loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
-        ? <Redirect to={{ pathname: '/home'}} />
+        ? <Redirect to={{ pathname: '/'}} />
         : showLoginSignup
       }
     </>
