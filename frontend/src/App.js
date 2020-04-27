@@ -6,7 +6,7 @@ APP MAIN | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 import './App.scss';
@@ -27,6 +27,9 @@ import Feedback from './Components/Feedback';
 
 
 function App() {
+  // APP State
+  const [wait, setWait] = useState(true);
+
   // USER states
   const [loggedUser, setLoggedUser] = useState({});
   const [isUserStateReady, setIsUserStateReady] = useState(false);
@@ -64,7 +67,8 @@ function App() {
       .catch(err => {
           if (err.response && err.response.status === 401) {
             setIsUserStateReady(true);
-            history.push('/', { from: location });
+            history.push('/login', { from: location });
+            setWait(false);
           } else {
             setFeedback(err);
           }
@@ -75,6 +79,7 @@ function App() {
   const settleUser = (user) => {
     setLoggedUser(user);
     setIsUserStateReady(true);
+    setWait(false);
   }
 
   const logout = () => {
@@ -82,7 +87,7 @@ function App() {
     axios.get('/api/auth/logout')
       .then(res => {
         settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
-        history.push('/');
+        history.push('/login');
         setEmail('');
         setPassword('');
         setNewPassword('');
@@ -179,17 +184,17 @@ function App() {
     volunteersDashboard = <DashboardVolunteers {...userProps} />,
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
-      <PrivateRouteGate path='/volunteers/home' {...gateProps}>
+      <PrivateRouteGate path='/volunteers' {...gateProps}>
         <VolunteerSearch {...userProps} />
       </PrivateRouteGate>
     ),
     volunteersProfile = (
-      <PrivateRouteGate path='/volunteers/:volunteerId' {...gateProps}>
+      <PrivateRouteGate path='/volunteer/:volunteerId' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
     fellowsProfile = (
-      <PrivateRouteGate path='/fellows/:fellowId' {...gateProps}>
+      <PrivateRouteGate path='/fellow/:fellowId' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
@@ -198,28 +203,28 @@ function App() {
         <AdminTools {...userProps} />
       </PrivateRouteGate>
     ),
-    adminEventForm = (
-      <>
-        <PrivateRouteGate path='/event/add' {...gateProps}>
-          <EventForm {...userProps} />
-        </PrivateRouteGate>
-
-        <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
-          <EventForm {...userProps} />
-        </PrivateRouteGate>
-      </>
+    adminAddEventForm = (
+      <PrivateRouteGate path='/event/add' {...gateProps}>
+        <EventForm {...userProps} />
+      </PrivateRouteGate>
+    ),
+    adminEditEventForm = (
+      <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
+        <EventForm {...userProps} />
+      </PrivateRouteGate>
     )
   ;
 
 
   /* TOGGLE LIMITED ROUTE ACCESSES */
   let
-    allowedDashboard = fellowsDashboard,
+    allowedDashboard = <div>You need to to logged in to view this content</div>, // OR maybe we can default it to the what's new / events to general public
     allowedVolunteersHome = null,
     allowedVolunteersProfile = null,
     allowedFellowsProfile = null,
     allowedAdminTools = null,
-    allowedManageEvent = null
+    allowedAddEvent = null,
+    allowedEditEvent = null
   ;
 
   if (appRoute.volunteer) {
@@ -233,19 +238,27 @@ function App() {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
-    allowedManageEvent = adminEventForm; // For now add and edit event is allowed to admin and staff, this may move to only admin
+    // allowedManageEvent = adminEventForm; // For now add and edit event is allowed to admin and staff, this may move to only admin
+    allowedAddEvent = adminAddEventForm;
+    allowedEditEvent = adminEditEventForm;
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
     allowedAdminTools = adminTools;
   }
+  if (appRoute.fellow) {
+    allowedDashboard = fellowsDashboard;
+  }
 
+  if (wait) {
+    return <h1 className='text-center text-danger'>this will be a spinner</h1>
+  }
 
   return (
     <div className="g1App container-fluid p-3">
       <Switch>
 
-        <PrivateRouteGate path='/home' {...gateProps}>
+        <PrivateRouteGate exact path='/' {...gateProps}>
           {allowedDashboard}
         </PrivateRouteGate>
 
@@ -253,7 +266,7 @@ function App() {
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/events/home' {...gateProps}>
+        <PrivateRouteGate path='/events' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
 
@@ -263,14 +276,22 @@ function App() {
         {allowedFellowsProfile}
 
         {allowedAdminTools}
-        {allowedManageEvent}
+        {/* {allowedManageEvent} */}
+        {allowedAddEvent}
+        {allowedEditEvent}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
-        <Route path='/'>
+        <Route path='/login'>
           <LoginSignupGate {...gateProps}>
             <LoginSignup {...userProps} {...signupProps} {...profileProps} />
           </LoginSignupGate>
         </Route>
+
+        <Route path='/404'>
+          <h1 className='text-center'>We can have a message here or a 404 page</h1>
+        </Route>
+
+        <Redirect to='/404' />
 
       </Switch>
 

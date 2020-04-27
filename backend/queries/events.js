@@ -27,7 +27,6 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
     cohorts.cohort,
     cohorts.cohort_id,
     materials_url,
-    event_duration,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
@@ -61,7 +60,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
       events.number_of_volunteers, 
       cohorts.cohort,
       cohorts.cohort_id,
-      event_duration
+      important
     ORDER BY (
       CASE 
         WHEN event_start > NOW()
@@ -98,15 +97,14 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 const getSingleEvent = async (eId) => {
   const selectQuery = `
   SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, event_duration,
+    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, important,
     ARRAY_AGG ( 
       DISTINCT
       CASE 
         WHEN event_volunteers.confirmed = TRUE 
         THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
         END
-    ) AS volunteers,
-    event_duration
+    ) AS volunteers
     
   FROM events
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
@@ -144,7 +142,6 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
-  // events.event_duration,
   // ARRAY_AGG ( 
   //   DISTINCT
   //   CASE 
@@ -258,7 +255,7 @@ const postEvent = async (eventObj) => {
       instructor,
       number_of_volunteers,
       materials_url,
-      event_duration
+      important
     ) VALUES (
       $/start/,
       $/end/,
@@ -270,7 +267,7 @@ const postEvent = async (eventObj) => {
       $/instructor/,
       $/numberOfVolunteers/,
       $/materialsUrl/,
-      0
+      $/important/
     )
     RETURNING *
   `
@@ -291,7 +288,7 @@ const editEvent = async (eventObj) => {
       instructor = $/instructor/,
       number_of_volunteers = $/numberOfVolunteers/,
       materials_url = $/materialsUrl/,
-      event_duration = 0
+      important = $/important/
     WHERE event_id = $/eventId/
     RETURNING *
   `
