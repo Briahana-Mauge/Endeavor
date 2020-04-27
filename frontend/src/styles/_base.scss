@@ -40,6 +40,7 @@ html, body, #root, .g1App {
     --color-black: #323232;
 
     --border-radii: .2rem;
+    --box-shadow: 1px 6px 11px #0005;
     --table-gaps: .8rem;
     
     --navbar-height: 62px;
@@ -109,6 +110,7 @@ nav button {
 @mixin link-states() {
     &:link, &:visited {
         color: var(--color-white);
+        text-decoration: none;
     }
     &:hover, &:active {
         color: var(--color-primary);
@@ -292,11 +294,30 @@ nav button {
 .g1PopoverParent {
     .popover {
         border-radius: var(--border-radii);
+        box-shadow: var(--box-shadow);
         font-family: var(--ff-accent);
     }
 
     .popover-header {
         font-family: var(--ff-top);
+        border-top-left-radius: var(--border-radii);
+        border-top-right-radius: var(--border-radii);
+
+        .times {
+            font-size: .9rem;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--color-primary);
+        }
+    }
+
+    .g1PopoverGoLink{
+        display: block;
+        font-size: .8rem;
+        text-transform: lowercase;
+        text-align: right;
+
+        @include link-states();
     }
 }
 
