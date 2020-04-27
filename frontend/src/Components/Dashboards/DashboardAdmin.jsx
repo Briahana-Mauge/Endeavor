@@ -10,8 +10,10 @@ import axios from 'axios';
 // import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
-import EventPreviewCard from '../EventPreviewCard';
+import EventsDash from './EventsDash';
+// import EventPreviewCard from '../EventPreviewCard';
 import EventCard from '../EventCard';
+
 
 const DashboardAdmin = (props) => {
     const { setFeedback, loggedUser } = props;
@@ -25,28 +27,24 @@ const DashboardAdmin = (props) => {
 
     useEffect(() => {
         const getNewVolunteer = async () => {
-            try {
-                const {data} = await axios.get('/api/volunteers/new');
-                setNewVolunteersList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
+          try {
+              const {data} = await axios.get('/api/volunteers/new');
+              setNewVolunteersList(data.payload);
+          } catch (err) {
+              setFeedback(err)
+          }
+        }
+
+        const getEvents = async () => {
+          try {
+              const {data} = await axios.get('/api/events/admin/all?upcoming=true');
+              setEventsList(data.payload);
+          } catch (err) {
+              setFeedback(err)
+          }
         }
 
         getNewVolunteer();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reloadDashboard]);
-
-    useEffect(() => {
-        const getEvents = async () => {
-            try {
-                const {data} = await axios.get('/api/events/admin/all?upcoming=true');
-                setEventsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
-
         getEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadDashboard]);
@@ -67,6 +65,31 @@ const DashboardAdmin = (props) => {
     }
 
 
+    // TEMPORARY PLACEHOLDERS
+    const
+      todays = [...eventsList],
+      importants = [...eventsList].slice(1, 4),
+      upcomings = [...eventsList].slice(4, 7)
+    ;
+
+    // const
+    //   rowsImportants = [],
+    //   rowsTodays = [],
+    //   rowsUpcomings = []
+    // ;
+
+    // rowsImportants = events.map(event => {
+    //   return(
+    //     <tr>
+    //       <td className="topicCol">{event.topic}</td>
+    //       <td className="timeCol">{}</td>
+    //     </tr>
+    //   );
+    // });
+
+
+
+
     return (
         <>
             {/* <Button id="UncontrolledPopover" type="button" className="g1Popover">
@@ -76,13 +99,8 @@ const DashboardAdmin = (props) => {
               <PopoverHeader>Popover Title</PopoverHeader>
               <PopoverBody><h1>Test</h1>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
             </UncontrolledPopover> */}
-            <div className="g1Card card">
-                <h3 className="g1CardHeader card-header"><span>Today's</span> Events</h3>
-                <div className="g1CardBody card-body">
-                    <h5 className="card-title">Special title treatment</h5>
-                    <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                </div>
-            </div>
+
+            <EventsDash events={{ todays, importants, upcomings }} />
 
             <h3>New Volunteers:</h3>
             <div className='d-flex flex-row'>
@@ -94,7 +112,7 @@ const DashboardAdmin = (props) => {
             </div>
 
             <hr />
-            <h3>Upcoming Events:</h3>
+            {/* <h3>Upcoming Events:</h3>
             <div className='d-flex flex-wrap'>
                 {
                     eventsList.map(event => <EventPreviewCard 
@@ -106,7 +124,7 @@ const DashboardAdmin = (props) => {
                             setTargetEvent={setTargetEvent}
                         />)
                 }
-            </div>
+            </div> */}
 
             {
                 showEvent 

@@ -39,6 +39,9 @@ html, body, #root, .g1App {
     --color-white: #e2e2e2;
     --color-black: #323232;
 
+    --border-radii: .2rem;
+    --table-gaps: .8rem;
+    
     --navbar-height: 62px;
 }
 
@@ -188,6 +191,7 @@ nav button {
         text-align: right;
     }
     @media (min-width: 992px) {   // regular navmenu dropdowns
+        border-radius: var(--border-radii);
         text-align: left;
         // background-color: #000 !important;
         // background-image: linear-gradient(180deg, #8d8557, #8d855773);
@@ -211,7 +215,7 @@ nav button {
 .g1Card {
     background-color: transparent;
     background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
-    border-radius: 1px;
+    border-radius: var(--border-radii);
 }
 
 .g1CardHeader {
@@ -229,9 +233,50 @@ nav button {
     }
 }
 
-.g1Popover {
+.g1TableEvents {
+    border: 0;
+    color: var(--color-white);
+
+    td, th {
+        padding: 0;
+        border-top: 0;
+    }
+
+    thead {
+        color: #444;
+        text-transform: uppercase;
+        font-size: calc(var(--fs-body) * .75);
+        font-family: var(--ff-accent);
+
+        th {
+            border-bottom: 0;
+            padding-bottom: calc(var(--table-gaps) * .15);
+        }
+    }
+
+    .topicCol, .timeCol {
+        line-height: 1.2rem;
+    }
+    
+    .topicCol {
+        text-align: right;
+        padding-right: var(--table-gaps);
+    }
+
+    .timeCol {
+        padding-left: var(--table-gaps);
+        border-left: 1px dashed #696969;
+    }
+}
+
+.g1PopoverBtn {
     &, &:hover, &:active, &:focus {
         all: unset;
+        cursor: pointer;
+    }
+
+    &:hover, &:active {
+        color: var(--color-yellow) !important;
     }
 
     &.btn-secondary:not(:disabled):not(.disabled):active {
@@ -243,6 +288,32 @@ nav button {
 
     @include link-states();
 }
+
+.g1PopoverParent {
+    .popover {
+        border-radius: var(--border-radii);
+        font-family: var(--ff-accent);
+    }
+
+    .popover-header {
+        font-family: var(--ff-top);
+    }
+}
+
+// Popover Arrow: label copied exactly to match specificity
+.bs-popover-auto[x-placement^=left]>.arrow::after,
+.bs-popover-left>.arrow::after {
+    top: 2px;
+    right: 3px;
+    border-width: .4rem 0 .4rem 1.2rem;
+    border-left-color: #476CEF;
+}
+
+.popover-header {
+    background-color: var(--color-yellow);
+    filter: grayscale(.4) brightness(1.4);
+}
+
 
 @media (max-width: 992px) {
     .g1MobileTextALign {
