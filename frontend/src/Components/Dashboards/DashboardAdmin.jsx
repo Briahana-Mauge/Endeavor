@@ -7,7 +7,6 @@ DashboardAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
 import EventsDash from './EventsDash';
@@ -92,14 +91,6 @@ const DashboardAdmin = (props) => {
 
     return (
         <>
-            {/* <Button id="UncontrolledPopover" type="button" className="g1Popover">
-              Launch Popover
-            </Button>
-            <UncontrolledPopover trigger="legacy" placement="left-start" target="UncontrolledPopover">
-              <PopoverHeader>Popover Title</PopoverHeader>
-              <PopoverBody><h1>Test</h1>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
-            </UncontrolledPopover> */}
-
             <EventsDash events={{ todays, importants, upcomings }} />
 
             <h3>New Volunteers:</h3>

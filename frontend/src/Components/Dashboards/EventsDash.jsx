@@ -6,8 +6,10 @@ EventsDash Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
+const moment = require('moment');
 
 
 const EventsDash = (props) => {
@@ -18,6 +20,7 @@ const EventsDash = (props) => {
       return(
         <EventDashRow
           key={event.event_id}
+          type={"today"}
           event={event}
         />
       );
@@ -52,12 +55,22 @@ export default EventsDash;
 
 
 const EventDashRow = (props) => {
-  const { event_id, topic, location, description } = props.event;
+  const { event_id, event_start, event_end, topic, location, description } = props.event;
+  const { type } = props;
+
+  const evt = {
+    today: {
+      startTime: moment(event_start).format('h:mm a'),  // to do: add conditionals for start time diff day and all-day
+      endTime: moment(event_end).format('h:mm a')
+    }
+  }
+
 
   const content = (
     <div>
-      <p>{location}</p>
+      {/* volunteers confirmed / requested / pending */}
       <p>{description}</p>
+      <p>{location}</p>
     </div>
   );
 
@@ -69,10 +82,16 @@ const EventDashRow = (props) => {
         </Button>
       </td>
       <td className="timeCol">
-        Date
+        {evt[type].startTime}
 
         <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
-          <PopoverHeader>{topic}</PopoverHeader>
+          <PopoverHeader>
+            <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
+            <strong>{topic}</strong><br />
+            <div className="times">
+              {`${evt[type].startTime} - ${evt[type].endTime}`}
+            </div>
+          </PopoverHeader>
           <PopoverBody>
             {content}
           </PopoverBody>
