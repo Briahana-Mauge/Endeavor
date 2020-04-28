@@ -10,7 +10,7 @@ import axios from 'axios';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
 import EventsDash from './EventsDash';
-// import EventPreviewCard from '../EventPreviewCard';
+import EventPreviewCard from '../EventPreviewCard';
 import EventCard from '../EventCard';
 
 
@@ -18,7 +18,7 @@ const DashboardAdmin = (props) => {
     const { setFeedback, loggedUser } = props;
 
     const [ newVolunteersList, setNewVolunteersList ] = useState([]);
-    const [ eventsList, setEventsList ] = useState([]);
+    const [ eventsObj, setEventsObj ] = useState({ todays: [], importants: [], upcomings: [] });
     const [ showEvent, setShowEvent ] = useState(false);
     const [ targetEvent, setTargetEvent ] = useState({});
     const [ reloadDashboard, setReloadDashboard ] = useState(false);
@@ -36,8 +36,8 @@ const DashboardAdmin = (props) => {
 
         const getEvents = async () => {
           try {
-              const {data} = await axios.get('/api/events/admin/all?upcoming=true');
-              setEventsList(data.payload);
+              const {data} = await axios.get('/api/events/admin/all?dashboard=true');
+              setEventsObj(data.payload);
           } catch (err) {
               setFeedback(err)
           }
@@ -64,39 +64,14 @@ const DashboardAdmin = (props) => {
     }
 
 
-    // TEMPORARY PLACEHOLDERS
-    const
-      todays = [...eventsList],
-      importants = [...eventsList].slice(1, 4),
-      upcomings = [...eventsList].slice(4, 7)
-    ;
-
-    // const
-    //   rowsImportants = [],
-    //   rowsTodays = [],
-    //   rowsUpcomings = []
-    // ;
-
-    // rowsImportants = events.map(event => {
-    //   return(
-    //     <tr>
-    //       <td className="topicCol">{event.topic}</td>
-    //       <td className="timeCol">{}</td>
-    //     </tr>
-    //   );
-    // });
-
-
-
-
     return (
         <div className="container-fluid">
           <div className="row">
-            <div className="col-5">
-              <EventsDash events={{ todays, importants, upcomings }} />
+            <div className="col-4">
+              <EventsDash events={eventsObj} />
             </div>
 
-            <div className="col-7">
+            <div className="col-8">
               <h3>New Volunteers:</h3>
               <div className='d-flex flex-row'>
                   {
@@ -108,10 +83,10 @@ const DashboardAdmin = (props) => {
             </div>
 
             {/* <hr /> */}
-            {/* <h3>Upcoming Events:</h3>
+            <h3>Upcoming Events:</h3>
             <div className='d-flex flex-wrap'>
                 {
-                    eventsList.map(event => <EventPreviewCard 
+                    eventsObj.todays.map(event => <EventPreviewCard 
                             key={event.event_id + event.event_end + event.event_start}
                             loggedUser={loggedUser}
                             event={event}
@@ -120,7 +95,7 @@ const DashboardAdmin = (props) => {
                             setTargetEvent={setTargetEvent}
                         />)
                 }
-            </div> */}
+            </div>
 
             {
                 showEvent 

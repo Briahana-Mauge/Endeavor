@@ -9,14 +9,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
+import EventListItem from './EventsDash/EventListItem';
 const moment = require('moment');
 
 
 const EventsDash = (props) => {
-  const { todays, importants, upcomings } = props.events;
-  console.log(importants, todays, upcomings);
+  const { events } = props;
+  console.log(events);
 
-  const rowsTodays = todays.map(event => {
+  const rowsTodays = events.todays.map(event => {
       return(
         <EventDashRow
           key={event.event_id}
@@ -88,16 +89,16 @@ const EventDashRow = (props) => {
   const { event_id, event_start, event_end, topic, location, description } = props.event;
   const { type } = props;
 
-  // const formatTime = (dateObj, modeStr) => {
-  //   switch (modeStr) {
-  //     case "todayEvent":
-  //       return moment(dateObj).format('h:mm a');
-  //       break;
-  //     case "otherEvents":
-  //       return moment(dateObj).format('D MMM YY');
-  //       break;
-  //   }
-  // }
+  const formatTime = (dateObj, modeStr) => {
+    switch (modeStr) {
+      case "todayEvent":
+        return moment(dateObj).format('h:mm a');
+        break;
+      case "otherEvents":
+        return moment(dateObj).format('D MMM YY');
+        break;
+    }
+  }
   const evt = {
     today: {
       startTime: moment(event_start).format('h:mm a'),  // to do: add conditionals for start time diff day and all-day
@@ -120,9 +121,9 @@ const EventDashRow = (props) => {
   return(
     <tr>
       <td className="topicCol">
-        <Button id={'event' + event_id} type="button" className="g1PopoverBtn">
+        <div id={'event' + event_id} className="g1EventItem">
           {topic}
-        </Button>
+        </div>
       </td>
       <td className="timeCol">
         {evt[type].startTime}
@@ -141,5 +142,28 @@ const EventDashRow = (props) => {
         </UncontrolledPopover>
       </td>
     </tr>
+    // <tr>
+    //   <td className="topicCol">
+    //     <Button id={'event' + event_id} type="button" className="g1PopoverBtn">
+    //       {topic}
+    //     </Button>
+    //   </td>
+    //   <td className="timeCol">
+    //     {evt[type].startTime}
+
+    //     <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
+    //       <PopoverHeader>
+    //         <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
+    //         <strong>{topic}</strong><br />
+    //         <div className="times">
+    //           {`${evt[type].startTime} - ${evt[type].endTime}`}
+    //         </div>
+    //       </PopoverHeader>
+    //       <PopoverBody>
+    //         {content}
+    //       </PopoverBody>
+    //     </UncontrolledPopover>
+    //   </td>
+    // </tr>
   );
 }
