@@ -14,7 +14,7 @@ import EventCard from '../EventCard';
 
 const Dashboard = (props) => {
     const { setFeedback, loggedUser } = props;
-    
+
     const [eventsList, setEventsList] = useState([]);
     const [showEvent, setShowEvent] = useState(false);
     const [volunteeredTime, setVolunteeredTime] = useState(0);
@@ -94,7 +94,6 @@ const Dashboard = (props) => {
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
-                    reloadDashboard={reloadDashboard}
                 />)
             }
 
