@@ -230,15 +230,17 @@ const getPastEvents = async () => {
   return await db.any(selectQuery);
 }
 //Get all important events
-const getImportantEvents = async () => {
-  const selectQuery = `
+const getImportantEvents = async (limit) => {
+  let selectQuery = `
   SELECT *
     FROM events 
-    WHERE event_start > now() AND important = TRUE
+    WHERE event_start > now() AND important = TRUE AND deleted IS NULL
     ORDER BY event_start ASC
-    LIMIT 3
     `;
-    return await db.any(selectQuery);
+    if (limit) {
+      selectQuery += ' LIMIT $1'
+    }
+    return await db.any(selectQuery, limit);
 }
 
 // Add new event
@@ -327,8 +329,8 @@ const getPastEventsByVolunteerId = async (id) => {
 }
 
 // Get all upcoming events by volunteer Id
-const getUpcomingEventsByVolunteerId = async (id) => {
-  const selectQuery = `
+const getUpcomingEventsByVolunteerId = async (id, limit) => {
+  let selectQuery = `
    SELECT event_id, topic, event_start, instructor, description, event_end, location, cohort
     FROM events 
     INNER JOIN event_volunteers ON event_id = ev_id
@@ -336,7 +338,10 @@ const getUpcomingEventsByVolunteerId = async (id) => {
     WHERE event_start > now() AND volunteer_id = $1 AND confirmed = TRUE
     ORDER BY event_start ASC
   `;
-  return await db.any(selectQuery, id);
+  if (limit) {
+    selectQuery += ' LIMIT $2'
+  }
+  return await db.any(selectQuery, [id, limit]);
 }
 
 // Get all past events by volunteer Id

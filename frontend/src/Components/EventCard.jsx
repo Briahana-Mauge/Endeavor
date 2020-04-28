@@ -9,14 +9,17 @@ const EventsCard = (props) => {
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
-    const [ volunteersList, setVolunteersList] = useState([]);
+    const [ volunteersList, setVolunteersList ] = useState([]);
+    const [ waitingForRender, setWaitingForRender ] = useState(false);
     
     useEffect(() => {
         setVolunteersList(event.volunteersList);
+        setWaitingForRender(false)
     }, [event.reload, event.volunteersList]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
+            setWaitingForRender(true);
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
             event.setReload(event.reload + 1);
         } catch (err) {
@@ -26,8 +29,9 @@ const EventsCard = (props) => {
 
     const volunteerForEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
-            props.setReloadParent(!props.reloadParent);
+            event.setReload(!event.reload);
         } catch (err) {
             setFeedback(err);
         }
@@ -35,8 +39,9 @@ const EventsCard = (props) => {
 
     const deleteVolunteerForEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
-            props.setReloadParent(!props.reloadParent);
+            event.setReload(!event.reload);
         } catch (err) {
             setFeedback(err);
         }
@@ -46,10 +51,11 @@ const EventsCard = (props) => {
         try {
             e.preventDefault();
 
-
-            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: event.volunteerHours});
+            setWaitingForRender(true);
+            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
+            setWaitingForRender(false);
             setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
-            event.setVolunteerHours('');
+            setVolunteerHours('');
         } catch (err) {
             setFeedback(err)
         }
@@ -58,6 +64,7 @@ const EventsCard = (props) => {
 
     const handleDeleteEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.delete(`/api/events/${event.event_id}`)
             props.setReloadParent(!props.reloadParent);
             props.hideEvent();
@@ -80,7 +87,7 @@ const EventsCard = (props) => {
                         id={volunteer.v_id + volunteer.v_last_name + event.event_id}
                         checked={volunteer.volunteer_request_accepted} 
                         onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
-                        disabled={volunteer.deleted}
+                        disabled={volunteer.deleted || waitingForRender}
                     />
                     <label className='custom-control-label  mt-2' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
                         <span className={volunteer.deleted ? 'd-block text-muted' : 'd-block'}>
@@ -97,8 +104,9 @@ const EventsCard = (props) => {
                                     placeholder='Hours' 
                                     value={volunteerHours}
                                     onChange={e => setVolunteerHours(e.target.value)}
+                                    disabled={waitingForRender}
                                 />
-                                <button className='btn btn-primary  mb-2'>Save</button>
+                                <button className='btn btn-primary  mb-2' disabled={waitingForRender}>Save</button>
                             </form>
                         : null
                     }
@@ -125,8 +133,8 @@ const EventsCard = (props) => {
 
     return (
         <div className='lightBox'>
-            <div className='text-right m-2 closeButton'>
-                 <button className='btn-sm btn-danger' onClick={props.hideEvent}>X</button>
+            <div className='text-right closeButton'>
+                 <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
             </div>
 
             <div className='border border-dark rounded bg-light m-1'>
@@ -166,15 +174,15 @@ const EventsCard = (props) => {
                             ?   <div className='card-text d-flex justify-content-between'>
                                     <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
+                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
                                 : <div className='card-text'>
                                     <span>Request pending</span>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
+                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
                             : loggedUser && loggedUser.v_id
                                 ? <div className='card-text text-right'>
-                                    <button className='btn btn-primary' onClick={volunteerForEvent}>Volunteer for this event</button>
+                                    <button className='btn btn-primary' onClick={volunteerForEvent} disabled={waitingForRender}>Volunteer for this event</button>
                                 </div>
                                 : null
                     }
@@ -184,7 +192,7 @@ const EventsCard = (props) => {
                 {
                     loggedUser && loggedUser.admin
                     ?   <div className='d-flex justify-content-between m-2'>
-                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
+                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent} disabled={waitingForRender}>Delete</button>
                             <span className='flex-fill'></span>
                             <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
                         </div>
