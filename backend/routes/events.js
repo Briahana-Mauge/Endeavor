@@ -121,11 +121,9 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 router.get('/important', async (req, res, next) => {
     try {
         let limit = req.query.limit;
-        console.log(limit)
         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
             limit = null;
         } 
-        console.log(limit)
 
         const allEvents = await eventsQueries.getImportantEvents(limit);
         res.json({
