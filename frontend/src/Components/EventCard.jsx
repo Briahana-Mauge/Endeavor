@@ -4,7 +4,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 
-const EventsCard = (props) => {
+const EventCard = (props) => {
     const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
@@ -203,4 +203,4 @@ const EventsCard = (props) => {
     );
 }
 
-export default EventsCard;
+export default EventCard;
