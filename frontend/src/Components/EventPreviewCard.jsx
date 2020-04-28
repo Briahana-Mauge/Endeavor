@@ -10,6 +10,7 @@ export default function EventPreviewCard(props) {
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ volunteersEmailList, setVolunteersEmailList] = useState('');
     const [ reload, setReload ] = useState(false);
+    // const [ barrier, setBarrie ] = useState(true);
 
     
     const getVolunteersList = () => {
@@ -17,7 +18,7 @@ export default function EventPreviewCard(props) {
             .then(response => setVolunteersList(response.data.payload))
             .catch(err => setFeedback(err))
     }
-    useEffect(getVolunteersList, [reload]);
+    useEffect(getVolunteersList, [reload, props.reloadDashboard]);
 
     const checkIfVolunteerSignedForEvent = () => {
         let found = false;
@@ -40,6 +41,8 @@ export default function EventPreviewCard(props) {
     }
     useEffect(checkIfVolunteerSignedForEvent, [loggedUser, volunteersList]);
 
+    let barrier = true;
+
     const setEventAsTarget = () => {
         const eventDataObj = Object.assign({}, event, {
             volunteersList,
@@ -49,7 +52,12 @@ export default function EventPreviewCard(props) {
             reload,
             setReload,
         });
-        props.setTargetEvent(eventDataObj);
+
+        if (!barrier) {
+            props.setTargetEvent(eventDataObj);
+        } else {
+            barrier = false
+        }
     }
     useEffect(setEventAsTarget, [loggedUser, volunteersList, loggedVolunteerPartOfEvent, loggedVolunteerRequestAccepted, volunteersEmailList]);
 

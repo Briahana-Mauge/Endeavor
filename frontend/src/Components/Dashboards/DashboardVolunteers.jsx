@@ -11,7 +11,7 @@ import axios from 'axios';
 
 // import VolunteerPreviewCard from './VolunteerPreviewCard';
 import EventPreviewCard from '../EventPreviewCard';
-import EventsCard from '../EventCard';
+import EventCard from '../EventCard';
 
 const Dashboard = (props) => {
     const { setFeedback, loggedUser } = props;
@@ -21,7 +21,7 @@ const Dashboard = (props) => {
     const [showPastEvents, setShowPastEvents] = useState('')
     const [showImportantEvents, setShowImportantEvents] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
-    const [reload, setReload] = useState(false);
+    const [reloadDashboard, setReloadDashboard] = useState(false);
 
 
     useEffect(() => {
@@ -33,16 +33,16 @@ const Dashboard = (props) => {
                     first3.push(data.payload[i])
                 }
                 setEventsList(first3);
+                console.log(data.payload[0])
             } catch (err) {
                 setFeedback(err)
             }
         }
 
         getEvents();
-    }, [reload]);
+    }, [reloadDashboard]);
 
     useEffect(() => {
-
         const getAllVolunteeredTime = async () => {
             try {
                 const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
@@ -81,10 +81,10 @@ const Dashboard = (props) => {
     }, []);
 
 
-    const displayEvent = (event) => {
-        setTargetEvent(event);
-        setShowEvent(true);
-    }
+    // const displayEvent = (event) => {
+    //     setTargetEvent(event);
+    //     setShowEvent(true);
+    // }
 
     const hideEvent = () => {
         setTargetEvent({});
@@ -105,30 +105,24 @@ const Dashboard = (props) => {
                 eventsList.map(event => <EventPreviewCard
                     key={event.event_id + event.event_end + event.event_start}
                     event={event}
-                    displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
+                    reloadDashboard={reloadDashboard}
                 />)
             }
 
             {
-                showEvent
-                    ? <div className='lightBox'>
-                        <div className='text-right m-2'>
-                            <button className='btn-sm btn-danger' onClick={hideEvent}>X</button>
-                        </div>
-                        <EventsCard
-                            loggedUser={loggedUser}
-                            event={targetEvent}
-                            setFeedback={setFeedback}
-                            reload={reload}
-                            setReload={setReload}
-
-
-                        />
-                    </div>
-                    : null
+                showEvent 
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reloadDashboard}
+                        setReloadParent={setReloadDashboard}
+                        hideEvent={hideEvent}
+                    />
+                : null
             }
             <br></br>
             <br></br>
@@ -136,11 +130,11 @@ const Dashboard = (props) => {
             {
                 showImportantEvents.map(event => <EventPreviewCard
                     key={event.event_id + event.event_end + event.event_start}
+                    loggedUser={loggedUser}
                     event={event}
-                    displayEvent={displayEvent}
-                    loggedUser={props.loggedUser}
-                    setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
+                    setFeedback={setFeedback}
+                    setTargetEvent={setTargetEvent}
                 />)
             }
 

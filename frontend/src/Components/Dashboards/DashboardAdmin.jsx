@@ -88,6 +88,7 @@ const DashboardAdmin = (props) => {
                             setShowEvent={setShowEvent}
                             setFeedback={setFeedback}
                             setTargetEvent={setTargetEvent}
+                            reloadDashboard={null}
                         />)
                 }
             </div>

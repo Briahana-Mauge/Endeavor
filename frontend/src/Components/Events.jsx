@@ -98,6 +98,7 @@ export default function EventSearch(props) {
                         setShowEvent={setShowEvent}
                         setFeedback={setFeedback}
                         setTargetEvent={setTargetEvent}
+                        reloadDashboard={reload}
                     />)
                 }
             </div>
