@@ -121,7 +121,7 @@ const getSingleEvent = async (eId) => {
   return await db.one(selectQuery, { eId });
 }
 
-const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
+const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashboard) => {
   const selectQuery = `
   SELECT 
     event_id, 
@@ -151,12 +151,12 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   // ) AS v_email
 
   const endOfQuery = `
-    GROUP BY  
+    GROUP BY
       event_id,
       cohort_id
     ORDER BY (
       CASE 
-      	WHEN event_start > NOW()
+        WHEN event_start > NOW()
           THEN 2
         WHEN event_end > NOW()
           THEN 1
@@ -185,7 +185,47 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     condition += `AND event_start <= now() `
   }
 
-  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
+  // DETOUR for dashboard retrieval
+  if (dashboard) {
+    const
+      todaysQueryEnd = condition + `
+        AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
+        GROUP BY
+          event_id,
+          cohort_id
+        ORDER BY (
+          CASE 
+            WHEN event_start <= NOW() AND event_end > NOW() -- ONGOING
+              THEN 2
+            WHEN event_start > NOW()  -- HASN'T STARTED YET
+              THEN 1
+            ELSE 0  -- ALREADY FINISHED
+            END
+          ) DESC, event_start ASC
+      `,
+      importantsQuery = `
+        SELECT *
+        FROM events 
+        WHERE event_start::DATE > now()::DATE AND important = TRUE
+        ORDER BY event_start ASC
+        LIMIT 3;
+      `,
+      upcomingsQuery = `
+        SELECT *
+        FROM events 
+        WHERE event_start::DATE > now()::DATE AND important = FALSE
+        ORDER BY event_start ASC
+        LIMIT 3;
+      `;
+    return await db.task('dashboard-fetch', async t => {
+      const todays = await t.any(selectQuery + todaysQueryEnd);
+      const importants = await t.any(importantsQuery);
+      const upcomings = await t.any(upcomingsQuery);
+      return { todays, importants, upcomings };
+    });
+  } else {
+    return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
+  }
 }
 
 //Get Single Event for Admin

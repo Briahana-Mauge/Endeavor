@@ -58,8 +58,9 @@ router.get('/admin/all', async (req, res, next) => {
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
         const upcoming = processInput(req.query.upcoming, "softVC", "upcoming events", 60);
         const past = processInput(req.query.past, "softVC", "past events", 60);
+        const dashboard = processInput(req.query.dashboard, "bool", "dashboard bool");
 
-        let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past);
+        let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past, dashboard);
         res.status(200)
             .json({
                 payload: allEventsAdmin,
