@@ -411,7 +411,7 @@ INSERT INTO events
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),   -- -- -- 5
 
-    ('2020-02-29 13:00-04', '2020-02-29 13:45-04', 'Let''s Do Remote Lunch!', 
+    ('2020-04-28 10:00-04', '2020-04-28 10:45-04', 'Let''s Do Remote Breakfast!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
 
@@ -419,7 +419,7 @@ INSERT INTO events
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
 
-    ('2020-03-22 13:00-04', '2020-03-22 13:45-04', 'Let''s Do Remote Lunch!', 
+    ('2020-04-28 13:00-04', '2020-04-28 13:45-04', 'Let''s Do Remote Lunch!', 
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.', 
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
 
@@ -445,7 +445,11 @@ INSERT INTO events
 
     ('2020-04-28 18:00-04', '2020-04-28 20:00-04', 'Conduct Virtual Technical Interviews', 
     'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.', 
-    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE);
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
+
+    ('2020-04-25 13:00-04', '2020-04-30 13:45-04', 'Staff Prep for Capstone', 
+    'Faculty all-hands-on-deck roundtable regarding Capstone in 2020. Discussion and breakout rooms to help facilitate open dialogue and brainstorming. Virtual doughnuts will also be served.', 
+    1, 'Zoom: https://zoom.us/my/alejos', 'David and Jukay', 6, FALSE);
     
 
 INSERT INTO event_volunteers (eventv_id, volunteer_id, confirmed, volunteered_time) VALUES 
