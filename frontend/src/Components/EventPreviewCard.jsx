@@ -18,7 +18,7 @@ export default function EventPreviewCard(props) {
             .then(response => setVolunteersList(response.data.payload))
             .catch(err => setFeedback(err))
     }
-    useEffect(getVolunteersList, [reload, props.reloadDashboard]);
+    useEffect(getVolunteersList, [reload]);
 
     const checkIfVolunteerSignedForEvent = () => {
         let found = false;
