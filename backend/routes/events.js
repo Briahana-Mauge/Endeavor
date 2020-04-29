@@ -120,7 +120,12 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 // Get all important events
 router.get('/important', async (req, res, next) => {
     try {
-        let allEvents = await eventsQueries.getImportantEvents();
+        let limit = req.query.limit;
+        if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
+            limit = null;
+        } 
+
+        const allEvents = await eventsQueries.getImportantEvents(limit);
         res.json({
             payload: allEvents,
             message: "Success",
@@ -149,10 +154,14 @@ router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
 // Get all upcoming events by volunteer id
 router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
     try {
-
         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        let limit = req.query.limit;
+        if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
+            limit = null;
+        } 
+
         if (req.user && req.user.v_id && req.user.v_id === volunteerId) {
-            const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId);
+            const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId, limit);
             res.json({
                 payload: events,
                 message: "Success",

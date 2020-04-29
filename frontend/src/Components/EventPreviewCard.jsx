@@ -10,6 +10,7 @@ export default function EventPreviewCard(props) {
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ volunteersEmailList, setVolunteersEmailList] = useState('');
     const [ reload, setReload ] = useState(false);
+    const [ barrier, setBarrier ] = useState(true);
 
     
     const getVolunteersList = () => {
@@ -40,6 +41,7 @@ export default function EventPreviewCard(props) {
     }
     useEffect(checkIfVolunteerSignedForEvent, [loggedUser, volunteersList]);
 
+
     const setEventAsTarget = () => {
         const eventDataObj = Object.assign({}, event, {
             volunteersList,
@@ -49,12 +51,26 @@ export default function EventPreviewCard(props) {
             reload,
             setReload,
         });
-        props.setTargetEvent(eventDataObj);
+
+        if (!barrier) {
+            props.setTargetEvent(eventDataObj);
+        }
     }
     useEffect(setEventAsTarget, [loggedUser, volunteersList, loggedVolunteerPartOfEvent, loggedVolunteerRequestAccepted, volunteersEmailList]);
 
+    
     const handleClickOnEvent = () => {
-        setEventAsTarget();
+        const eventDataObj = Object.assign({}, event, {
+            volunteersList,
+            loggedVolunteerPartOfEvent,
+            loggedVolunteerRequestAccepted,
+            volunteersEmailList,
+            reload,
+            setReload,
+        });
+        props.setTargetEvent(eventDataObj);
+        setBarrier(false);
+        // setEventAsTarget();
         props.setShowEvent(true); 
     }
     

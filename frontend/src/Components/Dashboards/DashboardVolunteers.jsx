@@ -9,44 +9,39 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// import VolunteerPreviewCard from './VolunteerPreviewCard';
 import EventPreviewCard from '../EventPreviewCard';
-import EventsCard from '../EventCard';
+import EventCard from '../EventCard';
 
 const Dashboard = (props) => {
     const { setFeedback, loggedUser } = props;
+
     const [eventsList, setEventsList] = useState([]);
     const [showEvent, setShowEvent] = useState(false);
-    const [showVolunteeredTime, setShowVolunteeredTime] = useState(0);
-    const [showPastEvents, setShowPastEvents] = useState('')
-    const [showImportantEvents, setShowImportantEvents] = useState([]);
+    const [volunteeredTime, setVolunteeredTime] = useState(0);
+    const [pastEvents, setPastEvents] = useState('')
+    const [importantEvents, setImportantEvents] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
-    const [reload, setReload] = useState(false);
+    const [reloadDashboard, setReloadDashboard] = useState(false);
 
 
     useEffect(() => {
         const getEvents = async () => {
             try {
-                const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}`);
-                let first3 = [];
-                for (let i = 0; i < Math.min(3, data.payload.length); i++) {
-                    first3.push(data.payload[i])
-                }
-                setEventsList(first3);
+                const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
+                setEventsList(data.payload);
             } catch (err) {
                 setFeedback(err)
             }
         }
 
         getEvents();
-    }, [reload]);
+    }, [reloadDashboard]);
 
     useEffect(() => {
-
         const getAllVolunteeredTime = async () => {
             try {
                 const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
-                setShowVolunteeredTime(data.payload.sum)
+                setVolunteeredTime(data.payload.sum)
 
             } catch (err) {
                 setFeedback(err)
@@ -56,20 +51,16 @@ const Dashboard = (props) => {
         const getNumberOfPastEvents = async () => {
             try {
                 const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
-                setShowPastEvents(data.payload.length)
+                setPastEvents(data.payload.length)
             } catch (err) {
                 setFeedback(err)
             }
         }
         const getImportantEvents = async () => {
             try {
-                const { data } = await axios.get(`/api/events/important`);
-                console.log(data)
-                let first3 = [];
-                for (let i = 0; i < Math.min(3, data.payload.length); i++) {
-                    first3.push(data.payload[i])
-                }
-                setShowImportantEvents(first3)
+                const { data } = await axios.get(`/api/events/important?limit=3`);
+                setImportantEvents(data.payload);
+
             } catch (err) {
                 setFeedback(err)
             }
@@ -80,11 +71,6 @@ const Dashboard = (props) => {
         getImportantEvents();
     }, []);
 
-
-    const displayEvent = (event) => {
-        setTargetEvent(event);
-        setShowEvent(true);
-    }
 
     const hideEvent = () => {
         setTargetEvent({});
@@ -102,10 +88,9 @@ const Dashboard = (props) => {
                 : null}
 
             {
-                eventsList.map(event => <EventPreviewCard
-                    key={event.event_id + event.event_end + event.event_start}
+                eventsList.map((event) => <EventPreviewCard
+                    key={event.event_id + event.event_start + event.event_end}
                     event={event}
-                    displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
@@ -113,34 +98,28 @@ const Dashboard = (props) => {
             }
 
             {
-                showEvent
-                    ? <div className='lightBox'>
-                        <div className='text-right m-2'>
-                            <button className='btn-sm btn-danger' onClick={hideEvent}>X</button>
-                        </div>
-                        <EventsCard
-                            loggedUser={loggedUser}
-                            event={targetEvent}
-                            setFeedback={setFeedback}
-                            reload={reload}
-                            setReload={setReload}
-
-
-                        />
-                    </div>
-                    : null
+                showEvent 
+                ?   <EventCard 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reloadDashboard}
+                        setReloadParent={setReloadDashboard}
+                        hideEvent={hideEvent}
+                    />
+                : null
             }
             <br></br>
             <br></br>
             <h3>Important Pursuit Events</h3>
             {
-                showImportantEvents.map(event => <EventPreviewCard
-                    key={event.event_id + event.event_end + event.event_start}
+                importantEvents.map(event => <EventPreviewCard
+                    key={event.event_end + event.event_start + event.event_id}
                     event={event}
-                    displayEvent={displayEvent}
                     loggedUser={props.loggedUser}
                     setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
+                    reloadDashboard={reloadDashboard}
                 />)
             }
 
@@ -148,15 +127,15 @@ const Dashboard = (props) => {
             <br></br>
             <h3>Personal Stats</h3>
             <p>
-                You've got {showVolunteeredTime} volunteer hours!
+                You've got {volunteeredTime} volunteer hours!
             </p>
 
             {
-                showPastEvents < 1
+                pastEvents < 1
                     ? <p>You haven't participated in any events yet.</p>
-                    : showPastEvents > 1
-                        ? <p>So far, you've participated in {showPastEvents} events.</p>
-                        : <p>So far, you've participated in {showPastEvents} event.</p>
+                    : pastEvents > 1
+                        ? <p>So far, you've participated in {pastEvents} events.</p>
+                        : <p>So far, you've participated in {pastEvents} event.</p>
             }
 
 
