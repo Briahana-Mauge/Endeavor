@@ -17,15 +17,34 @@ const EventsDash = (props) => {
   const { events } = props;
   console.log(events);
 
-  const rowsTodays = events.todays.map(event => {
-      return(
-        <EventDashRow
-          key={event.event_id}
-          type={"today"}
-          event={event}
-        />
-      );
-  });
+  const
+    rowsTodays = events.todays.map(event => {
+        return(
+          <EventDashRow
+            key={event.event_id}
+            tableType={"today"}
+            event={event}
+          />
+        );
+    }),
+    rowsImportants = events.importants.map(event => {
+        return(
+          <EventDashRow
+            key={event.event_id}
+            tableType={"important"}
+            event={event}
+          />
+        );
+    }),
+    rowsUpcomings = events.upcomings.map(event => {
+        return(
+          <EventDashRow
+            key={event.event_id}
+            tableType={"upcoming"}
+            event={event}
+          />
+        );
+    });
 
   return(
     <>
@@ -33,47 +52,37 @@ const EventsDash = (props) => {
       <h3 className="g1CardHeader card-header"><span>Today's</span> Events</h3>
       <div className="g1CardBody card-body pt-0 pb-1">
 
-        {/* TODAY'S TABLE */}
-        <table className="g1TableEvents table table-striped">
-          <thead>
-            <tr>
-              <th scope="col" className="topicCol">Event</th>
-              <th scope="col" className="timeCol">Time / Date</th>
-            </tr>
-          </thead>
-          <tbody>
+        <div role="grid" className="g1Table">
+          <div role="row" className="g1THead">
+            <div role="gridcell" className="g1TD g1TopicCol">Event</div>
+            <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
+          </div>
+          <div className="g1TBody">
             {rowsTodays}
-          </tbody>
-        </table>
-        {/* END TODAY'S TABLE*/}
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div className="g1Card card">
+    {/* <div className="g1Card g1Upcomings card">
       <h3 className="g1CardHeader card-header"><span>On the</span> Horizon</h3>
       <div className="g1CardBody card-body pt-0 pb-1">
-        {/* IMPORTANTS TABLE */}
-        <table className="g1TableEvents table table-striped">
-          <thead>
-            <tr>
-              <th scope="col" className="topicCol">Event</th>
-              <th scope="col" className="timeCol">Time / Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rowsTodays}
-            <tr>
-              <td className="topicCol" colSpan="2">
-                &nbsp;
-              </td>
-            </tr>
-            {rowsTodays}
-          </tbody>
-        </table>
-        {/* END IMPORTANTS TABLE*/}
+
+        <div className="g1Table">
+          <div className="g1Tbody">
+            <div className="g1THeader">
+              <div className="g1TD g1TopicCol">Event</div>
+              <div className="g1TD g1TimeCol">Date / Time</div>
+            </div>
+            {rowsImportants}
+
+            {rowsUpcomings}
+          </div>
+        </div>
 
       </div>
-    </div>
+    </div> */}
     </>
   );
 }
@@ -87,13 +96,25 @@ export default EventsDash;
 
 const EventDashRow = (props) => {
   const { event_id, event_start, event_end, topic, important } = props.event;
-  const { type } = props;
+  const { tableType } = props;
 
 
   /*
   ASSERTING:
     all events passed into this component are either active at any point today or are in the future
   */
+
+  const simplifyHours = (momentString) => {
+    if (momentString.slice(-3) === ':00') {
+      return momentString.slice(0, -3);
+    } else if (momentString.slice(-5, -2) === ':00') {
+      return momentString.slice(0, -5) + momentString.slice(-2, -1);
+    } else if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
+      return momentString.slice(0, -1);
+    } else {
+      return momentString;
+    }
+  }
 
   let
     colorStyle = "",
@@ -117,40 +138,43 @@ const EventDashRow = (props) => {
   }
 
   if (startedBeforeToday) {
-    showStart = moment(event_start).format('MMM D');  // start hour becomes irrelevant in past
+    showStart = moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
   } else if (startsToday && isOneDay) {
-    showStart = isMidnightToMidnight
-      ? 'Today, All-Day'
-      : 'Today' + moment(event_start).format(', h:mma');
+    // showStart = tableType === 'today'
+    //   ? ''
+    //   : 'Today, ';
+    showStart += isMidnightToMidnight
+      ? 'All-Day'
+      : simplifyHours(moment(event_start).format('h:mm'));
   } else {
     showStart = isMidnightToMidnight
-      ? moment(event_start).format('MMM D')
-      : moment(event_start).format('MMM D, h:mma');
+      ? moment(event_start).format('MMM Do')
+      : simplifyHours(moment(event_start).format('MMM Do, h:mm'));
   }
 
   if (!isOneDay) {
     showEnd = endsToday
-      ? ' - Ends Today'
-      : moment(event_end).format(' - MMM D');
+      ? ' to Today'
+      : moment(event_end).format(' to MMM Do');
     if (!isMidnightToMidnight) {
-      showEnd += moment(event_end).format(', h:mma');
+      showEnd += simplifyHours(moment(event_end).format(', h:mma'));
     }
   } else if (!isMidnightToMidnight) {
-    showEnd = moment(event_end).format(' - h:mma');
+    showEnd = simplifyHours(moment(event_end).format(' – h:mma'));
   }
 
 
   return(
-    <tr className={colorStyle}>
-      <td className="topicCol">
+    <div className={`g1TR ${colorStyle}`}>
+      <div className="g1TD g1TopicCol">
         <div id={'event' + event_id} className="g1EventItem">
-          {topic}
+          {important ? topic + '*' : topic}
         </div>
-      </td>
-      <td className="timeCol">
+      </div>
+      <div className="g1TD g1TimeCol">
         {showStart}{showEnd}
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 
   //     <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
