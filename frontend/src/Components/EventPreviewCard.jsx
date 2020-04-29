@@ -10,7 +10,7 @@ export default function EventPreviewCard(props) {
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ volunteersEmailList, setVolunteersEmailList] = useState('');
     const [ reload, setReload ] = useState(false);
-    const [ barrier, setBarrie ] = useState(true);
+    const [ barrier, setBarrier ] = useState(true);
 
     
     const getVolunteersList = () => {
@@ -69,7 +69,7 @@ export default function EventPreviewCard(props) {
             setReload,
         });
         props.setTargetEvent(eventDataObj);
-        setBarrie(false);
+        setBarrier(false);
         // setEventAsTarget();
         props.setShowEvent(true); 
     }
