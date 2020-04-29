@@ -18,7 +18,9 @@ export default function EventPreviewCard(props) {
     const [ volunteersList, setVolunteersList ] = useState([]);
     const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
-    const [ acceptedVolunteers, setAcceptedVolunteers] = useState('');
+    const [ volunteersEmailList, setVolunteersEmailList] = useState('');
+    const [ reload, setReload ] = useState(false);
+    const [ barrier, setBarrier ] = useState(true);
 
 
     const mapVolunteersList = () => {
@@ -70,7 +72,17 @@ export default function EventPreviewCard(props) {
 
     
     const handleClickOnEvent = () => {
-        setEventAsTarget();
+        const eventDataObj = Object.assign({}, event, {
+            volunteersList,
+            loggedVolunteerPartOfEvent,
+            loggedVolunteerRequestAccepted,
+            volunteersEmailList,
+            reload,
+            setReload,
+        });
+        props.setTargetEvent(eventDataObj);
+        setBarrier(false);
+        // setEventAsTarget();
         props.setShowEvent(true); 
     }
     
