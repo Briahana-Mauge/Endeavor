@@ -41,7 +41,8 @@ html, body, #root, .g1App {
 
     --border-radii: .2rem;
     --box-shadow: 1px 6px 11px #0005;
-    --table-gaps: .8rem;
+    --table-outer-gaps: 0;
+    --table-inner-gaps: .8rem;
     
     --navbar-height: 62px;
 }
@@ -218,6 +219,7 @@ nav button {
     background-color: transparent;
     background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
     border-radius: var(--border-radii);
+    padding-bottom: .1rem;
 }
 
 .g1CardHeader {
@@ -247,14 +249,20 @@ nav button {
     border: 0;
     color: var(--color-white);
 
-    .ongoing { color: #35ce65; }
+    .ongoing {
+        color: #efefef;
+
+        .g1TD {
+            background-color: #ff658229;
+        }
+    }
     .important { color: #c7be83;}
     .passed { color: #999; }
 
     .g1THead {
         display: table-header-group;
         
-        padding-bottom: calc(var(--table-gaps) * .15);
+        padding-bottom: calc(var(--table-inner-gaps) * .15);
 
         color: #cd43a9;
         text-transform: uppercase;
@@ -292,11 +300,13 @@ nav button {
     
     .g1TopicCol {
         text-align: left;
-        padding-right: var(--table-gaps);
+        padding-right: var(--table-inner-gaps);
+        padding-left: var(--table-outer-gaps);
     }
 
     .g1TimeCol {
-        padding-left: var(--table-gaps);
+        padding-right: var(--table-outer-gaps);
+        padding-left: var(--table-inner-gaps);
         border-left: 1px dashed #696969;
     }
 }
@@ -305,11 +315,16 @@ nav button {
     border: solid 1px red;
 }
 
-.g1TBody .g1TR:nth-of-type(even) {
+.g1TBody .g1TR:nth-of-type(odd) {
     background-color: rgba(0,0,0,.11);
 }
-.g1TBody .g1TR:nth-of-type(odd) {
-    background-color: rgba(0,0,0,.03);
+.g1TBody .g1TR:nth-of-type(even) {
+    background-color: rgba(173, 156, 156, 0.03);
+}
+
+.g1BufferRow.g1TBody .g1TR {
+    background-color: transparent;
+    height: .5rem;
 }
 
 // .g1PopoverBtn {

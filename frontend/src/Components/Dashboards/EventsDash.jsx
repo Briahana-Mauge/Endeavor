@@ -6,9 +6,7 @@ EventsDash Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
 import EventListItem from './EventsDash/EventListItem';
 const moment = require('moment');
 
@@ -17,72 +15,81 @@ const EventsDash = (props) => {
   const { events } = props;
   console.log(events);
 
-  const
-    rowsTodays = events.todays.map(event => {
-        return(
-          <EventDashRow
-            key={event.event_id}
-            tableType={"today"}
-            event={event}
-          />
-        );
-    }),
-    rowsImportants = events.importants.map(event => {
-        return(
-          <EventDashRow
-            key={event.event_id}
-            tableType={"important"}
-            event={event}
-          />
-        );
-    }),
-    rowsUpcomings = events.upcomings.map(event => {
-        return(
-          <EventDashRow
-            key={event.event_id}
-            tableType={"upcoming"}
-            event={event}
-          />
-        );
-    });
+  const rowsTodays = events.todays.map(event => {
+      return(
+        <EventDashRow
+          key={event.event_id}
+          tableType={"today"}
+          event={event}
+        />
+      );
+  });
+  const rowsImportants = events.importants.map(event => {
+      return(
+        <EventDashRow
+          key={event.event_id}
+          tableType={"important"}
+          event={event}
+        />
+      );
+  });
+  const rowsUpcomings = events.upcomings.map(event => {
+      return(
+        <EventDashRow
+          key={event.event_id}
+          tableType={"upcoming"}
+          event={event}
+        />
+      );
+  });
+
+  const xPadding = "px-2";
+
 
   return(
     <>
-    <div className="g1Card card mb-2">
-      <h3 className="g1CardHeader card-header"><span>Today's</span> Events</h3>
-      <div className="g1CardBody card-body pt-0 pb-1">
+      <div className="g1Card card mb-2">
+        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>Today's</span> Events</h3>
+        <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
-        <div role="grid" className="g1Table">
-          <div role="row" className="g1THead">
-            <div role="gridcell" className="g1TD g1TopicCol">Event</div>
-            <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
-          </div>
-          <div className="g1TBody">
-            {rowsTodays}
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    {/* <div className="g1Card g1Upcomings card">
-      <h3 className="g1CardHeader card-header"><span>On the</span> Horizon</h3>
-      <div className="g1CardBody card-body pt-0 pb-1">
-
-        <div className="g1Table">
-          <div className="g1Tbody">
-            <div className="g1THeader">
-              <div className="g1TD g1TopicCol">Event</div>
-              <div className="g1TD g1TimeCol">Date / Time</div>
+          <div role="grid" className="g1Table">
+            <div role="row" className="g1THead">
+              <div role="gridcell" className="g1TD g1TopicCol">Event</div>
+              <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
             </div>
-            {rowsImportants}
-
-            {rowsUpcomings}
+            <div className="g1TBody">
+              {rowsTodays}
+            </div>
           </div>
-        </div>
 
+        </div>
       </div>
-    </div> */}
+
+      <div className="g1Card card mb-2">
+        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>On the</span> Horizon</h3>
+        <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
+
+          <div role="grid" className="g1Table">
+            <div role="row" className="g1THead">
+              <div role="gridcell" className="g1TD g1TopicCol">Event</div>
+              <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
+            </div>
+            <div className="g1TBody">
+              {rowsImportants}
+            </div>
+            <div className="g1TBody g1BufferRow">
+              <div role="row" className="g1TR">
+                <div role="gridcell" className="g1TD"></div>
+                <div role="gridcell" className="g1TD"></div>
+              </div>
+            </div>
+            <div className="g1TBody">
+              {rowsUpcomings}
+            </div>
+          </div>
+
+        </div>
+      </div>
     </>
   );
 }
@@ -140,9 +147,6 @@ const EventDashRow = (props) => {
   if (startedBeforeToday) {
     showStart = moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
   } else if (startsToday && isOneDay) {
-    // showStart = tableType === 'today'
-    //   ? ''
-    //   : 'Today, ';
     showStart += isMidnightToMidnight
       ? 'All-Day'
       : simplifyHours(moment(event_start).format('h:mm'));
@@ -165,31 +169,17 @@ const EventDashRow = (props) => {
 
 
   return(
-    <div className={`g1TR ${colorStyle}`}>
-      <div className="g1TD g1TopicCol">
+    <div role="row" className={`g1TR ${colorStyle}`}>
+      <div role="gridcell" className="g1TD g1TopicCol">
+
         <div id={'event' + event_id} className="g1EventItem">
-          {important ? topic + '*' : topic}
+          {topic}
         </div>
+
       </div>
-      <div className="g1TD g1TimeCol">
+      <div role="gridcell" className="g1TD g1TimeCol">
         {showStart}{showEnd}
       </div>
     </div>
   );
-
-  //     <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
-  //       <PopoverHeader>
-  //         <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
-  //         <strong>{topic}</strong><br />
-  //         <div className="times">
-  //           {`${evt[type].startTime} - ${evt[type].endTime}`}
-  //         </div>
-  //       </PopoverHeader>
-  //       <PopoverBody>
-  //         {content}
-  //       </PopoverBody>
-  //     </UncontrolledPopover>
-  //   </td>
-  // </tr>
-
 }
