@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
 
 
 export default function EventPreviewCard(props) {
-    // const { setFeedback, loggedUser, event } = props;
     const { loggedUser, event } = props;
     /* 
         props.event.volunteers_list is an array of STRING 
@@ -21,16 +19,7 @@ export default function EventPreviewCard(props) {
     const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ acceptedVolunteers, setAcceptedVolunteers] = useState('');
-    // const [ reload, setReload ] = useState(false);
-    // const [ barrier, setBarrie ] = useState(true);
 
-    
-    // const getVolunteersList = () => {
-    //     axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
-    //         .then(response => setVolunteersList(response.data.payload))
-    //         .catch(err => setFeedback(err))
-    // }
-    // useEffect(getVolunteersList, [reload]);
 
     const mapVolunteersList = () => {
         let found = false;
@@ -64,14 +53,11 @@ export default function EventPreviewCard(props) {
 
 
     const setEventAsTarget = async () => {
-        // await mapVolunteersList();
         const eventDataObj = Object.assign({}, event, {
             volunteersList,
             loggedVolunteerPartOfEvent,
             loggedVolunteerRequestAccepted,
-            acceptedVolunteers,
-            // reload,
-            // setReload,
+            acceptedVolunteers
         });
         props.setTargetEvent(eventDataObj);
     }

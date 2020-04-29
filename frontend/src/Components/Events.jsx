@@ -58,7 +58,6 @@ export default function EventSearch(props) {
             {
                 loggedUser && loggedUser.a_id
                 ?    <div className='text-right'>
-                        {/* <button className='btn btn-primary' onClick={e => setDisplayEventForm(true)}>Add Event</button> */}
                         <button className='btn btn-primary' onClick={e => history.push('/event/add')}>Add Event</button>
                     </div>
 

@@ -18,7 +18,7 @@ const Dashboard = (props) => {
     const [eventsList, setEventsList] = useState([]);
     const [showEvent, setShowEvent] = useState(false);
     const [volunteeredTime, setVolunteeredTime] = useState(0);
-    const [pastEvents, setPastEvents] = useState('')
+    const [pastEvents, setPastEvents] = useState(0);
     const [importantEvents, setImportantEvents] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
     const [reloadDashboard, setReloadDashboard] = useState(false);
