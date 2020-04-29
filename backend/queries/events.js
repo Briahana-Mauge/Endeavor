@@ -15,15 +15,15 @@ const db = require('../db/db');
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
-  SELECT 
-	  events.event_id, 
-	  events.topic, 
-	  events.event_start, 
-	  events.event_end, 
-	  events.description, 
-	  events.location, 
-    events.instructor, 
-    events.number_of_volunteers AS volunteers_needed, 
+  SELECT
+    events.event_id,
+    events.topic,
+    events.event_start,
+    events.event_end,
+    events.description,
+    events.location,
+    events.instructor,
+    events.number_of_volunteers AS volunteers_needed,
     cohorts.cohort,
     cohorts.cohort_id,
     materials_url,
@@ -194,15 +194,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashb
         GROUP BY
           event_id,
           cohort_id
-        ORDER BY (
-          CASE 
-            WHEN event_start <= NOW() AND event_end > NOW() -- ONGOING
-              THEN 2
-            WHEN event_start > NOW()  -- HASN'T STARTED YET
-              THEN 1
-            ELSE 0  -- ALREADY FINISHED
-            END
-          ) DESC, event_start ASC
+        ORDER BY event_start ASC;
       `,
       importantsQuery = `
         SELECT *
