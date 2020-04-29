@@ -67,11 +67,11 @@ const DashboardAdmin = (props) => {
     return (
         <div className="container-fluid">
           <div className="row">
-            <div className="col-4">
+            <div className="col-12 col-md-5">
               <EventsDash events={eventsObj} />
             </div>
 
-            <div className="col-8">
+            <div className="col-12 col-md-7">
               <h3>New Volunteers:</h3>
               <div className='d-flex flex-row'>
                   {
