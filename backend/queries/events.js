@@ -135,7 +135,8 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashb
     number_of_volunteers, 
     cohort,
     cohort_id,
-    materials_url
+    materials_url,
+    important
 
   FROM events
   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
