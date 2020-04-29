@@ -240,8 +240,13 @@ nav button {
 }
 
 .g1TableEvents {
+    font-family: var(--ff-accent);
     border: 0;
     color: var(--color-white);
+
+    .ongoing { color: #35ce65; }
+    .important { color: #ccbe68;}
+    .passed { color: #999; }
 
     td, th {
         padding: 0;

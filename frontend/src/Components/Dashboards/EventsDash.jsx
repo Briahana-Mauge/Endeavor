@@ -86,84 +86,86 @@ export default EventsDash;
 
 
 const EventDashRow = (props) => {
-  const { event_id, event_start, event_end, topic, location, description } = props.event;
+  const { event_id, event_start, event_end, topic, important } = props.event;
   const { type } = props;
 
-  const formatTime = (dateObj, modeStr) => {
-    switch (modeStr) {
-      case "todayEvent":
-        return moment(dateObj).format('h:mm a');
-        break;
-      case "otherEvents":
-        return moment(dateObj).format('D MMM YY');
-        break;
-    }
-  }
-  const evt = {
-    today: {
-      startTime: moment(event_start).format('h:mm a'),  // to do: add conditionals for start time diff day and all-day
-      endTime: moment(event_end).format('h:mm a')
-    },
-    important: {
-      startDate: moment(event_start).format('D MMM YY')
-    }
+
+  /*
+  ASSERTING:
+    all events passed into this component are either active at any point today or are in the future
+  */
+
+  let
+    colorStyle = "",
+    showStart = "",
+    showEnd = "";
+  const
+    hasEnded = moment(event_end).isBefore(moment(), 'second'),
+    hasStarted = moment(event_start).isBefore(moment(), 'second'),
+    startedBeforeToday = moment(event_start).isBefore(moment(), 'day'),
+    startsToday = moment(event_start).format('L') === moment().format('L'),
+    endsToday = moment(event_end).format('L') === moment().format('L'),
+    isOneDay = moment(event_start).format('L') === moment(event_end).format('L'),  // starts and ends on same date
+    isMidnightToMidnight = moment(event_start).format('HHmm') === '0000' && moment(event_end).format('HHmm') === '2359'; // 00:00 - 23:59
+
+  if (hasEnded) {
+    colorStyle = 'passed';
+  } else if (hasStarted) {  // CURRENTLY ONGOING
+    colorStyle = 'ongoing';
+  } else if (important) {
+    colorStyle = 'important';
   }
 
+  if (startedBeforeToday) {
+    showStart = moment(event_start).format('MMM D');  // start hour becomes irrelevant in past
+  } else if (startsToday && isOneDay) {
+    showStart = isMidnightToMidnight
+      ? 'Today, All-Day'
+      : 'Today' + moment(event_start).format(', h:mma');
+  } else {
+    showStart = isMidnightToMidnight
+      ? moment(event_start).format('MMM D')
+      : moment(event_start).format('MMM D, h:mma');
+  }
 
-  const content = (
-    <div>
-      {/* volunteers confirmed / requested / pending */}
-      <p>{description}</p>
-      <p>{location}</p>
-    </div>
-  );
+  if (!isOneDay) {
+    showEnd = endsToday
+      ? ' - Ends Today'
+      : moment(event_end).format(' - MMM D');
+    if (!isMidnightToMidnight) {
+      showEnd += moment(event_end).format(', h:mma');
+    }
+  } else if (!isMidnightToMidnight) {
+    showEnd = moment(event_end).format(' - h:mma');
+  }
+
 
   return(
-    <tr>
+    <tr className={colorStyle}>
       <td className="topicCol">
         <div id={'event' + event_id} className="g1EventItem">
           {topic}
         </div>
       </td>
       <td className="timeCol">
-        {evt[type].startTime}
-
-        <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
-          <PopoverHeader>
-            <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
-            <strong>{topic}</strong><br />
-            <div className="times">
-              {`${evt[type].startTime} - ${evt[type].endTime}`}
-            </div>
-          </PopoverHeader>
-          <PopoverBody>
-            {content}
-          </PopoverBody>
-        </UncontrolledPopover>
+        {showStart}{showEnd}
       </td>
     </tr>
-    // <tr>
-    //   <td className="topicCol">
-    //     <Button id={'event' + event_id} type="button" className="g1PopoverBtn">
-    //       {topic}
-    //     </Button>
-    //   </td>
-    //   <td className="timeCol">
-    //     {evt[type].startTime}
-
-    //     <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
-    //       <PopoverHeader>
-    //         <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
-    //         <strong>{topic}</strong><br />
-    //         <div className="times">
-    //           {`${evt[type].startTime} - ${evt[type].endTime}`}
-    //         </div>
-    //       </PopoverHeader>
-    //       <PopoverBody>
-    //         {content}
-    //       </PopoverBody>
-    //     </UncontrolledPopover>
-    //   </td>
-    // </tr>
   );
+
+  //     <UncontrolledPopover target={'event' + event_id} className="g1PopoverParent" trigger="legacy" placement="left-start">
+  //       <PopoverHeader>
+  //         <Link to={`/event/edit/${event_id}`} className="g1PopoverGoLink pr-2 pb-3">Go to Event Page</Link>
+  //         <strong>{topic}</strong><br />
+  //         <div className="times">
+  //           {`${evt[type].startTime} - ${evt[type].endTime}`}
+  //         </div>
+  //       </PopoverHeader>
+  //       <PopoverBody>
+  //         {content}
+  //       </PopoverBody>
+  //     </UncontrolledPopover>
+  //   </td>
+  // </tr>
+
 }
