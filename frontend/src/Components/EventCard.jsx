@@ -11,17 +11,29 @@ const EventCard = (props) => {
     const [ volunteerHours, setVolunteerHours ] = useState('');
     const [ volunteersList, setVolunteersList ] = useState([]);
     const [ waitingForRender, setWaitingForRender ] = useState(false);
+
+    /* 
+        props.event.volunteers_list is an array of STRING 
+        where reach element is all one volunteer information related to that event separated by ,
+        if split(', ') we will have:
+            index0: volunteer ID
+            index1: first and last name
+            index2: email
+            index3: volunteer profile deleted
+            index4: event_volunteers table id
+            index5: volunteer confirmed to event
+    */
     
     useEffect(() => {
         setVolunteersList(event.volunteersList);
         setWaitingForRender(false)
-    }, [event.reload, event.volunteersList]);
+    }, [props.reloadParent, event.volunteersList]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
             setWaitingForRender(true);
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
-            event.setReload(event.reload + 1);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -31,7 +43,7 @@ const EventCard = (props) => {
         try {
             setWaitingForRender(true);
             await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
-            event.setReload(!event.reload);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -41,7 +53,7 @@ const EventCard = (props) => {
         try {
             setWaitingForRender(true);
             await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
-            event.setReload(!event.reload);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -76,28 +88,27 @@ const EventCard = (props) => {
     const handleEditButton = () => {
         history.push(`/event/edit/${event.event_id}`);
     }
-
     let displayVolunteersList = null;
-    if (volunteersList.length && loggedUser && loggedUser.admin) {
+    if (volunteersList[0] && loggedUser && loggedUser.admin) {
         displayVolunteersList = volunteersList.map(volunteer => 
-                <div className='custom-control custom-switch' key={volunteer.v_id + volunteer.v_last_name + event.event_id}>
+                <div className='custom-control custom-switch' key={volunteer[0] + volunteer[1] + volunteer[2]}>
                     <input 
                         type='checkbox' 
                         className='custom-control-input' 
-                        id={volunteer.v_id + volunteer.v_last_name + event.event_id}
-                        checked={volunteer.volunteer_request_accepted} 
-                        onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
-                        disabled={volunteer.deleted || waitingForRender}
+                        id={volunteer[0] + volunteer[1]}
+                        checked={volunteer[5] === 'true' ? true : false} 
+                        onChange={e => manageVolunteersRequests(e, volunteer[0])}
+                        disabled={volunteer[3] === 'true' ? true : false || waitingForRender}
                     />
-                    <label className='custom-control-label  mt-2' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
-                        <span className={volunteer.deleted ? 'd-block text-muted' : 'd-block'}>
-                            {`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+                    <label className='custom-control-label  mt-2' htmlFor={volunteer[0] + volunteer[1]}>
+                        <span className={volunteer[3] ? 'd-block text-muted' : 'd-block'}>
+                            {`${volunteer[1]}`}
                         </span>
                     </label>
-                    <span className='btn btn-link mb-2 mx-3'>Profile</span> {/* WILL BE A LINK TO VOLUNTEER PROFILE */}
+                    <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteer[0]}`)}>Profile</span>
                     {
-                        volunteer.volunteer_request_accepted
-                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer.v_id)}>
+                        volunteer[5] === 'true'
+                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer[0])}>
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
