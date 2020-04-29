@@ -123,6 +123,34 @@ const getSingleEvent = async (eId) => {
 
 const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
+  SELECT
+	  event_id, 
+    topic, 
+    event_start, 
+    event_end, 
+    description, 
+    staff_description,
+    location, 
+    instructor, 
+    number_of_volunteers, 
+    cohort,
+    cohort_id,
+    materials_url,
+    ARRAY_AGG(
+      CAST(v_id as CHAR(10)) || ', ' ||
+      v_first_name || ' ' || v_last_name || ', ' ||
+      v_email || ', ' ||
+      CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ', ' ||
+      CAST(ev_id as CHAR(10))|| ', ' ||
+      CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+    ) AS volunteers_list
+    
+  FROM events
+  INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+  LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+  LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+  `
+  const selectQueryOriginal = `
   SELECT 
     event_id, 
     topic, 
@@ -208,35 +236,61 @@ const getSingleEventAdmin = async (eId) => {
   return await db.one(selectQuery, { eId });
 }
 
-// Get all upcoming events
-const getUpcomingEvents = async () => {
-  const selectQuery = `
-  SELECT * 
-  FROM events 
-  WHERE event_start > now() AND deleted IS NULL
-  ORDER BY event_start ASC
-  `;
-  return await db.any(selectQuery);
-}
+// // Get all upcoming events
+// const getUpcomingEvents = async () => {
+//   const selectQuery = `
+//   SELECT * 
+//   FROM events 
+//   WHERE event_start > now() AND deleted IS NULL
+//   ORDER BY event_start ASC
+//   `;
+//   return await db.any(selectQuery);
+// }
 
-// Get all past events
-const getPastEvents = async () => {
-  const selectQuery = `
-  SELECT * 
-  FROM events 
-  WHERE event_start < now() AND deleted IS NULL
-  ORDER BY event_start ASC
-  `;
-  return await db.any(selectQuery);
-}
+// // Get all past events
+// const getPastEvents = async () => {
+//   const selectQuery = `
+//   SELECT * 
+//   FROM events 
+//   WHERE event_start < now() AND deleted IS NULL
+//   ORDER BY event_start ASC
+//   `;
+//   return await db.any(selectQuery);
+// }
+
 //Get all important events
 const getImportantEvents = async (limit) => {
   let selectQuery = `
-  SELECT *
-    FROM events 
-    WHERE event_start > now() AND important = TRUE AND deleted IS NULL
+    SELECT
+	    event_id, 
+      topic, 
+      event_start, 
+      event_end, 
+      description, 
+      staff_description,
+      location, 
+      instructor, 
+      number_of_volunteers, 
+      cohort,
+      cohort_id,
+      materials_url,
+      ARRAY_AGG(CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END) AS volunteers_list
+      
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+
+    WHERE event_start > now() AND important = TRUE AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
     ORDER BY event_start ASC
-    `;
+  `
+  // let selectQuery = `
+  // SELECT *
+  //   FROM events 
+  //   WHERE event_start > now() AND important = TRUE AND deleted IS NULL
+  //   ORDER BY event_start ASC
+  //   `;
     if (limit) {
       selectQuery += ' LIMIT $1'
     }
@@ -322,7 +376,7 @@ const getPastEventsByVolunteerId = async (id) => {
       event_id, topic, event_start, event_end, description, location, instructor, volunteered_time
   FROM volunteers
   INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-  INNER JOIN events ON event_volunteers.ev_id = events.event_id
+  INNER JOIN events ON event_volunteers.eventv_id = events.event_id
   WHERE event_start < now() AND volunteers.v_id = $1 AND event_volunteers.confirmed = TRUE
   `;
   return await db.any(selectQuery, id);
@@ -331,13 +385,38 @@ const getPastEventsByVolunteerId = async (id) => {
 // Get all upcoming events by volunteer Id
 const getUpcomingEventsByVolunteerId = async (id, limit) => {
   let selectQuery = `
-   SELECT event_id, topic, event_start, instructor, description, event_end, location, cohort
-    FROM events 
-    INNER JOIN event_volunteers ON event_id = ev_id
+    SELECT
+	    event_id, 
+      topic, 
+      event_start, 
+      event_end, 
+      description, 
+      staff_description,
+      location, 
+      instructor, 
+      number_of_volunteers, 
+      cohort,
+      cohort_id,
+      materials_url,
+      ARRAY_AGG(CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END) AS volunteers_list
+      
+    FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
-    WHERE event_start > now() AND volunteer_id = $1 AND confirmed = TRUE
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+
+    WHERE event_start > now() AND volunteer_id = $1 AND event_volunteers.confirmed = TRUE AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
     ORDER BY event_start ASC
-  `;
+  `
+  // let selectQuery = `
+  //  SELECT event_id, topic, event_start, instructor, description, event_end, location, cohort
+  //   FROM events 
+  //   INNER JOIN event_volunteers ON event_id = ev_id
+  //   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+  //   WHERE event_start > now() AND volunteer_id = $1 AND confirmed = TRUE
+  //   ORDER BY event_start ASC
+  // `;
   if (limit) {
     selectQuery += ' LIMIT $2'
   }
@@ -363,8 +442,8 @@ module.exports = {
   getSingleEvent,
   getAllEventsAdmin,
   getSingleEventAdmin,
-  getUpcomingEvents,
-  getPastEvents,
+  // getUpcomingEvents,
+  // getPastEvents,
   getPastEventsByVolunteerId,
   getUpcomingEventsByVolunteerId,
   getPastEventsByFellowId,

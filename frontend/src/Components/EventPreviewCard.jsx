@@ -1,76 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 
 export default function EventPreviewCard(props) {
-    const { setFeedback, loggedUser, event } = props; 
+    // const { setFeedback, loggedUser, event } = props;
+    const { loggedUser, event } = props;
+    /* 
+        props.event.volunteers_list is an array of STRING 
+        where reach element is all one volunteer information related to that event separated by ,
+        if split(', ') we will have:
+            index0: volunteer ID
+            index1: first and last name
+            index2: email
+            index3: volunteer profile deleted
+            index4: event_volunteers table id
+            index5: volunteer confirmed to event
+    */
 
     const [ volunteersList, setVolunteersList ] = useState([]);
     const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
-    const [ volunteersEmailList, setVolunteersEmailList] = useState('');
-    const [ reload, setReload ] = useState(false);
-    const [ barrier, setBarrie ] = useState(true);
+    const [ acceptedVolunteers, setAcceptedVolunteers] = useState('');
+    // const [ reload, setReload ] = useState(false);
+    // const [ barrier, setBarrie ] = useState(true);
 
     
-    const getVolunteersList = () => {
-        axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
-            .then(response => setVolunteersList(response.data.payload))
-            .catch(err => setFeedback(err))
-    }
-    useEffect(getVolunteersList, [reload]);
+    // const getVolunteersList = () => {
+    //     axios.get(`/api/event_attendees/volunteers/${event.event_id}`)
+    //         .then(response => setVolunteersList(response.data.payload))
+    //         .catch(err => setFeedback(err))
+    // }
+    // useEffect(getVolunteersList, [reload]);
 
-    const checkIfVolunteerSignedForEvent = () => {
+    const mapVolunteersList = () => {
         let found = false;
         let accepted = false;
-        let emailList = '';
-        for (let volunteer of volunteersList) {
-            if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.v_id) { 
-                found = true;
-                if (volunteer.volunteer_request_accepted) {
-                    accepted = true
+        const accVolunteers = [];
+        const volList = [];
+
+        if (event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
+            for (let volunteer of event.volunteers_list) {
+                const volunteerInfo = volunteer.split(', ');
+                if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
+                    found = true;
+                    if (volunteerInfo[5] === 'true') {
+                        accepted = true
+                    }
                 }
-            }
-            if (volunteer.volunteer_request_accepted) {
-                emailList += `&add=${volunteer.v_email}`
+                if (volunteerInfo[5] === 'true') {
+                    accVolunteers.push(parseInt(volunteerInfo[0])); // push the id of the volunteer
+                }
+                volList.push(volunteerInfo);
             }
         }
+        volList.sort((a, b) => a[0]-b[0]);
+
         setLoggedVolunteerPartOfEvent(found);
         setLoggedVolunteerRequestAccepted(accepted);
-        setVolunteersEmailList(emailList);
+        setAcceptedVolunteers(accVolunteers);
+        setVolunteersList(volList);
     }
-    useEffect(checkIfVolunteerSignedForEvent, [loggedUser, volunteersList]);
+    useEffect(mapVolunteersList, [loggedUser, event]);
 
 
-    const setEventAsTarget = () => {
+    const setEventAsTarget = async () => {
+        // await mapVolunteersList();
         const eventDataObj = Object.assign({}, event, {
             volunteersList,
             loggedVolunteerPartOfEvent,
             loggedVolunteerRequestAccepted,
-            volunteersEmailList,
-            reload,
-            setReload,
+            acceptedVolunteers,
+            // reload,
+            // setReload,
         });
-
-        if (!barrier) {
-            props.setTargetEvent(eventDataObj);
-        }
+        props.setTargetEvent(eventDataObj);
     }
-    useEffect(setEventAsTarget, [loggedUser, volunteersList, loggedVolunteerPartOfEvent, loggedVolunteerRequestAccepted, volunteersEmailList]);
+
+    useEffect(() => {
+        if (props.targetEvent.event_id && props.targetEvent.event_id === event.event_id) {
+            setEventAsTarget();
+        }
+    }, [event, volunteersList]);
 
     
     const handleClickOnEvent = () => {
-        const eventDataObj = Object.assign({}, event, {
-            volunteersList,
-            loggedVolunteerPartOfEvent,
-            loggedVolunteerRequestAccepted,
-            volunteersEmailList,
-            reload,
-            setReload,
-        });
-        props.setTargetEvent(eventDataObj);
-        setBarrie(false);
-        // setEventAsTarget();
+        setEventAsTarget();
         props.setShowEvent(true); 
     }
     
@@ -102,10 +116,10 @@ export default function EventPreviewCard(props) {
                 {
                     loggedUser && loggedUser.a_id
                     ?   <p>
-                            <strong>Volunteers: </strong>{volunteersEmailList.split('&add=').length - 1 + ' / ' + event.number_of_volunteers}
+                            <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers}
                             {
-                                volunteersList.length - volunteersEmailList.split('&add=').length + 1
-                                ? <span className='text-warning'> ({volunteersList.length - volunteersEmailList.split('&add=').length + 1} pending)</span>
+                                event.volunteers_list[0] && event.volunteers_list.length - acceptedVolunteers.length
+                                ? <span className='text-warning'> ({event.volunteers_list.length - acceptedVolunteers.length} pending)</span>
                                 : null
                             }
                         </p>

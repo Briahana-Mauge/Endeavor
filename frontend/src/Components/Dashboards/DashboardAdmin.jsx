@@ -22,30 +22,28 @@ const DashboardAdmin = (props) => {
     const [ reloadDashboard, setReloadDashboard ] = useState(false);
 
 
-    useEffect(() => {
-        const getNewVolunteer = async () => {
-            try {
-                const {data} = await axios.get('/api/volunteers/new');
-                setNewVolunteersList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
+    const getNewVolunteer = async () => {
+        try {
+            const {data} = await axios.get('/api/volunteers/new');
+            setNewVolunteersList(data.payload);
+        } catch (err) {
+            setFeedback(err)
         }
-
+    }
+    useEffect(() => {
         getNewVolunteer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadDashboard]);
 
-    useEffect(() => {
-        const getEvents = async () => {
-            try {
-                const {data} = await axios.get('/api/events/admin/all?upcoming=true');
-                setEventsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
+    const getEvents = async () => {
+        try {
+            const {data} = await axios.get('/api/events/admin/all?upcoming=true');
+            setEventsList(data.payload);
+        } catch (err) {
+            setFeedback(err)
         }
-
+    }
+    useEffect(() => {
         getEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadDashboard]);
@@ -86,7 +84,7 @@ const DashboardAdmin = (props) => {
                             loggedUser={loggedUser}
                             event={event}
                             setShowEvent={setShowEvent}
-                            setFeedback={setFeedback}
+                            targetEvent={targetEvent}
                             setTargetEvent={setTargetEvent}
                         />)
                 }

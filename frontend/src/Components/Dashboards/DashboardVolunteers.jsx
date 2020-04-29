@@ -88,12 +88,13 @@ const Dashboard = (props) => {
                 : null}
 
             {
-                eventsList.map((event) => <EventPreviewCard
+                eventsList.map(event => <EventPreviewCard
                     key={event.event_id + event.event_start + event.event_end}
+                    loggedUser={loggedUser}
                     event={event}
-                    loggedUser={props.loggedUser}
-                    setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
+                    targetEvent={targetEvent}
+                    setTargetEvent={setTargetEvent}
                 />)
             }
 
@@ -115,11 +116,11 @@ const Dashboard = (props) => {
             {
                 importantEvents.map(event => <EventPreviewCard
                     key={event.event_end + event.event_start + event.event_id}
+                    loggedUser={loggedUser}
                     event={event}
-                    loggedUser={props.loggedUser}
-                    setTargetEvent={setTargetEvent}
                     setShowEvent={setShowEvent}
-                    reloadDashboard={reloadDashboard}
+                    targetEvent={targetEvent}
+                    setTargetEvent={setTargetEvent}
                 />)
             }
 

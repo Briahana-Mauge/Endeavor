@@ -16,31 +16,30 @@ export default function EventSearch(props) {
     const [dateFilter, setDateFilter] = useState('');
     const [reload, setReload] = useState(false); 
     
-    const [targetEvent, setTargetEvent] = useState(0);
+    const [targetEvent, setTargetEvent] = useState({});
     const [showEvent, setShowEvent] = useState(false);
 
 
-    useEffect(() => {
-        const getAllEvents = async () => {
-            try {
-                if (props.loggedUser && props.loggedUser.a_id) {
-                    const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-                    setResults(data.payload);
-                }
-                else {
-                    const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-                    // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-                    setResults(data.payload);
-                }
-
-            } catch (err) {
-                setFeedback(err)
+    const getAllEvents = async () => {
+        try {
+            if (props.loggedUser && props.loggedUser.a_id) {
+                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                setResults(data.payload);
             }
-        }
+            else {
+                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                setResults(data.payload);
+            }
 
+        } catch (err) {
+            setFeedback(err)
+        }
+    }
+    useEffect(() => {
         getAllEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setFeedback, reload]);
+    }, [reload]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -96,7 +95,7 @@ export default function EventSearch(props) {
                         loggedUser={loggedUser}
                         event={event}
                         setShowEvent={setShowEvent}
-                        setFeedback={setFeedback}
+                        targetEvent={targetEvent}
                         setTargetEvent={setTargetEvent}
                     />)
                 }
