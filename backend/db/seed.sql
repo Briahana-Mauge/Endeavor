@@ -124,14 +124,16 @@ CREATE TABLE event_volunteers (
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     volunteered_time INT NOT NULL DEFAULT 0,
-    deleted DATE DEFAULT NULL
+    deleted DATE DEFAULT NULL,
+    UNIQUE (eventv_id, volunteer_id)
 );
 
 CREATE TABLE event_fellows (
     ef_id SERIAL PRIMARY KEY,
     eventf_id INT NOT NULL REFERENCES events(event_id),
     fellow_id INT NOT NULL REFERENCES fellows(f_id),
-    deleted DATE DEFAULT NULL
+    deleted DATE DEFAULT NULL,
+    UNIQUE (eventf_id, fellow_id)
 );
 
 CREATE TABLE volunteers_hours (
