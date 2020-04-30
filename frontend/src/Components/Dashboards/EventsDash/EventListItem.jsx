@@ -79,7 +79,7 @@ export default function EventListItem(props) {
     
     const handleClickOnEvent = () => {
         setEventAsTarget();
-        setShowEvent(true); 
+        setShowEvent(true);
     }
     
     // const formatEventDate = date => {

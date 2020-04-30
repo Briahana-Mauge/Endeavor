@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 
 export default function EventPreviewCard(props) {
-    const { loggedUser, event } = props;
+    const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
+
     /* 
         props.event.volunteers_list is an array of STRING 
         where reach element is all one volunteer information related to that event separated by ,
@@ -27,7 +28,7 @@ export default function EventPreviewCard(props) {
         const accVolunteers = [];
         const volList = [];
 
-        if (event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
+        if (event.volunteers_list && event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
             for (let volunteer of event.volunteers_list) {
                 const volunteerInfo = volunteer.split(', ');
                 if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
@@ -78,7 +79,7 @@ export default function EventPreviewCard(props) {
     
     const handleClickOnEvent = () => {
         setEventAsTarget();
-        setShowEvent(true); 
+        setShowEvent(true);
     }
     
     const formatEventDate = date => {
