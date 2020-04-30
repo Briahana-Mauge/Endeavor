@@ -90,6 +90,7 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
     showAdminDropdown = null,
     showVolunteersLink = null,
     showMentoringLink = null,
+    showMyFellowsLink = null,
     showEndeavorSheetLink = null;
     // showFellowsLink = null,
 
@@ -99,6 +100,9 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
   if (navUser.admin || navUser.staff) {
     showVolunteersLink = volunteersLink;
     // showFellowsLink = fellowsLink;
+  }
+  if (navUser.staff) {
+    showMyFellowsLink = myFellowsLink;
   }
   if (navUser.volunteer) {
     showMentoringLink = toMenteesLink;
@@ -122,13 +126,17 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
           <NAV_LINK to='/events' text="Events" isBurgerOn={isBurgerOn} />
 
+          {showMentoringLink}
+
+          {showEndeavorSheetLink}
+
           {/* {showFellowsLink} */}
+
+          {showMyFellowsLink}
 
           {showAdminDropdown}
 
           <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" isBurgerOn={isBurgerOn} />
-
-          {/* {showVSheet} */}
 
           <Logout logout={logout} />
 
