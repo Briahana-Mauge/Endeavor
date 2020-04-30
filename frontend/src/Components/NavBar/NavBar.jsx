@@ -56,48 +56,56 @@ const NavBar = ({ loggedUser, logout }) => {
 /* ACCESS STRATEGY (Admins, Staff, Volunteers, Fellows)
 
 VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
-=> possible alternate YOUR MENTOR(S) PAGE: Fellows
+=> Alternate YOUR MENTOR(S) PAGE: Fellows
 
 EVENTS PAGE/DASHBOARD: All
 
 FELLOWS PAGE/DASHBOARD: Admins, Staff
-=> possible alternate YOUR MENTEE(S) PAGE: Volunteers
+=> Alternate YOUR MENTEE(S) PAGE: Volunteers
 
 ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 */
 
 
-  /* BUILD LIMITED ACCESS NAVS */
+  /* DEFINE LIMITED ACCESS NAVS */
   const
     volunteersLink = <NAV_LINK to="/volunteers" text="Volunteers" isBurgerOn={isBurgerOn} />,
-    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />,
     adminDropdown = (
       <NavDropdown topText="Admin">
         <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
         <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
         <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
       </NavDropdown>
-    )
-    // vSheet = <NAV_LINK to="/" text="My V-Sheet" />
+    ),
+    toMenteesLink = <NAV_LINK to="/my_mentees" text="My Mentees" isBurgerOn={isBurgerOn} />,
+    toMentorLink = <NAV_LINK to="/my_mentor" text="My Mentor" isBurgerOn={isBurgerOn} />,
+    endeavorSheetLink = <NAV_LINK to="/endeavor/:a_slug_goes_here" text="My Endeavor" isBurgerOn={isBurgerOn} />
+    myFellowsLink = <NAV_LINK to='/my_fellows' text="My Fellows" />
+    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />, // for general search of fellows
   ;
 
 
-  /* TOGGLE LIMITED ACCESS NAV DISPLAYS */
+  /* TOGGLES NULL/SHOW */
   let
+    showAdminDropdown = null,
     showVolunteersLink = null,
+    showMentoringLink = null,
+    showEndeavorSheetLink = null;
     // showFellowsLink = null,
-    showAdminDropdown = null
-    // showVSheet = null
-  ;
-  if (navMode.volunteer) {
-    // showVSheet = vSheet;
+
+  if (navUser.admin) {
+    showAdminDropdown = adminDropdown;
   }
-  if (navMode.admin || navMode.staff) {
+  if (navUser.admin || navUser.staff) {
     showVolunteersLink = volunteersLink;
     // showFellowsLink = fellowsLink;
   }
-  if (navMode.admin) {
-    showAdminDropdown = adminDropdown;
+  if (navUser.volunteer) {
+    showMentoringLink = toMenteesLink;
+    showEndeavorSheetLink = endeavorSheetLink;
+  }
+  if (navUser.fellow) {
+    showMentoringLink = toMentorLink;
   }
 
 
