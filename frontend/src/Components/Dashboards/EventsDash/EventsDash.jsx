@@ -7,7 +7,7 @@ EventsDash Component | Capstone App (Pursuit Volunteer Mgr)
 /* IMPORTS */
 import React from 'react';
 
-import EventListItem from './EventsDash/EventListItem';
+import EventListItem from './EventListItem';
 const moment = require('moment');
 
 
@@ -22,7 +22,7 @@ const EventsDash = (props) => {
     targetEvent,
     setTargetEvent
   }
-  console.log(events);
+
 
   const rowsTodays = events.todays.map(event => {
       return(
@@ -148,7 +148,7 @@ const EventsDashRow = (props) => {
   let
     colorStyle = "",
     showStart = "",
-    showEnd = "";
+    showEnd = <></>;  // using jsx type here to inject <u> tags below for styling transition markers in date/time string
   const
     hasEnded = moment(event_end).isBefore(moment(), 'second'),
     hasStarted = moment(event_start).isBefore(moment(), 'second'),
@@ -172,21 +172,24 @@ const EventsDashRow = (props) => {
     showStart += isMidnightToMidnight
       ? 'All-Day'
       : simplifyHours(moment(event_start).format('h:mm'));
+  } else if (isMidnightToMidnight) {
+    showStart = moment(event_start).format('MMM Do');
   } else {
-    showStart = isMidnightToMidnight
-      ? moment(event_start).format('MMM Do')
-      : simplifyHours(moment(event_start).format('MMM Do, h:mm'));
+    showStart = isOneDay
+      ? simplifyHours(moment(event_start).format('MMM Do, h:mm'))
+      : simplifyHours(moment(event_start).format('MMM Do, h:mma'));
   }
 
   if (!isOneDay) {
-    showEnd = endsToday
-      ? ' to Today'
-      : moment(event_end).format(' to MMM Do');
+    let tempString = endsToday
+      ? 'Today'
+      : moment(event_end).format('MMM Do');
     if (!isMidnightToMidnight) {
-      showEnd += simplifyHours(moment(event_end).format(', h:mma'));
+      tempString += simplifyHours(moment(event_end).format(', h:mma'));
     }
+    showEnd = <><u> to </u>{tempString}</>;
   } else if (!isMidnightToMidnight) {
-    showEnd = simplifyHours(moment(event_end).format(' – h:mma'));
+    showEnd = <><u> – </u>{simplifyHours(moment(event_end).format('h:mma'))}</>;
   }
 
 

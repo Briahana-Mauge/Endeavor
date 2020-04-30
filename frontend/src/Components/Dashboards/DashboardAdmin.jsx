@@ -9,8 +9,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
-import EventsDash from './EventsDash';
-import EventPreviewCard from '../EventPreviewCard';
+import EventsDash from './EventsDash/EventsDash';
 import EventCard from '../EventCard';
 
 
@@ -75,7 +74,6 @@ const DashboardAdmin = (props) => {
 
     return (
         <div className="container-fluid">
-          {console.log("render")}
           <div className="row">
             <div className="col-12 col-md-5">
               <EventsDash events={eventsObj} {...eventsDashProps} />
@@ -109,14 +107,14 @@ const DashboardAdmin = (props) => {
 
             {
                 showEvent 
-                ?   <EventCard
+                ? <EventCard
                         loggedUser={loggedUser}
                         event={targetEvent}
                         setFeedback={setFeedback}
                         reloadParent={reloadDashboard}
                         setReloadParent={setReloadDashboard}
                         hideEvent={hideEvent}
-                    />
+                  />
                 : null
             }
           </div>

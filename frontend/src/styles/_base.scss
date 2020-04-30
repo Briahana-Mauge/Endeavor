@@ -313,6 +313,15 @@ nav button {
         padding-right: var(--table-outer-gaps);
         padding-left: var(--table-inner-gaps);
         border-left: 1px dashed #696969;
+
+        u {
+            text-decoration: none;
+            color: #7cf;
+        }
+    }
+
+    .passed .g1TimeCol u {
+        color: #5f5f5f;
     }
 }
 
