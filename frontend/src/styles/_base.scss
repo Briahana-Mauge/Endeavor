@@ -126,6 +126,11 @@ nav button {
 }
 
 
+.lightBox {
+    color: var(--color-black);
+}
+
+
 /* CLASS STYLINGS */
 .g1App {
     overflow-y: auto;
@@ -311,10 +316,6 @@ nav button {
     }
 }
 
-.g1Upcomings tr.important:last-child td {
-    border: solid 1px red;
-}
-
 .g1TBody .g1TR:nth-of-type(odd) {
     background-color: rgba(0,0,0,.11);
 }
@@ -325,6 +326,10 @@ nav button {
 .g1BufferRow.g1TBody .g1TR {
     background-color: transparent;
     height: .5rem;
+}
+
+.g1EventLink {
+    cursor: pointer;
 }
 
 // .g1PopoverBtn {
