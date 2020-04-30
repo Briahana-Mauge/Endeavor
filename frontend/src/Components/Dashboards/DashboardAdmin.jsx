@@ -64,11 +64,21 @@ const DashboardAdmin = (props) => {
     }
 
 
+    // PRE-RETURN (package drilled props)
+    const eventsDashProps = {
+      loggedUser,
+      setShowEvent,
+      targetEvent,
+      setTargetEvent
+    }
+
+
     return (
         <div className="container-fluid">
+          {console.log("render")}
           <div className="row">
             <div className="col-12 col-md-5">
-              <EventsDash events={eventsObj} />
+              <EventsDash events={eventsObj} {...eventsDashProps} />
             </div>
 
             <div className="col-12 col-md-7">
@@ -91,7 +101,7 @@ const DashboardAdmin = (props) => {
                             loggedUser={loggedUser}
                             event={event}
                             setShowEvent={setShowEvent}
-                            setFeedback={setFeedback}
+                            targetEvent={targetEvent}
                             setTargetEvent={setTargetEvent}
                         />)
                 }
