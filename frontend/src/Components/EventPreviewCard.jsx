@@ -52,26 +52,33 @@ export default function EventPreviewCard(props) {
     useEffect(mapVolunteersList, [loggedUser, event]);
 
 
-    const setEventAsTarget = () => {
+    const setEventAsTarget = useCallback(() => {
         const eventDataObj = Object.assign({}, event, {
             volunteersList,
             loggedVolunteerPartOfEvent,
             loggedVolunteerRequestAccepted,
             acceptedVolunteers
         });
-        props.setTargetEvent(eventDataObj);
-    }
+        setTargetEvent(eventDataObj);
+    }, [
+        acceptedVolunteers,
+        event,
+        loggedVolunteerPartOfEvent,
+        loggedVolunteerRequestAccepted,
+        setTargetEvent,
+        volunteersList
+    ]);
 
     useEffect(() => {
-        if (props.targetEvent.event_id && props.targetEvent.event_id === event.event_id) {
+        if (targetEvent.event_id && targetEvent.event_id === event.event_id) {
             setEventAsTarget();
         }
-    }, [event, volunteersList]);
+    }, [ event, volunteersList, targetEvent.event_id, setEventAsTarget ]);
 
     
     const handleClickOnEvent = () => {
         setEventAsTarget();
-        props.setShowEvent(true); 
+        setShowEvent(true); 
     }
     
     const formatEventDate = date => {

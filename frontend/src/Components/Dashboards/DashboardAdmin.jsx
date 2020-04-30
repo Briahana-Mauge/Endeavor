@@ -93,7 +93,7 @@ const DashboardAdmin = (props) => {
             </div>
 
             {/* <hr /> */}
-            <h3>Upcoming Events:</h3>
+            {/* <h3>Upcoming Events:</h3>
             <div className='d-flex flex-wrap'>
                 {
                     eventsObj.todays.map(event => <EventPreviewCard 
@@ -105,7 +105,7 @@ const DashboardAdmin = (props) => {
                             setTargetEvent={setTargetEvent}
                         />)
                 }
-            </div>
+            </div> */}
 
             {
                 showEvent 

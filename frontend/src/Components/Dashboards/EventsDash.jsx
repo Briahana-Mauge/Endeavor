@@ -12,33 +12,45 @@ const moment = require('moment');
 
 
 const EventsDash = (props) => {
-  const { events } = props;
+  const {
+    events, //  used by this component
+    loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
+  } = props;
+  const operationProps = {
+    loggedUser,
+    setShowEvent,
+    targetEvent,
+    setTargetEvent
+  }
   console.log(events);
 
   const rowsTodays = events.todays.map(event => {
       return(
-        <EventDashRow
-          key={event.event_id}
+        <EventsDashRow
+          key={'today' + event.event_id}
           tableType={"today"}
           event={event}
+          {...operationProps}
         />
       );
   });
   const rowsImportants = events.importants.map(event => {
       return(
-        <EventDashRow
-          key={event.event_id}
+        <EventsDashRow
+          key={'important' + event.event_id}
           tableType={"important"}
           event={event}
+          {...operationProps}
         />
       );
   });
   const rowsUpcomings = events.upcomings.map(event => {
       return(
-        <EventDashRow
-          key={event.event_id}
+        <EventsDashRow
+          key={'upcoming' + event.event_id}
           tableType={"upcoming"}
           event={event}
+          {...operationProps}
         />
       );
   });
@@ -101,9 +113,19 @@ export default EventsDash;
 
 
 
-const EventDashRow = (props) => {
+const EventsDashRow = (props) => {
   const { event_id, event_start, event_end, topic, important } = props.event;
-  const { tableType } = props;
+  // const { tableType } = props;
+  const {
+    event, loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
+  } = props;
+  const operationProps = {
+    event,
+    loggedUser,
+    setShowEvent,
+    targetEvent,
+    setTargetEvent
+  }
 
 
   /*
@@ -173,7 +195,9 @@ const EventDashRow = (props) => {
       <div role="gridcell" className="g1TD g1TopicCol">
 
         <div id={'event' + event_id} className="g1EventItem">
-          {topic}
+          <EventListItem {...operationProps} className="g1EventLink">
+            {topic}
+          </EventListItem>
         </div>
 
       </div>
