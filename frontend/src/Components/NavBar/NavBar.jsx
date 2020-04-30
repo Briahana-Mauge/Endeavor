@@ -54,16 +54,14 @@ const NavBar = ({ loggedUser, logout }) => {
 
 
 /* ACCESS STRATEGY (Admins, Staff, Volunteers, Fellows)
-
-VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
-=> Alternate YOUR MENTOR(S) PAGE: Fellows
-
-EVENTS PAGE/DASHBOARD: All
-
-FELLOWS PAGE/DASHBOARD: Admins, Staff
-=> Alternate YOUR MENTEE(S) PAGE: Volunteers
-
-ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
+- VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
+  => Alternate YOUR MENTOR PAGE: Fellows
+- EVENTS PAGE/DASHBOARD: All
+- FELLOWS PAGE/DASHBOARD: Admins, Staff
+  => Alternate MY MENTEES PAGE: Volunteers
+  => Alternate MY FELLOWSS PAGE: Staff
+- MY ENDEAVOR (VOLUNTEER PUBLIC STAT SHEET)
+- ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 */
 
 
