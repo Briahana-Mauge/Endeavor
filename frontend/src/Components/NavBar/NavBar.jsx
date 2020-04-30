@@ -39,16 +39,16 @@ const NavBar = ({ loggedUser, logout }) => {
 
 
   // USERMODE VARIABLE: determine user type and assign variable
-  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name dnavModeplay on navbar
-  const navMode = {};
+  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name on navbar
+  const navUser = {};
   if (loggedUser && loggedUser.admin) {
-    navMode["admin"] = true;
+    navUser["admin"] = true;
   } else if (loggedUser && loggedUser.a_id) {
-    navMode["staff"] = true;
+    navUser["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
-    navMode["volunteer"] = true;
+    navUser["volunteer"] = true;
   } else if (loggedUser && loggedUser.f_id) {
-    navMode["fellow"] = true;
+    navUser["fellow"] = true;
   }
   // END USERMODE VARIABLE
 
