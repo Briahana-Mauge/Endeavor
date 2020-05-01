@@ -9,7 +9,10 @@ const router = express.Router();
 const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
 const eventAttendeesQueries = require('../queries/eventAttendees');
+const userQueries = require('../queries/users');
+const eventQueries = require('../queries/events');
 
+const sgMail = require('@sendgrid/mail');
 
 // Get all volunteers attending an event by its Id
 router.get('/volunteers/:event_id', async (request, response, next) => {
@@ -37,7 +40,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 confirmed: processInput(request.body.confirmed, 'bool', 'volunteer confirmed')
             }
             const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
-    
+
             response.json({
                 err: false,
                 message: `Successfully updated volunteer.${updateData.volunteerId} attending event.${updateData.eventId}`,
@@ -61,16 +64,42 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 volunteerId
             }
             const volunteerRequest = await eventAttendeesQueries.signupVolunteerForEvent(postData);
-    
+            const event = await eventQueries.getSingleEvent(postData.eventId)
+            const admin = await userQueries.getAllAdmin();
+
+            //go back and remove alexis' email address
+            const testArr = [admin[0].a_email]
+
+            for (let i = 0; i < testArr.length; i++) {
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+                const msg = {
+                    to: testArr[i],
+                    from: 'endeavorapp2020@gmail.com',
+                    subject: 'Volunteer Request',
+                    text: `${request.user.v_first_name} ${request.user.v_last_name} wants to volunteer for the '${event.topic}' event`,
+                };
+                (async () => {
+                    try {
+                        await sgMail.send(msg);
+                    } catch (error) {
+                        console.error(error);
+
+                        if (error.response) {
+                            console.error(error.response.body)
+                        }
+                    }
+                })();
+            }
+
             response.json({
                 err: false,
                 message: `Successfully added volunteer.${volunteerId} request to attend event.${postData.eventId}`,
                 payload: volunteerRequest,
             });
-
         } else {
             throw new Error('403__Not allowed to perform this operation');
         }
+
     } catch (err) {
         handleError(err, request, response, next);
     }
@@ -86,7 +115,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
                 volunteerId
             }
             const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent(deleteData);
-    
+
             response.json({
                 err: false,
                 message: `Successfully deleted volunteer.${volunteerId} request to attend event.${deleteData.eventId}`,
@@ -111,7 +140,7 @@ router.put('/event/:event_id/volunteer/:volunteer_id', async (request, response,
                 volunteeredHours: processInput(request.body.volunteeredHours, 'idNum', 'volunteered hours')
             }
             const volunteer = await eventAttendeesQueries.manageVolunteerHours(updateData);
-    
+
             response.json({
                 err: false,
                 message: `Successfully updated volunteer.${updateData.volunteerId} hours`,
