@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS skills;
 CREATE TABLE skills (
     skill_id SERIAL PRIMARY KEY,
     skill VARCHAR (100) NOT NULL,
-    parsed_skill VARCHAR (100) UNIQUE NOT NULL,
     deleted DATE DEFAULT NULL
 );
 
@@ -124,14 +123,16 @@ CREATE TABLE event_volunteers (
     volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
     confirmed BOOLEAN NOT NULL DEFAULT FALSE,
     volunteered_time INT NOT NULL DEFAULT 0,
-    deleted DATE DEFAULT NULL
+    deleted DATE DEFAULT NULL,
+    UNIQUE (eventv_id, volunteer_id)
 );
 
 CREATE TABLE event_fellows (
     ef_id SERIAL PRIMARY KEY,
     eventf_id INT NOT NULL REFERENCES events(event_id),
     fellow_id INT NOT NULL REFERENCES fellows(f_id),
-    deleted DATE DEFAULT NULL
+    deleted DATE DEFAULT NULL,
+    UNIQUE (eventf_id, fellow_id)
 );
 
 CREATE TABLE volunteers_hours (
@@ -145,32 +146,32 @@ CREATE TABLE volunteers_hours (
 
 -- SEEDING DATABASE
 
-INSERT INTO skills (skill, parsed_skill) VALUES 
-    ('Javascript', 'javascript'),
-    ('React', 'react'),
-    ('React Native', 'reactnative'),
-    ('Angular', 'angular'),
-    ('Ruby on Rails', 'rubyonrails'),
-    ('Django', 'django'),
-    ('Flask', 'Flask'),
-    ('Java', 'java'),
-    ('Swift', 'swift'),
-    ('Objective-C', 'objectivec'),    -- 10
-    ('Python', 'python'),
-    ('R', 'r'),
-    ('Scala', 'scala'),
-    ('HTML', 'html'),
-    ('CSS', 'scc'),    -- 15
-    ('Professional Communication', 'professionalcommunication'),
-    ('Personal Narrative, and Pop Pitches', 'personalnarrativeandpoppitches'),
-    ('Written Communication', 'writtencommunication'),
-    ('Resumes, LinkedIn, and Cover Letters', 'resumeslinkedinandcoverletters'),
-    ('Project Management: Roles, Tools, and Best Practices', 'projectmanagementrolestoolsandbestpractices'),
-    ('Product Design, UX, and Prototyping', 'productdesignuxandprototyping'),
-    ('Company Research', 'companyresearch'),
-    ('Negotiations', 'negotiations'),
-    ('Talking About Tech Projects in Interviews', 'talkingabouttechprojectsininterviews'),
-    ('Personal Finance', 'personalfinance');   -- 25
+INSERT INTO skills (skill) VALUES 
+    ('Javascript'),
+    ('React'),
+    ('React Native'),
+    ('Angular'),
+    ('Ruby on Rails'),
+    ('Django'),
+    ('Flask'),
+    ('Java'),
+    ('Swift'),
+    ('Objective-C'),    -- 10
+    ('Python'),
+    ('R'),
+    ('Scala'),
+    ('HTML'),
+    ('CSS'),    -- 15
+    ('Professional Communication'),
+    ('Personal Narrative, and Pop Pitches'),
+    ('Written Communication'),
+    ('Resumes, LinkedIn, and Cover Letters'),
+    ('Project Management: Roles, Tools, and Best Practices'),
+    ('Product Design, UX, and Prototyping'),
+    ('Company Research'),
+    ('Negotiations'),
+    ('Talking About Tech Projects in Interviews'),
+    ('Personal Finance');   -- 25
 
 
 INSERT INTO cohorts (cohort) VALUES

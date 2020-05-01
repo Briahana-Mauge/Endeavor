@@ -34,7 +34,18 @@ const Dashboard = (props) => {
             }
         }
 
+        const getImportantEvents = async () => {
+            try {
+                const { data } = await axios.get(`/api/events/important?limit=3`);
+                setImportantEvents(data.payload);
+
+            } catch (err) {
+                setFeedback(err)
+            }
+        }
+
         getEvents();
+        getImportantEvents();
     }, [reloadDashboard]);
 
     useEffect(() => {
@@ -56,19 +67,9 @@ const Dashboard = (props) => {
                 setFeedback(err)
             }
         }
-        const getImportantEvents = async () => {
-            try {
-                const { data } = await axios.get(`/api/events/important?limit=3`);
-                setImportantEvents(data.payload);
-
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
 
         getAllVolunteeredTime();
         getNumberOfPastEvents();
-        getImportantEvents();
     }, []);
 
 
