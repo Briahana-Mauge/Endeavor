@@ -15,15 +15,15 @@ const db = require('../db/db');
 // Get all events (past events are auto pushed to the back)
 const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
-  SELECT 
-	  events.event_id, 
-	  events.topic, 
-	  events.event_start, 
-	  events.event_end, 
-	  events.description, 
-	  events.location, 
-    events.instructor, 
-    events.number_of_volunteers AS volunteers_needed, 
+  SELECT
+    events.event_id,
+    events.topic,
+    events.event_start,
+    events.event_end,
+    events.description,
+    events.location,
+    events.instructor,
+    events.number_of_volunteers AS volunteers_needed,
     cohorts.cohort,
     cohorts.cohort_id,
     materials_url,
@@ -110,7 +110,7 @@ const getSingleEvent = async (eId) => {
   INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
   LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
   LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
-       
+
   WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
   GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
@@ -121,10 +121,10 @@ const getSingleEvent = async (eId) => {
   return await db.one(selectQuery, { eId });
 }
 
-const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
+const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashboard) => {
   const selectQuery = `
   SELECT
-	  event_id, 
+    event_id, 
     topic, 
     event_start, 
     event_end, 
@@ -179,12 +179,12 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   // ) AS v_email
 
   const endOfQuery = `
-    GROUP BY  
+    GROUP BY
       event_id,
       cohort_id
     ORDER BY (
       CASE 
-      	WHEN event_start > NOW()
+        WHEN event_start > NOW()
           THEN 2
         WHEN event_end > NOW()
           THEN 1
@@ -213,7 +213,37 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     condition += `AND event_start <= now() `
   }
 
-  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
+  // DETOUR for dashboard retrieval
+  if (dashboard) {
+    const
+      todaysQueryEnd = condition + `
+        AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
+        GROUP BY
+          event_id,
+          cohort_id
+        ORDER BY event_start ASC;
+      `,
+      importantsQuery = `
+        SELECT *
+        FROM events 
+        WHERE event_start::DATE > now()::DATE AND important = TRUE
+        ORDER BY event_start ASC
+        LIMIT 3;
+      `,
+      upcomingsQuery = `
+        SELECT *
+        FROM events 
+        WHERE event_start::DATE > now()::DATE AND important = FALSE
+        ORDER BY event_start ASC
+        LIMIT 3;
+      `;
+    return db.multi(selectQuery + todaysQueryEnd + importantsQuery + upcomingsQuery)
+      .then(([ todays, importants, upcomings ]) => {
+          return { todays, importants, upcomings };
+      });
+  } else {
+    return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
+  }
 }
 
 //Get Single Event for Admin
@@ -391,7 +421,7 @@ const getPastEventsByVolunteerId = async (id) => {
 const getUpcomingEventsByVolunteerId = async (id, limit) => {
   let selectQuery = `
     SELECT
-	    event_id, 
+      event_id, 
       topic, 
       event_start, 
       event_end, 
