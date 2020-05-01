@@ -6,13 +6,17 @@ export default function EventPreviewCard(props) {
     /* 
         props.event.volunteers_list is an array of STRING 
         where reach element is all one volunteer information related to that event separated by ,
-        if split(', ') we will have:
+        if split(' &$%& ') we will have:
             index0: volunteer ID
             index1: first and last name
             index2: email
             index3: volunteer profile deleted
             index4: event_volunteers table id
             index5: volunteer confirmed to event
+
+        ' &$%& ' was used to be as far as possible from common combinations entered by users
+        for instance if ', ' was selected, a user could have a middle name and entre name, middle name initial in the first name field
+        which will break the code since all next data will be shifted
     */
 
     const [ volunteersList, setVolunteersList ] = useState([]);
@@ -29,7 +33,7 @@ export default function EventPreviewCard(props) {
 
         if (event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
             for (let volunteer of event.volunteers_list) {
-                const volunteerInfo = volunteer.split(', ');
+                const volunteerInfo = volunteer.split(' &$%& ');
                 if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
                     found = true;
                     if (volunteerInfo[5] === 'true') {

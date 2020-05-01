@@ -137,11 +137,11 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     cohort_id,
     materials_url,
     ARRAY_AGG(
-      CAST(v_id as CHAR(10)) || ', ' ||
-      v_first_name || ' ' || v_last_name || ', ' ||
-      v_email || ', ' ||
-      CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ', ' ||
-      CAST(ev_id as CHAR(10))|| ', ' ||
+      CAST(v_id as CHAR(10)) || ' &$%& ' ||
+      v_first_name || ' ' || v_last_name || ' &$%& ' ||
+      v_email || ' &$%& ' ||
+      CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+      CAST(ev_id as CHAR(10))|| ' &$%& ' ||
       CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
     ) AS volunteers_list
     
@@ -150,26 +150,26 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
-  const selectQueryOriginal = `
-  SELECT 
-    event_id, 
-    topic, 
-    event_start, 
-    event_end, 
-    description, 
-    staff_description,
-    location, 
-    instructor, 
-    number_of_volunteers, 
-    cohort,
-    cohort_id,
-    materials_url
+  // const selectQueryOriginal = `
+  // SELECT 
+  //   event_id, 
+  //   topic, 
+  //   event_start, 
+  //   event_end, 
+  //   description, 
+  //   staff_description,
+  //   location, 
+  //   instructor, 
+  //   number_of_volunteers, 
+  //   cohort,
+  //   cohort_id,
+  //   materials_url
 
-  FROM events
-  INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
-  LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
-  LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-  `
+  // FROM events
+  // INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+  // LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+  // LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+  // `
   // ARRAY_AGG ( 
   //   DISTINCT
   //   CASE 
@@ -259,10 +259,10 @@ const getSingleEventAdmin = async (eId) => {
 // }
 
 //Get all important events
-const getImportantEvents = async (limit) => {
+const getImportantEvents = async (volunteerId, limit) => {
   let selectQuery = `
     SELECT
-	    event_id, 
+      event_id, 
       topic, 
       event_start, 
       event_end, 
@@ -274,27 +274,32 @@ const getImportantEvents = async (limit) => {
       cohort,
       cohort_id,
       materials_url,
-      ARRAY_AGG(CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END) AS volunteers_list
-      
+      ARRAY_AGG((
+        SELECT
+          CAST(v_id as CHAR(10)) || ' &$%& ' ||
+          v_first_name || ' ' || v_last_name || ' &$%& ' ||
+          v_email || ' &$%& ' ||
+          CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+          CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+          CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+
+        FROM  event_volunteers
+        LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+        WHERE volunteer_id = $/volunteerId/ AND eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
+      ) AS volunteers_list
+  
     FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
-    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
-    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
 
     WHERE event_start > now() AND important = TRUE AND events.deleted IS NULL
     GROUP BY event_id, cohort_id
     ORDER BY event_start ASC
   `
-  // let selectQuery = `
-  // SELECT *
-  //   FROM events 
-  //   WHERE event_start > now() AND important = TRUE AND deleted IS NULL
-  //   ORDER BY event_start ASC
-  //   `;
-    if (limit) {
-      selectQuery += ' LIMIT $1'
-    }
-    return await db.any(selectQuery, limit);
+  // The reason why ' &$%& ' was selected to join the strings will be explained in the file frontend/src/Components/EventPreviewCard.jsx
+  if (limit) {
+    selectQuery += ' LIMIT $/limit/'
+  }
+  return await db.any(selectQuery, {volunteerId, limit});
 }
 
 // Add new event
