@@ -237,12 +237,10 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashb
         ORDER BY event_start ASC
         LIMIT 3;
       `;
-    return await db.task('dashboard-fetch', async t => {
-      const todays = await t.any(selectQuery + todaysQueryEnd);
-      const importants = await t.any(importantsQuery);
-      const upcomings = await t.any(upcomingsQuery);
-      return { todays, importants, upcomings };
-    });
+    return db.multi(selectQuery + todaysQueryEnd + importantsQuery + upcomingsQuery)
+      .then(([ todays, importants, upcomings ]) => {
+          return { todays, importants, upcomings };
+      });
   } else {
     return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
   }
