@@ -22,25 +22,32 @@ const { formatStr } = require('../helpers/helpers');
 const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly, volunteerId) => {
   return await db.task(async (t) => {
     let parsedCompany = '';
-    let parsedSkill = '';
-
     if (company) {
       parsedCompany = formatStr(company);
     }
-    if (skill) {
-      parsedSkill = formatStr(skill);
-    }
 
     const selectQuery = `
-      SELECT volunteers.v_id, volunteers.v_first_name, volunteers.v_last_name, 
-          volunteers.v_picture, volunteers.v_email, volunteers.company, volunteers.title, 
+      SELECT 
+          volunteers.v_id, 
+          volunteers.v_first_name, 
+          volunteers.v_last_name, 
+          volunteers.v_picture, 
+          volunteers.v_email, 
+          volunteers.company, 
+          volunteers.title, 
+          volunteers.active,
           ARRAY_AGG(DISTINCT skills.skill) AS skills,  
-          ARRAY_AGG(DISTINCT event_volunteers.eventv_id) AS topic_ids,
-          volunteers.active
+          (SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
+		      	FROM  events
+		      	INNER JOIN event_volunteers ON events.event_id = eventv_id
+		      	WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
+		      	ORDER BY event_start ASC
+		      	LIMIT 1
+          ) AS next_event
+
       FROM volunteers 
       INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
       INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
-      INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
     `
     const endOfQuery = `
       GROUP BY volunteers.v_id
@@ -55,8 +62,8 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     if (parsedCompany) {
       condition += ' AND volunteers.parsed_company = $/parsedCompany/ '
     }
-    if (parsedSkill) {
-      condition += ' AND skills.parsed_skill = $/parsedSkill/ '
+    if (skill) {
+      condition += ' AND LOWER(skills.skill) = $/skill/ '
     }
     if (name) {
       condition += ` AND LOWER(volunteers.v_first_name) = $/name/ OR LOWER(volunteers.v_last_name) = $/name/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/name/ `
@@ -64,13 +71,13 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
 
     let volunteersList = null;
     if (publicProfilesOnly) {
-      volunteersList = await t.any(selectQuery + condition + ' AND public_profile = TRUE ' + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+      volunteersList = await t.any(selectQuery + condition + ' AND public_profile = TRUE ' + endOfQuery, {vEmail, parsedCompany, skill, name});
     } else {
-      volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, parsedSkill, name});
+      volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, skill, name});
     }
 
     if (volunteerId) {
-      const userProfile = await t.oneOrNone(selectQuery + condition + ` AND volunteers.v_id = $/volunteerId/ ` + endOfQuery, {vEmail, parsedCompany, parsedSkill, name, volunteerId})
+      const userProfile = await t.oneOrNone(selectQuery + condition + ` AND volunteers.v_id = $/volunteerId/ ` + endOfQuery, {vEmail, parsedCompany, skill, name, volunteerId})
       if (userProfile && !userProfile.public_profile && Array.isArray(volunteersList)) {
         volunteersList.push(userProfile);
       }
