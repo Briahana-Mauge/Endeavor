@@ -7,7 +7,7 @@ export default function EventListItem(props) {
     /* 
         props.event.volunteers_list is an array of STRING 
         where reach element is all one volunteer information related to that event separated by ,
-        if split(', ') we will have:
+        if split(' &$%& ') we will have:
             index0: volunteer ID
             index1: first and last name
             index2: email
@@ -30,7 +30,7 @@ export default function EventListItem(props) {
 
         if (event.volunteers_list && event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
             for (let volunteer of event.volunteers_list) {
-                const volunteerInfo = volunteer.split(', ');
+                const volunteerInfo = volunteer.split(' &$%& ');
                 if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
                     found = true;
                     if (volunteerInfo[5] === 'true') {

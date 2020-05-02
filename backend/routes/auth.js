@@ -75,14 +75,14 @@ const signupVolunteer = async (request, response, next) => {
             company: processInput(request.body.company, 'hardVC', 'company', 50),
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             skills: processInput(request.body.skills, 'array', 'skills list', 25),
-            mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
-            officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
-            techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
-            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'bool', 'behavioral mock interview'),
-            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
-            hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
-            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker'),
-            publicProfile: processInput(request.body.publicProfile, 'bool', 'public profile')
+            mentor: processInput(request.body.mentor, 'hardBool', 'mentoring'),
+            officeHours: processInput(request.body.officeHours, 'hardBool', 'office hours'),
+            techMockInterview: processInput(request.body.techMockInterview, 'hardBool', 'technical mock interview'),
+            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'hardBool', 'behavioral mock interview'),
+            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'hardBool', 'professional skill coach'),
+            hostSiteVisit: processInput(request.body.hostSiteVisit, 'hardBool', 'host site visit'),
+            industrySpeaker: processInput(request.body.industrySpeaker, 'hardBool', 'industry speaker'),
+            publicProfile: processInput(request.body.publicProfile, 'hardBool', 'public profile')
         }
         const hashedPassword = await hashPassword(formattedRequestBody.password);
 
@@ -206,14 +206,14 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             bio: processInput(request.body.bio, 'softVC', 'bio'),
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
             skills: processInput(skillsList, 'array', 'skills list', 25),
-            mentor: processInput(request.body.mentor, 'bool', 'mentoring'),
-            officeHours: processInput(request.body.officeHours, 'bool', 'office hours'),
-            techMockInterview: processInput(request.body.techMockInterview, 'bool', 'technical mock interview'),
-            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'bool', 'behavioral mock interview'),
-            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'bool', 'professional skill coach'),
-            hostSiteVisit: processInput(request.body.hostSiteVisit, 'bool', 'host site visit'),
-            industrySpeaker: processInput(request.body.industrySpeaker, 'bool', 'industry speaker'),
-            publicProfile: processInput(request.body.publicProfile, 'bool', 'public profile'),
+            mentor: processInput(request.body.mentor, 'hardBool', 'mentoring'),
+            officeHours: processInput(request.body.officeHours, 'hardBool', 'office hours'),
+            techMockInterview: processInput(request.body.techMockInterview, 'hardBool', 'technical mock interview'),
+            behavioralMockInterview: processInput(request.body.behavioralMockInterview, 'hardBool', 'behavioral mock interview'),
+            professionalSkillsCoach: processInput(request.body.professionalSkillsCoach, 'hardBool', 'professional skill coach'),
+            hostSiteVisit: processInput(request.body.hostSiteVisit, 'hardBool', 'host site visit'),
+            industrySpeaker: processInput(request.body.industrySpeaker, 'hardBool', 'industry speaker'),
+            publicProfile: processInput(request.body.publicProfile, 'hardBool', 'public profile'),
             picture: request.user.v_picture
         }
         
@@ -268,7 +268,7 @@ const updateFellowUser = async (userId, request, response, next) => {
             linkedIn: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
             github: processInput(request.body.linkedIn, 'softVC', 'linkedIn link', 150),
             cohortId: processInput(request.body.cohortId, 'idNum', 'cohort id', 50),
-            wantMentor: processInput(request.body.mentor, 'bool', 'mentoring'),
+            wantMentor: processInput(request.body.mentor, 'hardBool', 'mentoring'),
             picture: request.user.f_picture
         }
 

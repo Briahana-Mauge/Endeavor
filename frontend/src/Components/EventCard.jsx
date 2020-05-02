@@ -9,7 +9,6 @@ const EventCard = (props) => {
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
-    const [ volunteersList, setVolunteersList ] = useState([]);
     const [ waitingForRender, setWaitingForRender ] = useState(false);
 
     /* 
@@ -25,9 +24,8 @@ const EventCard = (props) => {
     */
     
     useEffect(() => {
-        setVolunteersList(event.volunteersList);
         setWaitingForRender(false)
-    }, [props.reloadParent, event.volunteersList]);
+    }, [props.reloadParent]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
@@ -88,9 +86,10 @@ const EventCard = (props) => {
     const handleEditButton = () => {
         history.push(`/event/edit/${event.event_id}`);
     }
+
     let displayVolunteersList = null;
-    if (volunteersList[0] && loggedUser && loggedUser.admin) {
-        displayVolunteersList = volunteersList.map(volunteer => 
+    if (loggedUser && loggedUser.admin) {
+        displayVolunteersList = event.volunteersList.map(volunteer => 
                 <div className='custom-control custom-switch' key={volunteer[0] + volunteer[1] + volunteer[2]}>
                     <input 
                         type='checkbox' 
@@ -128,11 +127,6 @@ const EventCard = (props) => {
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
 
-    let numberOfConfirmedVolunteers = 0;
-    if (event.volunteersEmailList) {
-        numberOfConfirmedVolunteers = event.volunteersEmailList.split('&add=').length - 1;
-    }
-
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
         const t = new Date(date).toLocaleTimeString();
@@ -169,10 +163,10 @@ const EventCard = (props) => {
                     {
                         loggedUser && loggedUser.a_id
                         ?   <div className='card-text'>
-                                <strong>Volunteers: </strong>{`${numberOfConfirmedVolunteers} / ${event.number_of_volunteers}`}
+                                <strong>Volunteers: </strong>{`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
                                 {displayVolunteersList}
                                 <div className='card-text text-right'>
-                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${event.volunteersEmailList}`}
+                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml`}
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                 </div>
                             </div>

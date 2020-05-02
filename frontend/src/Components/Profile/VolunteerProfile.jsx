@@ -81,9 +81,8 @@ export default function VolunteerProfile(props) {
         setHostSiteVisit(loggedUser.hosting_site_visit);
         setIndustrySpeaker(loggedUser.industry_speaker);
         setPublicProfile(loggedUser.public_profile);
-    }, [loggedUser, setFirstName, setLastName, setEmail, setCompany, setTitle, setFeedback, setVolunteerSkills, 
-        setMentor, setOfficeHours, setTechMockInterview, setBehavioralMockInterview, setProfessionalSkillsCoach, 
-        setHostSiteVisit, setIndustrySpeaker]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loggedUser]);
 
 
     const handleUpdateInfo = async (e) => {

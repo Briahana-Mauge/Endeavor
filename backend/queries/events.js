@@ -73,7 +73,7 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
   let condition = ' WHERE events.deleted IS NULL ';
 
   if (vName) {
-    condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
+    condition += `AND lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) LIKE '%' || $/vName/ || '%' `
   }
 
   if (topic) {
@@ -289,7 +289,7 @@ const getSingleEventAdmin = async (eId) => {
 // }
 
 //Get all important events
-const getImportantEvents = async (volunteerId, limit) => {
+const getImportantEvents = async (limit) => {
   let selectQuery = `
     SELECT
       event_id, 
@@ -315,7 +315,7 @@ const getImportantEvents = async (volunteerId, limit) => {
 
         FROM  event_volunteers
         LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-        WHERE volunteer_id = $/volunteerId/ AND eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
+        WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
       ) AS volunteers_list
   
     FROM events
@@ -329,7 +329,7 @@ const getImportantEvents = async (volunteerId, limit) => {
   if (limit) {
     selectQuery += ' LIMIT $/limit/'
   }
-  return await db.any(selectQuery, {volunteerId, limit});
+  return await db.any(selectQuery, {limit});
 }
 
 // Add new event

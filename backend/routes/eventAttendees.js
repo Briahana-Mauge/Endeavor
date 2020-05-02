@@ -34,7 +34,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
             const updateData = {
                 eventId: processInput(request.params.event_id, 'idNum', 'event id'),
                 volunteerId: processInput(request.params.volunteer_id, 'idNum', 'volunteer id'),
-                confirmed: processInput(request.body.confirmed, 'bool', 'volunteer confirmed')
+                confirmed: processInput(request.body.confirmed, 'hardBool', 'volunteer confirmed')
             }
             const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
     
