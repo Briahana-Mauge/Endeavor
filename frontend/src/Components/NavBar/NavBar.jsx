@@ -39,65 +39,75 @@ const NavBar = ({ loggedUser, logout }) => {
 
 
   // USERMODE VARIABLE: determine user type and assign variable
-  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name dnavModeplay on navbar
-  const navMode = {};
+  // not passed down as prop from App because will use loggedUser to fetch userdata for avatar and name on navbar
+  const navUser = {};
   if (loggedUser && loggedUser.admin) {
-    navMode["admin"] = true;
+    navUser["admin"] = true;
   } else if (loggedUser && loggedUser.a_id) {
-    navMode["staff"] = true;
+    navUser["staff"] = true;
   } else if (loggedUser && loggedUser.v_id) {
-    navMode["volunteer"] = true;
+    navUser["volunteer"] = true;
   } else if (loggedUser && loggedUser.f_id) {
-    navMode["fellow"] = true;
+    navUser["fellow"] = true;
   }
   // END USERMODE VARIABLE
 
 
 /* ACCESS STRATEGY (Admins, Staff, Volunteers, Fellows)
-
-VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
-=> possible alternate YOUR MENTOR(S) PAGE: Fellows
-
-EVENTS PAGE/DASHBOARD: All
-
-FELLOWS PAGE/DASHBOARD: Admins, Staff
-=> possible alternate YOUR MENTEE(S) PAGE: Volunteers
-
-ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
+- VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
+  => Alternate YOUR MENTOR PAGE: Fellows
+- EVENTS PAGE/DASHBOARD: All
+- FELLOWS PAGE/DASHBOARD: Admins, Staff
+  => Alternate MY MENTEES PAGE: Volunteers
+  => Alternate MY FELLOWSS PAGE: Staff
+- MY ENDEAVOR (VOLUNTEER PUBLIC STAT SHEET)
+- ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 */
 
 
-  /* BUILD LIMITED ACCESS NAVS */
+  /* DEFINE LIMITED ACCESS NAVS */
   const
     volunteersLink = <NAV_LINK to="/volunteers" text="Volunteers" isBurgerOn={isBurgerOn} />,
-    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />,
     adminDropdown = (
       <NavDropdown topText="Admin">
         <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
         <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
         <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
       </NavDropdown>
-    )
-    // vSheet = <NAV_LINK to="/" text="My V-Sheet" />
+    ),
+    toMenteesLink = <NAV_LINK to="/my_mentees" text="My Mentees" isBurgerOn={isBurgerOn} />,
+    toMentorLink = <NAV_LINK to="/my_mentor" text="My Mentor" isBurgerOn={isBurgerOn} />,
+    endeavorSheetLink = <NAV_LINK to="/endeavor/:a_slug_goes_here" text="My Endeavor" isBurgerOn={isBurgerOn} />,
+    myFellowsLink = <NAV_LINK to='/my_fellows' text="My Fellows" />
+    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />, // for general search of fellows
   ;
 
 
-  /* TOGGLE LIMITED ACCESS NAV DISPLAYS */
+  /* TOGGLES NULL/SHOW */
   let
+    showAdminDropdown = null,
     showVolunteersLink = null,
+    showMentoringLink = null,
+    showMyFellowsLink = null,
+    showEndeavorSheetLink = null;
     // showFellowsLink = null,
-    showAdminDropdown = null
-    // showVSheet = null
-  ;
-  if (navMode.volunteer) {
-    // showVSheet = vSheet;
+
+  if (navUser.admin) {
+    showAdminDropdown = adminDropdown;
   }
-  if (navMode.admin || navMode.staff) {
+  if (navUser.admin || navUser.staff) {
     showVolunteersLink = volunteersLink;
     // showFellowsLink = fellowsLink;
   }
-  if (navMode.admin) {
-    showAdminDropdown = adminDropdown;
+  if (navUser.staff) {
+    showMyFellowsLink = myFellowsLink;
+  }
+  if (navUser.volunteer) {
+    showMentoringLink = toMenteesLink;
+    showEndeavorSheetLink = endeavorSheetLink;
+  }
+  if (navUser.fellow) {
+    showMentoringLink = toMentorLink;
   }
 
 
@@ -114,13 +124,17 @@ ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
 
           <NAV_LINK to='/events' text="Events" isBurgerOn={isBurgerOn} />
 
+          {showMentoringLink}
+
+          {showEndeavorSheetLink}
+
           {/* {showFellowsLink} */}
+
+          {showMyFellowsLink}
 
           {showAdminDropdown}
 
           <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" isBurgerOn={isBurgerOn} />
-
-          {/* {showVSheet} */}
 
           <Logout logout={logout} />
 

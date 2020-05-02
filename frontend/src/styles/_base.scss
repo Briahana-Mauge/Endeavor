@@ -25,9 +25,10 @@ html, body, #root, .g1App {
 :root {
     font-size: 16px;
     --fs-body: 1rem;
+    --fs-h3: .9rem;
 
     --ff-body1: 'Quicksand', sans-serif;
-    --ff-accent: 'Catamaran', sans-serif;
+    --ff-accent: 'Cabin', sans-serif;
     --ff-top: 'Red Hat Display', sans-serif;
 
     --fw-bold: 800;
@@ -38,6 +39,11 @@ html, body, #root, .g1App {
     --color-white: #e2e2e2;
     --color-black: #323232;
 
+    --border-radii: .2rem;
+    --box-shadow: 1px 6px 11px #0005;
+    --table-outer-gaps: 0;
+    --table-inner-gaps: .8rem;
+    
     --navbar-height: 62px;
 }
 
@@ -105,6 +111,7 @@ nav button {
 @mixin link-states() {
     &:link, &:visited {
         color: var(--color-white);
+        text-decoration: none;
     }
     &:hover, &:active {
         color: var(--color-primary);
@@ -116,6 +123,11 @@ nav button {
         cursor: default;
         color: #666;
     }
+}
+
+
+.lightBox {
+    color: var(--color-black);
 }
 
 
@@ -187,6 +199,7 @@ nav button {
         text-align: right;
     }
     @media (min-width: 992px) {   // regular navmenu dropdowns
+        border-radius: var(--border-radii);
         text-align: left;
         // background-color: #000 !important;
         // background-image: linear-gradient(180deg, #8d8557, #8d855773);
@@ -205,6 +218,227 @@ nav button {
     }
 }
 
+
+// Body Cards
+.g1Card {
+    background-color: transparent;
+    background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
+    border-radius: var(--border-radii);
+    padding-bottom: .1rem;
+}
+
+.g1CardHeader {
+    background-color: transparent;
+    border-bottom: none;
+
+    color: var(--color-white);
+    font-family: var(--ff-accent);
+    font-size: var(--fs-h3);
+    font-weight: 900;
+
+    span {
+        color: var(--color-primary);
+        color: #476CEF;
+    }
+}
+
+.g1CardBody {
+    color: var(--color-white);
+}
+
+.g1Table {
+    display: table;
+
+    width: 100%;
+    font-family: var(--ff-accent);
+    border: 0;
+    color: var(--color-white);
+
+    .ongoing {
+        color: #efefef;
+
+        .g1TD {
+            background-color: #ff658229;
+        }
+    }
+    .important { color: #c7be83;}
+    .passed { color: #999; }
+
+    .g1THead {
+        display: table-header-group;
+        
+        padding-bottom: calc(var(--table-inner-gaps) * .15);
+
+        color: #cd43a9;
+        text-transform: uppercase;
+        font-size: calc(var(--fs-body) * .75);
+        font-family: var(--ff-accent);
+
+        .g1TD {
+            border-bottom: 1px dashed #696969;
+        }
+    }
+
+    .g1TBody {
+        display: table-row-group;
+    }
+
+    .g1TR {
+        display: table-row;
+    }
+
+    .g1TD {
+        display: table-cell;
+
+        padding: 0;
+        border-top: 0;
+    }
+
+    .g1TBody .g1TD {
+        padding-top: .1rem;
+        padding-bottom: .2rem;
+    }
+
+    .g1TopicCol, .g1TimeCol {
+        line-height: 1.2rem;
+    }
+    
+    .g1TopicCol {
+        text-align: left;
+        padding-right: var(--table-inner-gaps);
+        padding-left: var(--table-outer-gaps);
+    }
+
+    .g1TimeCol {
+        padding-right: var(--table-outer-gaps);
+        padding-left: var(--table-inner-gaps);
+        border-left: 1px dashed #696969;
+
+        u {
+            text-decoration: none;
+            color: #7cf;
+        }
+    }
+
+    .passed .g1TimeCol u {
+        color: #5f5f5f;
+    }
+}
+
+.g1TBody .g1TR:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.11);
+}
+.g1TBody .g1TR:nth-of-type(even) {
+    background-color: rgba(173, 156, 156, 0.03);
+}
+
+.g1BufferRow.g1TBody .g1TR {
+    background-color: transparent;
+    height: .5rem;
+}
+
+.g1EventLink {
+    cursor: pointer;
+}
+
+// .g1PopoverBtn {
+//     &, &:hover, &:active, &:focus {
+//         --event-indent: 1.5rem;
+
+//         all: unset;
+//         cursor: pointer;
+//         text-indent: calc(var(--event-indent) * -1);
+//         position: relative;
+//         left: (var(--event-indent));
+//     }
+
+//     &:hover, &:active {
+//         color: var(--color-yellow) !important;
+//     }
+
+//     &.btn-secondary:not(:disabled):not(.disabled):active {
+//         color: inherit;
+//         background-color: inherit;
+//         border: none;
+//         box-shadow: none;
+//     }
+
+//     @include link-states();
+// }
+
+// .topicCol .g1PopoverBtn::before {
+//     content: "▪︎ ";
+//     // color: red;▪︎
+// }
+
+// .g1PopoverParent {
+//     .popover {
+//         border-radius: var(--border-radii);
+//         box-shadow: var(--box-shadow);
+//         font-family: var(--ff-accent);
+//     }
+
+//     .popover-header {
+//         font-family: var(--ff-top);
+//         border-top-left-radius: var(--border-radii);
+//         border-top-right-radius: var(--border-radii);
+
+//         .times {
+//             font-size: .9rem;
+//             font-weight: 900;
+//             font-style: italic;
+//             color: var(--color-primary);
+//         }
+//     }
+
+//     .g1PopoverGoLink {
+//         display: block;
+//         font-size: .8rem;
+//         text-transform: lowercase;
+//         text-align: right;
+
+//         @include link-states();
+//     }
+
+//     .bs-popover-auto[x-placement^=right] .g1PopoverGoLink {
+//         text-align: left;
+//     }
+// }
+
+// Popover Arrows
+// .g1PopoverParent {
+//     --parrow-top: 3px;
+//     --parrow-y-squeeze: .4rem;
+//     --parrow-x-nudge: 1.2rem;
+//     --parrow-color: #476cef;
+
+//     .bs-popover-auto[x-placement^=right] {
+//         left: 11px !important;
+//     }
+
+//     .bs-popover-auto[x-placement^=left]>.arrow::after,
+//     .bs-popover-left>.arrow::after {
+//         top: var(--parrow-top);
+//         right: .3rem;
+//         border-width: var(--parrow-y-squeeze) 0 var(--parrow-y-squeeze) var(--parrow-x-nudge);
+//         border-left-color: var(--parrow-color);
+//     }
+
+//     .bs-popover-auto[x-placement^=right]>.arrow::after,
+//     .bs-popover-right>.arrow::after {
+//         top: var(--parrow-top);
+//         left: -.4rem;
+//         border-width: var(--parrow-y-squeeze) var(--parrow-x-nudge) var(--parrow-y-squeeze) 0;
+//         border-right-color: var(--parrow-color);
+//     }
+// }
+
+// .popover-header {
+//     background-color: var(--color-yellow);
+//     filter: grayscale(.4) brightness(1.4);
+// }
+
+
 @media (max-width: 992px) {
     .g1MobileTextALign {
         width: 100%;
@@ -212,9 +446,6 @@ nav button {
     }
 }
 
-.card-body {
-    color: var(--color-black);
-}
 
 // MEDIA QUERY MORE SPECIFIC STYLING
     // Bootstrap reference

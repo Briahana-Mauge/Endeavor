@@ -18,7 +18,7 @@ import DashboardVolunteers from './Components/Dashboards/DashboardVolunteers';
 import DashboardFellows from './Components/Dashboards/DashboardFellows';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import ProfilePage from './Components/Profile/ProfilePage';
-import VolunteerSearch from './Components/VolunteerSearch';
+import Volunteers from './Components/Volunteers';
 import Events from './Components/Events';
 import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
@@ -185,7 +185,7 @@ function App() {
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
       <PrivateRouteGate path='/volunteers' {...gateProps}>
-        <VolunteerSearch {...userProps} />
+        <Volunteers {...userProps} />
       </PrivateRouteGate>
     ),
     volunteersProfile = (

@@ -98,7 +98,7 @@ const readFellowByEmail = async (req, res, next) => {
 //     const fBio = processInput(req.body.fBio, "softVC", "bio", undefined);
 //     const fLinkedIn = processInput(req.body.fLinkedIn, "softVC", "linkedin url", 150);
 //     const fGithub = processInput(req.body.fGithub, "softVC", "github url", 150);
-//     const wantMentor = processInput(req.body.wantMentor, "bool", "want mentor bool");
+//     const wantMentor = processInput(req.body.wantMentor, "hardBool", "want mentor bool");
 
 //     const response = await queries.editFellow({
 //         fId,
