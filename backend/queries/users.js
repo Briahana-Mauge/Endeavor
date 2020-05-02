@@ -45,9 +45,9 @@ const deleteUser = async (email) => {
 }
 const getAllAdmin = async () => {
     const getQuery = `
-    SELECT *
+    SELECT a_email
     FROM administration
-    WHERE admin = true;
+    WHERE admin = true AND deleted IS NULL;
     `;
     return await db.any(getQuery);
   }
