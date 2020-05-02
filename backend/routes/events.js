@@ -71,7 +71,36 @@ router.get('/admin/all', async (req, res, next) => {
     } catch (err) {
         handleError(err, req, res, next);
     }
+});
 
+//Get all events  (non-admin)
+router.get('/non_admin/dashboard', async (req, res, next) => {
+    try {
+        if (!req.user) {
+            throw new Error('401__You must be logged in');
+        } else {
+            const userId = processInput(req.user.a_id || req.user.v_id || req.user.f_id, "idNum", "user id");
+            let usertype = null;
+            if (req.user.a_id) {
+                usertype = "staff";
+            } else if (req.user.v_id) {
+                usertype = "volunteer";
+            } else if (req.user.f_id) {
+                usertype = "fellow";
+            }
+
+            const dashboardEvents = await eventsQueries.getAllEventsNonadmin(usertype, userId);
+            console.log(dashboardEvents);
+            res.status(200)
+                .json({
+                    payload: dashboardEvents,
+                    message: "Success",
+                    err: false
+                });
+        }
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
 });
 
 //Get single event (admin only)
@@ -280,5 +309,6 @@ router.delete('/:event_id', async (req, res, next) => {
         handleError(err, req, res, next);
     }
 });
+
 
 module.exports = router;

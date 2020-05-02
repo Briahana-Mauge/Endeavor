@@ -25,6 +25,15 @@ const Dashboard = (props) => {
 
 
     useEffect(() => {
+      const getDash = async () => {
+          try {
+              const response = await axios.get(`/api/events/non_admin/dashboard`);
+              console.log("HIT", response);
+          } catch (err) {
+              setFeedback(err)
+          }
+      }
+
         const getEvents = async () => {
             try {
                 const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
@@ -44,6 +53,7 @@ const Dashboard = (props) => {
             }
         }
 
+        getDash();
         getEvents();
         getImportantEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps

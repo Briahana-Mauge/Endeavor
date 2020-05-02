@@ -288,6 +288,91 @@ const getSingleEventAdmin = async (eId) => {
 //   return await db.any(selectQuery);
 // }
 
+//Get all events data for non-admin dashboards
+const getAllEventsNonadmin = async (usertype, userId) => {
+  const selectColumns = `
+        event_id, 
+        topic, 
+        event_start, 
+        event_end, 
+        description, 
+        staff_description,
+        location, 
+        instructor, 
+        number_of_volunteers, 
+        cohort,
+        cohort_id,
+        materials_url
+  `;
+  const importantsQuery = `
+    SELECT
+        ${selectColumns},
+        ARRAY_AGG(
+            (
+                SELECT
+                    CAST(v_id as CHAR(10)) || ' &$%& ' || v_first_name || ' ' ||
+                    v_last_name || ' &$%& ' || v_email || ' &$%& ' ||
+                    CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) ||
+                    ' &$%& ' || CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+                    CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+
+                FROM  event_volunteers
+                LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+                WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id
+            )
+        ) AS volunteers_list
+
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+
+    WHERE event_start > now()
+        AND important = TRUE
+        AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  const upcomingsQuery = `
+    SELECT
+        ${selectColumns},
+        ARRAY_AGG(
+            CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END
+        ) AS volunteers_list
+
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+
+    WHERE event_start > now()
+        AND volunteer_id = $1
+        AND event_volunteers.confirmed = TRUE
+        AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  const pastsQuery = `
+    SELECT
+        volunteers.v_id,
+        volunteers.v_first_name || ' ' || volunteers.v_last_name AS volunteer,
+        ${selectColumns}
+
+    FROM volunteers
+    INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+    INNER JOIN events ON event_volunteers.eventv_id = events.event_id
+
+    WHERE event_start < now()
+        AND volunteers.v_id = $1
+        AND event_volunteers.confirmed = TRUE
+    GROUP BY event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  return db.multi(importantsQuery + upcomingsQuery, userId)
+    .then(([ importants, upcomings ]) => {
+        return { importants, upcomings };
+    });
+}
+
+
 //Get all important events
 const getImportantEvents = async (limit) => {
   let selectQuery = `
@@ -479,6 +564,7 @@ module.exports = {
   getSingleEventAdmin,
   // getUpcomingEvents,
   // getPastEvents,
+  getAllEventsNonadmin,
   getPastEventsByVolunteerId,
   getUpcomingEventsByVolunteerId,
   getPastEventsByFellowId,
