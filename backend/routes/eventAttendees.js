@@ -67,29 +67,30 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             const event = await eventQueries.getSingleEvent(postData.eventId)
             const admin = await userQueries.getAllAdmin();
 
-            //go back and remove alexis' email address
-            const testArr = [admin[0].a_email]
 
-            for (let i = 0; i < testArr.length; i++) {
-                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-                const msg = {
-                    to: testArr[i],
-                    from: 'endeavorapp2020@gmail.com',
-                    subject: 'Volunteer Request',
-                    text: `${request.user.v_first_name} ${request.user.v_last_name} wants to volunteer for the '${event.topic}' event`,
-                };
-                (async () => {
-                    try {
-                        await sgMail.send(msg);
-                    } catch (error) {
-                        console.error(error);
-
-                        if (error.response) {
-                            console.error(error.response.body)
-                        }
-                    }
-                })();
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            const msg = {
+                personalizations: [{
+                    to: []
+                }],
+                from: 'endeavorapp2020@gmail.com',
+                subject: 'Volunteer Requests Approval for Event',
+                text: `${request.user.v_first_name} ${request.user.v_last_name} wants to volunteer for the '${event.topic}' event`,
+            };
+            for (let i = 0; i < admin.length; i++) {
+                msg.personalizations[0].to.push({ email: admin[i].a_email })
             }
+            (async () => {
+                try {
+                    await sgMail.send(msg);
+                } catch (error) {
+                    console.error(error);
+
+                    if (error.response) {
+                        console.error(error.response.body)
+                    }
+                }
+            })();
 
             response.json({
                 err: false,
