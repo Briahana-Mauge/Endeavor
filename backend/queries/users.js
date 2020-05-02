@@ -43,11 +43,19 @@ const deleteUser = async (email) => {
 
     return user;
 }
-
+const getAllAdmin = async () => {
+    const getQuery = `
+    SELECT a_email
+    FROM administration
+    WHERE admin = true AND deleted IS NULL;
+    `;
+    return await db.any(getQuery);
+  }
 module.exports = {
     getUserByEmail,
     addUser,
     updatePassword,
     updateEmail,
     deleteUser,
+    getAllAdmin
 }
