@@ -359,16 +359,17 @@ const getAllEventsNonadmin = async (usertype, userId) => {
     FROM volunteers
     INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
     INNER JOIN events ON event_volunteers.eventv_id = events.event_id
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
     WHERE event_start < now()
         AND volunteers.v_id = $1
         AND event_volunteers.confirmed = TRUE
-    GROUP BY event_id, cohort_id
+    GROUP BY volunteers.v_id, event_id, cohort_id
     ORDER BY event_start ASC;
   `;
-  return db.multi(importantsQuery + upcomingsQuery, userId)
-    .then(([ importants, upcomings ]) => {
-        return { importants, upcomings };
+  return db.multi(importantsQuery + upcomingsQuery + pastsQuery, userId)
+    .then(([ importants, upcomings, pasts ]) => {
+        return { importants, upcomings, pasts };
     });
 }
 

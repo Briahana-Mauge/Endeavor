@@ -90,7 +90,6 @@ router.get('/non_admin/dashboard', async (req, res, next) => {
             }
 
             const dashboardEvents = await eventsQueries.getAllEventsNonadmin(usertype, userId);
-            console.log(dashboardEvents);
             res.status(200)
                 .json({
                     payload: dashboardEvents,

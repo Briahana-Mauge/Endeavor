@@ -28,34 +28,34 @@ const Dashboard = (props) => {
       const getDash = async () => {
           try {
               const response = await axios.get(`/api/events/non_admin/dashboard`);
-              console.log("HIT", response);
+              console.log(response);
           } catch (err) {
               setFeedback(err)
           }
       }
 
-        const getEvents = async () => {
-            try {
-                const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
-                setEventsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
+        // const getEvents = async () => {
+        //     try {
+        //         const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
+        //         setEventsList(data.payload);
+        //     } catch (err) {
+        //         setFeedback(err)
+        //     }
+        // }
 
-        const getImportantEvents = async () => {
-            try {
-                const { data } = await axios.get(`/api/events/important?limit=3`);
-                setImportantEvents(data.payload);
+        // const getImportantEvents = async () => {
+        //     try {
+        //         const { data } = await axios.get(`/api/events/important?limit=3`);
+        //         setImportantEvents(data.payload);
 
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
+        //     } catch (err) {
+        //         setFeedback(err)
+        //     }
+        // }
 
         getDash();
-        getEvents();
-        getImportantEvents();
+        // getEvents();
+        // getImportantEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadDashboard]);
 
@@ -70,17 +70,17 @@ const Dashboard = (props) => {
             }
         }
 
-        const getNumberOfPastEvents = async () => {
-            try {
-                const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
-                setPastEvents(data.payload.length)
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
+        // const getNumberOfPastEvents = async () => {
+        //     try {
+        //         const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
+        //         setPastEvents(data.payload.length)
+        //     } catch (err) {
+        //         setFeedback(err)
+        //     }
+        // }
 
         getAllVolunteeredTime();
-        getNumberOfPastEvents();
+        // getNumberOfPastEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -100,7 +100,7 @@ const Dashboard = (props) => {
                     <p> Visit the Events page to find out more!</p></>
                 : null}
 
-            {
+            {/* {
                 eventsList.map(event => <EventPreviewCard
                     key={event.event_id + event.event_start + event.event_end}
                     loggedUser={loggedUser}
@@ -109,7 +109,7 @@ const Dashboard = (props) => {
                     targetEvent={targetEvent}
                     setTargetEvent={setTargetEvent}
                 />)
-            }
+            } */}
 
             {
                 showEvent 
@@ -123,7 +123,7 @@ const Dashboard = (props) => {
                     />
                 : null
             }
-            <br></br>
+            {/* <br></br>
             <br></br>
             <h3>Important Pursuit Events</h3>
             {
@@ -135,7 +135,7 @@ const Dashboard = (props) => {
                     targetEvent={targetEvent}
                     setTargetEvent={setTargetEvent}
                 />)
-            }
+            } */}
 
             <br></br>
             <br></br>
