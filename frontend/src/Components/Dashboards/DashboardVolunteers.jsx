@@ -19,7 +19,7 @@ const Dashboard = (props) => {
     const [showEvent, setShowEvent] = useState(false);
     const [volunteeredTime, setVolunteeredTime] = useState(0);
     const [pastEvents, setPastEvents] = useState(0);
-    const [importantEvents, setImportantEvents] = useState([]);
+    const [eventsObj, setEventsObj] = useState({ pasts: [], importants: [], upcomings: [] });
     const [targetEvent, setTargetEvent] = useState({});
     const [reloadDashboard, setReloadDashboard] = useState(false);
 
@@ -27,8 +27,8 @@ const Dashboard = (props) => {
     useEffect(() => {
       const getDash = async () => {
           try {
-              const response = await axios.get(`/api/events/non_admin/dashboard`);
-              console.log(response);
+              const {data} = await axios.get(`/api/events/non_admin/dashboard`);
+              setEventsObj(data.payload);
           } catch (err) {
               setFeedback(err)
           }
@@ -91,11 +91,24 @@ const Dashboard = (props) => {
     }
 
 
+    // PRE-RETURN (package drilled props)
+    const eventsDashProps = {
+      loggedUser,
+      setShowEvent,
+      targetEvent,
+      setTargetEvent
+    }
+
 
     return (
-        <>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12 col-md-5">
+              {/* <EventsDash events={eventsObj} {...eventsDashProps} /> */}
+            </div>
+
             <h3>Upcoming Events:</h3>
-            {eventsList.length === 0 ?
+            {eventsObj.upcomings.length === 0 ?
                 <><p>You are not registered to volunteer at any upcoming events.</p>
                     <p> Visit the Events page to find out more!</p></>
                 : null}
@@ -154,7 +167,8 @@ const Dashboard = (props) => {
 
 
 
-        </>
+          </div>
+        </div>
 
     )
 }
