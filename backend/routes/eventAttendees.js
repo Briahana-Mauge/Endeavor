@@ -74,8 +74,8 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                     to: []
                 }],
                 from: 'endeavorapp2020@gmail.com',
-                subject: 'Volunteer Requests Approval for Event',
-                text: `${request.user.v_first_name} ${request.user.v_last_name} wants to volunteer for the '${event.topic}' event`,
+                subject: 'Volunteer Event Request',
+                text: `${new Date().toLocaleString()}: ${request.user.v_first_name} ${request.user.v_last_name} requested to volunteer for the '${event.topic}' event.`,
             };
             for (let i = 0; i < admin.length; i++) {
                 msg.personalizations[0].to.push({ email: admin[i].a_email })
