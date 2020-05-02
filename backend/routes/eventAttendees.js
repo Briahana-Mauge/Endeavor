@@ -63,7 +63,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 eventId: processInput(request.params.event_id, 'idNum', 'event id'),
                 volunteerId
             }
-            const volunteerRequest = await eventAttendeesQueries.signupVolunteerForEvent(postData);
+
             const event = await eventQueries.getSingleEvent(postData.eventId)
             const admin = await userQueries.getAllAdmin();
 
@@ -77,20 +77,21 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 subject: 'Volunteer Event Request',
                 text: `${new Date().toLocaleString()}: ${request.user.v_first_name} ${request.user.v_last_name} requested to volunteer for the '${event.topic}' event.`,
             };
+
             for (let i = 0; i < admin.length; i++) {
-                msg.personalizations[0].to.push({ email: admin[i].a_email })
+                msg.personalizations[0].to.push({ email: `endeavorapp2020+${admin[i].a_email.replace('@','-')}@gmail.com`})
             }
+
             (async () => {
                 try {
                     await sgMail.send(msg);
                 } catch (error) {
-                    console.error(error);
+                    throw new Error('500__The request was not completed.');
 
-                    if (error.response) {
-                        console.error(error.response.body)
-                    }
                 }
             })();
+
+            const volunteerRequest = await eventAttendeesQueries.signupVolunteerForEvent(postData);
 
             response.json({
                 err: false,
