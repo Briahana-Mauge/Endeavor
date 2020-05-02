@@ -56,7 +56,7 @@ const processInput = (input, category, inputName, limit) => {
         return varcharCheck(input, "patch", inputName, limit);
 
     // for booleans
-    case "bool":
+    case "hardBool":
         // currently undefined will respond as FAIL
         if (typeof input === "boolean") return input; // lets actual booleans through
         if (input && input.trim()) { // for checking string type booleans like req.search bool params
@@ -64,6 +64,12 @@ const processInput = (input, category, inputName, limit) => {
           if (input.trim().toLowerCase() === "false") return false;
         }
         throw new Error(`404__invalid boolean input`);
+    
+    // for booleans
+    case "softBool":
+        if (typeof input === "boolean") return input; // lets actual booleans through
+        if (input && input.trim() && input.trim().toLowerCase() === "true") return true;
+        return false;
 
     // for arrays
     case "array":

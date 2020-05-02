@@ -13,7 +13,7 @@ export default function EventSearch(props) {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
     const [filter, setFilter] = useState('');
-    const [dateFilter, setDateFilter] = useState('');
+    const [pastOrUpcoming, setPastOrUpcoming] = useState('');
     const [reload, setReload] = useState(false); 
     
     const [targetEvent, setTargetEvent] = useState({});
@@ -22,13 +22,17 @@ export default function EventSearch(props) {
 
     const getAllEvents = async () => {
         try {
+            let dateFilter = '';
+            if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
+                dateFilter = 'true'
+            }
             if (props.loggedUser && props.loggedUser.a_id) {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
                 setResults(data.payload);
             }
             else {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
-                // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${dateFilter}=${dateFilter}`);
+                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
+                // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
                 setResults(data.payload);
             }
 
@@ -39,7 +43,7 @@ export default function EventSearch(props) {
     useEffect(() => {
         getAllEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
+    }, [reload, filter, pastOrUpcoming]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -78,7 +82,7 @@ export default function EventSearch(props) {
                     <option value='instructor'>Instructor</option>
                 </select>
 
-                <select className='form-control mb-2 mr-sm-2' value={dateFilter} onChange={e => setDateFilter(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={pastOrUpcoming} onChange={e => setPastOrUpcoming(e.target.value)}>
                     <option value=''>Any date</option>
                     <option value='upcoming'>Upcoming events</option>
                     <option value='past'>Past events</option>

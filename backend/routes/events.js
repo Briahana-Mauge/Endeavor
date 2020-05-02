@@ -17,10 +17,11 @@ router.get('/all/', async (req, res, next) => {
         const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowerCase();
         const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowerCase();
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
-        const upcoming = processInput(req.query.upcoming, "softVC", "upcoming events", 60);
-        const past = processInput(req.query.past, "softVC", "past events", 60);
+        const upcoming = processInput(req.query.upcoming, "softBool", "upcoming events bool");
+        const past = processInput(req.query.past, "softBool", "past events bool");
+        const dashboard = processInput(req.query.dashboard, "softBool", "dashboard bool");
 
-        let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past);
+        let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past, dashboard);
         res.status(200)
             .json({
                 payload: allEvents,
@@ -56,9 +57,9 @@ router.get('/admin/all', async (req, res, next) => {
         const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowerCase();
         const topic = processInput(req.query.topic, "softVC", "event topic", 50).toLowerCase();
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
-        const upcoming = processInput(req.query.upcoming, "softVC", "upcoming events", 60);
-        const past = processInput(req.query.past, "softVC", "past events", 60);
-        const dashboard = processInput(req.query.dashboard, "bool", "dashboard bool");
+        const upcoming = processInput(req.query.upcoming, "softBool", "upcoming events bool");
+        const past = processInput(req.query.past, "softBool", "past events bool");
+        const dashboard = processInput(req.query.dashboard, "softBool", "dashboard bool");
 
         let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past, dashboard);
         res.status(200)
@@ -121,17 +122,12 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 // Get all important events
 router.get('/important', async (req, res, next) => {
     try {
-        let volunteerId = 0;
-        if (req.user && req.user.v_id) {
-            volunteerId = req.user.v_id;
-        }
-
         let limit = req.query.limit;
         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
             limit = null;
         } 
 
-        const allEvents = await eventsQueries.getImportantEvents(volunteerId, limit);
+        const allEvents = await eventsQueries.getImportantEvents(limit);
         res.json({
             payload: allEvents,
             message: "Success",
@@ -213,7 +209,7 @@ router.post('/add', async (req, res, next) => {
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                important: processInput(req.body.important, 'bool', 'event importance')
+                important: processInput(req.body.important, 'hardBool', 'event importance')
             }
 
             const events = await eventsQueries.postEvent(eventData);
@@ -247,7 +243,7 @@ router.put('/edit/:event_id', async (req, res, next) => {
                 instructor: processInput(req.body.instructor, 'hardVC', 'instructor', 100),
                 numberOfVolunteers: processInput(req.body.numberOfVolunteers, 'idNum', 'number of volunteers'),
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
-                important: processInput(req.body.important, 'bool', 'event importance')
+                important: processInput(req.body.important, 'hardBool', 'event importance')
             }
             
             const events = await eventsQueries.editEvent(eventData);

@@ -46,6 +46,7 @@ const Dashboard = (props) => {
 
         getEvents();
         getImportantEvents();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reloadDashboard]);
 
     useEffect(() => {
@@ -70,6 +71,7 @@ const Dashboard = (props) => {
 
         getAllVolunteeredTime();
         getNumberOfPastEvents();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
