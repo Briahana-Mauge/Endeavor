@@ -4,21 +4,34 @@ import axios from 'axios';
 import moment from 'moment';
 
 
-const EventsCard = (props) => {
+const EventCard = (props) => {
     const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState('');
-    const [ volunteersList, setVolunteersList] = useState([]);
+    const [ waitingForRender, setWaitingForRender ] = useState(false);
+
+    /* 
+        props.event.volunteers_list is an array of STRING 
+        where reach element is all one volunteer information related to that event separated by ,
+        if split(', ') we will have:
+            index0: volunteer ID
+            index1: first and last name
+            index2: email
+            index3: volunteer profile deleted
+            index4: event_volunteers table id
+            index5: volunteer confirmed to event
+    */
     
     useEffect(() => {
-        setVolunteersList(event.volunteersList);
-    }, [event.reload, event.volunteersList]);
+        setWaitingForRender(false)
+    }, [props.reloadParent]);
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
+            setWaitingForRender(true);
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
-            event.setReload(event.reload + 1);
+            props.setReloadParent(!props.reloadParent);
         } catch (err) {
             setFeedback(err);
         }
@@ -26,6 +39,7 @@ const EventsCard = (props) => {
 
     const volunteerForEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.post(`/api/event_attendees/event/${event.event_id}/add/${loggedUser.v_id}`);
             props.setReloadParent(!props.reloadParent);
         } catch (err) {
@@ -35,6 +49,7 @@ const EventsCard = (props) => {
 
     const deleteVolunteerForEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.delete(`/api/event_attendees/event/${event.event_id}/delete/${loggedUser.v_id}`);
             props.setReloadParent(!props.reloadParent);
         } catch (err) {
@@ -46,10 +61,11 @@ const EventsCard = (props) => {
         try {
             e.preventDefault();
 
-
-            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: event.volunteerHours});
+            setWaitingForRender(true);
+            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
+            setWaitingForRender(false);
             setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
-            event.setVolunteerHours('');
+            setVolunteerHours('');
         } catch (err) {
             setFeedback(err)
         }
@@ -58,6 +74,7 @@ const EventsCard = (props) => {
 
     const handleDeleteEvent = async () => {
         try {
+            setWaitingForRender(true);
             await axios.delete(`/api/events/${event.event_id}`)
             props.setReloadParent(!props.reloadParent);
             props.hideEvent();
@@ -71,34 +88,35 @@ const EventsCard = (props) => {
     }
 
     let displayVolunteersList = null;
-    if (volunteersList.length && loggedUser && loggedUser.admin) {
-        displayVolunteersList = volunteersList.map(volunteer => 
-                <div className='custom-control custom-switch' key={volunteer.v_id + volunteer.v_last_name + event.event_id}>
+    if (loggedUser && loggedUser.admin) {
+        displayVolunteersList = event.volunteersList.map(volunteer => 
+                <div className='custom-control custom-switch' key={volunteer[0] + volunteer[1] + volunteer[2]}>
                     <input 
                         type='checkbox' 
                         className='custom-control-input' 
-                        id={volunteer.v_id + volunteer.v_last_name + event.event_id}
-                        checked={volunteer.volunteer_request_accepted} 
-                        onChange={e => manageVolunteersRequests(e, volunteer.v_id)}
-                        disabled={volunteer.deleted}
+                        id={volunteer[0] + volunteer[1]}
+                        checked={volunteer[5] === 'true' ? true : false} 
+                        onChange={e => manageVolunteersRequests(e, volunteer[0])}
+                        disabled={volunteer[3] === 'true' ? true : false || waitingForRender}
                     />
-                    <label className='custom-control-label  mt-2' htmlFor={volunteer.v_id + volunteer.v_last_name + event.event_id}>
-                        <span className={volunteer.deleted ? 'd-block text-muted' : 'd-block'}>
-                            {`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+                    <label className='custom-control-label  mt-2' htmlFor={volunteer[0] + volunteer[1]}>
+                        <span className={volunteer[3] ? 'd-block text-muted' : 'd-block'}>
+                            {`${volunteer[1]}`}
                         </span>
                     </label>
-                    <span className='btn btn-link mb-2 mx-3'>Profile</span> {/* WILL BE A LINK TO VOLUNTEER PROFILE */}
+                    <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteer[0]}`)}>Profile</span>
                     {
-                        volunteer.volunteer_request_accepted
-                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer.v_id)}>
+                        volunteer[5] === 'true'
+                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer[0])}>
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
                                     placeholder='Hours' 
                                     value={volunteerHours}
                                     onChange={e => setVolunteerHours(e.target.value)}
+                                    disabled={waitingForRender}
                                 />
-                                <button className='btn btn-primary  mb-2'>Save</button>
+                                <button className='btn btn-primary  mb-2' disabled={waitingForRender}>Save</button>
                             </form>
                         : null
                     }
@@ -108,11 +126,6 @@ const EventsCard = (props) => {
 
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
-
-    let numberOfConfirmedVolunteers = 0;
-    if (event.volunteersEmailList) {
-        numberOfConfirmedVolunteers = event.volunteersEmailList.split('&add=').length - 1;
-    }
 
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -125,8 +138,8 @@ const EventsCard = (props) => {
 
     return (
         <div className='lightBox'>
-            <div className='text-right m-2 closeButton'>
-                 <button className='btn-sm btn-danger' onClick={props.hideEvent}>X</button>
+            <div className='text-right closeButton'>
+                 <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
             </div>
 
             <div className='border border-dark rounded bg-light m-1'>
@@ -150,10 +163,10 @@ const EventsCard = (props) => {
                     {
                         loggedUser && loggedUser.a_id
                         ?   <div className='card-text'>
-                                <strong>Volunteers: </strong>{`${numberOfConfirmedVolunteers} / ${event.number_of_volunteers}`}
+                                <strong>Volunteers: </strong>{`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
                                 {displayVolunteersList}
                                 <div className='card-text text-right'>
-                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml${event.volunteersEmailList}`}
+                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml`}
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
                                 </div>
                             </div>
@@ -166,15 +179,15 @@ const EventsCard = (props) => {
                             ?   <div className='card-text d-flex justify-content-between'>
                                     <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
                                         className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
+                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
                                 : <div className='card-text'>
                                     <span>Request pending</span>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent}>Remove</button>
+                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
                             : loggedUser && loggedUser.v_id
                                 ? <div className='card-text text-right'>
-                                    <button className='btn btn-primary' onClick={volunteerForEvent}>Volunteer for this event</button>
+                                    <button className='btn btn-primary' onClick={volunteerForEvent} disabled={waitingForRender}>Volunteer for this event</button>
                                 </div>
                                 : null
                     }
@@ -184,7 +197,7 @@ const EventsCard = (props) => {
                 {
                     loggedUser && loggedUser.admin
                     ?   <div className='d-flex justify-content-between m-2'>
-                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent}>Delete</button>
+                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent} disabled={waitingForRender}>Delete</button>
                             <span className='flex-fill'></span>
                             <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
                         </div>
@@ -195,4 +208,4 @@ const EventsCard = (props) => {
     );
 }
 
-export default EventsCard;
+export default EventCard;

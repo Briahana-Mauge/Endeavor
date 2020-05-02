@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 
-export default function EventPreviewCard(props) {
-    const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
+export default function EventListItem(props) {
+    const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent, children, className } = props;
 
     /* 
         props.event.volunteers_list is an array of STRING 
@@ -14,10 +14,6 @@ export default function EventPreviewCard(props) {
             index3: volunteer profile deleted
             index4: event_volunteers table id
             index5: volunteer confirmed to event
-
-        ' &$%& ' was used to be as far as possible from common combinations entered by users
-        for instance if ', ' was selected, a user could have a middle name and entre name, middle name initial in the first name field
-        which will break the code since all next data will be shifted
     */
 
     const [ volunteersList, setVolunteersList ] = useState([]);
@@ -66,8 +62,8 @@ export default function EventPreviewCard(props) {
         });
         setTargetEvent(eventDataObj);
     }, [
-        acceptedVolunteers,
         event,
+        acceptedVolunteers,
         loggedVolunteerPartOfEvent,
         loggedVolunteerRequestAccepted,
         setTargetEvent,
@@ -86,51 +82,54 @@ export default function EventPreviewCard(props) {
         setShowEvent(true);
     }
     
-    const formatEventDate = date => {
-        const d = new Date(date).toLocaleDateString();
-        const t = new Date(date).toLocaleTimeString();
-        return [d, `${t.slice(0, -6)} ${t.slice(-2)}`];
-    }
+    // const formatEventDate = date => {
+    //     const d = new Date(date).toLocaleDateString();
+    //     const t = new Date(date).toLocaleTimeString();
+    //     return [d, `${t.slice(0, -6)} ${t.slice(-2)}`];
+    // }
 
-    const eventStart = formatEventDate(event.event_start);
-    const eventEnd = formatEventDate(event.event_end);
+    // const eventStart = formatEventDate(event.event_start);
+    // const eventEnd = formatEventDate(event.event_end);
 
     return (
-        <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
-            <div className='border rounded-lg p-2'>
-                <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
-                {
-                    eventStart[0] === eventEnd[0]
-                    ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
-                    :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
-                }
-                <p><strong>Host: </strong>{event.instructor}</p>
-                <p><strong>For: </strong>{event.cohort}</p>
-                <p><strong>Location: </strong>{event.location}</p>
-                {
-                    loggedUser && loggedUser.a_id
-                    ?   <p>
-                            <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers}
-                            {
-                                event.volunteers_list[0] && event.volunteers_list.length - acceptedVolunteers.length
-                                ? <span className='text-warning'> ({event.volunteers_list.length - acceptedVolunteers.length} pending)</span>
-                                : null
-                            }
-                        </p>
-                    :   null
-                }
-                {
-                    loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
-                    ?   loggedVolunteerRequestAccepted
-                        ?   <strong>I'm part of this event</strong>
-                        :   <strong>Request pending</strong>
-                    :   null
-                }
-            </div>
-        </div>
+        <span onClick={handleClickOnEvent} className={className}>
+            {children}
+        </span>
+        // <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
+        //     <div className='border rounded-lg p-2'>
+        //         <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
+        //         {
+        //             eventStart[0] === eventEnd[0]
+        //             ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+        //                 ?   <p>{eventStart[0]}</p>
+        //                 :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+        //             :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+        //                 ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
+        //                 :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
+        //         }
+        //         <p><strong>Host: </strong>{event.instructor}</p>
+        //         <p><strong>For: </strong>{event.cohort}</p>
+        //         <p><strong>Location: </strong>{event.location}</p>
+        //         {
+        //             loggedUser && loggedUser.a_id
+        //             ?   <p>
+        //                     <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers}
+        //                     {
+        //                         event.volunteers_list[0] && event.volunteers_list.length - acceptedVolunteers.length
+        //                         ? <span className='text-warning'> ({event.volunteers_list.length - acceptedVolunteers.length} pending)</span>
+        //                         : null
+        //                     }
+        //                 </p>
+        //             :   null
+        //         }
+        //         {
+        //             loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
+        //             ?   loggedVolunteerRequestAccepted
+        //                 ?   <strong>I'm part of this event</strong>
+        //                 :   <strong>Request pending</strong>
+        //             :   null
+        //         }
+        //     </div>
+        // </div>
     )
 }

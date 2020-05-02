@@ -14,7 +14,7 @@ const allVolunteeredTimeByVolunteerID = async (volunteer) => {
     const selectQuery = `
     SELECT SUM(volunteered_time)
     FROM event_volunteers
-    WHERE volunteer_id = $/volunteer/;
+    WHERE volunteer_id = $/volunteer/ AND confirmed = TRUE;
   `;
     return await db.one(selectQuery, {volunteer});
 }

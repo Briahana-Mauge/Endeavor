@@ -12,22 +12,21 @@ const eventsQueries = require('./events');
 /* QUERIES */
 
 // Get all volunteers attending an event by its Id
-const getEventVolunteersByEventId = async (id) => {
-    const selectQuery = `
-        SELECT 
-            v_id,
-            v_first_name,
-            v_last_name,
-            v_email,
-            volunteers.deleted,
-            ev_id AS event_volunteer_id, 
-            volunteers.v_email,
-            event_volunteers.confirmed AS volunteer_request_accepted
-        FROM event_volunteers INNER JOIN volunteers ON volunteer_id = v_id
-        WHERE eventv_id = $/id/
-    `
-    return await db.any(selectQuery, {id});
-}
+// const getEventVolunteersByEventId = async (id) => {
+//     const selectQuery = `
+//         SELECT 
+//             v_id,
+//             v_first_name,
+//             v_last_name,
+//             v_email,
+//             volunteers.deleted,
+//             ev_id AS event_volunteer_id,
+//             event_volunteers.confirmed AS volunteer_request_accepted
+//         FROM event_volunteers INNER JOIN volunteers ON volunteer_id = v_id
+//         WHERE eventv_id = $/id/
+//     `
+//     return await db.any(selectQuery, {id});
+// }
 
 // Confirm or un-confirm a volunteer request to be at en event
 const manageVolunteerRequest = async (requestObject) => {
@@ -123,7 +122,7 @@ const deleteVolunteerFromEvent = async (requestObject) => {
 
 
 module.exports = {
-    getEventVolunteersByEventId,
+    // getEventVolunteersByEventId,
     manageVolunteerRequest,
     signupVolunteerForEvent,
     manageVolunteerHours,
