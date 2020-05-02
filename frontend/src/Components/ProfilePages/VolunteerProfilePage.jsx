@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 export default function VolunteerProfilePage(props) {
+    const history = useHistory();
     const { volunteerId, setFeedback } = props;
 
     const [ volunteer, setVolunteer ] = useState({});
@@ -19,6 +21,29 @@ export default function VolunteerProfilePage(props) {
                     setVolunteer(data.payload);
                     setProfilePublic(data.payload.v_id);
                     setWaitingForData(false);
+
+                    if (data.payload.mentees) {
+                        const parsedMentees = data.payload.mentees.map(mentee => mentee.split(' &$%& '));
+                        /* After splitting, for each mentee we will have:
+                            index0: mentee id
+                            index1: full name
+                            index2: When the mentoring relation started
+                            index3: Boolean: true relation ended, true it's still on
+                        */
+                        setMentees(parsedMentees);
+                    }
+
+                    if (data.payload.events_list) {
+                        const parsedEvents = data.payload.events_list.map(event => event.split(' &$%& '));
+                        /* After splitting, for each event we will have:
+                            index0: event id
+                            index1: event topic
+                            index2: event start date
+                            index3: event end date
+                        */
+                        const a = parsedEvents.sort((a, b) => b[3] - a[3]); // Sorting with end date 
+                        setEvents(a);
+                    }
                     
                     setTasks([
                         ['mentoring', data.payload.mentoring], 
@@ -29,14 +54,7 @@ export default function VolunteerProfilePage(props) {
                         ['hosting a Site Visit at your office', data.payload.hosting_site_visit],
                         ['being an Industry Speaker', data.payload.industry_speaker]
                     ].filter(task => task[1]));
-        
-                    const promises = [];
-                    promises.push(axios.get(`/api/mentor_pairs/volunteer/${volunteerId}`));
-                    promises.push(axios.get(`/api/events/past/volunteer/${volunteerId}`));
-                    const response = await Promise.all(promises);
-    
-                    setMentees(response[0].data.payload);
-                    setEvents(response[1].data.payload);
+
                 }
             } catch (err) {
                 setFeedback(err);
@@ -44,7 +62,7 @@ export default function VolunteerProfilePage(props) {
         }
 
         getVolunteerData();
-    }, [volunteerId, setFeedback])
+    }, [volunteerId, setFeedback]);
 
 
     return (
@@ -67,7 +85,7 @@ export default function VolunteerProfilePage(props) {
                                 src={volunteer.v_picture} 
                                 alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                             />
-                            <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.banked_time}</span>
+                            <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
                         </div>
 
                         <div className='col-sm-6'>
@@ -108,8 +126,9 @@ export default function VolunteerProfilePage(props) {
                             <strong className='d-block mx-2'>Mentoring: </strong>
                             {
                                 mentees.map(mentee => 
-                                    <span key={mentee.f_id + mentee.f_first_name + mentee.f_lst_name} className='d-block mx-2'>
-                                        {mentee.f_first_name + ' ' + mentee.f_last_name}
+                                    <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2' 
+                                        onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                        {mentee[1]}
                                     </span>
                                 )          
                             }
@@ -125,8 +144,9 @@ export default function VolunteerProfilePage(props) {
                             <strong className='d-block mx-2'>Events: </strong>
                             {
                                 events.map(event => 
-                                    <span key={event.event_start + event.topic} className='d-block mx-2'>
-                                        {event.topic} ({new Date(event.event_start).toLocaleString()})
+                                    <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                        onClick={e => history.push(`event/${event[0]}`)}>
+                                        {event[1]} ({new Date(event[2]).toLocaleDateString()})
                                     </span>
                                 )          
                             }  

@@ -132,26 +132,51 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       hosting_site_visit, industry_speaker,
       signup_date, inactive_date, volunteers.deleted, public_profile,
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
-      ARRAY_AGG (DISTINCT events.event_id) AS event_ids,
-      ARRAY_AGG (DISTINCT mentor_pairs.mentee) AS mentee_ids
+      (SELECT
+        ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || event_start || ' &$%& ' || event_end )
+          FROM events 
+          INNER JOIN event_volunteers ON event_id = eventv_id
+          INNER JOIN volunteers ON volunteer_id = v_id
+          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE
+        ) AS events_list,
+      (SELECT
+        ARRAY_AGG (
+          CAST(f_id AS CHAR(10)) || ' &$%& ' ||
+          f_first_name || f_last_name || ' &$%& ' ||
+          CAST(starting_date AS CHAR(10)) || ' &$%& ' ||
+          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE 'true' END
+        )
+        FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
+        INNER JOIN volunteers ON mentor = v_id
+        WHERE v_id = $/id/ OR v_email = $/email/
+      ) AS mentees,
+      (SELECT
+        SUM(volunteered_time)
+        FROM event_volunteers
+        INNER JOIN volunteers ON volunteer_id = v_id
+        WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE
+      ) AS total_hours
+
     FROM volunteers
     INNER JOIN volunteer_skills ON v_id = volunteer_skills.volunteer_id
     INNER JOIN skills on volunteer_skills.skill_id = skills.skill_id
     INNER JOIN event_volunteers ON v_id = event_volunteers.volunteer_id
     INNER JOIN events ON eventv_id = event_id
     LEFT JOIN mentor_pairs ON v_id = mentor_pairs.mentor 
+    WHERE v_id = $/id/ OR v_email = $/email/ 
+    GROUP BY volunteers.v_id 
   `;
 
-  let condition = '';
-  const endOfQuery = ` GROUP BY volunteers.v_id `
+  // let condition = '';
+  // const endOfQuery = ` GROUP BY volunteers.v_id `
   
-  if (id) {
-    condition = ' WHERE v_id = $/id/ '
-  } else if (email) {
-    condition = ' WHERE v_email = $/email/ '
-  }
+  // if (id) {
+  //   condition = ' WHERE v_id = $/id/ '
+  // } else if (email) {
+  //   condition = ' WHERE v_email = $/email/ '
+  // }
 
-  const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
+  const volunteer = await db.one(selectQuery/* + condition + endOfQuery*/, {id, email});
 
   if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
     return new Error('403__Not accessible');
