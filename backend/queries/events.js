@@ -121,7 +121,7 @@ const getSingleEvent = async (eId) => {
   return await db.one(selectQuery, { eId });
 }
 
-const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashboard) => {
+const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   const selectQuery = `
   SELECT
     event_id, 
@@ -213,37 +213,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past, dashb
     condition += `AND event_start <= now() `
   }
 
-  // DETOUR for dashboard retrieval
-  if (dashboard) {
-    const
-      todaysQueryEnd = condition + `
-        AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
-        GROUP BY
-          event_id,
-          cohort_id
-        ORDER BY event_start ASC;
-      `,
-      importantsQuery = `
-        SELECT *
-        FROM events 
-        WHERE event_start::DATE > now()::DATE AND important = TRUE
-        ORDER BY event_start ASC
-        LIMIT 3;
-      `,
-      upcomingsQuery = `
-        SELECT *
-        FROM events 
-        WHERE event_start::DATE > now()::DATE AND important = FALSE
-        ORDER BY event_start ASC
-        LIMIT 3;
-      `;
-    return db.multi(selectQuery + todaysQueryEnd + importantsQuery + upcomingsQuery)
-      .then(([ todays, importants, upcomings ]) => {
-          return { todays, importants, upcomings };
-      });
-  } else {
-    return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
-  }
+  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
 //Get Single Event for Admin
@@ -287,6 +257,155 @@ const getSingleEventAdmin = async (eId) => {
 //   `;
 //   return await db.any(selectQuery);
 // }
+
+// Get all events data for admin dashboards
+const getDashEventsForAdmin = async () => {
+  const queryPrefix = `
+    SELECT
+        event_id,
+        topic,
+        event_start,
+        event_end,
+        description,
+        staff_description,
+        attendees,
+        location,
+        instructor,
+        number_of_volunteers,
+        cohort,
+        cohort_id,
+        materials_url,
+        important,
+        ARRAY_AGG(
+            CAST(v_id as CHAR(10)) || ' &$%& ' ||
+            v_first_name || ' ' || v_last_name || ' &$%& ' ||
+            v_email || ' &$%& ' ||
+            CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10))
+            || ' &$%& ' || CAST(ev_id as CHAR(10)) || ' &$%& ' ||
+            CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+        ) AS volunteers_list
+
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+    WHERE events.deleted IS NULL
+  `;
+  const queryEnd = `
+    GROUP BY
+        event_id,
+        cohort_id
+    ORDER BY event_start ASC
+  `;
+
+  const todaysQuery = `
+    ${queryPrefix}
+    AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
+    ${queryEnd};
+  `;
+  const importantsQuery = `
+    ${queryPrefix}
+    AND event_start::DATE > now()::DATE AND important = TRUE
+    ${queryEnd}
+    LIMIT 5;
+  `;
+  const upcomingsQuery = `
+    ${queryPrefix}
+    AND event_start::DATE > now()::DATE AND important = FALSE
+    ${queryEnd}
+    LIMIT 5;
+  `;
+  return db.multi(todaysQuery + importantsQuery + upcomingsQuery)
+    .then(([ todays, importants, upcomings ]) => {
+        return { todays, importants, upcomings };
+    });
+}
+
+// Get all events data for volunteer dashboards
+const getDashEventsForVolunteer = async (volunteerId) => {
+  const selectColumns = `
+        event_id, 
+        topic, 
+        event_start, 
+        event_end, 
+        description, 
+        staff_description,
+        location, 
+        instructor, 
+        number_of_volunteers, 
+        cohort,
+        cohort_id,
+        materials_url
+  `;
+  const importantsQuery = `
+    SELECT
+        ${selectColumns},
+        ARRAY_AGG(
+            (
+                SELECT
+                    CAST(v_id as CHAR(10)) || ' &$%& ' || v_first_name || ' ' ||
+                    v_last_name || ' &$%& ' || v_email || ' &$%& ' ||
+                    CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) ||
+                    ' &$%& ' || CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+                    CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+
+                FROM  event_volunteers
+                LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+                WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id
+            )
+        ) AS volunteers_list
+
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+
+    WHERE event_start > now()
+        AND important = TRUE
+        AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  const upcomingsQuery = `
+    SELECT
+        ${selectColumns},
+        ARRAY_AGG(
+            CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END
+        ) AS volunteers_list
+
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+
+    WHERE event_start > now()
+        AND volunteer_id = $1
+        AND event_volunteers.confirmed = TRUE
+        AND events.deleted IS NULL
+    GROUP BY event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  const pastsQuery = `
+    SELECT
+        volunteers.v_id,
+        volunteers.v_first_name || ' ' || volunteers.v_last_name AS volunteer,
+        ${selectColumns}
+
+    FROM volunteers
+    INNER JOIN event_volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+    INNER JOIN events ON event_volunteers.eventv_id = events.event_id
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+
+    WHERE event_end < now()
+        AND volunteers.v_id = $1
+        AND event_volunteers.confirmed = TRUE
+    GROUP BY volunteers.v_id, event_id, cohort_id
+    ORDER BY event_start ASC;
+  `;
+  return db.multi(importantsQuery + upcomingsQuery + pastsQuery, volunteerId)
+    .then(([ importants, upcomings, pasts ]) => {
+        return { importants, upcomings, pasts };
+    });
+}
+
 
 //Get all important events
 const getImportantEvents = async (limit) => {
@@ -479,10 +598,12 @@ module.exports = {
   getSingleEventAdmin,
   // getUpcomingEvents,
   // getPastEvents,
-  getPastEventsByVolunteerId,
-  getUpcomingEventsByVolunteerId,
+  getDashEventsForAdmin,
+  getDashEventsForVolunteer,
+  // getPastEventsByVolunteerId,
+  // getUpcomingEventsByVolunteerId,
+  // getImportantEvents,
   getPastEventsByFellowId,
-  getImportantEvents,
   postEvent,
   editEvent,
   deleteEvent

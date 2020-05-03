@@ -225,6 +225,28 @@ nav button {
     background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
     border-radius: var(--border-radii);
     padding-bottom: .1rem;
+
+    &.g1CardImportant {
+        background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
+
+        .g1CardHeader span {
+            color: #b39d5d;
+        }
+        .g1THead {
+            color: #de9e3b;
+        }
+    }
+
+    &.g1CardPast {
+        background-image: linear-gradient(90deg, #212121d1 0%, #1919197a 100%);
+
+        .g1CardHeader span {
+            color: #717ca0;
+        }
+        .g1THead {
+            color: #af7394;
+        }
+    }
 }
 
 .g1CardHeader {

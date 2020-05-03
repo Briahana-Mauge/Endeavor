@@ -139,7 +139,7 @@ const EventCard = (props) => {
     return (
         <div className='lightBox'>
             <div className='text-right closeButton'>
-                 <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
+                <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
             </div>
 
             <div className='border border-dark rounded bg-light m-1'>
@@ -185,10 +185,13 @@ const EventCard = (props) => {
                                     <span>Request pending</span>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
-                            : loggedUser && loggedUser.v_id
-                                ? <div className='card-text text-right'>
-                                    <button className='btn btn-primary' onClick={volunteerForEvent} disabled={waitingForRender}>Volunteer for this event</button>
-                                </div>
+                            : loggedUser && loggedUser.v_id && Date.now() < new Date(event.event_end).getTime()
+                                ?
+                                    (
+                                        <div className='card-text text-right'>
+                                            <button className='btn btn-primary' onClick={volunteerForEvent} disabled={waitingForRender}>Volunteer for this event</button>
+                                        </div>
+                                    )
                                 : null
                     }
                 </div>
