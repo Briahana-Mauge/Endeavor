@@ -4,7 +4,6 @@ Volunteers Route Handler | Capstone App (Pursuit Volunteer Mgr)
 */
 const express = require('express');
 const router = express.Router();
-const db = require('../db/db');
 
 const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');

@@ -81,13 +81,19 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             for (let i = 0; i < admin.length; i++) {
                 msg.personalizations[0].to.push({ email: `endeavorapp2020+${admin[i].a_email.replace('@','-')}@gmail.com`})
             }
+            // msg.personalizations[0].to.push({ email: 'endeavorapp2020@gmail.com' });
+
 
             (async () => {
                 try {
                     await sgMail.send(msg);
-                } catch (error) {
+                } catch (err) {
+                    if (err.response) {
+                        console.log(err.response.body)
+                    } else {
+                        console.log(err);
+                    }
                     throw new Error('500__The request was not completed.');
-
                 }
             })();
 
