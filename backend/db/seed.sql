@@ -451,8 +451,12 @@ INSERT INTO events
 
     ('2020-05-06 00:00-04', '2020-05-10 23:59-04', 'Staff Prep for Capstone',
     'Faculty all-hands-on-deck roundtable regarding Capstone in 2020. Discussion and breakout rooms to help facilitate open dialogue and brainstorming. Virtual doughnuts will also be served.',
-    1, 'Zoom: https://zoom.us/my/alejos', 'David and Jukay', 6, FALSE);
+    1, 'Zoom: https://zoom.us/my/alejos', 'David and Jukay', 6, FALSE),     -- -- -- 15
     
+    ('2020-04-15 00:00-04', '2020-04-15 23:59-04', '6.1 Capstone Tech Showcase',
+    'A showcase. Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.',
+    15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE);
+
 
 INSERT INTO event_volunteers (eventv_id, volunteer_id, confirmed, volunteered_time) VALUES 
     (1, 1, TRUE, 2),
@@ -474,7 +478,8 @@ INSERT INTO event_volunteers (eventv_id, volunteer_id, confirmed, volunteered_ti
     (8, 3, FALSE, 0),
     (9, 4, FALSE, 0),
     (9, 5, FALSE, 0),
-    (15, 10, TRUE, 0); -- 20
+    (15, 10, TRUE, 0), -- 20
+    (16, 10, TRUE, 4);
 
 INSERT INTO event_fellows (eventf_id, fellow_id) VALUES
     (1, 1),

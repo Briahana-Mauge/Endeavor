@@ -361,7 +361,7 @@ const getAllEventsNonadmin = async (usertype, userId) => {
     INNER JOIN events ON event_volunteers.eventv_id = events.event_id
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
-    WHERE event_start < now()
+    WHERE event_end < now()
         AND volunteers.v_id = $1
         AND event_volunteers.confirmed = TRUE
     GROUP BY volunteers.v_id, event_id, cohort_id
