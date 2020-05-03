@@ -28,8 +28,9 @@ export default function VolunteerProfilePage(props) {
                             index0: mentee id
                             index1: full name
                             index2: When the mentoring relation started
-                            index3: Boolean: true relation ended, true it's still on
+                            index3: Boolean: true relation ended, false it's still on
                         */
+                       console.log(data.payload.mentees[0])
                         setMentees(parsedMentees);
                     }
 
@@ -135,7 +136,10 @@ export default function VolunteerProfilePage(props) {
 
                             {
                                 props.loggedUser && props.loggedUser.a_id
-                                ? <button className='btn btn-primary'>Manage Mentoring</button>
+                                ?   <button className='btn btn-primary' 
+                                        onClick={e => history.push(`/mentoring/${volunteer.v_id}`)}>
+                                        Manage Mentoring
+                                    </button>
                                 : null
                             }
                         </div>
