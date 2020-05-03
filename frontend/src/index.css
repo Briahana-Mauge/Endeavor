@@ -1,13 +1,19 @@
 /* FONT IMPORTS */
 @font-face {
-  font-family: 'Quicksand';
-  src: url('./assets/fonts/Quicksand/static/Quicksand-Medium.ttf') format('truetype');
+  font-family: 'Red Hat Display';
+  src: url('./assets/fonts/Red_Hat_Display/RedHatDisplay-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: 'Red Hat Display';
-  src: url('./assets/fonts/Red_Hat_Display/RedHatDisplay-Regular.ttf') format('truetype');
+  font-family: 'Cabin';
+  src: url('./assets/fonts/Cabin/Cabin-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Quicksand';
+  src: url('./assets/fonts/Quicksand/static/Quicksand-Medium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
