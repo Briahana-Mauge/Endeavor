@@ -85,7 +85,7 @@ router.get('/email/:v_email', async (req, res, next) => {
     }
 })
 
-// Get volunteer by email
+// Get volunteer by id
 router.get('/id/:volunteer_id', async (req, res, next) => {
     try {
         const id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
