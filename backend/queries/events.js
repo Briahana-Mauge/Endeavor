@@ -213,37 +213,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
     condition += `AND event_start <= now() `
   }
 
-  // DETOUR for dashboard retrieval
-  if (dashboard) {
-    const
-      todaysQueryEnd = condition + `
-        AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
-        GROUP BY
-          event_id,
-          cohort_id
-        ORDER BY event_start ASC;
-      `,
-      importantsQuery = `
-        SELECT *
-        FROM events 
-        WHERE event_start::DATE > now()::DATE AND important = TRUE
-        ORDER BY event_start ASC
-        LIMIT 3;
-      `,
-      upcomingsQuery = `
-        SELECT *
-        FROM events 
-        WHERE event_start::DATE > now()::DATE AND important = FALSE
-        ORDER BY event_start ASC
-        LIMIT 3;
-      `;
-    return db.multi(selectQuery + todaysQueryEnd + importantsQuery + upcomingsQuery)
-      .then(([ todays, importants, upcomings ]) => {
-          return { todays, importants, upcomings };
-      });
-  } else {
-    return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
-  }
+  return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
 }
 
 //Get Single Event for Admin

@@ -19,9 +19,8 @@ router.get('/all/', async (req, res, next) => {
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
         const upcoming = processInput(req.query.upcoming, "softBool", "upcoming events bool");
         const past = processInput(req.query.past, "softBool", "past events bool");
-        const dashboard = processInput(req.query.dashboard, "softBool", "dashboard bool");
 
-        let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past, dashboard);
+        let allEvents = await eventsQueries.getAllEvents(vName, topic, instructor, upcoming, past);
         res.status(200)
             .json({
                 payload: allEvents,
