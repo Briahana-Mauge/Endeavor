@@ -25,39 +25,46 @@ const Dashboard = (props) => {
     // const [pastEvents, setPastEvents] = useState(0);
 
 
-    useEffect(() => {
-        // const getEvents = async () => {
-        //     try {
-        //         const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
-        //         setEventsList(data.payload);
-        //     } catch (err) {
-        //         setFeedback(err)
-        //     }
-        // }
-        // const getImportantEvents = async () => {
-        //     try {
-        //         const { data } = await axios.get(`/api/events/important?limit=3`);
-        //         setImportantEvents(data.payload);
-        //     } catch (err) {
-        //         setFeedback(err)
-        //     }
-        // }
-        // getEvents();
-        // getImportantEvents();
+    const getAllVolunteeredTime = () => {
+      axios.get(`/api/time/hours/${loggedUser.v_id}`)
+        .then(res => setVolunteeredTime(res.data.payload.sum))
+        .catch(err => setFeedback(err));
+    }
+    useEffect(getAllVolunteeredTime, []);
 
+    useEffect(() => {
         const getEventsData = () => {
-          axios.get(`/api/events/non_admin/dashboard`)
+          axios.get(`/api/events/dashboard/volunteer`)
             .then(res => setEventsObj(res.data.payload))
             .catch(err => setFeedback(err));
         }
-        const getAllVolunteeredTime = async () => {
-          axios.get(`/api/time/hours/${loggedUser.v_id}`)
-            .then(res => setVolunteeredTime(res.data.payload.sum))
-            .catch(err => setFeedback(err));
-        }
         getEventsData();
-        getAllVolunteeredTime();
     }, [ reloadDashboard, loggedUser.v_id, setFeedback ]);
+
+    //   useEffect(() => {
+    //     const getEvents = async () => {
+    //         try {
+    //             const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
+    //             setEventsList(data.payload);
+    //         } catch (err) {
+    //             setFeedback(err)
+    //         }
+    //     }
+
+    //     const getImportantEvents = async () => {
+    //         try {
+    //             const { data } = await axios.get(`/api/events/important?limit=3`);
+    //             setImportantEvents(data.payload);
+
+    //         } catch (err) {
+    //             setFeedback(err)
+    //         }
+    //     }
+
+    //     getEvents();
+    //     getImportantEvents();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [reloadDashboard]);
 
     // useEffect(() => {
     //     const getAllVolunteeredTime = async () => {
@@ -70,18 +77,18 @@ const Dashboard = (props) => {
     //         }
     //     }
 
-        // const getNumberOfPastEvents = async () => {
-        //     try {
-        //         const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
-        //         setPastEvents(data.payload.length)
-        //     } catch (err) {
-        //         setFeedback(err)
-        //     }
-        // }
+    //     const getNumberOfPastEvents = async () => {
+    //         try {
+    //             const { data } = await axios.get(`/api/events/past/volunteer/${props.loggedUser.v_id}`);
+    //             setPastEvents(data.payload.length)
+    //         } catch (err) {
+    //             setFeedback(err)
+    //         }
+    //     }
 
-        // getAllVolunteeredTime();
-        // getNumberOfPastEvents();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    //     getAllVolunteeredTime();
+    //     getNumberOfPastEvents();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, []);
 
 
@@ -93,10 +100,10 @@ const Dashboard = (props) => {
 
     // PRE-RETURN (package drilled props)
     const eventsDashProps = {
-      loggedUser,
-      setShowEvent,
-      targetEvent,
-      setTargetEvent
+        loggedUser,
+        setShowEvent,
+        targetEvent,
+        setTargetEvent
     }
 
 

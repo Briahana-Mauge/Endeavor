@@ -289,10 +289,7 @@ const getSingleEventAdmin = async (eId) => {
 // }
 
 //Get all events data for non-admin dashboards
-const getAllEventsNonadmin = async (usertype, userId) => {
-  if (usertype !== "volunteer") {
-    throw new Error('500__That route has not been built yet.');
-  }
+const getDashEventsForVolunteer = async (volunteerId) => {
   const selectColumns = `
         event_id, 
         topic, 
@@ -370,7 +367,7 @@ const getAllEventsNonadmin = async (usertype, userId) => {
     GROUP BY volunteers.v_id, event_id, cohort_id
     ORDER BY event_start ASC;
   `;
-  return db.multi(importantsQuery + upcomingsQuery + pastsQuery, userId)
+  return db.multi(importantsQuery + upcomingsQuery + pastsQuery, volunteerId)
     .then(([ importants, upcomings, pasts ]) => {
         return { importants, upcomings, pasts };
     });
@@ -568,7 +565,7 @@ module.exports = {
   getSingleEventAdmin,
   // getUpcomingEvents,
   // getPastEvents,
-  getAllEventsNonadmin,
+  getDashEventsForVolunteer,
   getPastEventsByVolunteerId,
   getUpcomingEventsByVolunteerId,
   getPastEventsByFellowId,

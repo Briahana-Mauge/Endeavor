@@ -74,22 +74,12 @@ router.get('/admin/all', async (req, res, next) => {
 });
 
 //Get all events  (non-admin)
-router.get('/non_admin/dashboard', async (req, res, next) => {
+router.get('/dashboard/volunteer', async (req, res, next) => {
     try {
-        if (!req.user) {
-            throw new Error('401__You must be logged in');
+        if (!req.user || !req.user.v_id) {
+            throw new Error('401__You must be a logged-in volunteer');
         } else {
-            const userId = processInput(req.user.a_id || req.user.v_id || req.user.f_id, "idNum", "user id");
-            let usertype = null;
-            if (req.user.a_id) {
-                usertype = "staff";
-            } else if (req.user.v_id) {
-                usertype = "volunteer";
-            } else if (req.user.f_id) {
-                usertype = "fellow";
-            }
-
-            const dashboardEvents = await eventsQueries.getAllEventsNonadmin(usertype, userId);
+            const dashboardEvents = await eventsQueries.getDashEventsForVolunteer(req.user.v_id);
             res.status(200)
                 .json({
                     payload: dashboardEvents,

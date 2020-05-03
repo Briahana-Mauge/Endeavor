@@ -185,7 +185,7 @@ const EventCard = (props) => {
                                     <span>Request pending</span>
                                     <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
                                 </div>
-                            : loggedUser && loggedUser.v_id && Date.now() < event.event_end
+                            : loggedUser && loggedUser.v_id && Date.now() < new Date(event.event_end).getTime()
                                 ?
                                     (
                                         <div className='card-text text-right'>
