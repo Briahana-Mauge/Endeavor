@@ -176,7 +176,8 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
   //   condition = ' WHERE v_email = $/email/ '
   // }
 
-  const volunteer = await db.one(selectQuery/* + condition + endOfQuery*/, {id, email});
+  // const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
+  const volunteer = await db.one(selectQuery, {id, email});
 
   if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
     return new Error('403__Not accessible');

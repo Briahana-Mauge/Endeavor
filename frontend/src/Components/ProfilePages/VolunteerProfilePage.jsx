@@ -28,7 +28,7 @@ export default function VolunteerProfilePage(props) {
                             index0: mentee id
                             index1: full name
                             index2: When the mentoring relation started
-                            index3: Boolean: true relation ended, true it's still on
+                            index3: Boolean for relation deleted: true relation ended, false it's still on
                         */
                         setMentees(parsedMentees);
                     }
