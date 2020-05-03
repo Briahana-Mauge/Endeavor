@@ -40,6 +40,7 @@ CREATE TABLE administration (
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
     a_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    a_picture VARCHAR,
     admin BOOLEAN NOT NULL DEFAULT FALSE,
     deleted DATE DEFAULT NULL
 );
