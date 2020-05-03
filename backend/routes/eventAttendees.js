@@ -11,6 +11,7 @@ const processInput = require('../helpers/processInput');
 const eventAttendeesQueries = require('../queries/eventAttendees');
 const userQueries = require('../queries/users');
 const eventQueries = require('../queries/events');
+const volunteerQueries = require('../queries/volunteers');
 
 const sgMail = require('@sendgrid/mail');
 
@@ -39,8 +40,42 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 volunteerId: processInput(request.params.volunteer_id, 'idNum', 'volunteer id'),
                 confirmed: processInput(request.body.confirmed, 'hardBool', 'volunteer confirmed')
             }
-            const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
 
+            const info = await volunteerQueries.getVolunteerByIdOrEmail(updateData.volunteerId);
+            const event = await eventQueries.getSingleEvent(updateData.eventId)
+            let volunteerInfo = {
+                name: `${info.v_first_name} ${info.v_last_name}`,
+                email: `endeavorapp2020+${info.v_email.replace('@', '-')}@gmail.com`,
+                event: event.topic
+            }
+           
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            const msg = {
+                to: volunteerInfo.email,
+                from: 'endeavorapp2020@gmail.com',
+                subject: 'Event Request Status',
+                text: ''
+            };
+
+            //message sent when admin changes the request from pending to not approved.
+            if (updateData.confirmed) {
+                msg.text = `${new Date().toLocaleString()}:\n\nHi ${volunteerInfo.name},\n\nYour request to volunteer for the '${volunteerInfo.event}' event has been approved!\n\nVisit Endeavor to get more information about the event and to add it to your calendar.`
+                
+            } else { //message sent when admin changes the request from approval to not approved.
+                msg.text = `${new Date().toLocaleString()}:\n\nHello ${volunteerInfo.name},\n\nDue to some restructuring of our '${volunteerInfo.event}' event, we have to remove your request to volunteer.\n\nPlease visit Endeavor to find other events you can volunteer for and share your valuable expertise.`
+            }
+
+            (async () => {
+                try {
+                    await sgMail.send(msg);
+                } catch (error) {
+                    throw new Error('500__The request was not completed.');
+
+                }
+            })();
+
+
+            const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
             response.json({
                 err: false,
                 message: `Successfully updated volunteer.${updateData.volunteerId} attending event.${updateData.eventId}`,
@@ -75,11 +110,11 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 }],
                 from: 'endeavorapp2020@gmail.com',
                 subject: 'Volunteer Event Request',
-                text: `${new Date().toLocaleString()}: ${request.user.v_first_name} ${request.user.v_last_name} requested to volunteer for the '${event.topic}' event.`,
+                text: `${new Date().toLocaleString()}:\n\n${request.user.v_first_name} ${request.user.v_last_name} requested to volunteer for the '${event.topic}' event.`,
             };
 
             for (let i = 0; i < admin.length; i++) {
-                msg.personalizations[0].to.push({ email: `endeavorapp2020+${admin[i].a_email.replace('@','-')}@gmail.com`})
+                msg.personalizations[0].to.push({ email: `endeavorapp2020+${admin[i].a_email.replace('@', '-')}@gmail.com` })
             }
 
             (async () => {
