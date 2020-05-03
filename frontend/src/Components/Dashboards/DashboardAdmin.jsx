@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import VolunteerPreviewCard from '../VolunteerPreviewCard';
-import EventsDash from './EventsDash/EventsDash';
+import EventsDashAdmin from './EventsDash/EventsDashAdmin';
 import EventCard from '../EventCard';
 
 
@@ -35,7 +35,7 @@ const DashboardAdmin = (props) => {
 
         const getEvents = async () => {
           try {
-              const {data} = await axios.get('/api/events/admin/all?dashboard=true');
+              const {data} = await axios.get('/api/events/dashboard/admin');
               setEventsObj(data.payload);
           } catch (err) {
               setFeedback(err)
@@ -76,7 +76,7 @@ const DashboardAdmin = (props) => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12 col-md-5">
-              <EventsDash events={eventsObj} {...eventsDashProps} />
+              <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
             </div>
 
             <div className="col-12 col-md-7">
