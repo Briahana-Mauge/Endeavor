@@ -290,6 +290,9 @@ const getSingleEventAdmin = async (eId) => {
 
 //Get all events data for non-admin dashboards
 const getAllEventsNonadmin = async (usertype, userId) => {
+  if (usertype !== "volunteer") {
+    throw new Error('500__That route has not been built yet.');
+  }
   const selectColumns = `
         event_id, 
         topic, 
