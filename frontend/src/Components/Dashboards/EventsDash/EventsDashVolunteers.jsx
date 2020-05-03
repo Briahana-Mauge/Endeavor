@@ -1,6 +1,6 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-EventsDash Component | Capstone App (Pursuit Volunteer Mgr)
+EventsDashVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
@@ -23,11 +23,21 @@ const EventsDash = (props) => {
   }
 
 
-  const rowsTodays = events.todays.map(event => {
+  const rowsUpcomings = events.upcomings.map(event => {
       return(
         <EventsDashRow
-          key={'today' + event.event_id}
-          tableType={"today"}
+          key={'upcoming' + event.event_id}
+          tableType={"upcoming"}
+          event={event}
+          {...operationProps}
+        />
+      );
+  });
+  const rowsPasts = events.pasts.map(event => {
+      return(
+        <EventsDashRow
+          key={'past' + event.event_id}
+          tableType={"past"}
           event={event}
           {...operationProps}
         />
@@ -43,16 +53,6 @@ const EventsDash = (props) => {
         />
       );
   });
-  const rowsUpcomings = events.upcomings.map(event => {
-      return(
-        <EventsDashRow
-          key={'upcoming' + event.event_id}
-          tableType={"upcoming"}
-          event={event}
-          {...operationProps}
-        />
-      );
-  });
 
   const xPadding = "px-2";
 
@@ -60,7 +60,7 @@ const EventsDash = (props) => {
   return(
     <>
       <div className="g1Card card mb-2">
-        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>Today's</span> Events</h3>
+        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>My Upcoming</span> Events</h3>
         <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
           <div role="grid" className="g1Table">
@@ -69,15 +69,34 @@ const EventsDash = (props) => {
               <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
             </div>
             <div className="g1TBody">
-              {rowsTodays}
+              {rowsUpcomings}
             </div>
           </div>
 
         </div>
       </div>
 
-      <div className="g1Card card mb-2">
-        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>On the</span> Horizon</h3>
+
+      <div className="g1Card g1CardPast card mb-2">
+        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>My Previous</span> Three Events</h3>
+        <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
+
+          <div role="grid" className="g1Table">
+            <div role="row" className="g1THead">
+              <div role="gridcell" className="g1TD g1TopicCol">Event</div>
+              <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
+            </div>
+            <div className="g1TBody">
+              {rowsPasts}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div className="g1Card g1CardImportant card mb-2">
+        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>Important</span> Pursuit Dates</h3>
         <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
           <div role="grid" className="g1Table">
@@ -87,15 +106,6 @@ const EventsDash = (props) => {
             </div>
             <div className="g1TBody">
               {rowsImportants}
-            </div>
-            <div className="g1TBody g1BufferRow">
-              <div role="row" className="g1TR">
-                <div role="gridcell" className="g1TD"></div>
-                <div role="gridcell" className="g1TD"></div>
-              </div>
-            </div>
-            <div className="g1TBody">
-              {rowsUpcomings}
             </div>
           </div>
 

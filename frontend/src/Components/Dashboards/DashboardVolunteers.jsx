@@ -9,31 +9,23 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventPreviewCard from '../EventPreviewCard';
+import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
+// import EventPreviewCard from '../EventPreviewCard';
 
 const Dashboard = (props) => {
     const { setFeedback, loggedUser } = props;
 
-    const [eventsList, setEventsList] = useState([]);
+    const [eventsObj, setEventsObj] = useState({ upcomings: [], pasts: [], importants: [] });
     const [showEvent, setShowEvent] = useState(false);
-    const [volunteeredTime, setVolunteeredTime] = useState(0);
-    const [pastEvents, setPastEvents] = useState(0);
-    const [eventsObj, setEventsObj] = useState({ pasts: [], importants: [], upcomings: [] });
     const [targetEvent, setTargetEvent] = useState({});
+    const [volunteeredTime, setVolunteeredTime] = useState(0);
     const [reloadDashboard, setReloadDashboard] = useState(false);
+    // const [eventsList, setEventsList] = useState([]);
+    // const [pastEvents, setPastEvents] = useState(0);
 
 
     useEffect(() => {
-      const getDash = async () => {
-          try {
-              const {data} = await axios.get(`/api/events/non_admin/dashboard`);
-              setEventsObj(data.payload);
-          } catch (err) {
-              setFeedback(err)
-          }
-      }
-
         // const getEvents = async () => {
         //     try {
         //         const { data } = await axios.get(`/api/events/upcoming/volunteer/${props.loggedUser.v_id}?limit=3`);
@@ -42,33 +34,41 @@ const Dashboard = (props) => {
         //         setFeedback(err)
         //     }
         // }
-
         // const getImportantEvents = async () => {
         //     try {
         //         const { data } = await axios.get(`/api/events/important?limit=3`);
         //         setImportantEvents(data.payload);
-
         //     } catch (err) {
         //         setFeedback(err)
         //     }
         // }
-
-        getDash();
         // getEvents();
         // getImportantEvents();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reloadDashboard]);
 
-    useEffect(() => {
-        const getAllVolunteeredTime = async () => {
-            try {
-                const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
-                setVolunteeredTime(data.payload.sum)
-
-            } catch (err) {
-                setFeedback(err)
-            }
+        const getEventsData = () => {
+          axios.get(`/api/events/non_admin/dashboard`)
+            .then(res => setEventsObj(res.data.payload))
+            .catch(err => setFeedback(err));
         }
+        const getAllVolunteeredTime = async () => {
+          axios.get(`/api/time/hours/${loggedUser.v_id}`)
+            .then(res => setVolunteeredTime(res.data.payload.sum))
+            .catch(err => setFeedback(err));
+        }
+        getEventsData();
+        getAllVolunteeredTime();
+    }, [ reloadDashboard, loggedUser.v_id, setFeedback ]);
+
+    // useEffect(() => {
+    //     const getAllVolunteeredTime = async () => {
+    //         try {
+    //             const { data } = await axios.get(`/api/time/hours/${props.loggedUser.v_id}`);
+    //             setVolunteeredTime(data.payload.sum)
+
+    //         } catch (err) {
+    //             setFeedback(err)
+    //         }
+    //     }
 
         // const getNumberOfPastEvents = async () => {
         //     try {
@@ -79,10 +79,10 @@ const Dashboard = (props) => {
         //     }
         // }
 
-        getAllVolunteeredTime();
+        // getAllVolunteeredTime();
         // getNumberOfPastEvents();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // }, []);
 
 
     const hideEvent = () => {
@@ -104,72 +104,66 @@ const Dashboard = (props) => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12 col-md-5">
-              {/* <EventsDash events={eventsObj} {...eventsDashProps} /> */}
+              <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
             </div>
 
-            <h3>Upcoming Events:</h3>
-            {eventsObj.upcomings.length === 0 ?
-                <><p>You are not registered to volunteer at any upcoming events.</p>
-                    <p> Visit the Events page to find out more!</p></>
-                : null}
+            <div className="col-12 col-md-7">
+              <h3>Personal Stats</h3>
+              <br />
 
-            {/* {
-                eventsList.map(event => <EventPreviewCard
-                    key={event.event_id + event.event_start + event.event_end}
-                    loggedUser={loggedUser}
-                    event={event}
-                    setShowEvent={setShowEvent}
-                    targetEvent={targetEvent}
-                    setTargetEvent={setTargetEvent}
-                />)
-            } */}
-
-            {
-                showEvent 
-                ?   <EventCard 
-                        loggedUser={loggedUser} 
-                        event={targetEvent}
-                        setFeedback={setFeedback}
-                        reloadParent={reloadDashboard}
-                        setReloadParent={setReloadDashboard}
-                        hideEvent={hideEvent}
-                    />
-                : null
-            }
-            {/* <br></br>
-            <br></br>
-            <h3>Important Pursuit Events</h3>
-            {
-                importantEvents.map(event => <EventPreviewCard
-                    key={event.event_end + event.event_start + event.event_id}
-                    loggedUser={loggedUser}
-                    event={event}
-                    setShowEvent={setShowEvent}
-                    targetEvent={targetEvent}
-                    setTargetEvent={setTargetEvent}
-                />)
-            } */}
-
-            <br></br>
-            <br></br>
-            <h3>Personal Stats</h3>
-            <p>
-                You've got {volunteeredTime} volunteer hours!
-            </p>
-
-            {
-                pastEvents < 1
-                    ? <p>You haven't participated in any events yet.</p>
-                    : pastEvents > 1
-                        ? <p>So far, you've participated in {pastEvents} events.</p>
-                        : <p>So far, you've participated in {pastEvents} event.</p>
-            }
-
-
-
+              {
+                eventsObj.upcomings.length === 0
+                  ? <p>You are not registered to volunteer at any upcoming events. Visit the Events page to find out more!</p>
+                  : null
+              }
+              <p>You've got {volunteeredTime} volunteer hours!</p>
+              {
+                eventsObj.pasts.length < 1
+                  ? <p>You haven't participated in any events yet.</p>
+                  : eventsObj.pasts.length > 1
+                    ? <p>So far, you've participated in {eventsObj.pasts.length} events.</p>
+                    : <p>So far, you've participated in {eventsObj.pasts.length} event.</p>
+              }
+            </div>
           </div>
-        </div>
+          {
+              showEvent
+              ? <EventCard
+                  loggedUser={loggedUser}
+                  event={targetEvent}
+                  setFeedback={setFeedback}
+                  reloadParent={reloadDashboard}
+                  setReloadParent={setReloadDashboard}
+                  hideEvent={hideEvent}
+                />
+              : null
+          }
 
+          {/* {
+              eventsList.map(event => <EventPreviewCard
+                  key={event.event_id + event.event_start + event.event_end}
+                  loggedUser={loggedUser}
+                  event={event}
+                  setShowEvent={setShowEvent}
+                  targetEvent={targetEvent}
+                  setTargetEvent={setTargetEvent}
+              />)
+          } */}
+          {/* <br></br>
+          <br></br>
+          <h3>Important Pursuit Events</h3>
+          {
+              importantEvents.map(event => <EventPreviewCard
+                  key={event.event_end + event.event_start + event.event_id}
+                  loggedUser={loggedUser}
+                  event={event}
+                  setShowEvent={setShowEvent}
+                  targetEvent={targetEvent}
+                  setTargetEvent={setTargetEvent}
+              />)
+          } */}
+
+        </div>
     )
 }
 
