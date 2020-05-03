@@ -35,7 +35,7 @@ const DashboardAdmin = (props) => {
 
         const getEvents = async () => {
           try {
-              const {data} = await axios.get('/api/events/admin/all?dashboard=true');
+              const {data} = await axios.get('/api/events/dashboard/admin');
               setEventsObj(data.payload);
           } catch (err) {
               setFeedback(err)

@@ -51,7 +51,7 @@ router.get('/event/:e_id', async (req, res, next) => {
 })
 
 
-//Get all events  (admin)
+//Get all events (admin)
 router.get('/admin/all', async (req, res, next) => {
     try {
         const vName = processInput(req.query.v_name, "softVC", "volunteer name", 60).toLowerCase();
@@ -59,9 +59,8 @@ router.get('/admin/all', async (req, res, next) => {
         const instructor = processInput(req.query.instructor, "softVC", "event instructor", 100).toLowerCase();
         const upcoming = processInput(req.query.upcoming, "softBool", "upcoming events bool");
         const past = processInput(req.query.past, "softBool", "past events bool");
-        const dashboard = processInput(req.query.dashboard, "softBool", "dashboard bool");
 
-        let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past, dashboard);
+        let allEventsAdmin = await eventsQueries.getAllEventsAdmin(vName, topic, instructor, upcoming, past);
         res.status(200)
             .json({
                 payload: allEventsAdmin,
@@ -73,16 +72,35 @@ router.get('/admin/all', async (req, res, next) => {
     }
 });
 
-//Get all events  (non-admin)
+// Get all events data used on admin dashboard
+router.get('/dashboard/admin', async (req, res, next) => {
+    try {
+        if (!req.user || !req.user.a_id || !req.user.admin) {
+            throw new Error('401__You must be a logged-in admin');
+        } else {
+            const adminDashboardEvents = await eventsQueries.getDashEventsForAdmin();
+            res.status(200)
+                .json({
+                    payload: adminDashboardEvents,
+                    message: "Success",
+                    err: false
+                });
+        }
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
+
+// Get all events data used on volunteer dashboard
 router.get('/dashboard/volunteer', async (req, res, next) => {
     try {
         if (!req.user || !req.user.v_id) {
             throw new Error('401__You must be a logged-in volunteer');
         } else {
-            const dashboardEvents = await eventsQueries.getDashEventsForVolunteer(req.user.v_id);
+            const volunteerDashboardEvents = await eventsQueries.getDashEventsForVolunteer(req.user.v_id);
             res.status(200)
                 .json({
-                    payload: dashboardEvents,
+                    payload: volunteerDashboardEvents,
                     message: "Success",
                     err: false
                 });
@@ -137,65 +155,65 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
 //     }
 // });
 
-// Get all important events
-router.get('/important', async (req, res, next) => {
-    try {
-        let limit = req.query.limit;
-        if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
-            limit = null;
-        } 
+// Get all important events // is this still used? has been incorporated into query for volunteer dash elsewhere
+// router.get('/important', async (req, res, next) => {
+//     try {
+//         let limit = req.query.limit;
+//         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
+//             limit = null;
+//         } 
 
-        const allEvents = await eventsQueries.getImportantEvents(limit);
-        res.json({
-            payload: allEvents,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+//         const allEvents = await eventsQueries.getImportantEvents(limit);
+//         res.json({
+//             payload: allEvents,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
-// Get all past events by volunteer id
-router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
-    try {
-        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-        const events = await eventsQueries.getPastEventsByVolunteerId(volunteerId);
-        res.json({
-            payload: events,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+// Get all past events by volunteer id // is this still used? has been incorporated into query for volunteer dash elsewhere
+// router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
+//     try {
+//         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+//         const events = await eventsQueries.getPastEventsByVolunteerId(volunteerId);
+//         res.json({
+//             payload: events,
+//             message: "Success",
+//             err: false
+//         });
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
-// Get all upcoming events by volunteer id
-router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
-    try {
-        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-        let limit = req.query.limit;
-        if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
-            limit = null;
-        } 
+// Get all upcoming events by volunteer id // is this still used? has been incorporated into query for volunteer dash elsewhere
+// router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
+//     try {
+//         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+//         let limit = req.query.limit;
+//         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
+//             limit = null;
+//         } 
 
-        if (req.user && req.user.v_id && req.user.v_id === volunteerId) {
-            const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId, limit);
-            res.json({
-                payload: events,
-                message: "Success",
-                err: false
+//         if (req.user && req.user.v_id && req.user.v_id === volunteerId) {
+//             const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId, limit);
+//             res.json({
+//                 payload: events,
+//                 message: "Success",
+//                 err: false
 
-            });
-        }
-        else {
-            throw new Error('403__not authorized');
-        }
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
+//             });
+//         }
+//         else {
+//             throw new Error('403__not authorized');
+//         }
+//     } catch (err) {
+//         handleError(err, req, res, next);
+//     }
+// });
 
 // Get all past events by fellow id
 router.get('/past/fellow/:fellow_id', async (req, res, next) => {
