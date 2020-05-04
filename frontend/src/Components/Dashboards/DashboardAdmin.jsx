@@ -72,6 +72,23 @@ const DashboardAdmin = (props) => {
     }
 
 
+    const listNewVolCardPointers = [];
+    const listNewVolCards = newVolunteersList.map(( volunteer, index ) => {
+      console.log(index === 0)
+        listNewVolCardPointers.push(index === 0
+          ? <li data-target="#newVolunteersSlideshow" data-slide-to={`${index}`} className="active" key={index}></li>
+          : <li data-target="#newVolunteersSlideshow" data-slide-to={`${index}`} key={index}></li>
+        );
+        return(
+          <div className={index === 0 ? "carousel-item active" : "carousel-item"} key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id}>
+              <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
+          </div>
+        );
+    });
+
+
+
+
     return (
         <div className="container-fluid">
           <div className="row">
@@ -80,44 +97,52 @@ const DashboardAdmin = (props) => {
             </div>
 
             <div className="col-12 col-md-7">
-              <h3>New Volunteers:</h3>
-              <div className='d-flex flex-row'>
-                  {
-                      newVolunteersList.map(volunteer => <div key={volunteer.v_first_name+volunteer.v_last_name_volunteer_id} >
-                          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
-                      </div>)
-                  }
+              <div id="newVolunteersSlideshow" className="carousel slide" data-ride="carousel" data-interval="false">
+                <ol className="carousel-indicators">
+                  {listNewVolCardPointers}
+                </ol>
+                <div className="carousel-inner">
+                  {listNewVolCards}
+                </div>
+                <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
+                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span className="sr-only">Previous</span>
+                </a>
+                <a className="carousel-control-next" href="#newVolunteersSlideshow" role="button" data-slide="next">
+                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span className="sr-only">Next</span>
+                </a>
               </div>
             </div>
-
-            {/* <hr /> */}
-            {/* <h3>Upcoming Events:</h3>
-            <div className='d-flex flex-wrap'>
-                {
-                    eventsObj.todays.map(event => <EventPreviewCard 
-                            key={event.event_id + event.event_end + event.event_start}
-                            loggedUser={loggedUser}
-                            event={event}
-                            setShowEvent={setShowEvent}
-                            targetEvent={targetEvent}
-                            setTargetEvent={setTargetEvent}
-                        />)
-                }
-            </div> */}
-
-            {
-                showEvent 
-                ? <EventCard
-                        loggedUser={loggedUser}
-                        event={targetEvent}
-                        setFeedback={setFeedback}
-                        reloadParent={reloadDashboard}
-                        setReloadParent={setReloadDashboard}
-                        hideEvent={hideEvent}
-                  />
-                : null
-            }
           </div>
+
+        {/* <hr /> */}
+        {/* <h3>Upcoming Events:</h3>
+        <div className='d-flex flex-wrap'>
+            {
+                eventsObj.todays.map(event => <EventPreviewCard
+                        key={event.event_id + event.event_end + event.event_start}
+                        loggedUser={loggedUser}
+                        event={event}
+                        setShowEvent={setShowEvent}
+                        targetEvent={targetEvent}
+                        setTargetEvent={setTargetEvent}
+                    />)
+            }
+        </div> */}
+
+        {
+            showEvent
+            ? <EventCard
+                    loggedUser={loggedUser}
+                    event={targetEvent}
+                    setFeedback={setFeedback}
+                    reloadParent={reloadDashboard}
+                    setReloadParent={setReloadDashboard}
+                    hideEvent={hideEvent}
+              />
+            : null
+        }
         </div>
     )
 }
