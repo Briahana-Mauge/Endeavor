@@ -363,6 +363,36 @@ nav button {
     cursor: pointer;
 }
 
+
+.g1NewVolCarousel {
+    .carousel-inner {
+        width: calc(100% - 8rem);
+        margin: 0 auto;
+    }
+
+    .carousel-indicators {
+        position: relative;
+        justify-content: flex-start;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .carousel-control-next,
+    .carousel-control-prev {
+        width: 11%;
+    }
+
+    // .carousel-item {
+    //     // display: block;
+    //     // opacity: 1;
+    //     // transition: opacity 1s ease-in-out;
+
+    //     &.active {
+    //         // opacity: 1;
+    //     }
+    // }
+}
+
 // .g1PopoverBtn {
 //     &, &:hover, &:active, &:focus {
 //         --event-indent: 1.5rem;
