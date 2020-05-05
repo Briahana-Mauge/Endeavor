@@ -83,32 +83,37 @@ function App() {
     setWait(false);
   }
 
+  const resetState = () => {
+    settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
+    history.push('/login');
+    setEmail('');
+    setPassword('');
+    setNewPassword('');
+    setFirstName('');
+    setLastName('');
+    setCohortId(0);
+    setCompany('');
+    setTitle('');
+    setVolunteerSkills([]);
+    setMentor(false);
+    setOfficeHours(false);
+    setTechMockInterview(false);
+    setBehavioralMockInterview(false);
+    setProfessionalSkillsCoach(false);
+    setHostSiteVisit(false);
+    setIndustrySpeaker(false);
+    setPublicProfile(false);
+
+  }
+
   const logout = () => {
     setIsUserStateReady(false);
     axios.get('/api/auth/logout')
-      .then(res => {
-        settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
-        history.push('/login');
-        setEmail('');
-        setPassword('');
-        setNewPassword('');
-        setFirstName('');
-        setLastName('');
-        setCohortId(0);
-        setCompany('');
-        setTitle('');
-        setVolunteerSkills([]);
-        setMentor(false);
-        setOfficeHours(false);
-        setTechMockInterview(false);
-        setBehavioralMockInterview(false);
-        setProfessionalSkillsCoach(false);
-        setHostSiteVisit(false);
-        setIndustrySpeaker(false);
-        setPublicProfile(false);
-      })
+      .then(res => resetState())
       .catch(err => setFeedback(err));
   }
+
+  
 
   const resetFeedback = () => {
     setFeedback(null);
@@ -124,7 +129,7 @@ function App() {
   const userProps = {
     loggedUser,
     setFeedback,
-    settleUser
+    settleUser,
   };
   const signupProps = {
     formType, setFormType,
@@ -270,7 +275,7 @@ function App() {
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/profile' {...gateProps}>
-          <ProfilePage {...userProps} {...profileProps} />
+          <ProfilePage {...userProps} {...profileProps} resetState={resetState}/>
         </PrivateRouteGate>
 
         <PrivateRouteGate path='/events' {...gateProps}>

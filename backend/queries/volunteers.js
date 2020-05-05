@@ -7,7 +7,6 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 const userQueries = require('./users');
-const timeQueries = require('./time');
 // const eventVolunteersQueries = require('./eventVolunteers');
 // const mentorPairsQueries = require('./mentorPairs');
 const volunteerSkillsQueries = require('./volunteerSkills');
@@ -288,7 +287,6 @@ const deleteVolunteer = async (id) => {
   `
   const promises = [];
   promises.push(db.one(deleteQuery, id));
-  promises.push(timeQueries.deleteHoursByVolunteerId(id, true));
   // promises.push(eventVolunteersQueries.delete...(id, true));
   // promises.push(mentorPairsQueries.delete...(id, true));
   promises.push(volunteerSkillsQueries.deleteVolunteerSkillsByVolunteerId(id, true));

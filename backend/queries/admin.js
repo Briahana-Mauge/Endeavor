@@ -2,6 +2,7 @@ const db = require('../db/db');
 
 const userQueries = require('./users');
 
+
 const getAdminByEmail = async (email) => {
     return await db.one('SELECT * FROM administration WHERE a_email = $1 AND deleted IS NULL', email)
 }
