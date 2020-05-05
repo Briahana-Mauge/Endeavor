@@ -16,7 +16,7 @@ export default function VolunteerPreviewCard(props) {
 
             <div className='col-sm-6'>
                 <span className='d-block'>{`${volunteer.title} at ${volunteer.company}`}</span>
-                <ul className='skillsUl'> <strong>Skills / Workshops:</strong>
+                <ul className='plainUl'> <strong>Skills / Workshops:</strong>
                     { volunteer.skills.map(skill => <li key={skill}>{skill}</li>) }
                 </ul>
                 <div className='text-right'>

@@ -22,7 +22,7 @@ export default function ProfileRender(props) {
             {
                 pageForm === 'lightBox'
                 ?   <div className='text-right m-2 closeButton'>
-                        <button className='btn-sm btn-danger' onClick={props.hideProfile}>X</button>
+                        <button className='btn-sm btn-danger' onClick={e => props.setDisplayTargetUser(false)}>X</button>
                     </div>
                 : null
             }

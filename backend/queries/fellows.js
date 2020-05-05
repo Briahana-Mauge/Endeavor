@@ -13,18 +13,54 @@ const userQueries = require('./users');
 
 
 /* QUERIES */
-const getAllFellows = async (askedForMentor) => {
+const getAllFellows = async (name, cohortId, askedForMentor) => {
   const getQuery = `
-    SELECT *
-    FROM fellows
-    $/mentorFilter:raw/
-    ORDER BY f_first_name ASC;
+    SELECT
+	    f_id,
+	    f_first_name,
+	    f_last_name,
+	    f_email,
+	    f_picture,
+	    f_bio,
+	    f_linkedin,
+	    f_github,
+	    want_mentor,
+	    fellows.deleted AS fellow_deleted,
+	    cohorts.cohort_id,
+	    cohorts.cohort,
+	    (SELECT ARRAY_AGG( 
+	    		CAST(v_id AS CHAR(10)) || ' &$%& ' ||
+	    		v_first_name || ' ' || v_last_name  || ' &$%& ' ||
+          mentor_pairs.starting_date || ' &$%& ' ||
+          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE CAST(mentor_pairs.deleted AS CHAR(20)) END
+	    	)
+	    	FROM volunteers INNER JOIN mentor_pairs ON v_id = mentor
+	    	WHERE mentee = f_id
+	    ) AS mentors_list
+      
+    FROM fellows INNER JOIN cohorts ON fellows.cohort_id = cohorts.cohort_id
   `;
-  let mentorFilter = "WHERE deleted IS NULL";
-  if (askedForMentor === true) {
-    mentorFilter += ` AND want_mentor = TRUE`;
+
+  let condition = ' WHERE fellows.deleted IS NULL ';
+  
+  if (name) {
+    condition += ` AND LOWER(f_first_name || ' ' || f_last_name) LIKE '%' || $/name/ || '%' `;
   }
-  return await db.any(getQuery, { mentorFilter });
+
+  if (cohortId) {
+    condition += ` AND fellows.cohort_id = $/cohortId/ `;
+  }
+
+  let mentorFilter = '';
+  if (askedForMentor && askedForMentor === 'true') {
+    condition  += ` AND want_mentor = TRUE `;
+  } else if (askedForMentor) {
+    condition  += ` AND want_mentor = FALSE `;
+  }
+
+  const endQuery = ' ORDER BY f_first_name ASC ';
+
+  return await db.any(getQuery + condition + endQuery, { name, cohortId, mentorFilter });
 }
 
 const getFellowById = async (fId) => {

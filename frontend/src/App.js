@@ -23,6 +23,7 @@ import Events from './Components/Events';
 import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
+import Mentoring from './Components/Mentoring';
 import Feedback from './Components/Feedback';
 
 
@@ -212,6 +213,11 @@ function App() {
       <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
         <EventForm {...userProps} />
       </PrivateRouteGate>
+    ),
+    mentorManagement = (
+      <PrivateRouteGate path='/mentoring/:volunteerId' {...gateProps}>
+        <Mentoring {...userProps} />
+      </PrivateRouteGate>
     )
   ;
 
@@ -224,7 +230,8 @@ function App() {
     allowedFellowsProfile = null,
     allowedAdminTools = null,
     allowedAddEvent = null,
-    allowedEditEvent = null
+    allowedEditEvent = null,
+    allowedMentorManagement = null
   ;
 
   if (appRoute.volunteer) {
@@ -238,9 +245,9 @@ function App() {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
-    // allowedManageEvent = adminEventForm; // For now add and edit event is allowed to admin and staff, this may move to only admin
     allowedAddEvent = adminAddEventForm;
     allowedEditEvent = adminEditEventForm;
+    allowedMentorManagement = mentorManagement;
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
@@ -276,9 +283,9 @@ function App() {
         {allowedFellowsProfile}
 
         {allowedAdminTools}
-        {/* {allowedManageEvent} */}
         {allowedAddEvent}
         {allowedEditEvent}
+        {allowedMentorManagement}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>
@@ -291,7 +298,7 @@ function App() {
           <h1 className='text-center'>We can have a message here or a 404 page</h1>
         </Route>
 
-        <Redirect to='/404' />
+        <Redirect to='/404' />  
 
       </Switch>
 

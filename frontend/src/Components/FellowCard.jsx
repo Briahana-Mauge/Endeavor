@@ -6,7 +6,7 @@ const VolunteerCard = (props) => {
     const history = useHistory();
 
     const viewProfile = () => {
-        props.setDisplayTargetUser(true);
+        props.displayProfile();
         props.setTargetVolunteerId(props.volunteer.v_id)
     }
 

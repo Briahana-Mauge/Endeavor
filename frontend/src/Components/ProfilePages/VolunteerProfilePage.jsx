@@ -10,6 +10,7 @@ export default function VolunteerProfilePage(props) {
     const [ events, setEvents ] = useState([]);
     const [ mentees, setMentees ] = useState([]);
     const [ tasks, setTasks ] = useState([]);
+    const [ openToMentor, setOpenToMentor ] = useState(false);
     const [ profilePublic, setProfilePublic ] = useState(true);
     const [ waitingForData, setWaitingForData ] = useState(true);
 
@@ -28,9 +29,8 @@ export default function VolunteerProfilePage(props) {
                             index0: mentee id
                             index1: full name
                             index2: When the mentoring relation started
-                            index3: Boolean: true relation ended, false it's still on
+                            index3: text for relation deleted: true relation ended, false it's still on
                         */
-                       console.log(data.payload.mentees[0])
                         setMentees(parsedMentees);
                     }
 
@@ -56,6 +56,8 @@ export default function VolunteerProfilePage(props) {
                         ['being an Industry Speaker', data.payload.industry_speaker]
                     ].filter(task => task[1]));
 
+                    setOpenToMentor(data.payload.mentoring);
+
                 }
             } catch (err) {
                 setFeedback(err);
@@ -70,7 +72,7 @@ export default function VolunteerProfilePage(props) {
         <>
             {
                 waitingForData
-                ?   null
+                ?   null // OR it can be a spinner 
                 :   !profilePublic 
                     ? <h3 className='text-center'>Sorry, nothing to show</h3>
                     : <div className='row p-3'>
@@ -135,7 +137,7 @@ export default function VolunteerProfilePage(props) {
                             }
 
                             {
-                                props.loggedUser && props.loggedUser.a_id
+                                props.loggedUser && props.loggedUser.a_id && openToMentor
                                 ?   <button className='btn btn-primary' 
                                         onClick={e => history.push(`/mentoring/${volunteer.v_id}`)}>
                                         Manage Mentoring

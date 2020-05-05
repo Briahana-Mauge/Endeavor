@@ -142,9 +142,9 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       (SELECT
         ARRAY_AGG (
           CAST(f_id AS CHAR(10)) || ' &$%& ' ||
-          f_first_name || f_last_name || ' &$%& ' ||
+          f_first_name || ' ' || f_last_name || ' &$%& ' ||
           CAST(starting_date AS CHAR(10)) || ' &$%& ' ||
-          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE 'true' END
+          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE CAST(mentor_pairs.deleted AS CHAR(20)) END
         )
         FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
         INNER JOIN volunteers ON mentor = v_id
@@ -176,7 +176,8 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
   //   condition = ' WHERE v_email = $/email/ '
   // }
 
-  const volunteer = await db.one(selectQuery/* + condition + endOfQuery*/, {id, email});
+  // const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
+  const volunteer = await db.one(selectQuery, {id, email});
 
   if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
     return new Error('403__Not accessible');
