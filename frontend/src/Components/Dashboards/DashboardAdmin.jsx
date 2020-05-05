@@ -60,7 +60,7 @@ const DashboardAdmin = (props) => {
 
 
     return (
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
             <div className="col-12 col-md-5">
               <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
