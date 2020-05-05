@@ -215,7 +215,7 @@ function App() {
       </PrivateRouteGate>
     ),
     mentorManagement = (
-      <PrivateRouteGate path='/mentoring/:volunteerId' {...gateProps}>
+      <PrivateRouteGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
         <Mentoring {...userProps} />
       </PrivateRouteGate>
     )

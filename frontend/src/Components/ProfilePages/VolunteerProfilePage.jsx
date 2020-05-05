@@ -139,7 +139,7 @@ export default function VolunteerProfilePage(props) {
                             {
                                 props.loggedUser && props.loggedUser.a_id && openToMentor
                                 ?   <button className='btn btn-primary' 
-                                        onClick={e => history.push(`/mentoring/${volunteer.v_id}`)}>
+                                        onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}>
                                         Manage Mentoring
                                     </button>
                                 : null

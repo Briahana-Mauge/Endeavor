@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 import VolunteerProfilePage from './VolunteerProfilePage';
 import FellowProfilePage from './FellowProfilePage';
 
 export default function ProfileRender(props) {
     const { volunteerId, fellowId } = useParams();
+    const originPath = useLocation().pathname.split('/')[1];
     
     const [ pageForm, setPageForm ] = useState('');
 
     useEffect(() => {
-        if (volunteerId || fellowId) {
+        if ((originPath === 'volunteer' && volunteerId) 
+            || (originPath === 'fellow' && fellowId)) {
             setPageForm('');
         } else {
             setPageForm('lightBox'); // To be styled with CSS to be a lightbox on top of another page
         }
-    }, [volunteerId, fellowId]);
+    }, [originPath, volunteerId, fellowId]);
 
     return (
         <div className={pageForm}>
@@ -28,7 +30,7 @@ export default function ProfileRender(props) {
             }
 
             {
-                volunteerId || props.volunteerId
+                (originPath === 'volunteer' && volunteerId) || props.volunteerId
                 ?   <VolunteerProfilePage 
                         volunteerId={volunteerId || props.volunteerId} 
                         setFeedback={props.setFeedback}
@@ -38,7 +40,7 @@ export default function ProfileRender(props) {
             }
 
             {
-                fellowId || props.fellowId
+                (originPath === 'fellow' && fellowId) || props.fellowId
                 ?   <FellowProfilePage 
                         fellowId={fellowId || props.fellowId} 
                         setFeedback={props.setFeedback}
