@@ -217,7 +217,7 @@ const Logout = ({logout}) => {
   return(
     <li className={`nav-item g1MobileTextALign`}>
       <button
-        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-3 pr-lg-auto`}
+        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-0 pr-lg-auto`}
         onClick={logout}
       >
         Logout

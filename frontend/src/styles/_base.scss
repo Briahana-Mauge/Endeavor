@@ -366,7 +366,7 @@ nav button {
 
 .g1NewVolCarousel {
     .carousel-inner {
-        width: calc(100% - 8rem);
+        width: calc(100% - 2rem);
         margin: 0 auto;
     }
 
@@ -414,7 +414,7 @@ nav button {
 
     .carousel-control-next,
     .carousel-control-prev {
-        width: 11%;
+        width: 1rem;
     }
 
     // .carousel-item {

@@ -60,7 +60,7 @@ const DashboardAdmin = (props) => {
 
 
     return (
-        <div className="container">
+        <>
           <div className="row">
             <div className="col-12 col-md-5">
               <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
@@ -71,19 +71,19 @@ const DashboardAdmin = (props) => {
             </div>
           </div>
 
-        {
-          showEvent
-            ? <EventCard
-                loggedUser={loggedUser}
-                event={targetEvent}
-                setFeedback={setFeedback}
-                reloadParent={reloadDashboard}
-                setReloadParent={setReloadDashboard}
-                hideEvent={hideEvent}
-              />
-            : null
-        }
-        </div>
+          {
+            showEvent
+              ? <EventCard
+                  loggedUser={loggedUser}
+                  event={targetEvent}
+                  setFeedback={setFeedback}
+                  reloadParent={reloadDashboard}
+                  setReloadParent={setReloadDashboard}
+                  hideEvent={hideEvent}
+                />
+              : null
+          }
+        </>
     )
 }
 
