@@ -65,8 +65,39 @@ const getAllFellows = async (name, cohortId, askedForMentor) => {
 
 const getFellowById = async (fId) => {
   const getQuery = `
-    SELECT *
-    FROM fellows
+    SELECT
+      f_id,
+      f_first_name,
+      f_last_name,
+      f_email,
+      f_picture,
+      f_bio,
+      f_linkedin,
+      f_github,
+      want_mentor,
+      fellows.deleted AS fellow_deleted,
+      cohorts.cohort_id,
+      cohorts.cohort,
+      (SELECT ARRAY_AGG( 
+          CAST(v_id AS CHAR(10)) || ' &$%& ' ||
+          v_first_name || ' ' || v_last_name || ' &$%& ' ||
+          mentor_pairs.starting_date || ' &$%& ' ||
+          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE CAST(mentor_pairs.deleted AS CHAR(20)) END
+        )
+        FROM volunteers INNER JOIN mentor_pairs ON v_id = mentor
+        WHERE mentee = f_id
+      ) AS mentors_list,
+      (SELECT ARRAY_AGG( 
+        CAST(event_id AS CHAR(10)) || ' &$%& ' ||
+        topic || ' &$%& ' ||
+        event_start || ' &$%& ' ||
+        event_end
+      )
+      FROM events INNER JOIN event_fellows ON event_id = eventf_id
+      WHERE fellow_id = f_id AND event_start < NOW() AND events.deleted IS NULL AND event_fellows.deleted IS NULL
+    ) AS events_list
+    
+    FROM fellows INNER JOIN cohorts ON fellows.cohort_id = cohorts.cohort_id
     WHERE f_id = $/fId/;
   `;
   return await db.one(getQuery, { fId });

@@ -65,7 +65,8 @@ export default function VolunteerProfilePage(props) {
         }
 
         getVolunteerData();
-    }, [volunteerId, setFeedback]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [volunteerId]);
 
 
     return (

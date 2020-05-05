@@ -31,7 +31,7 @@ export default function Mentoring (props) {
                 setVolunteer(data.payload);
                 setWaitingForData(false);
 
-                if (!data.payload.mentoring) {
+                if (!data.payload.mentoring) { // Volunteer didn't sign up to be a mentor
                     history.push('/404');
                 }
 
@@ -115,9 +115,9 @@ export default function Mentoring (props) {
                             </a>
                             <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
                             <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
-                                <ul> Skills:
+                                <ul className='plainUl'> Skills:
                                     { volunteer.skills
-                                        ? volunteer.skills.map((skill, index) => <li className='plainUl ml-2' key={skill+index}>{skill}</li>)
+                                        ? volunteer.skills.map((skill, index) => <li className='ml-2' key={skill+index}>{skill}</li>)
                                         : null
                                     }   
                                 </ul>
@@ -141,11 +141,11 @@ export default function Mentoring (props) {
 
                         <div className='col-sm-12'>
                             <strong className='d-block mx-2'>Mentoring: </strong>
-                            <ul>
+                            <ul className='plainUl'>
                                 Active:
                                 {
                                     currentMentees.map(mentee => 
-                                        <li key={mentee[0] + mentee[1] + mentee[2]} className='plainUl ml-3'>
+                                        <li key={mentee[0] + mentee[1] + mentee[2]} className='ml-3'>
                                             <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>X</button>
                                             <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
                                                 {mentee[1]}
@@ -156,7 +156,7 @@ export default function Mentoring (props) {
                                 Ended:
                                 {
                                     pastMentees.map((mentee, index) => 
-                                        <li key={index + mentee[0] + mentee[1] + mentee[3]} className='plainUl ml-3'>
+                                        <li key={index + mentee[0] + mentee[1] + mentee[3]} className='ml-3'>
                                             <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
                                                 {mentee[1]}
                                             </span>: {new Date(mentee[2]).toLocaleDateString()} - {new Date(mentee[3]).toLocaleDateString()}
