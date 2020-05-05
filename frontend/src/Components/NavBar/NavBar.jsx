@@ -112,8 +112,9 @@ const NavBar = ({ loggedUser, logout }) => {
 
 
   return (
-    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 container`}>
+    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 mx-3 mx-sm-auto container`}>
       <Logo />
+      <div className="g1NavbarBg"></div>
       <Burger />
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">

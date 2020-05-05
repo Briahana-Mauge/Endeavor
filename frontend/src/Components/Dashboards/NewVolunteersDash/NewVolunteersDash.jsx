@@ -64,7 +64,7 @@ const NewVolunteersDash = (props) => {
     <div className="g1Card card mb-2">
       <h3 className={`g1CardHeader card-header ${xPadding}`}><span>New Volunteer</span> Signups</h3>
       <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
-        <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false">
+        <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
           <ol className="carousel-indicators">
             {slideIndicators}
           </ol>

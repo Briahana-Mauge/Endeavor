@@ -44,7 +44,7 @@ html, body, #root, .g1App {
     --table-outer-gaps: 0;
     --table-inner-gaps: .8rem;
     
-    --navbar-height: 62px;
+    --navbar-height: 5rem;
 }
 
     // MEDIA QUERY SIZING
@@ -64,7 +64,6 @@ html, body, #root, .g1App {
 body {
     position: fixed; // prevents background scrolling with scroll
 
-    padding-top: var(--navbar-height);
     background-color: #1a1635;  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
     background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
 
@@ -74,6 +73,11 @@ body {
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    padding-top: var(--navbar-height);
+    overflow-y: auto;
 }
 
 code {
@@ -126,14 +130,24 @@ nav button {
 }
 
 
+.card-body,
 .lightBox {
     color: var(--color-black);
 }
 
+.lightBox,
+.feedbackContainer {
+    z-index: 100 !important;
+
+    @media (max-width: 460px) {
+        width: auto !important;
+        left: initial !important;
+        margin-right: 1rem;
+    }
+}
 
 /* CLASS STYLINGS */
 .g1App {
-    overflow-y: auto;
     padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
     color: var(--color-white);
 }
@@ -170,6 +184,28 @@ nav button {
             @include link-states-disabled();
         }
     }
+
+    @media (max-width: 576px) {
+        width: auto;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .g1NavbarBg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: var(--navbar-height);
+        z-index: 90;
+        background-image: linear-gradient(180deg, #1a1635 45%, #23203e);
+    }
+
+    .g1Brand,
+    .g1NavbarToggler,
+    .g1Collapse {
+        z-index: 100;
+    }
 }
 
 .g1Brand {  // the logo text
@@ -189,7 +225,7 @@ nav button {
 
 .g1NavbarToggler {   // burger positioning
     padding: 0 .75rem;
-    height: 76%;
+    height: 55%;
     margin-top: .2rem;  // used in conjunction with burger margin-top to even out top of page
 }
 
