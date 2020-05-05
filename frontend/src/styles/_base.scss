@@ -375,6 +375,41 @@ nav button {
         justify-content: flex-start;
         margin-right: 0;
         margin-left: 0;
+
+        li {
+            position: relative;
+            opacity: .2;
+            height: 16px;
+            transition: opacity .6s ease, background-color .6s ease;
+
+            div {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 100%;
+
+                color: var(--color-black);
+                text-indent: 0;
+                text-transform: uppercase;
+            }
+        }
+
+        .active {
+            opacity: 1;
+            background-color: var(--color-white);
+
+            div {
+                color: var(--color-primary);
+                outline: solid 2px var(--color-yellow);
+            }
+        }
     }
 
     .carousel-control-next,
