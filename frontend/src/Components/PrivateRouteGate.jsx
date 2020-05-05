@@ -21,20 +21,22 @@ const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...r
   return (
     <>
       <NavBar loggedUser={loggedUser} logout={logout} />
-      <Route
-        {...rest}
-        render={({location}) =>
-          loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
-            ? ( showInside )
-            : ( <Redirect
-                  to={{
-                    pathname: '/login',
-                    state: { from: location }
-                  }}
-                />
-              )
-        }
-      />
+      <div className="container">
+        <Route
+          {...rest}
+          render={({location}) =>
+            loggedUser && (loggedUser.a_id || loggedUser.f_id || loggedUser.v_id)
+              ? ( showInside )
+              : ( <Redirect
+                    to={{
+                      pathname: '/login',
+                      state: { from: location }
+                    }}
+                  />
+                )
+          }
+        />
+      </div>
     </>
   );
 }

@@ -75,11 +75,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-#root {
-    padding-top: var(--navbar-height);
-    overflow-y: auto;
-}
-
 code {
     font-family: 
         source-code-pro,
@@ -147,8 +142,14 @@ nav button {
 }
 
 /* CLASS STYLINGS */
+#root {
+    overflow-y: auto;
+}
+
 .g1App {
-    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
+    padding-top: var(--navbar-height);
+    padding-right: 0;
+    padding-left: 0;
     color: var(--color-white);
 }
 
@@ -171,8 +172,11 @@ nav button {
 }
 
 .g1Navbar {
+    position: fixed;
+    top: 0px;
     height: var(--navbar-height);
     align-items: flex-start;
+    z-index: 90;
     // box-shadow: 0px 6px 29px 2px #000a; // optional, save for later idea
 
     font-family: var(--ff-top);
@@ -186,9 +190,8 @@ nav button {
     }
 
     @media (max-width: 576px) {
-        width: auto;
-        padding-right: 0;
-        padding-left: 0;
+        max-width: 100%;
+        // max-width: calc(100% - 1rem);
     }
 
     .g1NavbarBg {
@@ -319,7 +322,14 @@ nav button {
             background-color: #ff658229;
         }
     }
-    .important { color: #c7be83;}
+    .important {
+        color: #d4c358;
+
+        .g1TimeCol u {
+            text-decoration: none;
+            color: #f17f08eb;
+        }
+    }
     .passed { color: #999; }
 
     .g1THead {
@@ -327,7 +337,7 @@ nav button {
         
         padding-bottom: calc(var(--table-inner-gaps) * .15);
 
-        color: #cd43a9;
+        color: #a54d8e;
         text-transform: uppercase;
         font-size: calc(var(--fs-body) * .75);
         font-family: var(--ff-accent);
@@ -391,8 +401,12 @@ nav button {
 }
 
 .g1BufferRow.g1TBody .g1TR {
-    background-color: transparent;
-    height: .5rem;
+    background-color: #2d2d48fa;
+    height: .3rem;
+}
+
+.g1BufferRow + .g1TBody .g1TR .g1TD {
+    padding-top: 4px;
 }
 
 .g1EventLink {

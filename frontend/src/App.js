@@ -255,7 +255,7 @@ function App() {
   }
 
   return (
-    <div className="g1App container p-3">
+    <div className="g1App container">
       <Switch>
 
         <PrivateRouteGate exact path='/' {...gateProps}>
