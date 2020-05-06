@@ -39,13 +39,14 @@ html, body, #root, .g1App {
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
+    --color-bodybase: #0c053a;
 
     --border-radii: .2rem;
     --box-shadow: 1px 6px 11px #0005;
     --table-outer-gaps: 0;
     --table-inner-gaps: .8rem;
     
-    --navbar-height: 5rem;
+    --navbar-height: 4.6rem;
 }
 
     // MEDIA QUERY SIZING
@@ -65,8 +66,9 @@ html, body, #root, .g1App {
 body {
     position: fixed; // prevents background scrolling with scroll
 
-    background-color: #1a1635;  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
-    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+    background-color: var(--color-bodybase);  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
+    background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #292b52f2 50%, #5d5c77eb 89%);
+    // background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #696a81 50%, #908fa1 89%);
 
     font-family: var(--ff-body1);
     font-size: var(--fs-body);
@@ -144,11 +146,11 @@ nav button {
 
 /* CLASS STYLINGS */
 #root {
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .g1App {
-    padding-top: var(--navbar-height);
+    padding-top: calc(var(--navbar-height) + .4rem);
     padding-right: 0;
     padding-left: 0;
     color: var(--color-white);
@@ -202,12 +204,13 @@ nav button {
         left: 0;
         height: var(--navbar-height);
         z-index: 90;
-        background-image: linear-gradient(180deg, #1a1635 45%, #23203e);
+        background-image: linear-gradient(180deg, var(--color-bodybase) 45%, #0f093cf2 100%);
     }
 
     .g1Brand,
     .g1NavbarToggler,
-    .g1Collapse {
+    .g1Collapse,
+    .g1Subnav {
         z-index: 100;
     }
 }
@@ -258,11 +261,43 @@ nav button {
     }
 }
 
+.g1Subnav {
+    position: absolute;
+    top: 3rem;
+    left: 1.1rem;
+    width: 100%;
+    padding-right: 2rem;
+
+    display: flex;
+    flex-direction: row;
+
+    h1 {
+        padding-right: .5rem;
+
+        color: #0aa2dc;
+        font-family: var(--ff-top);
+        font-weight: var(--fw-bold);
+        font-size: var(--fs-h1);
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    div {
+        position: relative;
+        top: 4.5px;
+        display: inline-block;
+        width: 100%;
+        height: 1px;
+        background-image: linear-gradient(90deg, #ab9f5a, #0805b3);
+    }
+}
+
 
 // Body Cards
 .g1Card {
     background-color: transparent;
-    background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
+    background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+    // background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
     border-radius: var(--border-radii);
     padding-bottom: .1rem;
 
