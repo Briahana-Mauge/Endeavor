@@ -133,12 +133,20 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       signup_date, inactive_date, volunteers.deleted, public_profile,
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
       (SELECT
+        ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || 
+            event_start || ' &$%& ' || event_end || ' &$%& ' || CAST(volunteered_time AS CHAR(2)))
+          FROM events 
+          INNER JOIN event_volunteers ON event_id = eventv_id
+          INNER JOIN volunteers ON volunteer_id = v_id
+          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end < NOW()
+        ) AS past_events,
+      (SELECT
         ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || event_start || ' &$%& ' || event_end )
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
-          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE
-        ) AS events_list,
+          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end >= NOW()
+        ) AS future_events,
       (SELECT
         ARRAY_AGG (
           CAST(f_id AS CHAR(10)) || ' &$%& ' ||
