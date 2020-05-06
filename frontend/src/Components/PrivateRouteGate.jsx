@@ -11,7 +11,7 @@ import { Route, Redirect } from 'react-router-dom';
 import NavBar from './NavBar/NavBar';
 
 
-const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...rest }) => {
+const PrivateRouteGate = ({ children, h1, loggedUser, logout, isUserStateReady, ...rest }) => {
   // without this showInside, logout is visibly delayed for fraction of a second before redirect
   let showInside = null;
   if (isUserStateReady) {
@@ -20,7 +20,7 @@ const PrivateRouteGate = ({ children, loggedUser, logout, isUserStateReady, ...r
 
   return (
     <>
-      <NavBar loggedUser={loggedUser} logout={logout} />
+      <NavBar h1={h1} loggedUser={loggedUser} logout={logout} />
       <div className="container">
         <Route
           {...rest}

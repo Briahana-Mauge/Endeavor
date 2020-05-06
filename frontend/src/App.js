@@ -184,32 +184,32 @@ function App() {
     volunteersDashboard = <DashboardVolunteers {...userProps} />,
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
-      <PrivateRouteGate path='/volunteers' {...gateProps}>
+      <PrivateRouteGate path='/volunteers' h1='Volunteers List' {...gateProps}>
         <Volunteers {...userProps} />
       </PrivateRouteGate>
     ),
     volunteersProfile = (
-      <PrivateRouteGate path='/volunteer/:volunteerId' {...gateProps}>
+      <PrivateRouteGate path='/volunteer/:volunteerId' h1='Volunteer Profile' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
     fellowsProfile = (
-      <PrivateRouteGate path='/fellow/:fellowId' {...gateProps}>
+      <PrivateRouteGate path='/fellow/:fellowId' h1='Fellow Profile' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
     adminTools = (
-      <PrivateRouteGate path='/tools' {...gateProps}>
+      <PrivateRouteGate path='/tools' h1='Admin Settings' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
     ),
     adminAddEventForm = (
-      <PrivateRouteGate path='/event/add' {...gateProps}>
+      <PrivateRouteGate path='/event/add' h1='Add Event' {...gateProps}>
         <EventForm {...userProps} />
       </PrivateRouteGate>
     ),
     adminEditEventForm = (
-      <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
+      <PrivateRouteGate path='/event/edit/:eventId' h1='Edit Event' {...gateProps}>
         <EventForm {...userProps} />
       </PrivateRouteGate>
     )
@@ -258,15 +258,15 @@ function App() {
     <div className="g1App container">
       <Switch>
 
-        <PrivateRouteGate exact path='/' {...gateProps}>
+        <PrivateRouteGate exact path='/' h1='Home' {...gateProps}>
           {allowedDashboard}
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/profile' {...gateProps}>
+        <PrivateRouteGate path='/profile' h1='My Profile' {...gateProps}>
           <ProfilePage {...userProps} {...profileProps} />
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/events' {...gateProps}>
+        <PrivateRouteGate path='/events' h1='Events List' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
 
