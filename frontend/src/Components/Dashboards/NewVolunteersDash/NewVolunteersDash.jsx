@@ -72,14 +72,20 @@ const NewVolunteersDash = (props) => {
           <div className="carousel-inner">
             {slides}
           </div>
-          <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="sr-only">Previous</span>
-          </a>
-          <a className="carousel-control-next" href="#newVolunteersSlideshow" role="button" data-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="sr-only">Next</span>
-          </a>
+          <div className="g1CarouselArrows px-2">
+            <div className="g1CarouselArrowsInterior col-3">
+              <div>
+                <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
+                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span className="sr-only">Previous</span>
+                </a>
+                <a className="carousel-control-next" href="#newVolunteersSlideshow" role="button" data-slide="next">
+                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span className="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
