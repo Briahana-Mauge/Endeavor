@@ -73,7 +73,7 @@ const NewVolunteersDash = (props) => {
             {slides}
           </div>
           <div className="g1CarouselArrows px-2">
-            <div className="g1CarouselArrowsInterior col-3">
+            <div className="g1CarouselArrowsInterior col-md-3">
               <div>
                 <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
                   <span className="carousel-control-prev-icon" aria-hidden="true"></span>
