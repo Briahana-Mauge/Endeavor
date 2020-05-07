@@ -8,7 +8,7 @@ NewVolunteersDash Component | Capstone App (Pursuit Volunteer Mgr)
 import React from 'react';
 import axios from 'axios';
 
-import VolunteerPreviewCard from '../../VolunteerPreviewCard';
+import VolunteerPreviewCard from './VolunteerPreviewCard';
 
 
 const NewVolunteersDash = (props) => {
@@ -62,8 +62,9 @@ const NewVolunteersDash = (props) => {
 
   return (
     <div className="g1Card card mb-2">
-      <h3 className={`g1CardHeader card-header ${xPadding}`}><span>New Volunteer</span> Signups</h3>
+      <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>New Volunteer</span> Signups</h3>
       <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
+
         <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
           <ol className="carousel-indicators">
             {slideIndicators}
@@ -80,6 +81,7 @@ const NewVolunteersDash = (props) => {
             <span className="sr-only">Next</span>
           </a>
         </div>
+
       </div>
     </div>
   );

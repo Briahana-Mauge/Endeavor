@@ -464,6 +464,7 @@ nav button {
             position: relative;
             opacity: .2;
             height: 16px;
+            border-top-width: 2px;
             transition: opacity .6s ease, background-color .6s ease;
 
             div {
