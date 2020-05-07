@@ -65,28 +65,35 @@ const NewVolunteersDash = (props) => {
       <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>New Volunteer</span> Signups</h3>
       <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
-        <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
-          <ol className="carousel-indicators">
-            {slideIndicators}
-          </ol>
-          <div className="carousel-inner">
-            {slides}
-          </div>
-          <div className="g1CarouselArrows px-2">
-            <div className="g1CarouselArrowsInterior col-md-3">
-              <div>
-                <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
-                  <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span className="sr-only">Previous</span>
-                </a>
-                <a className="carousel-control-next" href="#newVolunteersSlideshow" role="button" data-slide="next">
-                  <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span className="sr-only">Next</span>
-                </a>
+        {newVolunteers.length <= 0
+          ? (
+              <div>There are no new volunteers awaiting confirmation.</div>
+            )
+          : (
+              <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
+                <ol className="carousel-indicators">
+                  {slideIndicators}
+                </ol>
+                <div className="carousel-inner">
+                  {slides}
+                </div>
+                <div className="g1CarouselArrows px-2">
+                  <div className="g1CarouselArrowsInterior col-md-3">
+                    <div>
+                      <a className="carousel-control-prev" href="#newVolunteersSlideshow" role="button" data-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Previous</span>
+                      </a>
+                      <a className="carousel-control-next" href="#newVolunteersSlideshow" role="button" data-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="sr-only">Next</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            )
+        }
 
       </div>
     </div>
