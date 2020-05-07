@@ -1,3 +1,10 @@
+/*
+ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
+VolunteerPreviewCard Component | Capstone App (Pursuit Volunteer Mgr)
+*/
+
+
+/* IMPORTS */
 import React from 'react';
 
 

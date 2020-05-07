@@ -28,9 +28,9 @@ html, body, #root, .g1App {
     --fs-h1: 1.1rem;
     --fs-h3: .9rem;
 
-    --ff-body1: 'Quicksand', sans-serif;
-    --ff-accent: 'Cabin', sans-serif;
     --ff-top: 'Red Hat Display', sans-serif;
+    --ff-body: 'Cabin', sans-serif;
+    --ff-accent: 'Quicksand', sans-serif;
 
     --fw-bold: 800;
 
@@ -70,7 +70,7 @@ body {
     background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #292b52f2 50%, #5d5c77eb 89%);
     // background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #696a81 50%, #908fa1 89%);
 
-    font-family: var(--ff-body1);
+    font-family: var(--ff-body);
     font-size: var(--fs-body);
     color: var(--color-black);
 
@@ -347,7 +347,6 @@ nav button {
     display: table;
 
     width: 100%;
-    font-family: var(--ff-accent);
     border: 0;
     color: var(--color-white);
 
@@ -376,7 +375,6 @@ nav button {
         color: #a54d8e;
         text-transform: uppercase;
         font-size: calc(var(--fs-body) * .75);
-        font-family: var(--ff-accent);
 
         .g1TD {
             border-bottom: 1px dashed #696969;
@@ -482,6 +480,7 @@ nav button {
                 width: 100%;
 
                 color: var(--color-black);
+                font-family: var(--ff-accent);
                 text-indent: 0;
                 text-transform: uppercase;
             }
@@ -548,7 +547,6 @@ nav button {
 //     .popover {
 //         border-radius: var(--border-radii);
 //         box-shadow: var(--box-shadow);
-//         font-family: var(--ff-accent);
 //     }
 
 //     .popover-header {

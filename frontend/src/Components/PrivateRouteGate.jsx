@@ -21,7 +21,7 @@ const PrivateRouteGate = ({ children, h1, loggedUser, logout, isUserStateReady, 
   return (
     <>
       <NavBar h1={h1} loggedUser={loggedUser} logout={logout} />
-      <div className="container">
+      <div className="g1Stage container">
         <Route
           {...rest}
           render={({location}) =>
