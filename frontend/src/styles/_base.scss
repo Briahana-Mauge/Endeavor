@@ -450,11 +450,6 @@ nav button {
 
 
 .g1NewVolCarousel {
-    // .carousel-inner {
-    //     width: calc(100% - 2rem);
-    //     margin: 0 auto;
-    // }
-
     .g1CarouselArrows {
         position: absolute;
         top: 12.5rem;
@@ -492,7 +487,7 @@ nav button {
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             top: 2.5rem;
             width: 100%;
 
@@ -555,19 +550,16 @@ nav button {
         }
     }
 
-    // .carousel-control-next,
-    // .carousel-control-prev {
-    //     width: 1rem;
-    // }
-
-
     .g1NewVolBtns {
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
             justify-content: flex-end;
-            // order: 2;
+
+            .btn {
+                white-space: nowrap;
+            }
 
             .btn-success {
                 order: 2;
@@ -607,6 +599,14 @@ nav button {
         clear: both;
         list-style: none;
         text-align: right;
+
+        @media (min-width: 768px) {
+            text-align: left;
+            padding-left: 6rem;
+        }
+        @media (min-width: 992px) {
+            padding-left: 0;
+        }
 
         strong {
             display: block;
