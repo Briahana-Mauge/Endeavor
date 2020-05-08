@@ -43,23 +43,25 @@ html, body, #root, .g1App {
 
     --border-radii: .2rem;
     --box-shadow: 1px 6px 11px #0005;
+    --bs-buttons: 5px 2px 7px #000a;
     --table-outer-gaps: 0;
     --table-inner-gaps: .8rem;
     
     --navbar-height: 4.6rem;
+
+    --zi-popup: 1000;
+    --zi-navbar: 90;
+    --zi-subnav: 100;
+    --zi-carousel-arrows: 100;
 }
 
-    // MEDIA QUERY SIZING
+    // MEDIA QUERY SIZING REFERENCE
     // Bootstrap reference
     // DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
     // @media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
     // @media (min-width: 768px) {} : md : MEDIUM devices (tablets, 768px and up)
     // @media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
     // @media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)
-
-    @media (min-width: 992px) {
-        // placeholder
-    }
 
 
 /* BASE ELEMENT STYLING */
@@ -135,7 +137,7 @@ nav button {
 
 .lightBox,
 .feedbackContainer {
-    z-index: 100 !important;
+    z-index: var(--zi-popup) !important;
 
     @media (max-width: 460px) {
         width: auto !important;
@@ -179,7 +181,7 @@ nav button {
     top: 0px;
     height: var(--navbar-height);
     align-items: flex-start;
-    z-index: 90;
+    z-index: var(--zi-navbar);
     // box-shadow: 0px 6px 29px 2px #000a; // optional, save for later idea
 
     font-family: var(--ff-top);
@@ -203,7 +205,7 @@ nav button {
         right: 0;
         left: 0;
         height: var(--navbar-height);
-        z-index: 90;
+        z-index: var(--zi-navbar);
         background-image: linear-gradient(180deg, var(--color-bodybase) 45%, #0f093cf2 100%);
     }
 
@@ -211,7 +213,7 @@ nav button {
     .g1NavbarToggler,
     .g1Collapse,
     .g1Subnav {
-        z-index: 100;
+        z-index: var(--zi-subnav);
     }
 }
 
@@ -471,10 +473,10 @@ nav button {
 
                 position: relative;
                 transform: translateX(0px); // used to bring buttons up to visual plane context above card data
-                z-index: 100;
+                z-index: var(--zi-carousel-arrows);
 
                 background-color: var(--color-primary);
-                box-shadow: 5px 2px 7px #000a;
+                box-shadow: var(--bs-buttons);
 
                 & > a {
                     height: 100%;
@@ -604,6 +606,7 @@ nav button {
             text-align: left;
             padding-left: 6rem;
         }
+
         @media (min-width: 992px) {
             padding-left: 0;
         }
@@ -616,31 +619,6 @@ nav button {
             color: #b5a31b;
         }
     }
-
-    // .g1NewVolCard {
-    //     display: flex;
-    //     flex-direction: row;
-    //     flex-wrap: nowrap;
-
-    //     @media (max-width: 992px) {
-    //         flex-direction: column;
-    //         justify-content: stretch;
-
-    //         .g1NewVolBtns {
-    //             order: 2;
-    //         }
-    //     }
-    // }
-
-    // .carousel-item {
-    //     // display: block;
-    //     // opacity: 1;
-    //     // transition: opacity 1s ease-in-out;
-
-    //     &.active {
-    //         // opacity: 1;
-    //     }
-    // }
 }
 
 // .g1PopoverBtn {
