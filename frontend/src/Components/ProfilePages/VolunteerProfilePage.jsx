@@ -7,6 +7,7 @@ export default function VolunteerProfilePage(props) {
     const { volunteerId, setFeedback } = props;
 
     const [ volunteer, setVolunteer ] = useState({});
+    const [ pastEvents, setPastEvents ] = useState([]);
     const [ events, setEvents ] = useState([]);
     const [ mentees, setMentees ] = useState([]);
     const [ tasks, setTasks ] = useState([]);
@@ -24,25 +25,46 @@ export default function VolunteerProfilePage(props) {
                     setWaitingForData(false);
 
                     if (data.payload.mentees) {
-                        const parsedMentees = data.payload.mentees.map(mentee => mentee.split(' &$%& '));
-                        /* After splitting, for each mentee we will have:
-                            index0: mentee id
-                            index1: full name
-                            index2: When the mentoring relation started
-                            index3: text for relation deleted: true relation ended, false it's still on
-                        */
-                        setMentees(parsedMentees);
+                        const tracker = {}
+                        data.payload.mentees.forEach(mentee => {
+                            /* After splitting, for each mentee we will have:
+                                index0: mentee id
+                                index1: full name
+                                index2: When the mentoring relation started
+                                index3: text for relation deleted: true relation ended, false it's still on
+                            */
+                            const menteeArr = mentee.split(' &$%& ');
+                            if (menteeArr[3] === 'false') {
+                                tracker[menteeArr[0]] = menteeArr;
+                            } else if (!tracker[menteeArr[0]]) {
+                                tracker[menteeArr[0]] = menteeArr;
+                            }
+                        });
+                        setMentees(Object.values(tracker));
                     }
 
-                    if (data.payload.events_list) {
-                        const parsedEvents = data.payload.events_list.map(event => event.split(' &$%& '));
+                    if (data.payload.past_events) {
+                        const parsedEvents = data.payload.past_events.map(event => event.split(' &$%& '));
+                        /* After splitting, for each event we will have:
+                            index0: event id
+                            index1: event topic
+                            index2: event start date
+                            index3: event end date
+                            index4: volunteered time for tht event
+                        */
+                        const a = parsedEvents.sort((a, b) => b[3] - a[3]); // Sorting with end date 
+                        setPastEvents(a);
+                    }
+
+                    if (data.payload.future_events) {
+                        const parsedEvents = data.payload.future_events.map(event => event.split(' &$%& '));
                         /* After splitting, for each event we will have:
                             index0: event id
                             index1: event topic
                             index2: event start date
                             index3: event end date
                         */
-                        const a = parsedEvents.sort((a, b) => b[3] - a[3]); // Sorting with end date 
+                        const a = parsedEvents.sort((a, b) => a[3] - b[3]); // Sorting with end date 
                         setEvents(a);
                     }
                     
@@ -67,7 +89,6 @@ export default function VolunteerProfilePage(props) {
         getVolunteerData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [volunteerId]);
-
 
     return (
         <>
@@ -113,52 +134,63 @@ export default function VolunteerProfilePage(props) {
                         <div className='col-sm-12'>
                             <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
                             <span className='d-block'><strong>Bio: </strong>{volunteer.v_bio}</span>
+
+                            <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
+                                <strong className='d-block mx-2'>Interested in: </strong>
+                                {
+                                    tasks.map((interest, index) => 
+                                        <span key={index + interest[0]} className='d-block mx-2'>
+                                            {interest[0]}
+                                        </span>
+                                    )          
+                                }  
+                            </div>
+
+                            <div className='d-flex flex-wrap justify-content-start'>
+                                <strong className='d-block mx-2'>Mentoring: </strong>
+                                {
+                                    mentees.map(mentee => 
+                                        <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2' 
+                                            onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                            {mentee[1]}
+                                        </span>
+                                    )          
+                                }
+
+                                {
+                                    props.loggedUser && props.loggedUser.a_id && openToMentor
+                                    ?   <button className='btn btn-primary' 
+                                            onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}>
+                                            Manage Mentoring
+                                        </button>
+                                    : null
+                                }
+                            </div>
+
+                            <div className='row'>
+                                <ul className='plainUl col-sm-6'><strong>Past Events: </strong>
+                                {
+                                    pastEvents.map(event => 
+                                        <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                            onClick={e => history.push(`event/${event[0]}`)}>
+                                            {event[1]} ({new Date(event[2]).toLocaleDateString()}) - 
+                                            { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                        </li>
+                                    )          
+                                } 
+                                </ul>
+                                <ul className='plainUl col-sm-6'><strong>Current / Upcoming Events: </strong>
+                                {
+                                    events.map(event => 
+                                        <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                            onClick={e => history.push(`event/${event[0]}`)}>
+                                            {event[1]} ({new Date(event[2]).toLocaleDateString()})
+                                        </span>
+                                    )          
+                                }
+                                </ul> 
+                            </div>
                         </div>
-
-                        <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                            <strong className='d-block mx-2'>Interested in: </strong>
-                            {
-                                tasks.map((interest, index) => 
-                                    <span key={index + interest[0]} className='d-block mx-2'>
-                                        {interest[0]}
-                                    </span>
-                                )          
-                            }  
-                        </div>
-
-                        <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                            <strong className='d-block mx-2'>Mentoring: </strong>
-                            {
-                                mentees.map(mentee => 
-                                    <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2' 
-                                        onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                        {mentee[1]}
-                                    </span>
-                                )          
-                            }
-
-                            {
-                                props.loggedUser && props.loggedUser.a_id && openToMentor
-                                ?   <button className='btn btn-primary' 
-                                        onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}>
-                                        Manage Mentoring
-                                    </button>
-                                : null
-                            }
-                        </div>
-
-                        <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                            <strong className='d-block mx-2'>Events: </strong>
-                            {
-                                events.map(event => 
-                                    <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                        onClick={e => history.push(`event/${event[0]}`)}>
-                                        {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                    </span>
-                                )          
-                            }  
-                        </div>
-
                     </div>
             }
 
