@@ -12,7 +12,7 @@ import axios from 'axios';
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
 
-import { Bar} from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 
 const Dashboard = (props) => {
@@ -22,38 +22,22 @@ const Dashboard = (props) => {
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
   const [volunteeredTime, setVolunteeredTime] = useState(0);
-  const [totalTime, setTotalTime] = useState(0);
   const [totalEvents, setTotalEvents] = useState(0);
   const [reloadDashboard, setReloadDashboard] = useState(false);
-  const [barData, setBarData] = useState({
-    labels: ['Volunteer hours earned', 'Events attended'],
+
+  // Chart for volunteer hours
+  const [volunteerData, setVolunteerData] = useState({
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
       {
-        label: 'You',
-        data: [1,2, 7, 8],
-        backgroundColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 99, 132, 1)',
-          'rgba(255, 99, 132, 1)',
-          
-        ],
-        borderWidth: 2
-      },
-      {
-        label: 'All volunteers',
-        data: [2,5,10],
-        backgroundColor: [
-          
-          'rgba(54, 162, 235, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(54, 162, 235, 1)'
-        ],
+        label: 'Number of Hours',
+        data: [],
+        backgroundColor: Array(12).fill('rgba(255, 99, 132, 1)'),
         borderWidth: 2
       }
     ]
   });
-  const [barOptions, setBarOptions] = useState({
+  const [hourOptions, setHourOptions] = useState({
     options: {
       scales: {
         yAxes: [
@@ -66,24 +50,80 @@ const Dashboard = (props) => {
         ],
         xAxes: [{
           ticks: {
-              fontColor: 'white',
-              beginAtZero: true
+            fontColor: 'white',
+            beginAtZero: true
           }
-      }]
+        }]
       },
       title: {
         display: true,
-        text: 'Personal Stats',
+        text: `Volunteer Hours in ${new Date().getFullYear()} `,
         fontSize: 25,
         fontColor: 'white'
       },
       legend: {
-        display: true,
+        display: false,
         position: 'top',
-        labels:{
-          fontColor:'white'
+        labels: {
+          fontColor: 'white'
         }
-        
+
+      },
+      datalabels: {
+        display: true,
+        fontColor: 'white',
+      }
+    }
+  });
+  let hours = Array(12).fill(0)
+  for (let i = 0; i < volunteeredTime.length; i++) {
+    hours[volunteeredTime[i].months - 1] = volunteeredTime[i].hours
+  }
+  volunteerData.datasets[0].data = hours
+
+//Chart for number of events
+  const [eventData, setEventData] = useState({
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [
+      {
+        label: 'Number of Events',
+        data: [1, 2, 9, 3],
+        backgroundColor: Array(12).fill('rgba(155, 49, 117, 1)'),
+        borderWidth: 2
+      }
+    ]
+  });
+  const [eventOptions, setEventOptions] = useState({
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              fontColor: 'white',
+              beginAtZero: true
+            }
+          }
+        ],
+        xAxes: [{
+          ticks: {
+            fontColor: 'white',
+            beginAtZero: true
+          }
+        }]
+      },
+      title: {
+        display: true,
+        text: `Volunteer Hours in ${new Date().getFullYear()} `,
+        fontSize: 25,
+        fontColor: 'white'
+      },
+      legend: {
+        display: false,
+        position: 'top',
+        labels: {
+          fontColor: 'white'
+        }
+
       },
       datalabels: {
         display: true,
@@ -92,32 +132,28 @@ const Dashboard = (props) => {
     }
   });
 
+  let events = Array(12).fill(0)
+  for (let i = 0; i < totalEvents.length; i++) {
+    events[totalEvents[i].months - 1] = totalEvents[i].number
+  }
+  eventData.datasets[0].data = events
 
-  let vDataArr = [volunteeredTime, eventsObj.pasts.length,]
-  let aDataArr = [totalTime, totalEvents]
-
-  barData.datasets[0].data = vDataArr
-  barData.datasets[1].data = aDataArr
 
   const getAllVolunteeredTime = () => {
     axios.get(`/api/time/hours/${loggedUser.v_id}`)
-      .then(res => setVolunteeredTime(res.data.payload.sum))
-      .catch(err => setFeedback(err));
-    
-      axios.get('/api/time/')
-      .then(res => setTotalTime(parseInt(res.data.payload[0].sum)))
+      .then(res => setVolunteeredTime(res.data.payload))
       .catch(err => setFeedback(err));
   }
   useEffect(getAllVolunteeredTime, []);
 
   useEffect(() => {
-    const getEventsData = () => {
+    const getEventsData = async () => {
       axios.get(`/api/events/dashboard/volunteer`)
         .then(res => setEventsObj(res.data.payload))
         .catch(err => setFeedback(err));
-        
-      axios.get('/api/events/past')
-        .then(res => setTotalEvents(parseInt(res.data.payload[0].count)))
+
+      axios.get(`/api/events/past/volunteer/${loggedUser.v_id}`)
+        .then(res => setTotalEvents(res.data.payload))
         .catch(err => setFeedback(err));
     }
     getEventsData();
@@ -138,7 +174,6 @@ const Dashboard = (props) => {
     setTargetEvent
   }
 
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -148,13 +183,10 @@ const Dashboard = (props) => {
 
         <div className="col-12 col-md-7">
 
-          {
-            eventsObj.upcomings.length === 0
-              ? <p>You are not registered to volunteer at any upcoming events. Visit the Events page to find out more!</p>
-              : null
-          } 
-
+          <Bar data={volunteerData} options={hourOptions.options} />
+          <Bar data={eventData} options={eventOptions.options} />
         </div>
+
       </div>
       {
         showEvent
@@ -169,9 +201,7 @@ const Dashboard = (props) => {
           : null
       }
 
-      <div class="col-12 col-md-7">
-        <Bar data={barData} options={barOptions.options} />
-      </div>
+
 
     </div>
   )
