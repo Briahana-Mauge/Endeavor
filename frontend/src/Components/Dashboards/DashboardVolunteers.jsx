@@ -57,7 +57,7 @@ const Dashboard = (props) => {
       },
       title: {
         display: true,
-        text: `Volunteer Hours in ${new Date().getFullYear()} `,
+        text: `Volunteer Hours I've Earned in ${new Date().getFullYear()} `,
         fontSize: 25,
         fontColor: 'white'
       },
@@ -113,7 +113,7 @@ const Dashboard = (props) => {
       },
       title: {
         display: true,
-        text: `Volunteer Hours in ${new Date().getFullYear()} `,
+        text: `Events I've Participated in for ${new Date().getFullYear()} `,
         fontSize: 25,
         fontColor: 'white'
       },
