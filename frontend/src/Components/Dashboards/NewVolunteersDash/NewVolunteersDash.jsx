@@ -24,7 +24,6 @@ const NewVolunteersDash = (props) => {
     }
   }
 
-
   const slideIndicators = [];
   const slides = newVolunteers.map(( volunteer, index ) => {
       const { v_first_name, v_last_name, v_id } = volunteer;
@@ -52,7 +51,10 @@ const NewVolunteersDash = (props) => {
           className={index === 0 ? "carousel-item active" : "carousel-item"}
           key={v_first_name + v_last_name + v_id}
         >
-          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
+          <VolunteerPreviewCard
+            volunteer={volunteer} 
+            acceptVolunteer={acceptVolunteer}
+          />
         </div>
       );
   });

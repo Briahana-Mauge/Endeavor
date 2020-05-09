@@ -83,7 +83,7 @@ export default function FellowProfilePage(props) {
                 <div className='col-sm-6'>
                     <img 
                         className='d-block w-100'
-                        src={fellow.f_picture} 
+                        src={fellow.f_picture || '/images/default_pic.png'} 
                         alt={`${fellow.f_first_name} ${fellow.f_last_name}`}
                     />
                 </div>
