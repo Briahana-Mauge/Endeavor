@@ -23,6 +23,7 @@ import Events from './Components/Events';
 import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
+import Mentoring from './Components/Mentoring';
 import Feedback from './Components/Feedback';
 
 
@@ -76,36 +77,39 @@ function App() {
   }
   useEffect(checkForLoggedInUser, []);
 
+
   const settleUser = (user) => {
     setLoggedUser(user);
     setIsUserStateReady(true);
     setWait(false);
   }
 
+  const resetState = () => {
+    settleUser({});
+    history.push('/login');
+    setEmail('');
+    setPassword('');
+    setNewPassword('');
+    setFirstName('');
+    setLastName('');
+    setCohortId(0);
+    setCompany('');
+    setTitle('');
+    setVolunteerSkills([]);
+    setMentor(false);
+    setOfficeHours(false);
+    setTechMockInterview(false);
+    setBehavioralMockInterview(false);
+    setProfessionalSkillsCoach(false);
+    setHostSiteVisit(false);
+    setIndustrySpeaker(false);
+    setPublicProfile(false);
+  }
+
   const logout = () => {
     setIsUserStateReady(false);
     axios.get('/api/auth/logout')
-      .then(res => {
-        settleUser({}); // async await sometimes didn't execute this so switched to .then.catch
-        history.push('/login');
-        setEmail('');
-        setPassword('');
-        setNewPassword('');
-        setFirstName('');
-        setLastName('');
-        setCohortId(0);
-        setCompany('');
-        setTitle('');
-        setVolunteerSkills([]);
-        setMentor(false);
-        setOfficeHours(false);
-        setTechMockInterview(false);
-        setBehavioralMockInterview(false);
-        setProfessionalSkillsCoach(false);
-        setHostSiteVisit(false);
-        setIndustrySpeaker(false);
-        setPublicProfile(false);
-      })
+      .then(res => resetState())
       .catch(err => setFeedback(err));
   }
 
@@ -114,7 +118,7 @@ function App() {
   }
 
 
-  /* PREP RETURN */
+  /* PROP GROUPINGS */
   const gateProps = {
     loggedUser,
     isUserStateReady,
@@ -150,33 +154,6 @@ function App() {
   }
 
 
-  /* ACCESS STRATEGY ( Admins, Staff, Volunteers, Fellows )
-
-  VOLUNTEERS PAGE/DASHBOARD: Admins, Staff
-  => possible alternate YOUR MENTOR(S) PAGE: Fellows
-  
-  EVENTS PAGE/DASHBOARD: All
-  
-  FELLOWS PAGE/DASHBOARD: Admins, Staff
-  => possible alternate YOUR MENTEE(S) PAGE: Volunteers
-  
-  ADMIN TOOLS (edit app users, edit cohorts, edit volunteer skills): Admins
-  */
-
-
-  /* IS VARIABLE: determines user type and assigns simple variable */
-  const appRoute = {};
-  if (loggedUser && loggedUser.admin) {
-    appRoute["admin"] = true;
-  } else if (loggedUser && loggedUser.a_id) {
-    appRoute["staff"] = true;
-  } else if (loggedUser && loggedUser.v_id) {
-    appRoute["volunteer"] = true;
-  } else if (loggedUser && loggedUser.f_id) {
-    appRoute["fellow"] = true;
-  }
-
-
   /* BUILD LIMITED ACCESS ROUTES */
   const
     adminDashboard = <DashboardAdmin {...userProps} />,
@@ -184,33 +161,38 @@ function App() {
     volunteersDashboard = <DashboardVolunteers {...userProps} />,
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
-      <PrivateRouteGate path='/volunteers' {...gateProps}>
+      <PrivateRouteGate path='/volunteers' h1='Volunteers List' {...gateProps}>
         <Volunteers {...userProps} />
       </PrivateRouteGate>
     ),
     volunteersProfile = (
-      <PrivateRouteGate path='/volunteer/:volunteerId' {...gateProps}>
+      <PrivateRouteGate path='/volunteer/:volunteerId' h1='Volunteer Profile' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
     fellowsProfile = (
-      <PrivateRouteGate path='/fellow/:fellowId' {...gateProps}>
+      <PrivateRouteGate path='/fellow/:fellowId' h1='Fellow Profile' {...gateProps}>
         <ProfileRender {...userProps} />
       </PrivateRouteGate>
     ),
     adminTools = (
-      <PrivateRouteGate path='/tools' {...gateProps}>
+      <PrivateRouteGate path='/tools' h1='Admin Settings' {...gateProps}>
         <AdminTools {...userProps} />
       </PrivateRouteGate>
     ),
     adminAddEventForm = (
-      <PrivateRouteGate path='/event/add' {...gateProps}>
+      <PrivateRouteGate path='/event/add' h1='Add Event' {...gateProps}>
         <EventForm {...userProps} />
       </PrivateRouteGate>
     ),
     adminEditEventForm = (
-      <PrivateRouteGate path='/event/edit/:eventId' {...gateProps}>
+      <PrivateRouteGate path='/event/edit/:eventId' h1='Edit Event' {...gateProps}>
         <EventForm {...userProps} />
+      </PrivateRouteGate>
+    ),
+    mentorManagement = (
+      <PrivateRouteGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
+        <Mentoring {...userProps} />
       </PrivateRouteGate>
     )
   ;
@@ -224,8 +206,20 @@ function App() {
     allowedFellowsProfile = null,
     allowedAdminTools = null,
     allowedAddEvent = null,
-    allowedEditEvent = null
+    allowedEditEvent = null,
+    allowedMentorManagement = null
   ;
+
+  const appRoute = {};
+  if (loggedUser && loggedUser.admin) {
+    appRoute["admin"] = true;
+  } else if (loggedUser && loggedUser.a_id) {
+    appRoute["staff"] = true;
+  } else if (loggedUser && loggedUser.v_id) {
+    appRoute["volunteer"] = true;
+  } else if (loggedUser && loggedUser.f_id) {
+    appRoute["fellow"] = true;
+  }
 
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
@@ -238,9 +232,9 @@ function App() {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
-    // allowedManageEvent = adminEventForm; // For now add and edit event is allowed to admin and staff, this may move to only admin
     allowedAddEvent = adminAddEventForm;
     allowedEditEvent = adminEditEventForm;
+    allowedMentorManagement = mentorManagement;
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
@@ -254,19 +248,20 @@ function App() {
     return <h1 className='text-center text-danger'>this will be a spinner</h1>
   }
 
+
   return (
-    <div className="g1App container-fluid p-3">
+    <div className="g1App container">
       <Switch>
 
-        <PrivateRouteGate exact path='/' {...gateProps}>
+        <PrivateRouteGate exact path='/' h1='Home' {...gateProps}>
           {allowedDashboard}
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/profile' {...gateProps}>
-          <ProfilePage {...userProps} {...profileProps} />
+        <PrivateRouteGate path='/profile' h1='My Profile' {...gateProps}>
+          <ProfilePage {...userProps} {...profileProps} resetState={resetState}/>
         </PrivateRouteGate>
 
-        <PrivateRouteGate path='/events' {...gateProps}>
+        <PrivateRouteGate path='/events' h1='Events List' {...gateProps}>
           <Events {...userProps} />
         </PrivateRouteGate>
 
@@ -276,9 +271,9 @@ function App() {
         {allowedFellowsProfile}
 
         {allowedAdminTools}
-        {/* {allowedManageEvent} */}
         {allowedAddEvent}
         {allowedEditEvent}
+        {allowedMentorManagement}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>
@@ -291,7 +286,7 @@ function App() {
           <h1 className='text-center'>We can have a message here or a 404 page</h1>
         </Route>
 
-        <Redirect to='/404' />
+        <Redirect to='/404' />  
 
       </Switch>
 
@@ -303,5 +298,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

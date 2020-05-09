@@ -6,8 +6,6 @@ Events Route Queries | Capstone App (Pursuit Volunteer Mgr)
 /* DB CONNECTION */
 const db = require('../db/db');
 
-const eventsQueries = require('./events');
-
 
 /* QUERIES */
 
@@ -78,11 +76,9 @@ const manageVolunteerHours = async (requestObject) => {
         const volunteer = await t.one(volunteerHoursQuery, requestObject);
 
         if (volunteer.confirmed) {
-            requestObject.time = (volunteer.volunteered_time || 0 ) + requestObject.volunteeredHours;
-
             const updateQuery = `
                 UPDATE event_volunteers 
-                SET volunteered_time = $/time/
+                SET volunteered_time = $/volunteeredHours/
                 WHERE volunteer_id = $/volunteerId/ AND eventv_id = $/eventId/
                 RETURNING *
             `

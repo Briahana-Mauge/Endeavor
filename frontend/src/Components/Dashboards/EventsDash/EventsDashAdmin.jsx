@@ -59,8 +59,8 @@ const EventsDash = (props) => {
 
   return(
     <>
-      <div className="g1Card card mb-2">
-        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>Today's</span> Events</h3>
+      <div className="g1Card card mb-3">
+        <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>Today's</span> Events</h3>
         <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
           <div role="grid" className="g1Table">
@@ -76,8 +76,8 @@ const EventsDash = (props) => {
         </div>
       </div>
 
-      <div className="g1Card card mb-2">
-        <h3 className={`g1CardHeader card-header ${xPadding}`}><span>On the</span> Horizon</h3>
+      <div className="g1Card card mb-3">
+        <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>On the</span> Horizon</h3>
         <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
           <div role="grid" className="g1Table">

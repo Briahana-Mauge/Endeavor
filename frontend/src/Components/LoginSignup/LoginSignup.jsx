@@ -94,7 +94,7 @@ export default function LoginSignup(props) {
     
     return (
         <div> 
-            <img className='d-block mx-auto appLogo' src='/images/app_logo.jpg' alt='app logo'/>
+            <img className='d-block mx-auto appLogo' src='/images/app_logo.png' alt='app logo'/>
             
             <form className='form-row' onSubmit={handleFormSubmit}>
                 <EmailPassword 

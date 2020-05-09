@@ -15,7 +15,7 @@ const logoutLiPadding = "pl-3";
 
 
 /* MAIN */
-const NavBar = ({ loggedUser, logout }) => {
+const NavBar = ({ h1, loggedUser, logout }) => {
   // SCREEN WIDTH RESPONSE SYSTEM: needed to make navbar dropdown on mobile devices disappear on click
   const isClient = typeof window === 'object';
   const checkWidth = useCallback(() => {
@@ -112,8 +112,13 @@ const NavBar = ({ loggedUser, logout }) => {
 
 
   return (
-    <nav className={`g1Navbar navbar fixed-top navbar-expand-lg navbar-dark py-2 container-fluid`}>
+    <nav className={`g1Navbar navbar navbar-expand-lg py-2 navbar-dark container`}>
       <Logo />
+      <div className="g1NavbarBg"></div>
+      <div className="g1Subnav">
+        <h1>{h1}</h1>
+        <div></div>
+      </div>
       <Burger />
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
@@ -217,7 +222,7 @@ const Logout = ({logout}) => {
   return(
     <li className={`nav-item g1MobileTextALign`}>
       <button
-        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-3 pr-lg-auto`}
+        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-0 pr-lg-auto`}
         onClick={logout}
       >
         Logout

@@ -8,7 +8,7 @@ const EventCard = (props) => {
     const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
-    const [ volunteerHours, setVolunteerHours ] = useState('');
+    const [ volunteerHours, setVolunteerHours ] = useState({});
     const [ waitingForRender, setWaitingForRender ] = useState(false);
 
     /* 
@@ -21,11 +21,27 @@ const EventCard = (props) => {
             index3: volunteer profile deleted
             index4: event_volunteers table id
             index5: volunteer confirmed to event
+            index6: volunteered time on that event
     */
     
     useEffect(() => {
-        setWaitingForRender(false)
+        setWaitingForRender(false);
     }, [props.reloadParent]);
+
+    
+    useEffect(() => {
+        const tracker = {};
+        for (let volunteerArr of event.volunteersList) {
+            tracker[volunteerArr[0]] = volunteerArr[6];
+        }
+        setVolunteerHours(tracker);
+    }, [event.volunteersList]);
+
+    const manageVolunteerHours = (time, id) => {
+        const tracker = {...volunteerHours};
+        tracker[id] = time;
+        setVolunteerHours(tracker);
+    }
 
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
@@ -57,15 +73,17 @@ const EventCard = (props) => {
         }
     }
 
-    const attributeHoursForVolunteer = async (e, volunteerId) => {
+    const attributeHoursForVolunteer = async (e, volunteerId, volunteerName) => {
         try {
             e.preventDefault();
 
-            setWaitingForRender(true);
-            await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: volunteerHours});
-            setWaitingForRender(false);
-            setFeedback({message: `Successfully added ${volunteerHours} hours to volunteer`});
-            setVolunteerHours('');
+            const hours = volunteerHours[volunteerId];
+            if (hours) {
+                setWaitingForRender(true);
+                await axios.put(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {volunteeredHours: hours});
+                setFeedback({message: `Successfully added ${hours} hours to ${volunteerName}`});
+                props.setReloadParent(!props.reloadParent);
+            }
         } catch (err) {
             setFeedback(err)
         }
@@ -107,13 +125,13 @@ const EventCard = (props) => {
                     <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteer[0]}`)}>Profile</span>
                     {
                         volunteer[5] === 'true'
-                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer[0])}>
+                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer[0], volunteer[1])}>
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
                                     placeholder='Hours' 
-                                    value={volunteerHours}
-                                    onChange={e => setVolunteerHours(e.target.value)}
+                                    value={volunteerHours[volunteer[0]] || ''}
+                                    onChange={e => manageVolunteerHours(e.target.value, volunteer[0])}
                                     disabled={waitingForRender}
                                 />
                                 <button className='btn btn-primary  mb-2' disabled={waitingForRender}>Save</button>

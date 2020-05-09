@@ -18,7 +18,7 @@ export default function Volunteers (props) {
     useEffect(() => {
         const getSkillsList = async () => {
             try {
-                const { data } = await axios.get('api/skills');
+                const { data } = await axios.get('/api/skills');
                 setSkillsList(data.payload);
             } catch (err) {
                 setFeedback(err)
@@ -47,17 +47,6 @@ export default function Volunteers (props) {
         setReload(!reload);
     }
 
-    // const makeTargetVolunteerId = (id) => {
-    //     setTargetVolunteerId(id)
-    // }
-
-    const displayProfile = () => {
-        setDisplayTargetUser(true)
-    }
-
-    const hideProfile = () => {
-        setDisplayTargetUser(false)
-    }
 
     return (
         <div className="Search">
@@ -84,7 +73,7 @@ export default function Volunteers (props) {
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
-                        displayProfile={displayProfile}
+                        setDisplayTargetUser={setDisplayTargetUser}
                         setTargetVolunteerId={setTargetVolunteerId}
                     />
                 )}
@@ -94,7 +83,7 @@ export default function Volunteers (props) {
                 displayTargetUser
                     ? <ProfileRender
                         volunteerId={targetVolunteerId}
-                        hideProfile={hideProfile}
+                        setDisplayTargetUser={setDisplayTargetUser}
                         setFeedback={props.setFeedback}
                         loggedUser={props.loggedUser}
                     />

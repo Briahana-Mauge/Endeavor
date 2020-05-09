@@ -25,11 +25,12 @@ html, body, #root, .g1App {
 :root {
     font-size: 16px;
     --fs-body: 1rem;
+    --fs-h1: 1.1rem;
     --fs-h3: .9rem;
 
-    --ff-body1: 'Quicksand', sans-serif;
-    --ff-accent: 'Cabin', sans-serif;
     --ff-top: 'Red Hat Display', sans-serif;
+    --ff-body: 'Cabin', sans-serif;
+    --ff-accent: 'Quicksand', sans-serif;
 
     --fw-bold: 800;
 
@@ -38,16 +39,23 @@ html, body, #root, .g1App {
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
+    --color-bodybase: #0c053a;
 
     --border-radii: .2rem;
     --box-shadow: 1px 6px 11px #0005;
+    --bs-buttons: 5px 2px 7px #000a;
     --table-outer-gaps: 0;
     --table-inner-gaps: .8rem;
     
-    --navbar-height: 62px;
+    --navbar-height: 4.6rem;
+
+    --zi-popup: 1000;
+    --zi-navbar: 90;
+    --zi-subnav: 100;
+    --zi-carousel-arrows: 100;
 }
 
-    // MEDIA QUERY SIZING
+    // MEDIA QUERY SIZING REFERENCE
     // Bootstrap reference
     // DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
     // @media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
@@ -55,20 +63,16 @@ html, body, #root, .g1App {
     // @media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
     // @media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)
 
-    @media (min-width: 992px) {
-        // placeholder
-    }
-
 
 /* BASE ELEMENT STYLING */
 body {
     position: fixed; // prevents background scrolling with scroll
 
-    padding-top: var(--navbar-height);
-    background-color: #1a1635;  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
-    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+    background-color: var(--color-bodybase);  // when page is scrolled past viewport, this shows. so this should match darker gradient color below
+    background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #292b52f2 50%, #5d5c77eb 89%);
+    // background-image: linear-gradient(180deg, var(--color-bodybase) 5%, #696a81 50%, #908fa1 89%);
 
-    font-family: var(--ff-body1);
+    font-family: var(--ff-body);
     font-size: var(--fs-body);
     color: var(--color-black);
 
@@ -126,15 +130,30 @@ nav button {
 }
 
 
+.card-body,
 .lightBox {
     color: var(--color-black);
 }
 
+.lightBox,
+.feedbackContainer {
+    z-index: var(--zi-popup) !important;
+
+    @media (max-width: 460px) {
+        width: auto !important;
+        left: initial !important;
+        margin-right: 1rem;
+    }
+}
 
 /* CLASS STYLINGS */
+#root {
+    overflow-y: scroll;
+}
+
 .g1App {
-    overflow-y: auto;
-    padding-top: 0 !important; // removes redundant padding from fixed navbar + App overflow combination
+    padding-right: 0;
+    padding-left: 0;
     color: var(--color-white);
 }
 
@@ -157,8 +176,11 @@ nav button {
 }
 
 .g1Navbar {
+    position: fixed;
+    top: 0px;
     height: var(--navbar-height);
     align-items: flex-start;
+    z-index: var(--zi-navbar);
     // box-shadow: 0px 6px 29px 2px #000a; // optional, save for later idea
 
     font-family: var(--ff-top);
@@ -169,6 +191,28 @@ nav button {
         &.g1DisableLink {
             @include link-states-disabled();
         }
+    }
+
+    @media (max-width: 576px) {
+        max-width: 100%;
+        // max-width: calc(100% - 1rem);
+    }
+
+    .g1NavbarBg {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: var(--navbar-height);
+        z-index: var(--zi-navbar);
+        background-image: linear-gradient(180deg, var(--color-bodybase) 45%, #0f093cf2 100%);
+    }
+
+    .g1Brand,
+    .g1NavbarToggler,
+    .g1Collapse,
+    .g1Subnav {
+        z-index: var(--zi-subnav);
     }
 }
 
@@ -189,8 +233,8 @@ nav button {
 
 .g1NavbarToggler {   // burger positioning
     padding: 0 .75rem;
-    height: 76%;
-    margin-top: .2rem;  // used in conjunction with burger margin-top to even out top of page
+    height: 55%;
+    margin-top: .32rem;  // used in conjunction with burger margin-top to even out top of page
 }
 
 .g1DropdownMenu {
@@ -218,12 +262,49 @@ nav button {
     }
 }
 
+.g1Subnav {
+    position: absolute;
+    top: 3rem;
+    left: 1.1rem;
+    width: 100%;
+    padding-right: 2rem;
 
-// Body Cards
+    display: flex;
+    flex-direction: row;
+
+    h1 {
+        padding-right: .5rem;
+
+        color: #0aa2dc;
+        font-family: var(--ff-top);
+        font-weight: var(--fw-bold);
+        font-size: var(--fs-h1);
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    div {
+        position: relative;
+        top: 4.5px;
+        display: inline-block;
+        width: 100%;
+        height: 1px;
+        background-image: linear-gradient(90deg, #ab9f5a, #0805b3);
+    }
+}
+
+
+/* MAIN BODY COMPONENTS */
+.g1Stage {
+    padding-top: calc(var(--navbar-height) + .4rem);
+}
+
 .g1Card {
     background-color: transparent;
-    background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
+    background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+    // background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
     border-radius: var(--border-radii);
+    line-height: 1.2rem;
     padding-bottom: .1rem;
 
     &.g1CardImportant {
@@ -268,11 +349,12 @@ nav button {
     color: var(--color-white);
 }
 
+
+// ALL: EVENTS DASH
 .g1Table {
     display: table;
 
     width: 100%;
-    font-family: var(--ff-accent);
     border: 0;
     color: var(--color-white);
 
@@ -283,7 +365,14 @@ nav button {
             background-color: #ff658229;
         }
     }
-    .important { color: #c7be83;}
+    .important {
+        color: #d4c358;
+
+        .g1TimeCol u {
+            text-decoration: none;
+            color: #f17f08eb;
+        }
+    }
     .passed { color: #999; }
 
     .g1THead {
@@ -291,10 +380,9 @@ nav button {
         
         padding-bottom: calc(var(--table-inner-gaps) * .15);
 
-        color: #cd43a9;
+        color: #a54d8e;
         text-transform: uppercase;
         font-size: calc(var(--fs-body) * .75);
-        font-family: var(--ff-accent);
 
         .g1TD {
             border-bottom: 1px dashed #696969;
@@ -355,12 +443,184 @@ nav button {
 }
 
 .g1BufferRow.g1TBody .g1TR {
-    background-color: transparent;
-    height: .5rem;
+    background-color: #2d2d48fa;
+    height: .3rem;
+}
+
+.g1BufferRow + .g1TBody .g1TR .g1TD {
+    padding-top: 4px;
 }
 
 .g1EventLink {
     cursor: pointer;
+}
+
+
+// ADMIN: NEW VOLUNTEERS CAROUSEL
+.g1NewVolCarousel {
+    .g1CarouselArrows {
+        position: absolute;
+        top: 12.5rem;
+        left: 1px;
+        width: 100%;
+
+        .g1CarouselArrowsInterior {
+            width: 100%;
+
+            & > div {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+
+                width: 100%;
+                height: 2.7rem;
+                border: solid 1px #60366e;
+                border-radius: 4rem;
+
+                position: relative;
+                transform: translateX(0px); // used to bring buttons up to visual plane context above card data
+                z-index: var(--zi-carousel-arrows);
+
+                background-color: var(--color-primary);
+                box-shadow: var(--bs-buttons);
+
+                & > a {
+                    height: 100%;
+                    width: 100%;
+
+                    &:first-child {
+                        border-right: solid 1px var(--color-white);
+                    }
+                }
+            }
+        }
+
+        @media (max-width: 992px) {
+            top: 2.5rem;
+            width: 100%;
+
+            .g1CarouselArrowsInterior {
+                width: 29%;
+            }
+        }
+    }
+
+    .carousel-control-next,
+    .carousel-control-prev {
+        position: static;
+    }
+
+    .g1NewVolCard button {
+        width: 100%;
+    }
+
+    .carousel-indicators {
+        position: relative;
+        justify-content: flex-start;
+        margin-right: 0;
+        margin-left: 0;
+
+        li {
+            position: relative;
+            opacity: .2;
+            height: 16px;
+            border-top-width: 2px;
+            transition: opacity .6s ease, background-color .6s ease;
+
+            div {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 100%;
+
+                color: var(--color-black);
+                font-family: var(--ff-accent);
+                text-indent: 0;
+                text-transform: uppercase;
+            }
+        }
+
+        .active {
+            opacity: 1;
+            background-color: var(--color-white);
+
+            div {
+                color: var(--color-primary);
+                outline: solid 2px var(--color-yellow);
+            }
+        }
+    }
+
+    .g1NewVolBtns {
+        @media (max-width: 992px) {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+
+            .btn {
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .g1Avatar {
+        width: 8rem;
+        object-fit: cover;
+        height: 8rem;
+        border-radius: var(--border-radii);
+        float: left;
+
+        @media (max-width: 768px) {
+            float: right;
+        }
+    }
+
+    .g1NVFaceDate {
+        @media (max-width: 768px) {
+            text-align: right;
+        }
+    }
+
+    .g1NVName {
+        font-weight: bold;
+        text-transform: uppercase;
+        line-height: 1.4rem;
+        color: var(--color-white);
+        font-family: var(--ff-top);
+        font-size: 1.2rem;
+        border-bottom: solid 1px var(--color-primary);
+    }
+
+    .g1NewVolSkills {
+        clear: both;
+        list-style: none;
+        text-align: right;
+
+        @media (min-width: 768px) {
+            text-align: left;
+            padding-left: 6rem;
+        }
+
+        @media (min-width: 992px) {
+            padding-left: 0;
+        }
+
+        strong {
+            display: block;
+            text-transform: lowercase;
+            font-family: var(--ff-top);
+            font-size: .8rem;
+            color: #b5a31b;
+        }
+    }
 }
 
 // .g1PopoverBtn {
@@ -397,7 +657,6 @@ nav button {
 //     .popover {
 //         border-radius: var(--border-radii);
 //         box-shadow: var(--box-shadow);
-//         font-family: var(--ff-accent);
 //     }
 
 //     .popover-header {

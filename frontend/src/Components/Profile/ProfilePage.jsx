@@ -59,7 +59,7 @@ export default function ProfilePage(props) {
 
         try {
             await axios.delete(`api/users/${userId}`);
-
+            props.resetState();
         } catch (err) {
             props.setFeedback(err);
         }

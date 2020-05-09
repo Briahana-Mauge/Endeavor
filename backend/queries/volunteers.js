@@ -7,7 +7,6 @@ FELLOWS Route Queries | Capstone App (Pursuit Volunteer Mgr)
 const db = require('../db/db');
 
 const userQueries = require('./users');
-const timeQueries = require('./time');
 // const eventVolunteersQueries = require('./eventVolunteers');
 // const mentorPairsQueries = require('./mentorPairs');
 const volunteerSkillsQueries = require('./volunteerSkills');
@@ -66,7 +65,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
       condition += ' AND LOWER(skills.skill) = $/skill/ '
     }
     if (name) {
-      condition += ` AND LOWER(volunteers.v_first_name) = $/name/ OR LOWER(volunteers.v_last_name) = $/name/ OR LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/name/ `
+      condition += ` AND LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
     }
 
     let volunteersList = null;
@@ -133,18 +132,26 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
       signup_date, inactive_date, volunteers.deleted, public_profile,
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
       (SELECT
+        ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || 
+            event_start || ' &$%& ' || event_end || ' &$%& ' || CAST(volunteered_time AS CHAR(2)))
+          FROM events 
+          INNER JOIN event_volunteers ON event_id = eventv_id
+          INNER JOIN volunteers ON volunteer_id = v_id
+          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end < NOW()
+        ) AS past_events,
+      (SELECT
         ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || event_start || ' &$%& ' || event_end )
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
-          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE
-        ) AS events_list,
+          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end >= NOW()
+        ) AS future_events,
       (SELECT
         ARRAY_AGG (
           CAST(f_id AS CHAR(10)) || ' &$%& ' ||
-          f_first_name || f_last_name || ' &$%& ' ||
+          f_first_name || ' ' || f_last_name || ' &$%& ' ||
           CAST(starting_date AS CHAR(10)) || ' &$%& ' ||
-          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE 'true' END
+          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE CAST(mentor_pairs.deleted AS CHAR(20)) END
         )
         FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
         INNER JOIN volunteers ON mentor = v_id
@@ -288,7 +295,6 @@ const deleteVolunteer = async (id) => {
   `
   const promises = [];
   promises.push(db.one(deleteQuery, id));
-  promises.push(timeQueries.deleteHoursByVolunteerId(id, true));
   // promises.push(eventVolunteersQueries.delete...(id, true));
   // promises.push(mentorPairsQueries.delete...(id, true));
   promises.push(volunteerSkillsQueries.deleteVolunteerSkillsByVolunteerId(id, true));

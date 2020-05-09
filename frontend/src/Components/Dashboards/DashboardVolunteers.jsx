@@ -11,7 +11,6 @@ import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
-// import EventPreviewCard from '../EventPreviewCard';
 
 import { Bar, Pie, Line } from 'react-chartjs-2';
 

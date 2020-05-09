@@ -19,7 +19,31 @@ const getMentorPairByFellowId = async (id) => {
     return await db.any(selectQuery, id);
 }
 
+const pairMentorMentee = async (volunteerId, fellowId) => {
+    return await db.task(async (t) => {
+        const selectQuery = 'SELECT m_id FROM mentor_pairs WHERE mentor = $/volunteerId/ AND mentee = $/fellowId/ AND deleted IS NULL';
+        const relationExists = await t.oneOrNone(selectQuery, {volunteerId, fellowId});
+    
+        if (relationExists) {
+            throw new Error('400__Relation exists already');
+        }
+    
+        const insertQuery = `INSERT INTO mentor_pairs (mentor, mentee) VALUES ($/volunteerId/, $/fellowId/) RETURNING *`;
+        return await t.one(insertQuery, {volunteerId, fellowId});
+    });
+}
+
+const deleteMentorship = async (volunteerId, fellowId) => {
+    const deleteQuery = `
+        UPDATE mentor_pairs SET deleted = NOW() 
+        WHERE mentor = $/volunteerId/ AND mentee = $/fellowId/ AND deleted IS NULL 
+        RETURNING *`;
+    return await db.one(deleteQuery, {volunteerId, fellowId});
+}
+
 module.exports = {
     getMentorPairByVolunteerId,
-    getMentorPairByFellowId
+    getMentorPairByFellowId,
+    pairMentorMentee,
+    deleteMentorship
 }

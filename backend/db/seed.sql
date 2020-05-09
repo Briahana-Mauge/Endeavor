@@ -40,6 +40,7 @@ CREATE TABLE administration (
     a_first_name VARCHAR (30) NOT NULL,
     a_last_name VARCHAR (30) NOT NULL,
     a_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
+    a_picture VARCHAR,
     admin BOOLEAN NOT NULL DEFAULT FALSE,
     deleted DATE DEFAULT NULL
 );
@@ -95,7 +96,7 @@ CREATE TABLE mentor_pairs (
     m_id SERIAL PRIMARY KEY,
     mentor INT NOT NULL REFERENCES volunteers(v_id),
     mentee INT NOT NULL REFERENCES fellows(f_id),
-    m_active BOOLEAN NOT NULL DEFAULT TRUE,
+    -- m_active BOOLEAN NOT NULL DEFAULT TRUE,
     starting_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
     deleted DATE DEFAULT NULL
 );
