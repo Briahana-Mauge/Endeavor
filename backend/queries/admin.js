@@ -26,14 +26,14 @@ const addAdmin = async (firstName, lastName, email, newPassword, oldPassword, ad
     }
 }
 
-const updateAdmin = async (id, firstName, lastName) => {
+const updateAdmin = async (id, firstName, lastName, picture) => {
     const updateQuery = `
         UPDATE administration 
-            SET a_first_name = $2, a_last_name = $3
+            SET a_first_name = $2, a_last_name = $3, a_picture = $4
             WHERE a_id = $1
             RETURNING *
     `
-    return await db.one(updateQuery, [id, firstName, lastName]);
+    return await db.one(updateQuery, [id, firstName, lastName, picture]);
 }
 
 const deleteAdmin = async (id) => {
