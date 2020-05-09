@@ -126,93 +126,21 @@ router.get('/admin/event/:e_id', async (req, res, next) => {
     }
 })
 
-// Get all upcoming events
-// router.get('/upcoming', async (req, res, next) => {
-//     try {
-//         let allEvents = await eventsQueries.getUpcomingEvents();
-//         res.json({
-//             payload: allEvents,
-//             message: "Success",
-//             err: false
-//         });
-//     } catch (err) {
-//         handleError(err, req, res, next);
-//     }
-// });
 
-// Get all past events
-// router.get('/past', async (req, res, next) => {
-//     try {
-//         let allEvents = await eventsQueries.getPastEvents();
-//         res.json({
-//             payload: allEvents,
-//             message: "Success",
-//             err: false
-//         });
-//     } catch (err) {
-//         handleError(err, req, res, next);
-//     }
-// });
+// Get count of all past events
+router.get('/past', async (req, res, next) => {
+    try {
+        let allEvents = await eventsQueries.getPastEvents();
+        res.json({
+            payload: allEvents,
+            message: "Success",
+            err: false
+        });
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+});
 
-// Get all important events // is this still used? has been incorporated into query for volunteer dash elsewhere
-// router.get('/important', async (req, res, next) => {
-//     try {
-//         let limit = req.query.limit;
-//         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
-//             limit = null;
-//         } 
-
-//         const allEvents = await eventsQueries.getImportantEvents(limit);
-//         res.json({
-//             payload: allEvents,
-//             message: "Success",
-//             err: false
-//         });
-//     } catch (err) {
-//         handleError(err, req, res, next);
-//     }
-// });
-
-// Get all past events by volunteer id // is this still used? has been incorporated into query for volunteer dash elsewhere
-// router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
-//     try {
-//         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-//         const events = await eventsQueries.getPastEventsByVolunteerId(volunteerId);
-//         res.json({
-//             payload: events,
-//             message: "Success",
-//             err: false
-//         });
-//     } catch (err) {
-//         handleError(err, req, res, next);
-//     }
-// });
-
-// Get all upcoming events by volunteer id // is this still used? has been incorporated into query for volunteer dash elsewhere
-// router.get('/upcoming/volunteer/:volunteer_id', async (req, res, next) => {
-//     try {
-//         const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-//         let limit = req.query.limit;
-//         if (isNaN(parseInt(limit)) || parseInt(limit).toString().length !== limit.length) {
-//             limit = null;
-//         } 
-
-//         if (req.user && req.user.v_id && req.user.v_id === volunteerId) {
-//             const events = await eventsQueries.getUpcomingEventsByVolunteerId(volunteerId, limit);
-//             res.json({
-//                 payload: events,
-//                 message: "Success",
-//                 err: false
-
-//             });
-//         }
-//         else {
-//             throw new Error('403__not authorized');
-//         }
-//     } catch (err) {
-//         handleError(err, req, res, next);
-//     }
-// });
 
 // Get all past events by fellow id
 router.get('/past/fellow/:fellow_id', async (req, res, next) => {

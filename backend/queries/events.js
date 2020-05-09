@@ -6,10 +6,6 @@ Events Route Queries | Capstone App (Pursuit Volunteer Mgr)
 /* DB CONNECTION */
 const db = require('../db/db');
 
-// const eventFollowsQueries = require('./eventFollows');
-// const eventVolunteersQueries = require('./eventVolunteers');
-
-
 /* QUERIES */
 
 // Get all events (past events are auto pushed to the back)
@@ -151,33 +147,6 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
-  // const selectQueryOriginal = `
-  // SELECT 
-  //   event_id, 
-  //   topic, 
-  //   event_start, 
-  //   event_end, 
-  //   description, 
-  //   staff_description,
-  //   location, 
-  //   instructor, 
-  //   number_of_volunteers, 
-  //   cohort,
-  //   cohort_id,
-  //   materials_url
-
-  // FROM events
-  // INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
-  // LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
-  // LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-  // `
-  // ARRAY_AGG ( 
-  //   DISTINCT
-  //   CASE 
-  //     WHEN event_volunteers.confirmed = TRUE 
-  //     THEN volunteers.v_email
-  //     END
-  // ) AS v_email
 
   const endOfQuery = `
     GROUP BY
@@ -237,27 +206,15 @@ const getSingleEventAdmin = async (eId) => {
   return await db.one(selectQuery, { eId });
 }
 
-// // Get all upcoming events
-// const getUpcomingEvents = async () => {
-//   const selectQuery = `
-//   SELECT * 
-//   FROM events 
-//   WHERE event_start > now() AND deleted IS NULL
-//   ORDER BY event_start ASC
-//   `;
-//   return await db.any(selectQuery);
-// }
-
-// // Get all past events
-// const getPastEvents = async () => {
-//   const selectQuery = `
-//   SELECT * 
-//   FROM events 
-//   WHERE event_start < now() AND deleted IS NULL
-//   ORDER BY event_start ASC
-//   `;
-//   return await db.any(selectQuery);
-// }
+// Get count of all past events
+const getPastEvents = async () => {
+  const selectQuery = `
+  SELECT COUNT(*)
+  FROM events
+  WHERE events.event_end <= now() AND deleted IS NULL
+  `;
+  return await db.any(selectQuery);
+}
 
 // Get all events data for admin dashboards
 const getDashEventsForAdmin = async () => {
@@ -564,14 +521,6 @@ const getUpcomingEventsByVolunteerId = async (id, limit) => {
     GROUP BY event_id, cohort_id
     ORDER BY event_start ASC
   `
-  // let selectQuery = `
-  //  SELECT event_id, topic, event_start, instructor, description, event_end, location, cohort
-  //   FROM events 
-  //   INNER JOIN event_volunteers ON event_id = ev_id
-  //   INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
-  //   WHERE event_start > now() AND volunteer_id = $1 AND confirmed = TRUE
-  //   ORDER BY event_start ASC
-  // `;
   if (limit) {
     selectQuery += ' LIMIT $2'
   }
@@ -598,7 +547,7 @@ module.exports = {
   getAllEventsAdmin,
   getSingleEventAdmin,
   // getUpcomingEvents,
-  // getPastEvents,
+  getPastEvents,
   getDashEventsForAdmin,
   getDashEventsForVolunteer,
   // getPastEventsByVolunteerId,
