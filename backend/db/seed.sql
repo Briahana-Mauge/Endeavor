@@ -96,7 +96,7 @@ CREATE TABLE mentor_pairs (
     m_id SERIAL PRIMARY KEY,
     mentor INT NOT NULL REFERENCES volunteers(v_id),
     mentee INT NOT NULL REFERENCES fellows(f_id),
-    m_active BOOLEAN NOT NULL DEFAULT TRUE,
+    -- m_active BOOLEAN NOT NULL DEFAULT TRUE,
     starting_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
     deleted DATE DEFAULT NULL
 );

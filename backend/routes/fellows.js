@@ -16,7 +16,14 @@ const queries = require('../queries/fellows');
 /* MIDDLEWARE FUNCTIONS */
 const readAllFellows = async (req, res, next) => {
   try {
-    const allFellows = await queries.getAllFellows();
+    const name = processInput(req.query.name, 'softVC', 'fellow name', 120).toLowerCase();
+    const requestedMentor = processInput(req.query.mentor, 'softVC', 'request mentor', 5).toLowerCase();
+    let cohortId = req.query.cohort;
+    if (isNaN(parseInt(cohortId)) || parseInt(cohortId).toString().length !== cohortId.length) {
+      cohortId = '';
+    }
+
+    const allFellows = await queries.getAllFellows(name, cohortId, requestedMentor);
     res.status(200);
     res.json({
         status: "success",

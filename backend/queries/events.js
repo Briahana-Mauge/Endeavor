@@ -142,7 +142,8 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
       v_email || ' &$%& ' ||
       CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
       CAST(ev_id as CHAR(10))|| ' &$%& ' ||
-      CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+      CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10)) || ' &$%& ' ||
+      CAST(volunteered_time as CHAR(2))
     ) AS volunteers_list
     
   FROM events
