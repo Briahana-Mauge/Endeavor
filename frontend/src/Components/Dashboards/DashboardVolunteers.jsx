@@ -12,8 +12,8 @@ import axios from 'axios';
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
 
-import { Bar,defaults} from 'react-chartjs-2';
-// defaults.global.defaultColor = 'white';
+import { Bar} from 'react-chartjs-2';
+
 
 const Dashboard = (props) => {
   const { setFeedback, loggedUser } = props;
@@ -25,7 +25,6 @@ const Dashboard = (props) => {
   const [totalTime, setTotalTime] = useState(0);
   const [totalEvents, setTotalEvents] = useState(0);
   const [reloadDashboard, setReloadDashboard] = useState(false);
-
   const [barData, setBarData] = useState({
     labels: ['Volunteer hours earned', 'Events attended'],
     datasets: [
@@ -148,22 +147,13 @@ const Dashboard = (props) => {
         </div>
 
         <div className="col-12 col-md-7">
-          {/* <h3>Personal Stats</h3>
-          <br />
 
           {
             eventsObj.upcomings.length === 0
               ? <p>You are not registered to volunteer at any upcoming events. Visit the Events page to find out more!</p>
               : null
-          } */}
-          {/* <p>You've got {volunteeredTime} volunteer hours!</p>
-          {
-            eventsObj.pasts.length < 1
-              ? <p>You haven't participated in any events yet.</p>
-              : eventsObj.pasts.length > 1
-                ? <p>So far, you've participated in {eventsObj.pasts.length} events.</p>
-                : <p>So far, you've participated in {eventsObj.pasts.length} event.</p>
-          } */}
+          } 
+
         </div>
       </div>
       {
