@@ -23,8 +23,8 @@ const allVolunteeredTimeByVolunteerID = async (volunteer) => {
 //Get the number of hours by all volunteers (response is an array of objects)
 const allHours = async () => {
   const selectQuery = `
-  SELECT banked_time 
-  FROM volunteers_hours
+  SELECT SUM(volunteered_time) 
+  FROM event_volunteers
   WHERE deleted IS NULL
   `;
   return await db.any(selectQuery);
