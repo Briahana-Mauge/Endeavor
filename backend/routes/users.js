@@ -4,6 +4,9 @@ const router = express.Router();
 const { hashPassword, comparePasswords } = require('../auth/helpers');
 
 const usersQueries = require('../queries/users');
+const adminQueries = require('../queries/admin');
+const volunteersQueries = require('../queries/volunteers');
+const fellowsQueries = require('../queries/fellows');
 
 const processInput = require('../helpers/processInput');
 const handleError = require('../helpers/handleError');
@@ -96,13 +99,14 @@ const deleteAccount = async(request, response, next) => {
             } 
             else if (request.user.v_id) {
                 await volunteersQueries.deleteVolunteer(loggedUserId);
+                // NEED: delete volunteer skills
             } 
             else {
                 await fellowsQueries.deleteFellow(loggedUserId);
             }
     
-            // await usersQueries.deleteUser(loggedUserEmail);
-            // next();
+            await usersQueries.deleteUser(loggedUserEmail);
+            next();
         } 
         else {
             throw new Error("403__Not authorized to delete");

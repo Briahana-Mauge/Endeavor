@@ -25,7 +25,7 @@ const pairMentorMentee = async (volunteerId, fellowId) => {
         const relationExists = await t.oneOrNone(selectQuery, {volunteerId, fellowId});
     
         if (relationExists) {
-            return new Error('400__Relation exists already');
+            throw new Error('400__Relation exists already');
         }
     
         const insertQuery = `INSERT INTO mentor_pairs (mentor, mentee) VALUES ($/volunteerId/, $/fellowId/) RETURNING *`;

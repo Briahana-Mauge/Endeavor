@@ -6,8 +6,6 @@ Events Route Queries | Capstone App (Pursuit Volunteer Mgr)
 /* DB CONNECTION */
 const db = require('../db/db');
 
-const eventsQueries = require('./events');
-
 
 /* QUERIES */
 
