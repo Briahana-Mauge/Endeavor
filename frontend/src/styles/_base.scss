@@ -623,6 +623,17 @@ nav button {
     }
 }
 
+/* FLOATING COMPONENTS */
+.g1Lightbox {
+    position: fixed;
+    max-height: 77vh;
+    width: clamp(60vw, 54rem, 56rem);
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    transform: translate(-50%, -50%);
+}
+
 // .g1PopoverBtn {
 //     &, &:hover, &:active, &:focus {
 //         --event-indent: 1.5rem;

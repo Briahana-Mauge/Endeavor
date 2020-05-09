@@ -25,6 +25,8 @@ import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
 import Feedback from './Components/Feedback';
+const identifyUser = require('./helpers/identifyUser');
+
 
 
 function App() {
@@ -59,6 +61,7 @@ function App() {
   const [industrySpeaker, setIndustrySpeaker] = useState(false);
   const [publicProfile, setPublicProfile] = useState(false);
 
+  const userIs = identifyUser(loggedUser);
   const location = useLocation();
   const history = useHistory();
 
@@ -210,25 +213,14 @@ function App() {
     allowedMentorManagement = null
   ;
 
-  const appRoute = {};
-  if (loggedUser && loggedUser.admin) {
-    appRoute["admin"] = true;
-  } else if (loggedUser && loggedUser.a_id) {
-    appRoute["staff"] = true;
-  } else if (loggedUser && loggedUser.v_id) {
-    appRoute["volunteer"] = true;
-  } else if (loggedUser && loggedUser.f_id) {
-    appRoute["fellow"] = true;
-  }
-
-  if (appRoute.volunteer) {
+  if (userIs.volunteer) {
     allowedDashboard = volunteersDashboard;
-    allowedVolunteersProfile = volunteersProfile; // Temporarily here to see how it looks like on the volunteers side
+    allowedVolunteersProfile = volunteersProfile;
   }
-  if (appRoute.staff) {
+  if (userIs.staff) {
     allowedDashboard = staffDashboard;
   }
-  if (appRoute.admin || appRoute.staff) {
+  if (userIs.admin || userIs.staff) {
     allowedVolunteersHome = volunteersHome;
     allowedVolunteersProfile = volunteersProfile;
     allowedFellowsProfile = fellowsProfile;
@@ -236,11 +228,11 @@ function App() {
     allowedEditEvent = adminEditEventForm;
     allowedMentorManagement = mentorManagement;
   }
-  if (appRoute.admin) {
+  if (userIs.admin) {
     allowedDashboard = adminDashboard;
     allowedAdminTools = adminTools;
   }
-  if (appRoute.fellow) {
+  if (userIs.fellow) {
     allowedDashboard = fellowsDashboard;
   }
 
@@ -295,6 +287,7 @@ function App() {
           ? <Feedback feedback={feedback} resetFeedback={resetFeedback} />
           : null
       }
+
     </div>
   );
 }

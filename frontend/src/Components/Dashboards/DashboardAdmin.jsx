@@ -10,6 +10,7 @@ import axios from 'axios';
 
 import EventsDashAdmin from './EventsDash/EventsDashAdmin';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
+import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
 
 
@@ -61,6 +62,7 @@ const DashboardAdmin = (props) => {
 
     return (
         <>
+
           <div className="row">
             <div className="col-12 col-md-5 pr-md-2">
               <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
@@ -71,20 +73,23 @@ const DashboardAdmin = (props) => {
             </div>
           </div>
 
-          {
-            showEvent
-              ? <EventCard
-                  loggedUser={loggedUser}
-                  event={targetEvent}
-                  setFeedback={setFeedback}
-                  reloadParent={reloadDashboard}
-                  setReloadParent={setReloadDashboard}
-                  hideEvent={hideEvent}
-                />
-              : null
-          }
+          <PrimaryModalContainer header={targetEvent.topic || ''} hideEvent={hideEvent}>
+            {
+              showEvent
+                ? <EventCard
+                    loggedUser={loggedUser}
+                    event={targetEvent}
+                    setFeedback={setFeedback}
+                    reloadParent={reloadDashboard}
+                    setReloadParent={setReloadDashboard}
+                    // hideEvent={hideEvent}
+                  />
+                : null
+            }
+          </PrimaryModalContainer>
+
         </>
-    )
+    );
 }
 
 
