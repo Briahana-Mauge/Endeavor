@@ -152,7 +152,6 @@ nav button {
 }
 
 .g1App {
-    padding-top: calc(var(--navbar-height) + .4rem);
     padding-right: 0;
     padding-left: 0;
     color: var(--color-white);
@@ -235,7 +234,7 @@ nav button {
 .g1NavbarToggler {   // burger positioning
     padding: 0 .75rem;
     height: 55%;
-    margin-top: .2rem;  // used in conjunction with burger margin-top to even out top of page
+    margin-top: .32rem;  // used in conjunction with burger margin-top to even out top of page
 }
 
 .g1DropdownMenu {
@@ -295,7 +294,11 @@ nav button {
 }
 
 
-// Body Cards
+/* MAIN BODY COMPONENTS */
+.g1Stage {
+    padding-top: calc(var(--navbar-height) + .4rem);
+}
+
 .g1Card {
     background-color: transparent;
     background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
@@ -346,6 +349,8 @@ nav button {
     color: var(--color-white);
 }
 
+
+// ALL: EVENTS DASH
 .g1Table {
     display: table;
 
@@ -451,6 +456,7 @@ nav button {
 }
 
 
+// ADMIN: NEW VOLUNTEERS CAROUSEL
 .g1NewVolCarousel {
     .g1CarouselArrows {
         position: absolute;
