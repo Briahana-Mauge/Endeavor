@@ -11,12 +11,15 @@ const db = require('../db/db');
 
 // Get all hours banked by a volunteer
 const allVolunteeredTimeByVolunteerID = async (volunteer) => {
-    const selectQuery = `
-    SELECT SUM(volunteered_time)
+  const selectQuery = `
+    SELECT Extract(MONTH FROM events.event_end) AS months, sum(event_volunteers.volunteered_time) AS hours
     FROM event_volunteers
-    WHERE volunteer_id = $/volunteer/ AND confirmed = TRUE;
+    INNER JOIN events ON events.event_id = event_volunteers.eventv_id
+    WHERE volunteer_id = $/volunteer/ AND event_volunteers.confirmed = TRUE AND Extract(YEAR FROM events.event_end) = Extract(YEAR FROM now())
+    GROUP BY Extract(MONTH FROM events.event_end) 
+    ORDER BY months
   `;
-    return await db.one(selectQuery, {volunteer});
+  return await db.any(selectQuery, { volunteer });
 }
 
 
@@ -47,7 +50,7 @@ const deleteHoursByVolunteerId = async (id, promise) => {
 
 /* EXPORT */
 module.exports = {
-    allVolunteeredTimeByVolunteerID,
-    allHours,
-    deleteHoursByVolunteerId
+  allVolunteeredTimeByVolunteerID,
+  allHours,
+  deleteHoursByVolunteerId
 }
