@@ -87,7 +87,7 @@ const Dashboard = (props) => {
     datasets: [
       {
         label: 'Number of Events',
-        data: [1, 2, 9, 3],
+        data: [],
         backgroundColor: Array(12).fill('rgba(155, 49, 117, 1)'),
         borderWidth: 2
       }
