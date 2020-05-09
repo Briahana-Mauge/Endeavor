@@ -12,7 +12,8 @@ import axios from 'axios';
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
 
-import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Bar,defaults} from 'react-chartjs-2';
+// defaults.global.defaultColor = 'white';
 
 const Dashboard = (props) => {
   const { setFeedback, loggedUser } = props;
@@ -21,26 +22,35 @@ const Dashboard = (props) => {
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
   const [volunteeredTime, setVolunteeredTime] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
+  const [totalEvents, setTotalEvents] = useState(0);
   const [reloadDashboard, setReloadDashboard] = useState(false);
 
   const [barData, setBarData] = useState({
-    labels: ['volunteer hours', 'label 2', 'label 3', 'label 4'],
+    labels: ['Volunteer hours earned', 'Events attended'],
     datasets: [
       {
-        label: 'test label',
-        data: [
-          { volunteeredTime },
-          `${eventsObj.pasts.length}`,
-          73,
-          82
-        ],
+        label: 'You',
+        data: [1,2, 7, 8],
         backgroundColor: [
           'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)'
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 99, 132, 1)',
+          
         ],
-        borderWidth: 3
+        borderWidth: 2
+      },
+      {
+        label: 'All volunteers',
+        data: [2,5,10],
+        backgroundColor: [
+          
+          'rgba(54, 162, 235, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(54, 162, 235, 1)'
+        ],
+        borderWidth: 2
       }
     ]
   });
@@ -50,35 +60,53 @@ const Dashboard = (props) => {
         yAxes: [
           {
             ticks: {
+              fontColor: 'white',
               beginAtZero: true
             }
           }
-        ]
+        ],
+        xAxes: [{
+          ticks: {
+              fontColor: 'white',
+              beginAtZero: true
+          }
+      }]
       },
       title: {
         display: true,
-        text: 'Data Orgranized In Bars',
-        fontSize: 25
+        text: 'Personal Stats',
+        fontSize: 25,
+        fontColor: 'white'
       },
       legend: {
         display: true,
-        position: 'top'
+        position: 'top',
+        labels:{
+          fontColor:'white'
+        }
+        
+      },
+      datalabels: {
+        display: true,
+        fontColor: 'white',
       }
     }
   });
 
-  console.log(eventsObj.pasts.length)
 
-  let dataArr = [volunteeredTime, 2, volunteeredTime, eventsObj.pasts.length,]
-  for(let i = 0; i<4; i++){
-  barData.datasets[0].data[i] = dataArr[i]
-   }
-   
-  // barData.datasets[0].data[0] = volunteeredTime
+  let vDataArr = [volunteeredTime, eventsObj.pasts.length,]
+  let aDataArr = [totalTime, totalEvents]
+
+  barData.datasets[0].data = vDataArr
+  barData.datasets[1].data = aDataArr
 
   const getAllVolunteeredTime = () => {
     axios.get(`/api/time/hours/${loggedUser.v_id}`)
       .then(res => setVolunteeredTime(res.data.payload.sum))
+      .catch(err => setFeedback(err));
+    
+      axios.get('/api/time/')
+      .then(res => setTotalTime(parseInt(res.data.payload[0].sum)))
       .catch(err => setFeedback(err));
   }
   useEffect(getAllVolunteeredTime, []);
@@ -87,6 +115,10 @@ const Dashboard = (props) => {
     const getEventsData = () => {
       axios.get(`/api/events/dashboard/volunteer`)
         .then(res => setEventsObj(res.data.payload))
+        .catch(err => setFeedback(err));
+        
+      axios.get('/api/events/past')
+        .then(res => setTotalEvents(parseInt(res.data.payload[0].count)))
         .catch(err => setFeedback(err));
     }
     getEventsData();
@@ -116,22 +148,22 @@ const Dashboard = (props) => {
         </div>
 
         <div className="col-12 col-md-7">
-          <h3>Personal Stats</h3>
+          {/* <h3>Personal Stats</h3>
           <br />
 
           {
             eventsObj.upcomings.length === 0
               ? <p>You are not registered to volunteer at any upcoming events. Visit the Events page to find out more!</p>
               : null
-          }
-          <p>You've got {volunteeredTime} volunteer hours!</p>
+          } */}
+          {/* <p>You've got {volunteeredTime} volunteer hours!</p>
           {
             eventsObj.pasts.length < 1
               ? <p>You haven't participated in any events yet.</p>
               : eventsObj.pasts.length > 1
                 ? <p>So far, you've participated in {eventsObj.pasts.length} events.</p>
                 : <p>So far, you've participated in {eventsObj.pasts.length} event.</p>
-          }
+          } */}
         </div>
       </div>
       {
@@ -147,8 +179,8 @@ const Dashboard = (props) => {
           : null
       }
 
-      <div>
-        <Line data={barData} options={barOptions.options} />
+      <div class="col-12 col-md-7">
+        <Bar data={barData} options={barOptions.options} />
       </div>
 
     </div>
