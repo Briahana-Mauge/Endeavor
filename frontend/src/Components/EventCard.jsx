@@ -128,7 +128,6 @@ const EventCard = (props) => {
                     onChange={e => manageVolunteersRequests(e, volunteerId)}
                     disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
                 />
-                {console.log("RENDER")}
                 <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
                     {isConfirmedForEvent === 'true' ? 'CONFIRMED' : ''}
                 </label>
@@ -191,7 +190,7 @@ const EventCard = (props) => {
                 </p>
 
             </PMBody>
-            <PMBody className="g1ManageVols">
+            <PMBody className='g1ManageVols'>
                 {
                     userIs.admin
                         ?   <>
@@ -200,10 +199,16 @@ const EventCard = (props) => {
                                     {
                                         event.staff_description !== null
                                             ?   event.staff_description
-                                            :   <em className="g1EmptyMsg">No notes to display.</em>
+                                            :   <em className='g1EmptyMsg'>No notes to display.</em>
                                     }
                                 </p>
-                                    <strong>Volunteers:</strong> {`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
+                                <p className='card-text'>
+                                <strong>Volunteers: </strong>
+                                    <em className='g1VolsConfirmed'>{event.acceptedVolunteers.length} confirmed</em>,
+                                    <em className='g1VolsPending'>
+                                        {event.volunteersList.filter(volunteer => volunteer[5] === 'false').length} pending</em>
+                                    <em className='g1VolsRequested'>({event.number_of_volunteers} initally requested)</em>
+                                </p>
                                 {displayVolunteersList}
                             </>
                         :   null

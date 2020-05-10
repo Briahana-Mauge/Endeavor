@@ -675,6 +675,23 @@ nav button {
         color: #999;
         font-style: italic;
     }
+
+    .g1VolsConfirmed {
+        color: green;
+        font-style: italic;
+    }
+    .g1VolsPending {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #c50;
+        font-style: italic;
+    }
+    .g1VolsRequested {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #999;
+        font-style: italic;
+    }
 }
 
 // .g1PopoverBtn {
