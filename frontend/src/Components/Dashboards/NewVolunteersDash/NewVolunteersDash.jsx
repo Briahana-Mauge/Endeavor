@@ -51,10 +51,7 @@ const NewVolunteersDash = (props) => {
           className={index === 0 ? "carousel-item active" : "carousel-item"}
           key={v_first_name + v_last_name + v_id}
         >
-          <VolunteerPreviewCard
-            volunteer={volunteer} 
-            acceptVolunteer={acceptVolunteer}
-          />
+          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
         </div>
       );
   });
