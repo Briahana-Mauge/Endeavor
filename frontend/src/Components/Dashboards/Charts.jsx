@@ -16,7 +16,6 @@ export default function Charts (props) {
     const [chartVolunteerEvents, setChartVolunteerEvents] = useState([]);
 
     useEffect(() => {
-        console.log(chartData)
         let month = new Date().getMonth() + 2 ;
         let year = new Date().getFullYear() - 1;
         const datesArr = [];
