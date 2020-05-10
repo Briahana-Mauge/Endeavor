@@ -218,21 +218,21 @@ const EventCard = (props) => {
                                 >
                                     Add To Calendar
                                 </a>
+                                <span className='flex-fill'></span>
                                 <button
-                                    className='btn btn-outline-danger flex-fill'
+                                    className='btn btn-info'
+                                    data-dismiss='modal'
+                                    onClick={handleEditButton}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className='btn btn-danger'
                                     data-dismiss='modal'
                                     onClick={handleDeleteEvent}
                                     disabled={waitingForRender}
                                 >
                                     Delete
-                                </button>
-                                <span className='flex-fill'></span>
-                                <button
-                                    className='btn btn-outline-warning flex-fill'
-                                    data-dismiss='modal'
-                                    onClick={handleEditButton}
-                                >
-                                    Edit
                                 </button>
                             </div>
                         :   null

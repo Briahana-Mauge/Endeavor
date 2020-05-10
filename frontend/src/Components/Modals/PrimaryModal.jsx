@@ -44,7 +44,7 @@ export const PMBody = ({className = '', children}) => {
 
 export const PMFooter = ({children}) => {
   return(
-    <div className="modal-footer">
+    <div className="modal-footer py-1">
       {children}
     </div>
   );
