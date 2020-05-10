@@ -21,12 +21,11 @@ const Dashboard = (props) => {
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
   const [reloadDashboard, setReloadDashboard] = useState(false);
-  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const getEventsData = async () => {
       axios.get(`/api/events/dashboard/volunteer`)
-        .then(res => {setEventsObj(res.data.payload); setChartData(res.data.payload.pastData)})
+        .then(res => setEventsObj(res.data.payload))
         .catch(err => setFeedback(err));
     }
     getEventsData();
@@ -56,7 +55,7 @@ const Dashboard = (props) => {
         </div>
 
         <div className="col-12 col-md-7">
-          <Charts chartData={chartData} />
+          <Charts chartData={eventsObj.pastData} />
         </div>
 
       </div>
