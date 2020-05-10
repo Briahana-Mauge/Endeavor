@@ -56,10 +56,7 @@ const Dashboard = (props) => {
         </div>
 
         <div className="col-12 col-md-7">
-          <Charts 
-            chartData={chartData} 
-            hoursText={"Volunteer Hours I've Earned in a Year"} 
-            eventsText={"Events I've Participated in for a Year"} />
+          <Charts chartData={chartData} />
         </div>
 
       </div>
