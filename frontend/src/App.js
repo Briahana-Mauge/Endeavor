@@ -25,6 +25,7 @@ import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
 import Feedback from './Components/Feedback';
+
 const identifyUser = require('./helpers/identifyUser');
 
 
@@ -61,10 +62,12 @@ function App() {
   const [industrySpeaker, setIndustrySpeaker] = useState(false);
   const [publicProfile, setPublicProfile] = useState(false);
 
+  // OTHER variables
   const userIs = identifyUser(loggedUser);
   const location = useLocation();
   const history = useHistory();
 
+  // USEEFFECT
   const checkForLoggedInUser = () => {
     axios.get('/api/auth/is_logged')
       .then(res => settleUser(res.data.payload))
@@ -81,6 +84,7 @@ function App() {
   useEffect(checkForLoggedInUser, []);
 
 
+  /* HELPER FUNCTIONS */
   const settleUser = (user) => {
     setLoggedUser(user);
     setIsUserStateReady(true);

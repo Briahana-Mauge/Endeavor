@@ -145,7 +145,7 @@ const EventCard = (props) => {
                         :   null
                 }
             </div>
-        )
+        );
     }
 
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
