@@ -178,7 +178,6 @@ const updateAdminUser = async (userId, request, response, next) => {
             if (request.file) {
                 picture = request.file.location;
             }
-            console.log(picture)
             await adminQueries.updateAdmin(userId, firstName, lastName, picture);
             request.body.email = email;
             request.body.password = password;
