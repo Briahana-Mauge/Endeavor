@@ -359,56 +359,72 @@ const getDashEventsForVolunteer = async (volunteerId) => {
     GROUP BY volunteers.v_id, event_id, cohort_id
     ORDER BY event_start ASC;
   `;
-  return db.multi(importantsQuery + upcomingsQuery + pastsQuery, volunteerId)
-    .then(([importants, upcomings, pasts]) => {
-      return { importants, upcomings, pasts };
+
+  const pastYearData = `
+    SELECT
+        TO_CHAR(event_end, 'YYYY-MM') AS date, 
+	      COUNT(EXTRACT(MONTH FROM event_end)) AS events_count,
+	      SUM(event_volunteers.volunteered_time) AS hours
+        
+	    FROM volunteers
+	    INNER JOIN event_volunteers ON volunteer_id = v_id
+	    INNER JOIN events ON eventv_id = event_id
+	    WHERE event_end > (current_date - INTERVAL '12 months') 
+	    	AND event_end < CURRENT_DATE AND volunteers.v_id = 10 
+	    	AND event_volunteers.confirmed = TRUE
+	    GROUP BY date
+	    ORDER BY date ASC
+  `
+  return db.multi(importantsQuery + upcomingsQuery + pastsQuery + pastYearData, volunteerId)
+    .then(([importants, upcomings, pasts, pastData]) => {
+      return { importants, upcomings, pasts, pastData };
     });
 }
 
 
 //Get all important events
-const getImportantEvents = async (limit) => {
-  let selectQuery = `
-    SELECT
-      event_id, 
-      topic, 
-      event_start, 
-      event_end, 
-      description, 
-      staff_description,
-      location, 
-      instructor, 
-      number_of_volunteers, 
-      cohort,
-      cohort_id,
-      materials_url,
-      ARRAY_AGG((
-        SELECT
-          CAST(v_id as CHAR(10)) || ' &$%& ' ||
-          v_first_name || ' ' || v_last_name || ' &$%& ' ||
-          v_email || ' &$%& ' ||
-          CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
-          CAST(ev_id as CHAR(10))|| ' &$%& ' ||
-          CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+// const getImportantEvents = async (limit) => {
+//   let selectQuery = `
+//     SELECT
+//       event_id, 
+//       topic, 
+//       event_start, 
+//       event_end, 
+//       description, 
+//       staff_description,
+//       location, 
+//       instructor, 
+//       number_of_volunteers, 
+//       cohort,
+//       cohort_id,
+//       materials_url,
+//       ARRAY_AGG((
+//         SELECT
+//           CAST(v_id as CHAR(10)) || ' &$%& ' ||
+//           v_first_name || ' ' || v_last_name || ' &$%& ' ||
+//           v_email || ' &$%& ' ||
+//           CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+//           CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+//           CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
 
-        FROM  event_volunteers
-        LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-        WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
-      ) AS volunteers_list
+//         FROM  event_volunteers
+//         LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
+//         WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
+//       ) AS volunteers_list
   
-    FROM events
-    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+//     FROM events
+//     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
-    WHERE event_start > now() AND important = TRUE AND events.deleted IS NULL
-    GROUP BY event_id, cohort_id
-    ORDER BY event_start ASC
-  `
-  // The reason why ' &$%& ' was selected to join the strings will be explained in the file frontend/src/Components/EventPreviewCard.jsx
-  if (limit) {
-    selectQuery += ' LIMIT $/limit/'
-  }
-  return await db.any(selectQuery, { limit });
-}
+//     WHERE event_start > now() AND important = TRUE AND events.deleted IS NULL
+//     GROUP BY event_id, cohort_id
+//     ORDER BY event_start ASC
+//   `
+//   // The reason why ' &$%& ' was selected to join the strings will be explained in the file frontend/src/Components/EventPreviewCard.jsx
+//   if (limit) {
+//     selectQuery += ' LIMIT $/limit/'
+//   }
+//   return await db.any(selectQuery, { limit });
+// }
 
 // Add new event
 const postEvent = async (eventObj) => {
@@ -551,7 +567,7 @@ module.exports = {
   getPastEvents,
   getDashEventsForAdmin,
   getDashEventsForVolunteer,
-  getPastEventsByVolunteerId,
+  // getPastEventsByVolunteerId,
   // getUpcomingEventsByVolunteerId,
   // getImportantEvents,
   getPastEventsByFellowId,

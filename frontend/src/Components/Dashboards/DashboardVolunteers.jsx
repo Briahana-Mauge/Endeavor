@@ -11,154 +11,28 @@ import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
-
-import { Bar } from 'react-chartjs-2';
+import Charts from './Charts'
 
 
 const Dashboard = (props) => {
   const { setFeedback, loggedUser } = props;
 
-  const [eventsObj, setEventsObj] = useState({ upcomings: [], pasts: [], importants: [] });
+  const [eventsObj, setEventsObj] = useState({ upcomings: [], pasts: [], importants: [], pastData: [] });
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
-  const [volunteeredTime, setVolunteeredTime] = useState(0);
-  const [totalEvents, setTotalEvents] = useState(0);
   const [reloadDashboard, setReloadDashboard] = useState(false);
-
-  // Chart for volunteer hours
-  const [volunteerData, setVolunteerData] = useState({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Number of Hours',
-        data: [],
-        backgroundColor: Array(12).fill('rgba(255, 99, 132, 1)'),
-        borderWidth: 2
-      }
-    ]
-  });
-  const [hourOptions, setHourOptions] = useState({
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              fontColor: 'white',
-              beginAtZero: true
-            }
-          }
-        ],
-        xAxes: [{
-          ticks: {
-            fontColor: 'white',
-            beginAtZero: true
-          }
-        }]
-      },
-      title: {
-        display: true,
-        text: `Volunteer Hours I've Earned in ${new Date().getFullYear()} `,
-        fontSize: 25,
-        fontColor: 'white'
-      },
-      legend: {
-        display: false,
-        position: 'top',
-        labels: {
-          fontColor: 'white'
-        }
-
-      },
-      datalabels: {
-        display: true,
-        fontColor: 'white',
-      }
-    }
-  });
-  let hours = Array(12).fill(0)
-  for (let i = 0; i < volunteeredTime.length; i++) {
-    hours[volunteeredTime[i].months - 1] = volunteeredTime[i].hours
-  }
-  volunteerData.datasets[0].data = hours
-
-//Chart for number of events
-  const [eventData, setEventData] = useState({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Number of Events',
-        data: [],
-        backgroundColor: Array(12).fill('rgba(155, 49, 117, 1)'),
-        borderWidth: 2
-      }
-    ]
-  });
-  const [eventOptions, setEventOptions] = useState({
-    options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              fontColor: 'white',
-              beginAtZero: true
-            }
-          }
-        ],
-        xAxes: [{
-          ticks: {
-            fontColor: 'white',
-            beginAtZero: true
-          }
-        }]
-      },
-      title: {
-        display: true,
-        text: `Events I've Participated in for ${new Date().getFullYear()} `,
-        fontSize: 25,
-        fontColor: 'white'
-      },
-      legend: {
-        display: false,
-        position: 'top',
-        labels: {
-          fontColor: 'white'
-        }
-
-      },
-      datalabels: {
-        display: true,
-        fontColor: 'white',
-      }
-    }
-  });
-
-  let events = Array(12).fill(0)
-  for (let i = 0; i < totalEvents.length; i++) {
-    events[totalEvents[i].months - 1] = totalEvents[i].number
-  }
-  eventData.datasets[0].data = events
-
-
-  const getAllVolunteeredTime = () => {
-    axios.get(`/api/time/hours/${loggedUser.v_id}`)
-      .then(res => setVolunteeredTime(res.data.payload))
-      .catch(err => setFeedback(err));
-  }
-  useEffect(getAllVolunteeredTime, []);
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const getEventsData = async () => {
       axios.get(`/api/events/dashboard/volunteer`)
-        .then(res => setEventsObj(res.data.payload))
-        .catch(err => setFeedback(err));
-
-      axios.get(`/api/events/past/volunteer/${loggedUser.v_id}`)
-        .then(res => setTotalEvents(res.data.payload))
+        .then(res => {setEventsObj(res.data.payload); setChartData(res.data.payload.pastData)})
         .catch(err => setFeedback(err));
     }
     getEventsData();
 
   }, [reloadDashboard, loggedUser.v_id, setFeedback]);
+
 
   const hideEvent = () => {
     setTargetEvent({});
@@ -182,12 +56,14 @@ const Dashboard = (props) => {
         </div>
 
         <div className="col-12 col-md-7">
-
-          <Bar data={volunteerData} options={hourOptions.options} />
-          <Bar data={eventData} options={eventOptions.options} />
+          <Charts 
+            chartData={chartData} 
+            hoursText={"Volunteer Hours I've Earned in a Year"} 
+            eventsText={"Events I've Participated in for a Year"} />
         </div>
 
       </div>
+
       {
         showEvent
           ? <EventCard
