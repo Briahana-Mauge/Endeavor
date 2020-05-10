@@ -43,13 +43,11 @@ export default function Charts (props) {
         }
     
         for (let date of datesArr) {
-          let found = false;
           let h = null;
           let e = null
     
           for (let data of chartData) {
             if (data.date === date) {
-              found = true;
               h = data.hours;
               e = data.events_count;
             }
