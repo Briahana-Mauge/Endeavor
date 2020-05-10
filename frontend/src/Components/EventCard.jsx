@@ -196,9 +196,14 @@ const EventCard = (props) => {
                     userIs.admin
                         ?   <>
                                 <p className='card-text'>
-                                    <strong>Details:</strong> {event.staff_description}
-                                    <strong>Volunteers:</strong> {`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
+                                    <strong>Staff Notes:</strong><br />
+                                    {
+                                        event.staff_description !== null
+                                            ?   event.staff_description
+                                            :   <em className="g1EmptyMsg">No notes to display.</em>
+                                    }
                                 </p>
+                                    <strong>Volunteers:</strong> {`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
                                 {displayVolunteersList}
                             </>
                         :   null
@@ -207,7 +212,7 @@ const EventCard = (props) => {
             <PMFooter>
                 {
                     userIs.admin
-                        ?   <div className='d-flex justify-content-between m-2'>
+                        ?   <div className='d-flex w-100 m-2'>
                                 <a
                                     href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
                                         event.topic}&dates=${newStart}/${newEnd}&details=${

@@ -35,7 +35,7 @@ export const PrimaryModalContainer = (props) => {
 
 export const PMBody = ({className = '', children}) => {
   return(
-    <div className={`modal-body ${className}`}>
+    <div className={`modal-body pb-2 ${className}`}>
       {children}
     </div>
   );
