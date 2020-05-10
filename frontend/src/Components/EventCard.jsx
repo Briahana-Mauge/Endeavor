@@ -110,34 +110,46 @@ const EventCard = (props) => {
 
     let displayVolunteersList = null;
     if (userIs.admin) {
-        displayVolunteersList = event.volunteersList.map(volunteer => 
-            <div className='custom-control custom-switch' key={volunteer[0] + volunteer[1] + volunteer[2]}>
+        displayVolunteersList = event.volunteersList.map(([
+            volunteerId,
+            fullname,
+            email,
+            isProfileDeleted,
+            eventVolunteerId,
+            isConfirmedForEvent,
+            eventHoursAssigned
+        ]) =>
+            <div className='custom-control custom-switch' key={volunteerId + fullname + email}>
                 <input 
                     type='checkbox' 
                     className='custom-control-input' 
-                    id={volunteer[0] + volunteer[1]}
-                    checked={volunteer[5] === 'true' ? true : false} 
-                    onChange={e => manageVolunteersRequests(e, volunteer[0])}
-                    disabled={volunteer[3] === 'true' ? true : false || waitingForRender}
+                    id={volunteerId + fullname}
+                    checked={isConfirmedForEvent === 'true' ? true : false}
+                    onChange={e => manageVolunteersRequests(e, volunteerId)}
+                    disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
                 />
-                <label className='custom-control-label  mt-2' htmlFor={volunteer[0] + volunteer[1]}>
-                    <span className={volunteer[3] ? 'd-block text-muted' : 'd-block'}>
-                        {`${volunteer[1]}`}
-                    </span>
+                {console.log("RENDER")}
+                <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
+                    {isConfirmedForEvent === 'true' ? 'CONFIRMED' : ''}
                 </label>
-                <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteer[0]}`)}>Profile</span>
+                <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteerId}`)}>
+                    <span className={isConfirmedForEvent === "true" ? 'd-block' : 'd-block text-muted'}>
+                        {`${fullname}`}
+                    </span>
+                    Profile
+                </span>
                 {
-                    volunteer[5] === 'true'
+                    isConfirmedForEvent === 'true'
                         ?   <form
                                 className='form-inline d-inline-block'
-                                onSubmit={e => attributeHoursForVolunteer(e, volunteer[0], volunteer[1])}
+                                onSubmit={e => attributeHoursForVolunteer(e, volunteerId, fullname)}
                             >
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
                                     placeholder='Hours' 
-                                    value={volunteerHours[volunteer[0]] || ''}
-                                    onChange={e => manageVolunteerHours(e.target.value, volunteer[0])}
+                                    value={volunteerHours[volunteerId] || ''}
+                                    onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
                                     disabled={waitingForRender}
                                 />
                                 <button className='btn btn-primary mb-2' disabled={waitingForRender}>Save</button>
@@ -170,11 +182,16 @@ const EventCard = (props) => {
                         :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
                 }
                 <p className='card-text'>
+                    <strong>Associated Cohorts:</strong> {event.cohort}
+                    <br />
                     <strong>Hosted by:</strong> {event.instructor}
                 </p>
                 <p className='card-text'>
                     {event.description}
                 </p>
+
+            </PMBody>
+            <PMBody className="g1ManageVols">
                 {
                     userIs.admin
                         ?   <>
@@ -186,11 +203,40 @@ const EventCard = (props) => {
                             </>
                         :   null
                 }
-                <p className='card-text'>
-                    <strong>Class:</strong> {event.cohort}
-                </p>
             </PMBody>
             <PMFooter>
+                {
+                    userIs.admin
+                        ?   <div className='d-flex justify-content-between m-2'>
+                                <a
+                                    href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
+                                        event.topic}&dates=${newStart}/${newEnd}&details=${
+                                        event.description}&location=${event.location}&sf=true&output=xml`}
+                                    className='btn btn-primary'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    Add To Calendar
+                                </a>
+                                <button
+                                    className='btn btn-outline-danger flex-fill'
+                                    data-dismiss='modal'
+                                    onClick={handleDeleteEvent}
+                                    disabled={waitingForRender}
+                                >
+                                    Delete
+                                </button>
+                                <span className='flex-fill'></span>
+                                <button
+                                    className='btn btn-outline-warning flex-fill'
+                                    data-dismiss='modal'
+                                    onClick={handleEditButton}
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        :   null
+                }
                 {
                     userIs.volunteer && event.loggedVolunteerPartOfEvent
                         ?   event.loggedVolunteerRequestAccepted
@@ -234,39 +280,6 @@ const EventCard = (props) => {
                                     </button>
                                 </div>
                             : null
-                }
-
-                {
-                    userIs.admin
-                        ?   <div className='d-flex justify-content-between m-2'>
-                                <a
-                                    href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
-                                        event.topic}&dates=${newStart}/${newEnd}&details=${
-                                        event.description}&location=${event.location}&sf=true&output=xml`}
-                                    className='btn btn-primary'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    Add To Calendar
-                                </a>
-                                <button
-                                    className='btn btn-outline-danger flex-fill'
-                                    data-dismiss='modal'
-                                    onClick={handleDeleteEvent}
-                                    disabled={waitingForRender}
-                                >
-                                    Delete
-                                </button>
-                                <span className='flex-fill'></span>
-                                <button
-                                    className='btn btn-outline-warning flex-fill'
-                                    data-dismiss='modal'
-                                    onClick={handleEditButton}
-                                >
-                                    Edit
-                                </button>
-                            </div>
-                        :   null
                 }
             </PMFooter>
         </>
