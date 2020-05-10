@@ -634,6 +634,45 @@ nav button {
     transform: translate(-50%, -50%);
 }
 
+.g1ModalDialog {
+    color: var(--color-black);
+
+    @media (min-width: 768px) {
+        max-width: 642px;
+    }
+
+    .modal-header,
+    .modal-footer {
+        background-color: #9c9c9c;
+    }
+
+    --modal-body-border: #827e96;
+        .modal-header {
+            border-bottom-color: var(--modal-body-border);
+        }
+        .modal-footer {
+            border-top-color: var(--modal-body-border);
+        }
+
+    h5.modal-title {
+        color: var(--color-purple);
+        font-family: var(--ff-top);
+        font-size: 1.35rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .modal-body {
+        background-color: #c5c5c5;
+
+        &.g1ManageVols {
+            background-image: linear-gradient(174deg, #efefef, #bfbfbf);
+        }
+    }
+
+
+}
+
 // .g1PopoverBtn {
 //     &, &:hover, &:active, &:focus {
 //         --event-indent: 1.5rem;
