@@ -8,14 +8,29 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Bar } from 'react-chartjs-2';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
+import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 
-import { Bar } from 'react-chartjs-2';
+const monthLabels = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
 
 
-const Dashboard = (props) => {
+const DashboardVolunteers = (props) => {
   const { setFeedback, loggedUser } = props;
 
   const [eventsObj, setEventsObj] = useState({ upcomings: [], pasts: [], importants: [] });
@@ -174,37 +189,39 @@ const Dashboard = (props) => {
     setTargetEvent
   }
 
+
   return (
-    <div className="container-fluid">
+    <>
+
       <div className="row">
-        <div className="col-12 col-md-5">
-          <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
-        </div>
+          <div className="col-12 col-md-5">
+            <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
+          </div>
 
-        <div className="col-12 col-md-7">
-
-          <Bar data={volunteerData} options={hourOptions.options} />
-          <Bar data={eventData} options={eventOptions.options} />
-        </div>
-
+          <div className="col-12 col-md-7">
+            <Bar data={volunteerData} options={hourOptions.options} />
+            <Bar data={eventData} options={eventOptions.options} />
+          </div>
       </div>
-      {
-        showEvent
-          ? <EventCard
-            loggedUser={loggedUser}
-            event={targetEvent}
-            setFeedback={setFeedback}
-            reloadParent={reloadDashboard}
-            setReloadParent={setReloadDashboard}
-            hideEvent={hideEvent}
-          />
-          : null
-      }
 
+      <PrimaryModalContainer header={targetEvent.topic || ''} hideEvent={hideEvent}>
+        {
+          showEvent
+            ? <EventCard
+                loggedUser={loggedUser}
+                event={targetEvent}
+                setFeedback={setFeedback}
+                reloadParent={reloadDashboard}
+                setReloadParent={setReloadDashboard}
+                // hideEvent={hideEvent}
+              />
+            : null
+        }
+      </PrimaryModalContainer>
 
-
-    </div>
+    </>
   )
 }
 
-export default Dashboard;
+
+export default DashboardVolunteers;
