@@ -92,7 +92,7 @@ export default function EventListItem(props) {
     // const eventEnd = formatEventDate(event.event_end);
 
     return (
-        <span onClick={handleClickOnEvent} className={className} data-toggle="modal" data-target="#exampleModalLong">
+        <span onClick={handleClickOnEvent} className={className} data-toggle="modal" data-target="#primaryModal">
             {children}
         </span>
         // <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
