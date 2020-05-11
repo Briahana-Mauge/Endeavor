@@ -48,7 +48,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 email: `endeavorapp2020+${info.v_email.replace('@', '-')}@gmail.com`,
                 event: event.topic
             }
-           
+
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg = {
                 to: volunteerInfo.email,
@@ -57,21 +57,20 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 text: ''
             };
 
-            //message sent when admin changes the request from pending to not approved.
+            //message sent when admin approves the pending request.
             if (updateData.confirmed) {
                 msg.text = `${new Date().toLocaleString()}:\n\nHi ${volunteerInfo.name},\n\nYour request to volunteer for the '${volunteerInfo.event}' event has been approved!\n\nVisit Endeavor to get more information about the event and to add it to your calendar.`
-                
-            } else { //message sent when admin changes the request from approval to not approved.
+
+            } else { //message sent when admin changes the approval to not approved.
                 msg.text = `${new Date().toLocaleString()}:\n\nHello ${volunteerInfo.name},\n\nDue to some restructuring of our '${volunteerInfo.event}' event, we have to remove your request to volunteer.\n\nPlease visit Endeavor to find other events you can volunteer for and share your valuable expertise.`
             }
 
-            (async () => {
-                try {
-                    await sgMail.send(msg);
-                } catch (error) {
-                    throw new Error('500__The request was not completed.');
-
-                }
+            (() => {
+                sgMail.send(msg)
+                    .then(res => console.log("heyo: ", res))
+                    .catch(error => {
+                        throw new Error('500__The request was not completed.');
+                    });
             })();
 
 
