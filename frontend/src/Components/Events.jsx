@@ -92,7 +92,7 @@ export default function EventSearch(props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='d-flex flex-wrap'>
+            <div className='g1EventsResults d-flex flex-wrap'>
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}

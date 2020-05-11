@@ -623,6 +623,14 @@ nav button {
     }
 }
 
+.g1EventsResults {
+    header {
+        cursor: pointer;
+        background-color: var(--color-primary);
+    }
+}
+
+
 /* FLOATING COMPONENTS */
 .g1Lightbox {
     position: fixed;
