@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import EventPreviewCard from './EventPreviewCard';
 import EventCard from './EventCard';
+import { PrimaryModalContainer } from './Modals/PrimaryModal';
 
 
 export default function EventSearch(props) {
@@ -104,18 +105,20 @@ export default function EventSearch(props) {
                 }
             </div>
             
-            {
-                showEvent 
-                ?   <EventCard 
-                        loggedUser={loggedUser} 
-                        event={targetEvent}
-                        setFeedback={setFeedback}
-                        reloadParent={reload}
-                        setReloadParent={setReload}
-                        hideEvent={hideEvent}
-                    />
-                :   null
-            }
+            <PrimaryModalContainer header={targetEvent.topic || ''} hideEvent={hideEvent}>
+                {
+                    showEvent
+                        ?   <EventCard
+                                loggedUser={loggedUser}
+                                event={targetEvent}
+                                setFeedback={setFeedback}
+                                reloadParent={reload}
+                                setReloadParent={setReload}
+                                // hideEvent={hideEvent}
+                            />
+                        :   null
+                }
+            </PrimaryModalContainer>
         </>
     );
 }
