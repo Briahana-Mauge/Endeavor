@@ -195,11 +195,6 @@ function App() {
       <PrivateRouteGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
         <Mentoring {...userProps} />
       </PrivateRouteGate>
-    ),
-    eventPage = (
-      <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
-        <EventRender {...userProps} />
-      </PrivateRouteGate>
     )
   ;
 
@@ -213,8 +208,7 @@ function App() {
     allowedAdminTools = null,
     allowedAddEvent = null,
     allowedEditEvent = null,
-    allowedMentorManagement = null,
-    allowedEventPage = null;
+    allowedMentorManagement = null
   ;
 
   const appRoute = {};
@@ -231,7 +225,6 @@ function App() {
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
     allowedVolunteersProfile = volunteersProfile;
-    allowedEventPage = eventPage;
   }
   if (appRoute.staff) {
     allowedDashboard = staffDashboard;
@@ -243,7 +236,6 @@ function App() {
     allowedAddEvent = adminAddEventForm;
     allowedEditEvent = adminEditEventForm;
     allowedMentorManagement = mentorManagement;
-    allowedEventPage = eventPage;
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
@@ -251,7 +243,6 @@ function App() {
   }
   if (appRoute.fellow) {
     allowedDashboard = fellowsDashboard;
-    allowedEventPage = eventPage;
   }
 
   if (wait) {
@@ -275,6 +266,10 @@ function App() {
           <Events {...userProps} />
         </PrivateRouteGate>
 
+        <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
+          <EventRender {...userProps} />
+        </PrivateRouteGate>
+
         {allowedVolunteersHome}
         {allowedVolunteersProfile}
 
@@ -285,7 +280,6 @@ function App() {
         {allowedEditEvent}
         {allowedMentorManagement}
 
-        {allowedEventPage}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>
