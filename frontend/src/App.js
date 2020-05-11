@@ -24,6 +24,7 @@ import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
+import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
 
 
@@ -194,6 +195,11 @@ function App() {
       <PrivateRouteGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
         <Mentoring {...userProps} />
       </PrivateRouteGate>
+    ),
+    eventPage = (
+      <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
+        <EventRender {...userProps} />
+      </PrivateRouteGate>
     )
   ;
 
@@ -207,7 +213,8 @@ function App() {
     allowedAdminTools = null,
     allowedAddEvent = null,
     allowedEditEvent = null,
-    allowedMentorManagement = null
+    allowedMentorManagement = null,
+    allowedEventPage = null;
   ;
 
   const appRoute = {};
@@ -223,7 +230,8 @@ function App() {
 
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
-    allowedVolunteersProfile = volunteersProfile; // Temporarily here to see how it looks like on the volunteers side
+    allowedVolunteersProfile = volunteersProfile;
+    allowedEventPage = eventPage;
   }
   if (appRoute.staff) {
     allowedDashboard = staffDashboard;
@@ -235,6 +243,7 @@ function App() {
     allowedAddEvent = adminAddEventForm;
     allowedEditEvent = adminEditEventForm;
     allowedMentorManagement = mentorManagement;
+    allowedEventPage = eventPage;
   }
   if (appRoute.admin) {
     allowedDashboard = adminDashboard;
@@ -242,6 +251,7 @@ function App() {
   }
   if (appRoute.fellow) {
     allowedDashboard = fellowsDashboard;
+    allowedEventPage = eventPage;
   }
 
   if (wait) {
@@ -274,6 +284,8 @@ function App() {
         {allowedAddEvent}
         {allowedEditEvent}
         {allowedMentorManagement}
+
+        {allowedEventPage}
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>
