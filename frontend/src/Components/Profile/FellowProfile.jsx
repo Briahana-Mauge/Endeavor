@@ -84,8 +84,7 @@ export default function FellowProfile(props) {
                         bio,
                         linkedIn,
                         github,
-                        mentor: wantMentor,
-                        picture: picFile
+                        mentor: wantMentor
                     }
                 }
 

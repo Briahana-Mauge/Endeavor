@@ -174,16 +174,31 @@ const updateAdminUser = async (userId, request, response, next) => {
                 await usersQueries.updateEmail(actualEmail, email)
             }
             
-            await adminQueries.updateAdmin(userId, firstName, lastName, email);
+            let picture = request.user.a_picture;
+            if (request.file) {
+                picture = request.file.location;
+            }
+            console.log(picture)
+            await adminQueries.updateAdmin(userId, firstName, lastName, picture);
             request.body.email = email;
             request.body.password = password;
             next();
         } 
         else {
+            // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
+            if (request.file) {
+                storage.deleteFile(request.file.location);
+            }
+
             throw new Error('401__Wrong password');
         }
 
     } catch (err) {
+        // update profile didn't go through so if a picture file was uploaded and saved to the cloud => delete that file
+        if (request.file) {
+            storage.deleteFile(request.file.location);
+        }
+
         handleError(err, request, response, next);
     }
 }
