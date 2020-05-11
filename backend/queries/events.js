@@ -392,7 +392,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 	    INNER JOIN event_volunteers ON volunteer_id = v_id
 	    INNER JOIN events ON eventv_id = event_id
 	    WHERE event_end > (current_date - INTERVAL '12 months') 
-	    	AND event_end < CURRENT_DATE AND volunteers.v_id = 10 
+	    	AND event_end < CURRENT_DATE AND volunteers.v_id = $1
 	    	AND event_volunteers.confirmed = TRUE
 	    GROUP BY date
 	    ORDER BY date ASC
