@@ -50,7 +50,7 @@ export default function FellowPreviewCard(props) {
             }
             
             <div className='col-sm-6'>
-                <img className='d-block rounded-circle imageIcon' src={fellow.f_picture} alt={`${fellow.f_first_name} ${fellow.f_last_name}`}/>
+                <img className='d-block rounded-circle imageIcon' src={fellow.f_picture || '/images/default_pic.png'} alt={`${fellow.f_first_name} ${fellow.f_last_name}`}/>
                 <strong className='d-block'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</strong>
                 <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
                     {fellow.f_email} 

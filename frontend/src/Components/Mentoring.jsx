@@ -102,7 +102,7 @@ export default function Mentoring (props) {
                         <div className='col-sm-6'>
                             <img 
                                 className='d-block imageIcon rounded-circle'
-                                src={volunteer.v_picture} 
+                                src={volunteer.v_picture || '/images/default_pic.png'} 
                                 alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                             />
                             <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
