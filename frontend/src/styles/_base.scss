@@ -724,16 +724,26 @@ nav button {
 
     .g1VolName {
         transition: color .4s ease-out;
+
+        @media (max-width: 576px) {
+            text-align: left;
+            position: relative;
+            top: 1px;
+        }
     }
     .g1VolNamePending {
         color: #da9905;
     }
 
     .g1HoursForm .form-control {
-            width: 4.6rem;
+            width: 5.5rem;
             display: inline-block;
             vertical-align: middle;
             margin-right: .5rem!important;
+
+            @media (max-width: 576px) {
+                margin-left: 2.6rem;
+            }
     }
 }
 

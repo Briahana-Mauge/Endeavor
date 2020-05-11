@@ -138,7 +138,7 @@ const EventCard = (props) => {
                     </label>
                 </div>
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
-                    className={`g1VolName btn btn-link mb-2 col-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
+                    className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
                     to={`/volunteer/${volunteerId}`}
                     target="_blank" // because this is alredy a modal, best sense is to open profile in new tab to preserve location
                 >
@@ -153,12 +153,12 @@ const EventCard = (props) => {
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
-                                    placeholder='Hours' 
+                                    placeholder='0'
                                     value={volunteerHours[volunteerId] || ''}
                                     onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
                                     disabled={waitingForRender}
                                 />
-                                <button className='btn btn-primary mb-2' disabled={waitingForRender}>Save</button>
+                                <button className='btn btn-primary mb-2' disabled={waitingForRender}>Set Hours</button>
                             </form>
                         :   null
                 }
