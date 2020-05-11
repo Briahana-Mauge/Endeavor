@@ -204,10 +204,10 @@ const EventCard = (props) => {
                                 </p>
                                 <p className='card-text'>
                                 <strong>Volunteers: </strong>
-                                    <em className='g1VolsConfirmed'>{event.acceptedVolunteers.length} confirmed</em>,
-                                    <em className='g1VolsPending'>
+                                    <em className='g1VolNumConfirmed'>{event.acceptedVolunteers.length} confirmed</em>,
+                                    <em className='g1VolNumPending'>
                                         {event.volunteersList.filter(volunteer => volunteer[5] === 'false').length} pending</em>
-                                    <em className='g1VolsRequested'>({event.number_of_volunteers} initally requested)</em>
+                                    <em className='g1VolNumRequested'>({event.number_of_volunteers} initally requested)</em>
                                 </p>
                                 {displayVolunteersList}
                             </>
