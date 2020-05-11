@@ -90,7 +90,7 @@ export default function ProfileRender(props) {
         setEventObj(eventDataObj);
     }, [
         acceptedVolunteers,
-        event,
+        singleEvent,
         loggedVolunteerPartOfEvent,
         loggedVolunteerRequestAccepted,
         volunteersList
