@@ -40,120 +40,111 @@ const DashboardVolunteers = (props) => {
   const [totalEvents, setTotalEvents] = useState(0);
   const [reloadDashboard, setReloadDashboard] = useState(false);
 
+
   // Chart for volunteer hours
   const [volunteerData, setVolunteerData] = useState({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
+    labels: [...monthLabels],
+    datasets: [{
         label: 'Number of Hours',
         data: [],
         backgroundColor: Array(12).fill('rgba(255, 99, 132, 1)'),
         borderWidth: 2
-      }
-    ]
+    }]
   });
   const [hourOptions, setHourOptions] = useState({
     options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              fontColor: 'white',
-              beginAtZero: true
+        scales: {
+            yAxes: [{
+                ticks: {
+                  fontColor: 'white',
+                  beginAtZero: true
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor: 'white',
+                    beginAtZero: true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: `Volunteer Hours I've Earned in ${new Date().getFullYear()} `,
+            fontSize: 25,
+            fontColor: 'white'
+        },
+        legend: {
+            display: false,
+            position: 'top',
+            labels: {
+                fontColor: 'white'
             }
-          }
-        ],
-        xAxes: [{
-          ticks: {
+        },
+        datalabels: {
+            display: true,
             fontColor: 'white',
-            beginAtZero: true
-          }
-        }]
-      },
-      title: {
-        display: true,
-        text: `Volunteer Hours I've Earned in ${new Date().getFullYear()} `,
-        fontSize: 25,
-        fontColor: 'white'
-      },
-      legend: {
-        display: false,
-        position: 'top',
-        labels: {
-          fontColor: 'white'
         }
-
-      },
-      datalabels: {
-        display: true,
-        fontColor: 'white',
-      }
     }
   });
-  let hours = Array(12).fill(0)
+  let hours = Array(12).fill(0);
   for (let i = 0; i < volunteeredTime.length; i++) {
-    hours[volunteeredTime[i].months - 1] = volunteeredTime[i].hours
+    hours[volunteeredTime[i].months - 1] = volunteeredTime[i].hours;
   }
-  volunteerData.datasets[0].data = hours
+  volunteerData.datasets[0].data = hours;
 
-//Chart for number of events
+  // Chart for number of events
   const [eventData, setEventData] = useState({
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
+    labels: [...monthLabels],
+    datasets: [{
         label: 'Number of Events',
         data: [],
         backgroundColor: Array(12).fill('rgba(155, 49, 117, 1)'),
         borderWidth: 2
-      }
-    ]
+      }]
   });
   const [eventOptions, setEventOptions] = useState({
     options: {
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              fontColor: 'white',
-              beginAtZero: true
+        scales: {
+            yAxes: [{
+                ticks: {
+                    fontColor: 'white',
+                    beginAtZero: true
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor: 'white',
+                    beginAtZero: true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: `Events I've Participated in for ${new Date().getFullYear()} `,
+            fontSize: 25,
+            fontColor: 'white'
+        },
+        legend: {
+            display: false,
+            position: 'top',
+            labels: {
+                fontColor: 'white'
             }
-          }
-        ],
-        xAxes: [{
-          ticks: {
+        },
+        datalabels: {
+            display: true,
             fontColor: 'white',
-            beginAtZero: true
-          }
-        }]
-      },
-      title: {
-        display: true,
-        text: `Events I've Participated in for ${new Date().getFullYear()} `,
-        fontSize: 25,
-        fontColor: 'white'
-      },
-      legend: {
-        display: false,
-        position: 'top',
-        labels: {
-          fontColor: 'white'
         }
-
-      },
-      datalabels: {
-        display: true,
-        fontColor: 'white',
-      }
     }
   });
-
-  let events = Array(12).fill(0)
+  let events = Array(12).fill(0);
   for (let i = 0; i < totalEvents.length; i++) {
-    events[totalEvents[i].months - 1] = totalEvents[i].number
+    events[totalEvents[i].months - 1] = totalEvents[i].number;
   }
-  eventData.datasets[0].data = events
+  eventData.datasets[0].data = events;
 
 
+  // UseEffects
   const getAllVolunteeredTime = () => {
     axios.get(`/api/time/hours/${loggedUser.v_id}`)
       .then(res => setVolunteeredTime(res.data.payload))
@@ -172,16 +163,17 @@ const DashboardVolunteers = (props) => {
         .catch(err => setFeedback(err));
     }
     getEventsData();
-
   }, [reloadDashboard, loggedUser.v_id, setFeedback]);
 
+
+  // Helper
   const hideEvent = () => {
     setTargetEvent({});
     setShowEvent(false);
   }
 
 
-  // PRE-RETURN (package drilled props)
+  // Package drilled props
   const eventsDashProps = {
     loggedUser,
     setShowEvent,
