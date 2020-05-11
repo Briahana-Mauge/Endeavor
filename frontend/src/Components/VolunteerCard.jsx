@@ -27,7 +27,7 @@ const VolunteerCard = (props) => {
     return (
         <div className='col-12 col-sm-6 col-lg-4'>
             <div className='border border-dark rounded bg-light m-1'>
-                <img className='card-img-top' src={props.volunteer.v_picture} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`} />
+                <img className='card-img-top' src={props.volunteer.v_picture || '/images/default_pic.png'} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`} />
                 <div className='card-body'>
                     <h4 className='card-title'>{props.volunteer.v_first_name} {props.volunteer.v_last_name}</h4>
                     <p className='card-text'>{props.volunteer.title} at {props.volunteer.company}</p>

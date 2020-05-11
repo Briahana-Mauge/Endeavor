@@ -110,6 +110,7 @@ export default function VolunteerProfile(props) {
                     profile.append('professionalSkillsCoach', professionalSkillsCoach);
                     profile.append('hostSiteVisit', hostSiteVisit);
                     profile.append('industrySpeaker', industrySpeaker);
+                    profile.append('publicProfile', publicProfile);
                     profile.append('picture', picFile);
                 } else {
                     profile = {
@@ -129,8 +130,7 @@ export default function VolunteerProfile(props) {
                         professionalSkillsCoach,
                         hostSiteVisit,
                         industrySpeaker,
-                        publicProfile,
-                        picture: picFile
+                        publicProfile
                     };
                 }
 
