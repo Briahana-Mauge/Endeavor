@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -119,28 +119,35 @@ const EventCard = (props) => {
             isConfirmedForEvent,
             eventHoursAssigned
         ]) =>
-            <div className='custom-control custom-switch' key={volunteerId + fullname + email}>
-                <input 
-                    type='checkbox' 
-                    className='custom-control-input' 
-                    id={volunteerId + fullname}
-                    checked={isConfirmedForEvent === 'true' ? true : false}
-                    onChange={e => manageVolunteersRequests(e, volunteerId)}
-                    disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
-                />
-                <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
-                    {isConfirmedForEvent === 'true' ? 'CONFIRMED' : ''}
-                </label>
-                <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteerId}`)}>
-                    <span className={isConfirmedForEvent === "true" ? 'd-block' : 'd-block text-muted'}>
-                        {`${fullname}`}
-                    </span>
-                    Profile
-                </span>
+            <div className='form-row' key={volunteerId + fullname + email}>
+                <div className='custom-control custom-switch'>
+                    <input
+                        type='checkbox'
+                        className='custom-control-input'
+                        id={volunteerId + fullname}
+                        checked={isConfirmedForEvent === 'true' ? true : false}
+                        onChange={e => manageVolunteersRequests(e, volunteerId)}
+                        disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
+                    />
+                    <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
+                        <span
+                            className={`g1VolConfirmedLabel d-none d-sm-block ${isConfirmedForEvent === 'true' ? 'g1VolConfirmedLabelOn' : ''}`}
+                        >
+                            CONFIRMED
+                        </span>
+                    </label>
+                </div>
+                <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
+                    className={`g1VolName btn btn-link mb-2 col-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
+                    to={`/volunteer/${volunteerId}`}
+                    target="_blank" // because this is alredy a modal, best sense is to open profile in new tab to preserve location
+                >
+                    {fullname}
+                </Link>
                 {
                     isConfirmedForEvent === 'true'
                         ?   <form
-                                className='form-inline d-inline-block'
+                                className='g1HoursForm form-inline d-inline-block align-self-center'
                                 onSubmit={e => attributeHoursForVolunteer(e, volunteerId, fullname)}
                             >
                                 <input 

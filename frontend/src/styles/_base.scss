@@ -676,21 +676,43 @@ nav button {
         font-style: italic;
     }
 
-    .g1VolsConfirmed {
+    .g1VolNumConfirmed {
         color: green;
         font-style: italic;
     }
-    .g1VolsPending {
+    .g1VolNumPending {
         display: inline-block;
         margin-left: .3rem;
-        color: #c50;
+        color: #da9905;
         font-style: italic;
     }
-    .g1VolsRequested {
+    .g1VolNumRequested {
         display: inline-block;
         margin-left: .3rem;
         color: #999;
         font-style: italic;
+    }
+
+    .g1VolConfirmedLabel {
+        color: #bbb;
+        transition: color .4s ease-out;
+    }
+    .g1VolConfirmedLabelOn {
+        color: green;
+    }
+
+    .g1VolName {
+        transition: color .4s ease-out;
+    }
+    .g1VolNamePending {
+        color: #da9905;
+    }
+
+    .g1HoursForm .form-control {
+            width: 4.6rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: .5rem!important;
     }
 }
 
