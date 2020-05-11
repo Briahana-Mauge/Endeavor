@@ -654,6 +654,19 @@ nav button {
             border-top-color: var(--modal-body-border);
         }
 
+    .g1CloseContainer {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        bottom: 0;
+        left: 0;
+
+        .close {
+            color: red;
+            outline: none;
+        }
+    }
+
     h5.modal-title {
         color: var(--color-primary);
         font-family: var(--ff-top);
