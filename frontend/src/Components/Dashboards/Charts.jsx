@@ -26,16 +26,16 @@ export default function Charts (props) {
           let date = '';
           if (month <= 12) {
             if (month < 10) {
-              date = year + '-0' + month;
+              date = '0' + month + '-' + year;
             } else {
-              date = year + '-' + month;
+              date = month + '-' + year;
             }
             month += 1;
           } else {
             if (month < 22) {
-              date = (year + 1) + '-0' + (month - 12);
+              date =  '0' + (month - 12) + '-' + (year + 1);
             } else {
-              date = (year + 1) + '-' + (month - 12);
+              date = (month - 12) + '-' + (year + 1);
             }
             month += 1;
           }
