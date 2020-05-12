@@ -10,7 +10,7 @@ import axios from 'axios';
 
 import EventsDashAdmin from './EventsDash/EventsDashAdmin';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
-import EventCard from '../EventCard';
+import EventRender from '../EventRender';
 
 
 const DashboardAdmin = (props) => {
@@ -73,7 +73,7 @@ const DashboardAdmin = (props) => {
 
           {
             showEvent
-              ? <EventCard
+              ? <EventRender
                   loggedUser={loggedUser}
                   event={targetEvent}
                   setFeedback={setFeedback}

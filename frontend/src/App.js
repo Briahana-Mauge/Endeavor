@@ -24,6 +24,7 @@ import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
+import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
 
 
@@ -223,7 +224,7 @@ function App() {
 
   if (appRoute.volunteer) {
     allowedDashboard = volunteersDashboard;
-    allowedVolunteersProfile = volunteersProfile; // Temporarily here to see how it looks like on the volunteers side
+    allowedVolunteersProfile = volunteersProfile;
   }
   if (appRoute.staff) {
     allowedDashboard = staffDashboard;
@@ -265,6 +266,10 @@ function App() {
           <Events {...userProps} />
         </PrivateRouteGate>
 
+        <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
+          <EventRender {...userProps} />
+        </PrivateRouteGate>
+
         {allowedVolunteersHome}
         {allowedVolunteersProfile}
 
@@ -274,6 +279,7 @@ function App() {
         {allowedAddEvent}
         {allowedEditEvent}
         {allowedMentorManagement}
+
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>

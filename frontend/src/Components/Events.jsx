@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventPreviewCard from './EventPreviewCard';
-import EventCard from './EventCard';
+import EventRender from './EventRender';
 
 
 export default function EventSearch(props) {
@@ -106,7 +106,7 @@ export default function EventSearch(props) {
             
             {
                 showEvent 
-                ?   <EventCard 
+                ?   <EventRender 
                         loggedUser={loggedUser} 
                         event={targetEvent}
                         setFeedback={setFeedback}

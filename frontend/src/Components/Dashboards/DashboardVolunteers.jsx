@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
-import EventCard from '../EventCard';
+import EventRender from '../EventRender';
 import Charts from './Charts'
 
 
@@ -62,7 +62,7 @@ const Dashboard = (props) => {
 
       {
         showEvent
-          ? <EventCard
+          ? <EventRender
             loggedUser={loggedUser}
             event={targetEvent}
             setFeedback={setFeedback}

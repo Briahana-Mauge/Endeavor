@@ -155,10 +155,10 @@ const EventCard = (props) => {
     const eventEnd = formatEventDate(event.event_end);
 
     return (
-        <div className='lightBox'>
-            <div className='text-right closeButton'>
-                <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
-            </div>
+        // <div className='lightBox'>
+        //     <div className='text-right closeButton'>
+        //         <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
+        //     </div>
 
             <div className='border border-dark rounded bg-light m-1'>
                 <div className='card-body'>
@@ -225,7 +225,7 @@ const EventCard = (props) => {
                     : null
                 }
             </div>
-        </div>
+        // </div>
     );
 }
 

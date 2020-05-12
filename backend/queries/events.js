@@ -92,28 +92,50 @@ const getAllEvents = async (vName, topic, instructor, upcoming, past) => {
 
 const getSingleEvent = async (eId) => {
   const selectQuery = `
-  SELECT events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers AS volunteers_needed, cohorts.cohort, cohorts.cohort_id, materials_url, important,
-    ARRAY_AGG ( 
-      DISTINCT
-      CASE 
-        WHEN event_volunteers.confirmed = TRUE 
-        THEN volunteers.v_first_name || ' ' || volunteers.v_last_name
-        END
-    ) AS volunteers
-    
-  FROM events
-  INNER JOIN cohorts ON cohorts.cohort_id = events.attendees
-  LEFT JOIN event_volunteers ON event_volunteers.eventv_id = events.event_id
-  LEFT JOIN volunteers ON volunteers.v_id = event_volunteers.volunteer_id
+    SELECT
+      event_id, 
+      topic, 
+      event_start, 
+      event_end, 
+      description, 
+      staff_description,
+      location, 
+      instructor, 
+      number_of_volunteers, 
+      cohort,
+      cohort_id,
+      materials_url,
+      ARRAY_AGG(
+        CAST(v_id as CHAR(10)) || ' &$%& ' ||
+        v_first_name || ' ' || v_last_name || ' &$%& ' ||
+        v_email || ' &$%& ' ||
+        CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+        CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+        CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10)) || ' &$%& ' ||
+        CAST(volunteered_time as CHAR(2))
+      ) AS volunteers_list
+      
+    FROM events
+    INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
+    LEFT JOIN event_volunteers ON events.event_id = event_volunteers.eventv_id
+    LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
 
-  WHERE events.event_id = $/eId/ AND events.deleted IS NULL
+    WHERE events.event_id = $/eId/ AND events.deleted IS NULL
 
-  GROUP BY  events.event_id, events.topic, events.event_start, events.event_end, events.description, events.location, 
-    events.instructor, events.number_of_volunteers, cohorts.cohort, cohorts.cohort_id    
+    GROUP BY  
+      events.event_id, 
+      events.topic, 
+      events.event_start, 
+      events.event_end, 
+      events.description, 
+      events.location, 
+      events.instructor, 
+      events.number_of_volunteers, 
+      cohorts.cohort,
+      cohorts.cohort_id,
+      important
+  `
 
-  ORDER BY event_start DESC
-  `;
   return await db.one(selectQuery, { eId });
 }
 
@@ -370,7 +392,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 	    INNER JOIN event_volunteers ON volunteer_id = v_id
 	    INNER JOIN events ON eventv_id = event_id
 	    WHERE event_end > (current_date - INTERVAL '12 months') 
-	    	AND event_end < CURRENT_DATE AND volunteers.v_id = 10 
+	    	AND event_end < CURRENT_DATE AND volunteers.v_id = $1
 	    	AND event_volunteers.confirmed = TRUE
 	    GROUP BY date
 	    ORDER BY date ASC

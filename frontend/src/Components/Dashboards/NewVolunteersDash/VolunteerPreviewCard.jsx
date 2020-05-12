@@ -42,7 +42,7 @@ export default function VolunteerPreviewCard(props) {
 
             </div>
 
-            <div className={`modal fade volunteer_${volunteer.v_id + volunteer.v_first_name}`} tabindex='-1' role='dialog'
+            <div className={`modal fade volunteer_${volunteer.v_id + volunteer.v_first_name}`} tabIndex='-1' role='dialog'
                 aria-labelledby='myLargeModalLabel' aria-hidden='true'>
                 <div className='modal-dialog modal-lg'>
                     <div className='modal-content'>
