@@ -3,7 +3,9 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventPreviewCard from './EventPreviewCard';
-import EventRender from './EventRender';
+import { PrimaryModalContainer } from './Modals/PrimaryModal';
+import EventCard from './EventCard';
+// import EventRender from './EventRender';
 
 
 export default function EventSearch(props) {
@@ -91,7 +93,7 @@ export default function EventSearch(props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='d-flex flex-wrap'>
+            <div className='g1EventsResults d-flex flex-wrap'>
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}
@@ -104,7 +106,21 @@ export default function EventSearch(props) {
                 }
             </div>
             
-            {
+            <PrimaryModalContainer header={targetEvent.topic || ''} hideModal={hideEvent}>
+                {
+                    showEvent
+                        ?   <EventCard
+                                loggedUser={loggedUser}
+                                event={targetEvent}
+                                setFeedback={setFeedback}
+                                reloadParent={reload}
+                                setReloadParent={setReload}
+                                // hideEvent={hideEvent}
+                            />
+                        :   null
+                }
+            </PrimaryModalContainer>
+            {/* {
                 showEvent 
                 ?   <EventRender 
                         loggedUser={loggedUser} 
@@ -115,7 +131,7 @@ export default function EventSearch(props) {
                         hideEvent={hideEvent}
                     />
                 :   null
-            }
+            } */}
         </>
     );
 }

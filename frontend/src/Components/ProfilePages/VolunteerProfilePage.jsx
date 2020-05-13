@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import { PMBody } from '../Modals/PrimaryModal';
+
 export default function VolunteerProfilePage(props) {
     const history = useHistory();
     const { volunteerId, setFeedback } = props;
@@ -103,7 +105,8 @@ export default function VolunteerProfilePage(props) {
                 ?   null // OR it can be a spinner 
                 :   !profilePublic 
                     ? <h3 className='text-center'>Sorry, nothing to show</h3>
-                    : <div className='row p-3'>
+                    // : <div className='row p-3'>
+                    : <PMBody>
                         {
                             volunteer.deleted
                             ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
@@ -197,7 +200,8 @@ export default function VolunteerProfilePage(props) {
                                 </ul> 
                             </div>
                         </div>
-                    </div>
+                    </PMBody>
+                    // </div>
             }
 
         </>

@@ -10,11 +10,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
-import EventRender from '../EventRender';
 import Charts from './Charts'
+import { PrimaryModalContainer } from '../Modals/PrimaryModal';
+import EventCard from '../EventCard';
+// import EventRender from '../EventRender';
 
 
-const Dashboard = (props) => {
+const DashboardVolunteers = (props) => {
   const { setFeedback, loggedUser } = props;
 
   const [eventsObj, setEventsObj] = useState({ upcomings: [], pasts: [], importants: [], pastData: [] });
@@ -29,7 +31,6 @@ const Dashboard = (props) => {
         .catch(err => setFeedback(err));
     }
     getEventsData();
-
   }, [reloadDashboard, loggedUser.v_id, setFeedback]);
 
 
@@ -39,7 +40,7 @@ const Dashboard = (props) => {
   }
 
 
-  // PRE-RETURN (package drilled props)
+  // Package drilled props
   const eventsDashProps = {
     loggedUser,
     setShowEvent,
@@ -47,36 +48,50 @@ const Dashboard = (props) => {
     setTargetEvent
   }
 
+
   return (
-    <div className="container-fluid">
+    <>
+
       <div className="row">
-        <div className="col-12 col-md-5">
-          <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
-        </div>
+          <div className="col-12 col-md-5">
+            <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
+          </div>
 
-        <div className="col-12 col-md-7">
-          <Charts chartData={eventsObj.pastData} />
-        </div>
-
+          <div className="col-12 col-md-7">
+            <Charts chartData={eventsObj.pastData} />
+          </div>
       </div>
 
-      {
-        showEvent
-          ? <EventRender
-            loggedUser={loggedUser}
-            event={targetEvent}
-            setFeedback={setFeedback}
-            reloadParent={reloadDashboard}
-            setReloadParent={setReloadDashboard}
-            hideEvent={hideEvent}
-          />
-          : null
-      }
+      <PrimaryModalContainer header={targetEvent.topic || ''} hideModal={hideEvent}>
+        {
+          showEvent
+            ? <EventCard
+                loggedUser={loggedUser}
+                event={targetEvent}
+                setFeedback={setFeedback}
+                reloadParent={reloadDashboard}
+                setReloadParent={setReloadDashboard}
+                // hideEvent={hideEvent}
+              />
+            : null
+        }
+      </PrimaryModalContainer>
 
-
-
-    </div>
+    </>
+    // {
+    //   showEvent
+    //     ? <EventRender
+    //       loggedUser={loggedUser}
+    //       event={targetEvent}
+    //       setFeedback={setFeedback}
+    //       reloadParent={reloadDashboard}
+    //       setReloadParent={setReloadDashboard}
+    //       hideEvent={hideEvent}
+    //     />
+    //     : null
+    // }
   )
 }
 
-export default Dashboard;
+
+export default DashboardVolunteers;

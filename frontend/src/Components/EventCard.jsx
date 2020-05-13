@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
+import { PMBody, PMFooter, PMFooterSpace } from './Modals/PrimaryModal';
+const identifyUser = require('../helpers/identifyUser');
+
 
 const EventCard = (props) => {
-    const history = useHistory();
     const { setFeedback, loggedUser, event } = props;
 
     const [ volunteerHours, setVolunteerHours ] = useState({});
     const [ waitingForRender, setWaitingForRender ] = useState(false);
+
+    const userIs = identifyUser(loggedUser);
+    const history = useHistory();
 
     /* 
         props.event.volunteers_list is an array of STRING 
@@ -28,7 +33,6 @@ const EventCard = (props) => {
         setWaitingForRender(false);
     }, [props.reloadParent]);
 
-    
     useEffect(() => {
         const tracker = {};
         for (let volunteerArr of event.volunteersList) {
@@ -76,7 +80,6 @@ const EventCard = (props) => {
     const attributeHoursForVolunteer = async (e, volunteerId, volunteerName) => {
         try {
             e.preventDefault();
-
             const hours = volunteerHours[volunteerId];
             if (hours) {
                 setWaitingForRender(true);
@@ -88,7 +91,6 @@ const EventCard = (props) => {
             setFeedback(err)
         }
     }
-
 
     const handleDeleteEvent = async () => {
         try {
@@ -105,41 +107,63 @@ const EventCard = (props) => {
         history.push(`/event/edit/${event.event_id}`);
     }
 
+
     let displayVolunteersList = null;
-    if (loggedUser && loggedUser.admin) {
-        displayVolunteersList = event.volunteersList.map(volunteer => 
-                <div className='custom-control custom-switch' key={volunteer[0] + volunteer[1] + volunteer[2]}>
-                    <input 
-                        type='checkbox' 
-                        className='custom-control-input' 
-                        id={volunteer[0] + volunteer[1]}
-                        checked={volunteer[5] === 'true' ? true : false} 
-                        onChange={e => manageVolunteersRequests(e, volunteer[0])}
-                        disabled={volunteer[3] === 'true' ? true : false || waitingForRender}
+    if (userIs.admin) {
+        displayVolunteersList = event.volunteersList.map(([
+            volunteerId,
+            fullname,
+            email,
+            isProfileDeleted,
+            eventVolunteerId,
+            isConfirmedForEvent,
+            eventHoursAssigned
+        ]) =>
+            <div className='form-row' key={volunteerId + fullname + email}>
+                <div className='custom-control custom-switch'>
+                    <input
+                        type='checkbox'
+                        className='custom-control-input'
+                        id={volunteerId + fullname}
+                        checked={isConfirmedForEvent === 'true' ? true : false}
+                        onChange={e => manageVolunteersRequests(e, volunteerId)}
+                        disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
                     />
-                    <label className='custom-control-label  mt-2' htmlFor={volunteer[0] + volunteer[1]}>
-                        <span className={volunteer[3] ? 'd-block text-muted' : 'd-block'}>
-                            {`${volunteer[1]}`}
+                    <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
+                        <span
+                            className={`g1VolConfirmedLabel d-none d-sm-block ${isConfirmedForEvent === 'true' ? 'g1VolConfirmedLabelOn' : ''}`}
+                        >
+                            CONFIRMED
                         </span>
                     </label>
-                    <span className='btn btn-link mb-2 mx-3' onClick={e => history.push(`/volunteer/${volunteer[0]}`)}>Profile</span>
-                    {
-                        volunteer[5] === 'true'
-                        ?    <form className='form-inline d-inline-block' onSubmit={e => attributeHoursForVolunteer(e, volunteer[0], volunteer[1])}>
+                </div>
+                <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
+                    className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
+                    to={`/volunteer/${volunteerId}`}
+                    target="_blank" // because this is alredy a modal, best sense is to open profile in new tab to preserve location
+                >
+                    {fullname}
+                </Link>
+                {
+                    isConfirmedForEvent === 'true'
+                        ?   <form
+                                className='g1HoursForm form-inline d-inline-block align-self-center'
+                                onSubmit={e => attributeHoursForVolunteer(e, volunteerId, fullname)}
+                            >
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
-                                    placeholder='Hours' 
-                                    value={volunteerHours[volunteer[0]] || ''}
-                                    onChange={e => manageVolunteerHours(e.target.value, volunteer[0])}
+                                    // placeholder='0'
+                                    value={volunteerHours[volunteerId] || 0}
+                                    onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
                                     disabled={waitingForRender}
                                 />
-                                <button className='btn btn-primary  mb-2' disabled={waitingForRender}>Save</button>
+                                <button className='btn btn-primary mb-2' disabled={waitingForRender}>Set Hours</button>
                             </form>
-                        : null
-                    }
-                </div>
-            )
+                        :   null
+                }
+            </div>
+        );
     }
 
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
@@ -159,74 +183,134 @@ const EventCard = (props) => {
         //     <div className='text-right closeButton'>
         //         <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
         //     </div>
-
-            <div className='border border-dark rounded bg-light m-1'>
-                <div className='card-body'>
-                    <h4 className='card-title text-center'>{event.topic}</h4>
-                    {
-                        eventStart[0] === eventEnd[0]
+        <>
+            <PMBody>
+                {
+                    eventStart[0] === eventEnd[0]
                         ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
                         :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
-                    }
-                    <p className='card-text'>
-                        <strong>Hosted by: </strong>{event.instructor}
-                    </p>
-                    <p className='card-text'>{event.description} </p>
-                    {
-                        loggedUser && loggedUser.a_id
-                        ? <p className='card-text'><strong>Details: </strong>{event.staff_description} </p>
-                        : null
-                    }
-                    <p className='card-text'><strong>Class: </strong>{event.cohort} </p>
-                    {
-                        loggedUser && loggedUser.a_id
-                        ?   <div className='card-text'>
-                                <strong>Volunteers: </strong>{`${event.acceptedVolunteers.length} / ${event.number_of_volunteers}`}
-                                {displayVolunteersList}
-                                <div className='card-text text-right'>
-                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml`}
-                                        className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
-                                </div>
-                            </div>
-                            : null
-                    }
-
-                    {
-                        loggedUser && loggedUser.v_id && event.loggedVolunteerPartOfEvent
-                        ?   event.loggedVolunteerRequestAccepted
-                            ?   <div className='card-text d-flex justify-content-between'>
-                                    <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml$`}
-                                        className='btn btn-primary' target='_blank' rel='noopener noreferrer'>Add To Calendar</a>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
-                                </div>
-                                : <div className='card-text'>
-                                    <span>Request pending</span>
-                                    <button className='btn btn-primary float-right' onClick={deleteVolunteerForEvent} disabled={waitingForRender}>Remove</button>
-                                </div>
-                            : loggedUser && loggedUser.v_id && Date.now() < new Date(event.event_end).getTime()
-                                ?
-                                    (
-                                        <div className='card-text text-right'>
-                                            <button className='btn btn-primary' onClick={volunteerForEvent} disabled={waitingForRender}>Volunteer for this event</button>
-                                        </div>
-                                    )
-                                : null
-                    }
-                </div>
-                <hr />
-
-                {
-                    loggedUser && loggedUser.admin
-                    ?   <div className='d-flex justify-content-between m-2'>
-                            <button className='btn btn-outline-danger flex-fill' onClick={handleDeleteEvent} disabled={waitingForRender}>Delete</button>
-                            <span className='flex-fill'></span>
-                            <button className='btn btn-outline-warning flex-fill' onClick={handleEditButton}>Edit</button>
-                        </div>
-                    : null
                 }
-            </div>
+                <p className='card-text'>
+                    <strong>Associated Cohorts:</strong> {event.cohort}
+                    <br />
+                    <strong>Hosted by:</strong> {event.instructor}
+                </p>
+                <p className='card-text'>
+                    {event.description}
+                </p>
+
+            </PMBody>
+            {
+                userIs.admin
+                    ?   <>
+                            <PMBody className='g1ManageVols'>
+                                <p className='card-text'>
+                                    <strong>Staff Notes:</strong><br />
+                                    {
+                                        event.staff_description !== null
+                                            ?   event.staff_description
+                                            :   <em className='g1EmptyMsg'>No notes to display.</em>
+                                    }
+                                </p>
+                                <p className='card-text'>
+                                <strong>Volunteers: </strong>
+                                    <em className='g1VolNumConfirmed'>{event.acceptedVolunteers.length} confirmed</em>,
+                                    <em className='g1VolNumPending'>
+                                        {event.volunteersList.filter(volunteer => volunteer[5] === 'false').length} pending</em>
+                                    <em className='g1VolNumRequested'>({event.number_of_volunteers} initally requested)</em>
+                                </p>
+                                {displayVolunteersList}
+                            </PMBody>
+                        </>
+                    :   null
+            }
+            <PMFooter className={!userIs.admin ? 'g1NonAdminFooter' : ''}>
+                {
+                    userIs.admin
+                        ?   <>
+                                <a
+                                    href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
+                                        event.topic}&dates=${newStart}/${newEnd}&details=${
+                                        event.description}&location=${event.location}&sf=true&output=xml`}
+                                    className='btn btn-primary'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    Add To Calendar
+                                </a>
+                                <PMFooterSpace />
+                                <button
+                                    className='btn btn-info'
+                                    data-dismiss='modal'
+                                    onClick={handleEditButton}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className='btn btn-danger'
+                                    data-dismiss='modal'
+                                    onClick={handleDeleteEvent}
+                                    disabled={waitingForRender}
+                                >
+                                    Delete
+                                </button>
+                            </>
+                        :   null
+                }
+                {
+                    userIs.volunteer && event.loggedVolunteerPartOfEvent
+                        ?   event.loggedVolunteerRequestAccepted
+                            ?   <>
+                                    <a
+                                        href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
+                                            event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${
+                                            event.location}&sf=true&output=xml$`}
+                                        className='btn btn-primary'
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        Add To Calendar
+                                    </a>
+                                    <PMFooterSpace />
+                                    <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
+                                    <button
+                                        className='btn btn-danger g1MinimizeFooterButton'
+                                        onClick={deleteVolunteerForEvent}
+                                        disabled={waitingForRender}
+                                    >
+                                        Cancel commitment
+                                    </button>
+                                </>
+                            :   <>
+                                    <PMFooterSpace />
+                                    <div className="g1Request g1Pending">Request pending</div>
+                                    <button
+                                        className='btn btn-warning g1MinimizeFooterButton'
+                                        onClick={deleteVolunteerForEvent}
+                                        disabled={waitingForRender}
+                                    >
+                                        Cancel request
+                                    </button>
+                                </>
+                        : userIs.volunteer && Date.now() < new Date(event.event_end).getTime()
+                            ?   <>
+                                    <PMFooterSpace />
+                                    <button
+                                        className='btn btn-info'
+                                        onClick={volunteerForEvent}
+                                        disabled={waitingForRender}
+                                    >
+                                        Volunteer for this event
+                                    </button>
+                                </>
+                            : null
+                }
+            </PMFooter>
+        </>
+            // </div>
         // </div>
     );
 }
+
 
 export default EventCard;
