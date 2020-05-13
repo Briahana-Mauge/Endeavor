@@ -98,7 +98,14 @@ export default function EventPreviewCard(props) {
     return (
         <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
             <div className='border rounded-lg p-2'>
-                <header className='text-center font-weight-bolder' onClick={handleClickOnEvent}>{event.topic}</header>
+                <header
+                    className='text-center font-weight-bolder'
+                    onClick={handleClickOnEvent}
+                    data-toggle="modal"
+                    data-target="#primaryModal"
+                >
+                    {event.topic}
+                </header>
                 {
                     eventStart[0] === eventEnd[0]
                     ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'

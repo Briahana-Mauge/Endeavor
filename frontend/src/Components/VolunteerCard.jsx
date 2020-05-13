@@ -7,7 +7,8 @@ const VolunteerCard = (props) => {
 
     const viewProfile = () => {
         props.setDisplayTargetUser(true);
-        props.setTargetVolunteerId(props.volunteer.v_id)
+        props.setTargetVolunteerId(props.volunteer.v_id);
+        props.setTargetVolunteerName(props.volunteer.v_first_name + ' ' + props.volunteer.v_last_name);
     }
 
     const skills = [];
@@ -39,7 +40,7 @@ const VolunteerCard = (props) => {
                         : null
                     }
                     <div className='text-right'>
-                        <button className='btn btn-primary' onClick={viewProfile}>See Profile</button>
+                        <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
                     </div>
                 </div>
             </div>

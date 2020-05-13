@@ -48,7 +48,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 email: `endeavorapp2020+${info.v_email.replace('@', '-')}@gmail.com`,
                 event: event.topic
             }
-           
+
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg = {
                 to: volunteerInfo.email,

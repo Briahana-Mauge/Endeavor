@@ -21,13 +21,13 @@ export default function ProfileRender(props) {
 
     return (
         <div className={pageForm}>
-            {
+            {/* {
                 pageForm === 'lightBox'
                 ?   <div className='text-right m-2 closeButton'>
                         <button className='btn-sm btn-danger' onClick={e => props.setDisplayTargetUser(false)}>X</button>
                     </div>
                 : null
-            }
+            } */}
 
             {
                 (originPath === 'volunteer' && volunteerId) || props.volunteerId
