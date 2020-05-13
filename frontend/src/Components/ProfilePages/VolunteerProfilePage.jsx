@@ -27,7 +27,7 @@ export default function VolunteerProfilePage(props) {
                     }
                     const info = response.data.payload;
                     setVolunteer(info);
-                    setProfilePublic(info.v_id);
+                    setProfilePublic(!!info.v_id);
                     setWaitingForData(false);
 
                     if (info.mentees) {
