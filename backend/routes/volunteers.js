@@ -59,10 +59,25 @@ router.get('/new', async (req, res, next) => {
     }
 });
 
-// Get volunteer by email
-router.get('/email/:v_email', async (req, res, next) => {
+
+// Get volunteer by id, email or slug
+router.get('/:type/:volunteer_id', async (req, res, next) => {
     try {
-        const email = processInput(req.params.v_email, "hardVC", "volunteer email", 50);
+        const type = req.params.type;
+        if (type !== 'email' && type !== 'id' && type !== 'slug') {
+            throw new Error('404_wrong route');
+        }
+        let id = email = slug = null;
+
+        if (type === 'id') {
+            id = id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        }
+        if (type === 'email') {
+            email = processInput(req.params.volunteer_id, "hardVC", "volunteer email", 50);
+        }
+        if (type == 'slug') {
+            slug = processInput(req.params.volunteer_id, "hardVC", "volunteer slug", 30);
+        }
 
         let publicProfilesOnly = true;
         if (req.user && req.user.a_id) {
@@ -74,33 +89,11 @@ router.get('/email/:v_email', async (req, res, next) => {
             volunteerId = req.user.v_id;
         }
 
-        const volunteer = await volunteerQueries.getVolunteerByIdOrEmail(null, email, publicProfilesOnly, volunteerId);
-        res.json({
-                payload: volunteer,
-                message: "Successfully retrieved volunteer's info",
-                err: false
-            });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-})
-
-// Get volunteer by id
-router.get('/id/:volunteer_id', async (req, res, next) => {
-    try {
-        const id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-
-        let publicProfilesOnly = true;
-        if (req.user && req.user.a_id) {
-            publicProfilesOnly = false;
+        const volunteer = await volunteerQueries.getSpecificVolunteer(id, email, slug);
+        if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
+            throw new Error('403__Not accessible');
         }
 
-        let volunteerId = null;
-        if (req.user && req.user.v_id) {
-            volunteerId = req.user.v_id;
-        }
-
-        const volunteer = await volunteerQueries.getVolunteerByIdOrEmail(id, null, publicProfilesOnly, volunteerId);
         res.json({
                 payload: volunteer,
                 message: "Successfully retrieved volunteer's info",

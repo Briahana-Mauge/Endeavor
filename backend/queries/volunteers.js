@@ -120,7 +120,7 @@ const getVolunteerByEmail = async (vEmail) => {
 }
 
 // Get volunteer by Id Or email
-const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerId) => {
+const getSpecificVolunteer = async (id, email, slug) => {
   const selectQuery = `
     SELECT 
 	    v_id, v_first_name, v_last_name, v_email,
@@ -137,14 +137,14 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
-          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end < NOW()
+          WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND event_volunteers.confirmed = TRUE AND event_end < NOW()
         ) AS past_events,
       (SELECT
         ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || event_start || ' &$%& ' || event_end )
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
-          WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE AND event_end >= NOW()
+          WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND event_volunteers.confirmed = TRUE AND event_end >= NOW()
         ) AS future_events,
       (SELECT
         ARRAY_AGG (
@@ -155,13 +155,13 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
         )
         FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
         INNER JOIN volunteers ON mentor = v_id
-        WHERE v_id = $/id/ OR v_email = $/email/
+        WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/)
       ) AS mentees,
       (SELECT
         SUM(volunteered_time)
         FROM event_volunteers
         INNER JOIN volunteers ON volunteer_id = v_id
-        WHERE (v_id = $/id/ OR v_email = $/email/) AND event_volunteers.confirmed = TRUE
+        WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND event_volunteers.confirmed = TRUE
       ) AS total_hours
 
     FROM volunteers
@@ -170,25 +170,15 @@ const getVolunteerByIdOrEmail = async (id, email, publicProfilesOnly, volunteerI
     INNER JOIN event_volunteers ON v_id = event_volunteers.volunteer_id
     INNER JOIN events ON eventv_id = event_id
     LEFT JOIN mentor_pairs ON v_id = mentor_pairs.mentor 
-    WHERE v_id = $/id/ OR v_email = $/email/ 
+    WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) 
     GROUP BY volunteers.v_id 
   `;
 
-  // let condition = '';
-  // const endOfQuery = ` GROUP BY volunteers.v_id `
-  
-  // if (id) {
-  //   condition = ' WHERE v_id = $/id/ '
-  // } else if (email) {
-  //   condition = ' WHERE v_email = $/email/ '
+  const volunteer = await db.one(selectQuery, {id, email, slug});
+
+  // if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
+  //   return new Error('403__Not accessible');
   // }
-
-  // const volunteer = await db.one(selectQuery + condition + endOfQuery, {id, email});
-  const volunteer = await db.one(selectQuery, {id, email});
-
-  if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
-    return new Error('403__Not accessible');
-  }
   return volunteer;
 }
 
@@ -326,7 +316,7 @@ module.exports = {
   getAllVolunteers,
   getNewVolunteers,
   getVolunteerByEmail,
-  getVolunteerByIdOrEmail,
+  getSpecificVolunteer,
   addVolunteer,
   updateVolunteer,
   confirmVolunteer,
