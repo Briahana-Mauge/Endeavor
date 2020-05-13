@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
-import { PMBody, PMFooter } from './Modals/PrimaryModal';
+import { PMBody, PMFooter, PMFooterSpace } from './Modals/PrimaryModal';
 const identifyUser = require('../helpers/identifyUser');
 
 
@@ -36,6 +36,7 @@ const EventCard = (props) => {
     useEffect(() => {
         const tracker = {};
         for (let volunteerArr of event.volunteersList) {
+            console.log(volunteerArr)
             tracker[volunteerArr[0]] = volunteerArr[6];
         }
         setVolunteerHours(tracker);
@@ -153,8 +154,8 @@ const EventCard = (props) => {
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
                                     type='number' 
-                                    placeholder='0'
-                                    value={volunteerHours[volunteerId] || ''}
+                                    // placeholder='0'
+                                    value={volunteerHours[volunteerId] || 0}
                                     onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
                                     disabled={waitingForRender}
                                 />
@@ -178,8 +179,11 @@ const EventCard = (props) => {
     const eventStart = formatEventDate(event.event_start);
     const eventEnd = formatEventDate(event.event_end);
 
-
     return (
+        // <div className='lightBox'>
+        //     <div className='text-right closeButton'>
+        //         <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
+        //     </div>
         <>
             <PMBody>
                 {
@@ -197,10 +201,10 @@ const EventCard = (props) => {
                 </p>
 
             </PMBody>
-            <PMBody className='g1ManageVols'>
-                {
-                    userIs.admin
-                        ?   <>
+            {
+                userIs.admin
+                    ?   <>
+                            <PMBody className='g1ManageVols'>
                                 <p className='card-text'>
                                     <strong>Staff Notes:</strong><br />
                                     {
@@ -217,14 +221,14 @@ const EventCard = (props) => {
                                     <em className='g1VolNumRequested'>({event.number_of_volunteers} initally requested)</em>
                                 </p>
                                 {displayVolunteersList}
-                            </>
-                        :   null
-                }
-            </PMBody>
+                            </PMBody>
+                        </>
+                    :   null
+            }
             <PMFooter>
                 {
                     userIs.admin
-                        ?   <div className='d-flex w-100 m-2'>
+                        ?   <>
                                 <a
                                     href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
                                         event.topic}&dates=${newStart}/${newEnd}&details=${
@@ -235,7 +239,7 @@ const EventCard = (props) => {
                                 >
                                     Add To Calendar
                                 </a>
-                                <span className='flex-fill'></span>
+                                <PMFooterSpace />
                                 <button
                                     className='btn btn-info'
                                     data-dismiss='modal'
@@ -251,13 +255,13 @@ const EventCard = (props) => {
                                 >
                                     Delete
                                 </button>
-                            </div>
+                            </>
                         :   null
                 }
                 {
                     userIs.volunteer && event.loggedVolunteerPartOfEvent
                         ?   event.loggedVolunteerRequestAccepted
-                            ?   <div className='card-text d-flex justify-content-between'>
+                            ?   <>
                                     <a
                                         href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
                                             event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${
@@ -268,38 +272,44 @@ const EventCard = (props) => {
                                     >
                                         Add To Calendar
                                     </a>
+                                    <PMFooterSpace />
+                                    <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
                                     <button
-                                        className='btn btn-primary float-right'
+                                        className='btn btn-danger float-right'
                                         onClick={deleteVolunteerForEvent}
                                         disabled={waitingForRender}
                                     >
-                                        Remove
+                                        Cancel commitment
                                     </button>
-                                </div>
-                            :   <div className='card-text'>
-                                    <span>Request pending</span>
+                                </>
+                            :   <>
+                                    <PMFooterSpace />
+                                    <div className="g1Request g1Pending">Request pending</div>
                                     <button
-                                        className='btn btn-primary float-right'
+                                        className='btn btn-warning float-right'
                                         onClick={deleteVolunteerForEvent}
                                         disabled={waitingForRender}
                                     >
-                                        Remove
+                                        Cancel request
                                     </button>
-                                </div>
+                                </>
                         : userIs.volunteer && Date.now() < new Date(event.event_end).getTime()
-                            ?   <div className='card-text text-right'>
+                            ?   <>
+                                    <PMFooterSpace />
                                     <button
-                                        className='btn btn-primary'
+                                        className='btn btn-info'
                                         onClick={volunteerForEvent}
                                         disabled={waitingForRender}
                                     >
                                         Volunteer for this event
                                     </button>
-                                </div>
+                                </>
                             : null
                 }
             </PMFooter>
         </>
+            // </div>
+        // </div>
     );
 }
 

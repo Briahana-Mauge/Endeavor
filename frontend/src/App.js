@@ -24,6 +24,7 @@ import EventForm from './Components/EventForm';
 import AdminTools from './Components/AdminTools/AdminTools';
 import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
+import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
 
 const identifyUser = require('./helpers/identifyUser');
@@ -261,6 +262,10 @@ function App() {
           <Events {...userProps} />
         </PrivateRouteGate>
 
+        <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
+          <EventRender {...userProps} />
+        </PrivateRouteGate>
+
         {allowedVolunteersHome}
         {allowedVolunteersProfile}
 
@@ -270,6 +275,7 @@ function App() {
         {allowedAddEvent}
         {allowedEditEvent}
         {allowedMentorManagement}
+
 
         {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
         <Route path='/login'>

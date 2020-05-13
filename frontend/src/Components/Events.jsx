@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventPreviewCard from './EventPreviewCard';
-import EventCard from './EventCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
+import EventCard from './EventCard';
+// import EventRender from './EventRender';
 
 
 export default function EventSearch(props) {
@@ -119,6 +120,18 @@ export default function EventSearch(props) {
                         :   null
                 }
             </PrimaryModalContainer>
+            {/* {
+                showEvent 
+                ?   <EventRender 
+                        loggedUser={loggedUser} 
+                        event={targetEvent}
+                        setFeedback={setFeedback}
+                        reloadParent={reload}
+                        setReloadParent={setReload}
+                        hideEvent={hideEvent}
+                    />
+                :   null
+            } */}
         </>
     );
 }

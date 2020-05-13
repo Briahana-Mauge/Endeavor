@@ -12,6 +12,7 @@ import EventsDashAdmin from './EventsDash/EventsDashAdmin';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
+// import EventRender from '../EventRender';
 
 
 const DashboardAdmin = (props) => {
@@ -88,6 +89,18 @@ const DashboardAdmin = (props) => {
             }
           </PrimaryModalContainer>
 
+          {/* {
+            showEvent
+              ? <EventRender
+                  loggedUser={loggedUser}
+                  event={targetEvent}
+                  setFeedback={setFeedback}
+                  reloadParent={reloadDashboard}
+                  setReloadParent={setReloadDashboard}
+                  hideEvent={hideEvent}
+                />
+              : null
+          } */}
         </>
     );
 }

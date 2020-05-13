@@ -11,7 +11,7 @@ patch- === translates empty input to undefined, in prep for patch routes
 
 
 const varcharCheck = (input, softHardOrPatch, inputName, maxLengthNum = 65536) => {
-  /* STAGE 1/3: check for and handle empty inputs */
+  /* STAGE 1/4: check for and handle empty inputs */
   if (!input || !input.trim()) {
     switch (softHardOrPatch) {
       case "hard":  // empty input is REJECTED
@@ -24,11 +24,16 @@ const varcharCheck = (input, softHardOrPatch, inputName, maxLengthNum = 65536) =
         throw new Error(`500__unknown varchar type sent to check function`);
     }
   }
-  /* STAGE 2/3: check input length against specified varchar limit */
+  /* STAGE 2/4: check input length against specified varchar limit */
   if (input.trim().length > maxLengthNum) {
     throw new Error(`400__${inputName} is longer than ${maxLengthNum} allowed`);
   }
-  /* STAGE 3/3: all checks have passed, return trimmed input */
+  /* STAGE 3/4: prevent submission of marker string */
+  if (input.trim().includes('&$%&')) {
+    throw new Error(`422__${inputName} contains forbidden character patterns. Nice try but nothing for you here`);
+  }
+
+  /* STAGE 4/4: all checks have passed, return trimmed input */
   return input.trim();
 }
 

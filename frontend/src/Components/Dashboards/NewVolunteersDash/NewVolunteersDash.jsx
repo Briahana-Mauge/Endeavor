@@ -24,7 +24,6 @@ const NewVolunteersDash = (props) => {
     }
   }
 
-
   const slideIndicators = [];
   const slides = newVolunteers.map(( volunteer, index ) => {
       const { v_first_name, v_last_name, v_id } = volunteer;
