@@ -69,7 +69,7 @@ const EventsDash = (props) => {
               <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
             </div>
             <div className="g1TBody">
-              {rowsUpcomings}
+              {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">You have no upcoming events.</div>}
             </div>
           </div>
 
@@ -87,7 +87,7 @@ const EventsDash = (props) => {
               <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
             </div>
             <div className="g1TBody">
-              {rowsPasts}
+              {rowsPasts.length ? rowsPasts : <div className="g1EmptyRowMsg">You have no past recent events.</div>}
             </div>
           </div>
 
@@ -105,7 +105,7 @@ const EventsDash = (props) => {
               <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
             </div>
             <div className="g1TBody">
-              {rowsImportants}
+              {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
             </div>
           </div>
 
