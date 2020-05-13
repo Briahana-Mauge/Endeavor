@@ -26,7 +26,7 @@ const allVolunteeredTimeByVolunteerID = async (volunteer) => {
 //Get the number of hours by all volunteers (response is an array of objects)
 const allHours = async () => {
   const selectQuery = `
-  SELECT EXTRACT(MONTH FROM event_end), SUM(volunteered_time) 
+  SELECT EXTRACT(MONTH FROM event_end) AS months, SUM(volunteered_time) AS hours
   FROM event_volunteers
   INNER JOIN events ON event_volunteers.eventv_id = events.event_id
   WHERE event_volunteers.deleted IS NULL
