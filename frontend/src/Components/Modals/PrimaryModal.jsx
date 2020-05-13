@@ -9,7 +9,7 @@ import React from 'react';
 
 
 export const PrimaryModalContainer = (props) => {
-  const { children, header, hideEvent } = props;
+  const { children, header, hideModal } = props;
 
 
   return(
@@ -21,7 +21,7 @@ export const PrimaryModalContainer = (props) => {
             <h5 className="modal-title" id="primaryModalTitle">{header}</h5>
           </div>
           <div className="g1CloseContainer">
-            <button type="button" className="close sticky-top pt-3" data-dismiss="modal" aria-label="Close" onClick={hideEvent}>
+            <button type="button" className="close sticky-top pt-3" data-dismiss="modal" aria-label="Close" onClick={hideModal}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
