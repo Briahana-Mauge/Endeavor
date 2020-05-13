@@ -74,7 +74,7 @@ const DashboardAdmin = (props) => {
             </div>
           </div>
 
-          <PrimaryModalContainer header={targetEvent.topic || ''} hideEvent={hideEvent}>
+          <PrimaryModalContainer header={targetEvent.topic || ''} hideModal={hideEvent}>
             {
               showEvent
                 ? <EventCard
