@@ -48,6 +48,7 @@ export default function VolunteerProfile(props) {
         setPublicProfile
     } = props;
 
+    const [ slug, setSlug ] = useState(loggedUser.v_slug);
     const [ bio, setBio ] = useState(loggedUser.v_bio);
     const [ linkedIn, setLinkedIn ] = useState(loggedUser.v_linkedin);
     const [ picFile, setPicFile ] = useState(null);
@@ -71,6 +72,9 @@ export default function VolunteerProfile(props) {
         setFirstName(loggedUser.v_first_name);
         setLastName(loggedUser.v_last_name);
         setEmail(loggedUser.v_email);
+        setSlug(loggedUser.v_slug);
+        setBio(loggedUser.v_bio);
+        setLinkedIn(loggedUser.v_linkedin);
         setCompany(loggedUser.company);
         setTitle(loggedUser.title);
         setMentor(loggedUser.mentoring);
@@ -98,6 +102,7 @@ export default function VolunteerProfile(props) {
                     profile.append('password', password);
                     profile.append('firstName', firstName);
                     profile.append('lastName', lastName);
+                    profile.append('slug', slug);
                     profile.append('company', company);
                     profile.append('title', title);
                     profile.append('skills', volunteerSkills);
@@ -118,6 +123,7 @@ export default function VolunteerProfile(props) {
                         password,
                         firstName,
                         lastName,
+                        slug,
                         company,
                         title,
                         skills: volunteerSkills,
@@ -170,6 +176,21 @@ export default function VolunteerProfile(props) {
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
                         <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
+                                <div className='form-group col-sm-12'>
+                                    <label className='col-sm-8' htmlFor='slugText' >
+                                        If you chose to have your profile public, this is the slug to your profile
+                                    </label>
+                                    <input 
+                                        className='form-control col-sm-4' 
+                                        style={{display: 'inline-block'}}
+                                        id='slugText'
+                                        type='text' 
+                                        placeholder='Slug' 
+                                        value={slug}
+                                        onChange={e => setSlug(e.target.value)}
+                                    />
+                                </div>
+
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
                                 setFirstName={setFirstName}

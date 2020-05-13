@@ -60,50 +60,6 @@ router.get('/new', async (req, res, next) => {
 });
 
 
-// Get volunteer by id, email or slug
-router.get('/:type/:volunteer_id', async (req, res, next) => {
-    try {
-        const type = req.params.type;
-        if (type !== 'email' && type !== 'id' && type !== 'slug') {
-            throw new Error('404_wrong route');
-        }
-        let id = email = slug = null;
-
-        if (type === 'id') {
-            id = id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-        }
-        if (type === 'email') {
-            email = processInput(req.params.volunteer_id, "hardVC", "volunteer email", 50);
-        }
-        if (type == 'slug') {
-            slug = processInput(req.params.volunteer_id, "hardVC", "volunteer slug", 30);
-        }
-
-        let publicProfilesOnly = true;
-        if (req.user && req.user.a_id) {
-            publicProfilesOnly = false;
-        }
-
-        let volunteerId = null;
-        if (req.user && req.user.v_id) {
-            volunteerId = req.user.v_id;
-        }
-
-        const volunteer = await volunteerQueries.getSpecificVolunteer(id, email, slug);
-        if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
-            throw new Error('403__Not accessible');
-        }
-
-        res.json({
-                payload: volunteer,
-                message: "Successfully retrieved volunteer's info",
-                err: false
-            });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-})
-
 // Get volunteer's skills
 router.get('/skills/:volunteer_id', async (req, res, next) => {
     try {
@@ -133,6 +89,51 @@ router.patch('/confirm/:volunteer_id', async (req, res, next) => {
         } else {
             throw new Error('403_You are not authorized to perform this operation');
         }
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+})
+
+//NOTE: Please make sure this route stays the last one
+// Get volunteer by id, email or slug
+router.get('/:type/:volunteer_id', async (req, res, next) => {
+    try {
+        const type = req.params.type;
+        if (type !== 'email' && type !== 'id' && type !== 'slug') {
+            throw new Error('404_wrong route');
+        }
+        let id = email = slug = null;
+
+        if (type === 'id') {
+            id = id = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        }
+        if (type === 'email') {
+            email = processInput(req.params.volunteer_id, "hardVC", "volunteer email", 50).toLowerCase();
+        }
+        if (type == 'slug') {
+            slug = processInput(req.params.volunteer_id, "hardVC", "volunteer slug", 30).toLowerCase();
+        }
+
+        let publicProfilesOnly = true;
+        if (req.user && req.user.a_id) {
+            publicProfilesOnly = false;
+        }
+
+        let volunteerId = null;
+        if (req.user && req.user.v_id) {
+            volunteerId = req.user.v_id;
+        }
+
+        const volunteer = await volunteerQueries.getSpecificVolunteer(id, email, slug);
+        if (publicProfilesOnly && !volunteer.public_profile && volunteer.v_id !== volunteerId){
+            throw new Error('403__Not accessible');
+        }
+
+        res.json({
+                payload: volunteer,
+                message: "Successfully retrieved volunteer's info",
+                err: false
+            });
     } catch (err) {
         handleError(err, req, res, next);
     }

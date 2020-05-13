@@ -30,6 +30,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
           volunteers.v_id, 
           volunteers.v_first_name, 
           volunteers.v_last_name, 
+          v_slug,
           volunteers.v_picture, 
           volunteers.v_email, 
           volunteers.company, 
@@ -93,7 +94,8 @@ const getNewVolunteers = async () => {
     SELECT 
       v_id, 
       v_first_name, 
-      v_last_name, 
+      v_last_name,
+      v_slug, 
       v_picture, 
       v_email, 
       company, 
@@ -123,7 +125,7 @@ const getVolunteerByEmail = async (vEmail) => {
 const getSpecificVolunteer = async (id, email, slug) => {
   const selectQuery = `
     SELECT 
-	    v_id, v_first_name, v_last_name, v_email,
+	    v_id, v_first_name, v_last_name, v_email, v_slug,
       volunteers.confirmed, volunteers.active,
       v_picture, company, title, v_bio, v_linkedin,
       mentoring, office_hours, tech_mock_interview,
@@ -193,6 +195,7 @@ const addVolunteer = async (user, password) => {
         v_first_name, 
         v_last_name, 
         v_email,
+        v_slug,
         company, 
         parsed_company, 
         title, 
@@ -209,6 +212,7 @@ const addVolunteer = async (user, password) => {
         $/firstName/,
         $/lastName/, 
         $/email/, 
+        $/slug/,
         $/company/, 
         $/formattedCompanyName/, 
         $/title/, 
@@ -247,6 +251,7 @@ const updateVolunteer = async (user) => {
     SET 
       v_first_name = $/firstName/,
       v_last_name = $/lastName/,
+      v_slug = $/slug/,
       v_picture = $/picture/,
       company = $/company/,
       parsed_company = $/formattedCompanyName/,
@@ -310,6 +315,7 @@ const confirmVolunteer = async (id) => {
   `
   return await db.one(confirmQuery, {id});
 }
+
 
 /* EXPORT */
 module.exports = {
