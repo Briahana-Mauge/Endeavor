@@ -11,7 +11,7 @@ import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
-import Charts from './Charts'
+import Charts from './Charts_Volunteer'
 
 
 const Dashboard = (props) => {
