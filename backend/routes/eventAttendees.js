@@ -43,7 +43,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 confirmed: processInput(request.body.confirmed, 'hardBool', 'volunteer confirmed')
             }
 
-            const info = await volunteerQueries.getVolunteerByIdOrEmail(updateData.volunteerId);
+            const info = await volunteerQueries.getSpecificVolunteer(updateData.volunteerId, null, null);
             const event = await eventQueries.getSingleEvent(updateData.eventId)
             let volunteerInfo = {
                 name: `${info.v_first_name} ${info.v_last_name}`,
