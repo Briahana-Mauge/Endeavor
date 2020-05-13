@@ -36,7 +36,6 @@ const EventCard = (props) => {
     useEffect(() => {
         const tracker = {};
         for (let volunteerArr of event.volunteersList) {
-            console.log(volunteerArr)
             tracker[volunteerArr[0]] = volunteerArr[6];
         }
         setVolunteerHours(tracker);
