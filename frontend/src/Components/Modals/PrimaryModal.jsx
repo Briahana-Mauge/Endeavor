@@ -61,5 +61,6 @@ export const PMFooter = ({children}) => {
 export default {
   PrimaryModalContainer,
   PMBody,
+  PMFooterSpace,
   PMFooter
 }
