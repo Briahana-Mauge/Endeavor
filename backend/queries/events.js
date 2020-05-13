@@ -274,9 +274,43 @@ const getDashEventsForAdmin = async () => {
     ${queryEnd}
     LIMIT 5;
   `;
-  return db.multi(todaysQuery + importantsQuery + upcomingsQuery)
-    .then(([todays, importants, upcomings]) => {
-      return { todays, importants, upcomings };
+  const pastYearHours = `
+  SELECT
+        TO_CHAR(event_end, 'MM-YYYY') AS date,  
+	      SUM(event_volunteers.volunteered_time) AS hours
+	    FROM event_volunteers
+	    INNER JOIN events ON event_volunteers.eventv_id = events.event_id
+	    WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
+	    	AND event_end < CURRENT_DATE
+           AND event_volunteers.deleted IS NULL
+            AND events.deleted IS NULL
+	    GROUP BY DATE
+	    ORDER BY DATE ASC;
+      `;
+  const pastYearEventAmount = `
+      SELECT
+        TO_CHAR(event_end, 'MM-YYYY') AS date,  
+        COUNT(events.event_id)
+      FROM events
+      WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
+        AND event_end < CURRENT_DATE
+        AND events.deleted IS NULL
+      GROUP BY DATE
+      ORDER BY DATE ASC;
+      `;
+      const pastYearVolunteerSignups = `
+      SELECT
+        TO_CHAR(signup_date, 'MM-YYYY') AS date,  
+	      COUNT(volunteers.signup_date) AS volunteers
+	    FROM volunteers
+	    WHERE signup_date > (CURRENT_DATE - INTERVAL '12 months') 
+	    	AND signup_date < CURRENT_DATE
+	    GROUP BY DATE
+      ORDER BY DATE ASC;
+      `
+  return db.multi(todaysQuery + importantsQuery + upcomingsQuery + pastYearHours + pastYearEventAmount + pastYearVolunteerSignups)
+    .then(([todays, importants, upcomings, hours, events, volunteers]) => {
+      return { todays, importants, upcomings, hours, events, volunteers };
     });
 }
 
@@ -362,7 +396,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 
   const pastYearData = `
     SELECT
-        TO_CHAR(event_end, 'YYYY-MM') AS date, 
+        TO_CHAR(event_end, 'MM-YYYY') AS date, 
 	      COUNT(EXTRACT(MONTH FROM event_end)) AS events_count,
 	      SUM(event_volunteers.volunteered_time) AS hours
         
@@ -370,7 +404,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 	    INNER JOIN event_volunteers ON volunteer_id = v_id
 	    INNER JOIN events ON eventv_id = event_id
 	    WHERE event_end > (current_date - INTERVAL '12 months') 
-	    	AND event_end < CURRENT_DATE AND volunteers.v_id = 10 
+	    	AND event_end < CURRENT_DATE AND volunteers.v_id = $1 
 	    	AND event_volunteers.confirmed = TRUE
 	    GROUP BY date
 	    ORDER BY date ASC
@@ -411,7 +445,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 //         LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
 //         WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id) 
 //       ) AS volunteers_list
-  
+
 //     FROM events
 //     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
