@@ -78,7 +78,8 @@ router.get('/dashboard/admin', async (req, res, next) => {
             throw new Error('401__You must be a logged-in admin');
         } else {
             const adminDashboardEvents = await eventsQueries.getDashEventsForAdmin();
-            res.status(200)
+            console.log(adminDashboardEvents)
+                res.status(200)
                 .json({
                     payload: adminDashboardEvents,
                     message: "Success",
