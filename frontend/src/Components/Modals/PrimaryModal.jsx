@@ -47,10 +47,10 @@ export const PMBody = ({className = '', children}) => {
 export const PMFooterSpace = () => <span className='flex-fill'></span>;
 
 
-export const PMFooter = ({children}) => {
+export const PMFooter = ({children, className = ''}) => {
   return(
     <div className="modal-footer py-1">
-      <div className='d-flex w-100 m-2'>
+      <div className={`d-flex w-100 m-2 ${className}`}>
         {children}
       </div>
     </div>

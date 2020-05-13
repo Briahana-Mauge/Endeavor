@@ -391,6 +391,12 @@ nav button {
 
     .g1TBody {
         display: table-row-group;
+
+        .g1EmptyRowMsg {
+            margin-top: .6rem;
+            color: #888;
+            font-style: italic;
+        }
     }
 
     .g1TR {
@@ -753,10 +759,16 @@ nav button {
             }
     }
 
+    .g1NonAdminFooter {
+        flex-direction: column;
+    }
+
     .g1Request {
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 2rem;
+        margin-bottom: 1rem;
         padding: 0 1rem;
 
         &.g1Pending {
@@ -766,6 +778,10 @@ nav button {
             color: green;
         }
 
+    }
+
+    .g1MinimizeFooterButton {
+        margin-right: auto;
     }
 }
 

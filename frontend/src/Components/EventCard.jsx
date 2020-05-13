@@ -225,7 +225,7 @@ const EventCard = (props) => {
                         </>
                     :   null
             }
-            <PMFooter>
+            <PMFooter className={!userIs.admin ? 'g1NonAdminFooter' : ''}>
                 {
                     userIs.admin
                         ?   <>
@@ -275,7 +275,7 @@ const EventCard = (props) => {
                                     <PMFooterSpace />
                                     <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
                                     <button
-                                        className='btn btn-danger float-right'
+                                        className='btn btn-danger g1MinimizeFooterButton'
                                         onClick={deleteVolunteerForEvent}
                                         disabled={waitingForRender}
                                     >
@@ -286,7 +286,7 @@ const EventCard = (props) => {
                                     <PMFooterSpace />
                                     <div className="g1Request g1Pending">Request pending</div>
                                     <button
-                                        className='btn btn-warning float-right'
+                                        className='btn btn-warning g1MinimizeFooterButton'
                                         onClick={deleteVolunteerForEvent}
                                         disabled={waitingForRender}
                                     >
