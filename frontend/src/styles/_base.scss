@@ -752,6 +752,21 @@ nav button {
                 margin-left: 2.6rem;
             }
     }
+
+    .g1Request {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 1rem;
+
+        &.g1Pending {
+            color: #ffe14e;
+        }
+        &.g1Confirmed {
+            color: green;
+        }
+
+    }
 }
 
 // .g1PopoverBtn {
