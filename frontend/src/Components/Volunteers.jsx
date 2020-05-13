@@ -50,9 +50,9 @@ export default function Volunteers (props) {
     }
 
     const hideVolunteer = () => {
+        setDisplayTargetUser(false);
         setTargetVolunteerId(null);
         setTargetVolunteerName('');
-        setDisplayTargetUser(false);
     }
 
 
