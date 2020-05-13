@@ -1,6 +1,6 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-PrivateRouteGate Component | Capstone App (Pursuit Volunteer Mgr)
+PrivateGate Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
@@ -11,7 +11,7 @@ import { Route, Redirect } from 'react-router-dom';
 import NavBar from './NavBar/NavBar';
 
 
-const PrivateRouteGate = ({ children, h1, loggedUser, logout, isUserStateReady, ...rest }) => {
+const PrivateGate = ({ children, h1, loggedUser, logout, isUserStateReady, ...rest }) => {
   // without this showInside, logout is visibly delayed for fraction of a second before redirect
   let showInside = null;
   if (isUserStateReady) {
@@ -42,4 +42,4 @@ const PrivateRouteGate = ({ children, h1, loggedUser, logout, isUserStateReady, 
 }
 
 
-export default PrivateRouteGate;
+export default PrivateGate;

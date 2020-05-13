@@ -11,7 +11,7 @@ import axios from 'axios';
 
 import './App.scss';
 import LoginSignupGate from './Components/LoginSignupGate';
-import PrivateRouteGate from './Components/PrivateRouteGate';
+import PrivateGate from './Components/PrivateGate';
 import DashboardAdmin from './Components/Dashboards/DashboardAdmin';
 import DashboardStaff from './Components/Dashboards/DashboardStaff';
 import DashboardVolunteers from './Components/Dashboards/DashboardVolunteers';
@@ -169,39 +169,39 @@ function App() {
     volunteersDashboard = <DashboardVolunteers {...userProps} />,
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
-      <PrivateRouteGate path='/volunteers' h1='Volunteers List' {...gateProps}>
+      <PrivateGate path='/volunteers' h1='Volunteers List' {...gateProps}>
         <Volunteers {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     volunteersProfile = (
-      <PrivateRouteGate path='/volunteer/:volunteerId' h1='Volunteer Profile' {...gateProps}>
+      <PrivateGate path='/volunteer/:volunteerId' h1='Volunteer Profile' {...gateProps}>
         <ProfileRender {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     fellowsProfile = (
-      <PrivateRouteGate path='/fellow/:fellowId' h1='Fellow Profile' {...gateProps}>
+      <PrivateGate path='/fellow/:fellowId' h1='Fellow Profile' {...gateProps}>
         <ProfileRender {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     adminTools = (
-      <PrivateRouteGate path='/tools' h1='Admin Settings' {...gateProps}>
+      <PrivateGate path='/tools' h1='Admin Settings' {...gateProps}>
         <AdminTools {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     adminAddEventForm = (
-      <PrivateRouteGate path='/event/add' h1='Add Event' {...gateProps}>
+      <PrivateGate path='/event/add' h1='Add Event' {...gateProps}>
         <EventForm {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     adminEditEventForm = (
-      <PrivateRouteGate path='/event/edit/:eventId' h1='Edit Event' {...gateProps}>
+      <PrivateGate path='/event/edit/:eventId' h1='Edit Event' {...gateProps}>
         <EventForm {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     ),
     mentorManagement = (
-      <PrivateRouteGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
+      <PrivateGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
         <Mentoring {...userProps} />
-      </PrivateRouteGate>
+      </PrivateGate>
     )
   ;
 
@@ -250,40 +250,45 @@ function App() {
     <div className="g1App container">
       <Switch>
 
-        <PrivateRouteGate exact path='/' h1='Home' {...gateProps}>
+        <PrivateGate exact path='/' h1='Home' {...gateProps}>
           {allowedDashboard}
-        </PrivateRouteGate>
+        </PrivateGate>
 
-        <PrivateRouteGate path='/profile' h1='My Profile' {...gateProps}>
+        <PrivateGate path='/profile' h1='My Profile' {...gateProps}>
           <ProfilePage {...userProps} {...profileProps} resetState={resetState}/>
-        </PrivateRouteGate>
+        </PrivateGate>
 
-        <PrivateRouteGate path='/events' h1='Events List' {...gateProps}>
-          <Events {...userProps} />
-        </PrivateRouteGate>
 
-        <PrivateRouteGate path='/event/:eventId' h1='Event' {...gateProps}>
+        {/* // EVENTS PAGES */}
+        {allowedAddEvent}             {/* '/event/add' */}
+        {allowedEditEvent}            {/* '/event/edit/:eventId' */}
+
+        <PrivateGate path='/event/:eventId' h1='Event' {...gateProps}>
           <EventRender {...userProps} />
-        </PrivateRouteGate>
+        </PrivateGate>
 
-        {allowedVolunteersHome}
-        {allowedVolunteersProfile}
-
-        {allowedFellowsProfile}
-
-        {allowedAdminTools}
-        {allowedAddEvent}
-        {allowedEditEvent}
-        {allowedMentorManagement}
+        <PrivateGate path='/events' h1='Events List' {...gateProps}>
+          <Events {...userProps} />
+        </PrivateGate>
 
 
-        {/* PUBLIC ROUTE: LOGIN/SIGNUP + CATCHALL */}
+        {allowedVolunteersHome}       {/* '/volunteers' */}
+        {allowedVolunteersProfile}    {/* '/volunteer/:volunteerId' */}
+
+        {allowedFellowsProfile}       {/* '/fellow/:fellowId' */}
+
+        {allowedAdminTools}           {/* '/tools' */}
+
+        {allowedMentorManagement}     {/* '/mentoring/volunteer/:volunteerId' */}
+
+
         <Route path='/login'>
           <LoginSignupGate {...gateProps}>
             <LoginSignup {...userProps} {...signupProps} {...profileProps} />
           </LoginSignupGate>
         </Route>
 
+        {/* CATCHALL */}
         <Route path='/404'>
           <h1 className='text-center'>We can have a message here or a 404 page</h1>
         </Route>
