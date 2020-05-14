@@ -132,14 +132,13 @@ nav button {
 }
 
 
-.card-body,
-.lightBox {
+.card-body {
     color: var(--color-black);
 }
 
-.lightBox {
-    z-index: var(--zi-popup-1st) !important;
-}
+// .lightBox {
+//     z-index: var(--zi-popup-1st) !important;
+// }
 .feedbackContainer {
     z-index: var(--zi-popup-2nd) !important;
 }
