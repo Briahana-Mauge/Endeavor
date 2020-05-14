@@ -40,6 +40,15 @@ const getAllAdmin = async () => {
     return await db.any(getQuery);
 }
 
+const checkSlug = async (slug) => {
+    // The commented code bellow will be for if we use slugs for fellows and admins as well
+    // const adminSlug = await db.oneOrNone('SELECT a_slug FROM administration WHERE a_slug = $/slug/', {slug});
+    // const fellowSlug = await db.oneOrNone('SELECT f_slug FROM fellows WHERE f_slug = $/slug/', {slug});
+    const volunteerSlug = await db.oneOrNone('SELECT v_slug FROM volunteers WHERE v_slug = $/slug/', {slug});
+
+    // return adminSlug || volunteerSlug || fellowSlug;
+    return volunteerSlug;
+}
 
 module.exports = {
     getUserByEmail,
@@ -48,4 +57,5 @@ module.exports = {
     updateEmail,
     deleteUser,
     getAllAdmin,
+    checkSlug
 }
