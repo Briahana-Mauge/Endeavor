@@ -108,20 +108,19 @@ export default function VolunteerProfilePage(props) {
                                     : null
                                 }
 
-                                <div className='col-sm-6'>
+                                <div className='col-12'>
                                     <img
-                                        className='d-block w-100'
+                                        className='g1ProfilePic d-block'
                                         src={volunteer.v_picture || '/images/default_pic.png'}
                                         alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                                     />
-                                    <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
-                                </div>
 
-                                <div className='col-sm-6'>
-                                    <span className='d-block h3'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
+                                    <span className='d-block h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
                                     <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
                                         {volunteer.v_email}
                                     </a>
+                                    <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
+
                                     <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
                                     <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
                                     <div className='row'>

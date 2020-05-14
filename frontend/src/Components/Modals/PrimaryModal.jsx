@@ -21,7 +21,13 @@ export const PrimaryModalContainer = (props) => {
             <h5 className="modal-title" id="primaryModalTitle">{header}</h5>
           </div>
           <div className="g1CloseContainer">
-            <button type="button" className="close sticky-top pt-3" data-dismiss="modal" aria-label="Close" onClick={runOnModalClose}>
+            <button
+              type="button"
+              className={`close sticky-top ${className.includes('g1VolunteerModal') ? 'pt-1' : 'pt-3' }`}
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={runOnModalClose}
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>

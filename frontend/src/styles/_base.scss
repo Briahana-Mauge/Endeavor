@@ -702,6 +702,15 @@ nav button {
         z-index: var(--zi-popup-footer);
     }
 
+    .g1ProfilePic {
+        float: right;
+        object-fit: cover;
+        height: 300px;
+        width: 300px;
+        border: solid 2px var(--color-black);
+        border-radius: var(--border-radii);
+    }
+
     .g1ManageVols {
         padding-top: .5rem;
         background-image: linear-gradient(174deg, #efefef, #bfbfbf);
@@ -788,6 +797,17 @@ nav button {
 
     .g1MinimizeFooterButton {
         margin-right: auto;
+    }
+
+    &.g1VolunteerModal {
+        @media (min-width: 768px) {
+            max-width: 760px;
+        }
+
+        .modal-header,
+        .modal-footer {
+            background-color: #a7a078;
+        }
     }
 }
 
