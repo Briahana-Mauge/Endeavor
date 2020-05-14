@@ -42,8 +42,8 @@ const DashboardAdmin = (props) => {
 
 
     const hideEvent = () => {
-        setTargetEvent({});
         setShowEvent(false);
+        setTargetEvent({});
     };
 
 
@@ -83,7 +83,7 @@ const DashboardAdmin = (props) => {
                     setFeedback={setFeedback}
                     reloadParent={reloadDashboard}
                     setReloadParent={setReloadDashboard}
-                    // hideEvent={hideEvent}
+                    hideEvent={hideEvent}
                   />
                 : null
             }

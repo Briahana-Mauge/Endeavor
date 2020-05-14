@@ -54,8 +54,8 @@ export default function EventSearch(props) {
 
  
     const hideEvent = () => {
-        setTargetEvent({});
         setShowEvent(false);
+        setTargetEvent({});
     }
 
 
@@ -115,7 +115,7 @@ export default function EventSearch(props) {
                                 setFeedback={setFeedback}
                                 reloadParent={reload}
                                 setReloadParent={setReload}
-                                // hideEvent={hideEvent}
+                                hideEvent={hideEvent}
                             />
                         :   null
                 }

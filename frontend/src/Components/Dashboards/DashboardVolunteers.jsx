@@ -71,7 +71,7 @@ const DashboardVolunteers = (props) => {
                 setFeedback={setFeedback}
                 reloadParent={reloadDashboard}
                 setReloadParent={setReloadDashboard}
-                // hideEvent={hideEvent}
+                hideEvent={hideEvent}
               />
             : null
         }
