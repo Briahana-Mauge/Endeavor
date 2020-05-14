@@ -9,7 +9,7 @@ import React from 'react';
 
 
 export const PrimaryModalContainer = (props) => {
-  const { children, header, runOnModalClose, className } = props;
+  const { children, header, runOnModalClose, className = '' } = props;
 
 
   return(

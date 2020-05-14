@@ -703,12 +703,19 @@ nav button {
     }
 
     .g1ProfilePic {
-        float: right;
         object-fit: cover;
-        height: 300px;
-        width: 300px;
+        height: auto;
+        max-width: 250px;
         border: solid 2px var(--color-black);
         border-radius: var(--border-radii);
+
+        @media (min-width: 576px) {
+            float: right;
+        }
+        @media (min-width: 768px) {
+            height: 300px;
+            width: 300px;
+        }
     }
 
     .g1ManageVols {

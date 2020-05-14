@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import { PMBody, PMFooter } from '../Modals/PrimaryModal';
@@ -119,23 +119,23 @@ export default function VolunteerProfilePage(props) {
                                     <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
                                         {volunteer.v_email}
                                     </a>
-                                    <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
+                                    <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
 
                                     <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
                                     <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
+
+                                    <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
+
                                     <div className='row'>
-                                        <div className='col-sm-4'>Skills:</div>
-                                        <div className='col-sm-8'>
+                                        <div className='col'><strong>Skills: </strong></div>
+                                        <div className='col'>
                                             { volunteer.skills
                                                 ? volunteer.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)
                                                 : null
                                             }
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className='col-sm-12'>
-                                    <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
                                     <span className='d-block'><strong>Bio: </strong>{volunteer.v_bio}</span>
 
                                     <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
@@ -153,16 +153,26 @@ export default function VolunteerProfilePage(props) {
                                         <strong className='d-block mx-2'>Mentoring: </strong>
                                         {
                                             mentees.map(mentee =>
-                                                <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
-                                                    onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                                <Link
+                                                    key={mentee[0] + mentee[1] + mentee[2]}
+                                                    className='d-block mx-2'
+                                                    to={`/fellow/${mentee[0]}`}
+                                                    target="_blank"
+                                                >
                                                     {mentee[1]}
-                                                </span>
+                                                </Link>
+                                                // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
+                                                //     data-dismiss='modal'
+                                                //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                                //     {mentee[1]}
+                                                // </span>
                                             )
                                         }
 
                                         {
                                             props.loggedUser && props.loggedUser.a_id && openToMentor
-                                            ?   <button className='btn btn-primary'
+                                            ?   <button className='btn btn-info'
+                                                    data-dismiss='modal'
                                                     onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}>
                                                     Manage Mentoring
                                                 </button>
@@ -174,21 +184,38 @@ export default function VolunteerProfilePage(props) {
                                         <ul className='plainUl col-sm-6'><strong>Past Events: </strong>
                                         {
                                             pastEvents.map(event =>
-                                                <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                                    onClick={e => history.push(`event/${event[0]}`)}>
+                                                <Link
+                                                    key={event[0] + event[1] + event[2]}
+                                                    className='d-block mx-2'
+                                                    to={`event/${event[0]}`}
+                                                    target="_blank"
+                                                >
                                                     {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
                                                     { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                                </li>
+                                                </Link>
+                                                // <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                                //     onClick={e => history.push(`event/${event[0]}`)}>
+                                                //     {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
+                                                //     { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                                // </li>
                                             )
                                         }
                                         </ul>
                                         <ul className='plainUl col-sm-6'><strong>Current / Upcoming Events: </strong>
                                         {
                                             events.map(event =>
-                                                <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                                    onClick={e => history.push(`event/${event[0]}`)}>
+                                                <Link
+                                                    key={event[0] + event[1] + event[2]} 
+                                                    className='d-block mx-2'
+                                                    to={`event/${event[0]}`}
+                                                    target="_blank"
+                                                >
                                                     {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                                </span>
+                                                </Link>
+                                                // <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                                //     onClick={e => history.push(`event/${event[0]}`)}>
+                                                //     {event[1]} ({new Date(event[2]).toLocaleDateString()})
+                                                // </span>
                                             )
                                         }
                                         </ul>
