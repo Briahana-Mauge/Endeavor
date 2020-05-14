@@ -13,8 +13,6 @@ import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
 import EventCard from '../EventCard';
 import Charts from './Charts_Volunteer';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
-import EventCard from '../EventCard';
-// import EventRender from '../EventRender';
 
 
 const DashboardVolunteers = (props) => {
