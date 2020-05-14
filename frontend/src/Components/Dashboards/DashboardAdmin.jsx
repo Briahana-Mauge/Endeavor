@@ -71,22 +71,22 @@ const DashboardAdmin = (props) => {
         </div>
       </div>
 
-      {/* <div className="col-12 col-md-7"> */}
       <Charts chartData={[eventsObj]} />
-      {/* </div> */}
 
-      {
-        showEvent
-          ? <EventCard
-            loggedUser={loggedUser}
-            event={targetEvent}
-            setFeedback={setFeedback}
-            reloadParent={reloadDashboard}
-            setReloadParent={setReloadDashboard}
-            hideEvent={hideEvent}
-          />
-          : null
-      }
+      <PrimaryModalContainer header={targetEvent.topic || ''} hideModal={hideEvent}>
+            {
+              showEvent
+                ? <EventCard
+                    loggedUser={loggedUser}
+                    event={targetEvent}
+                    setFeedback={setFeedback}
+                    reloadParent={reloadDashboard}
+                    setReloadParent={setReloadDashboard}
+                    hideEvent={hideEvent}
+                  />
+                : null
+            }
+		</PrimaryModalContainer>
     </>
   )
 }
