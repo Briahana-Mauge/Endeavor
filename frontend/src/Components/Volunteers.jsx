@@ -90,7 +90,7 @@ export default function Volunteers (props) {
             </div>
         </div>
 
-            <PrimaryModalContainer header={targetVolunteerName || ''} runOnModalClose={hideVolunteer}>
+            <PrimaryModalContainer header={targetVolunteerName || ''} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
                 {
                     displayTargetUser
                         ? <ProfileRender

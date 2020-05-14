@@ -9,12 +9,12 @@ import React from 'react';
 
 
 export const PrimaryModalContainer = (props) => {
-  const { children, header, runOnModalClose } = props;
+  const { children, header, runOnModalClose, className } = props;
 
 
   return(
     <div className="modal fade" id="primaryModal" tabIndex="-1" role="dialog" aria-labelledby="primaryModalTitle" aria-hidden="true">
-      <div className="g1ModalDialog modal-dialog" role="document">
+      <div className={`g1ModalDialog modal-dialog ${className}`} role="document">
         <div className="modal-content">
 
           <div className="modal-header">

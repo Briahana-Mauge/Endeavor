@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import { PMBody, PMFooter, PMFooterSpace } from '../Modals/PrimaryModal';
+import { PMBody, PMFooter } from '../Modals/PrimaryModal';
 
 export default function VolunteerProfilePage(props) {
     const history = useHistory();
