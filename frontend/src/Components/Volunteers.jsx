@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import VolunteerCard from './VolunteerCard';
+import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
 export default function Volunteers (props) {
@@ -11,7 +12,8 @@ export default function Volunteers (props) {
     const [skillsList, setSkillsList] = useState([]);
     const [filter, setFilter] = useState('');
     const [targetSkill, setTargetSkill] = useState('');
-    const [targetVolunteerId, setTargetVolunteerId] = useState(0);
+    const [targetVolunteerId, setTargetVolunteerId] = useState(null);
+    const [targetVolunteerName, setTargetVolunteerName] = useState('');
     const [displayTargetUser, setDisplayTargetUser] = useState(false);
     const [reload, setReload] = useState(false);
 
@@ -47,8 +49,15 @@ export default function Volunteers (props) {
         setReload(!reload);
     }
 
+    const hideVolunteer = () => {
+        setDisplayTargetUser(false);
+        setTargetVolunteerId(null);
+        setTargetVolunteerName('');
+    }
+
 
     return (
+        <>
         <div className="Search">
             <form className='form-inline' onSubmit={handleSubmit}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
@@ -75,21 +84,25 @@ export default function Volunteers (props) {
                         volunteer={volunteer}
                         setDisplayTargetUser={setDisplayTargetUser}
                         setTargetVolunteerId={setTargetVolunteerId}
+                        setTargetVolunteerName={setTargetVolunteerName}
                     />
                 )}
             </div>
-
-            {
-                displayTargetUser
-                    ? <ProfileRender
-                        volunteerId={targetVolunteerId}
-                        setDisplayTargetUser={setDisplayTargetUser}
-                        setFeedback={props.setFeedback}
-                        loggedUser={props.loggedUser}
-                    />
-                    : null
-            }
         </div>
+
+            <PrimaryModalContainer header={targetVolunteerName || ''} hideModal={hideVolunteer}>
+                {
+                    displayTargetUser
+                        ? <ProfileRender
+                            volunteerId={targetVolunteerId}
+                            setDisplayTargetUser={setDisplayTargetUser}
+                            setFeedback={props.setFeedback}
+                            loggedUser={props.loggedUser}
+                        />
+                        : null
+                }
+            </PrimaryModalContainer>
+        </>
     );
 }
 

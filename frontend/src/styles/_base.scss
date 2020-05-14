@@ -49,7 +49,9 @@ html, body, #root, .g1App {
     
     --navbar-height: 4.6rem;
 
-    --zi-popup: 1000;
+    --zi-popup-1st: 1100;
+    --zi-popup-footer: 1150;
+    --zi-popup-2nd: 1200;
     --zi-navbar: 90;
     --zi-subnav: 100;
     --zi-carousel-arrows: 100;
@@ -135,10 +137,15 @@ nav button {
     color: var(--color-black);
 }
 
+.lightBox {
+    z-index: var(--zi-popup-1st) !important;
+}
+.feedbackContainer {
+    z-index: var(--zi-popup-2nd) !important;
+}
+
 .lightBox,
 .feedbackContainer {
-    z-index: var(--zi-popup) !important;
-
     @media (max-width: 460px) {
         width: auto !important;
         left: initial !important;
@@ -391,6 +398,12 @@ nav button {
 
     .g1TBody {
         display: table-row-group;
+
+        .g1EmptyRowMsg {
+            margin-top: .6rem;
+            color: #888;
+            font-style: italic;
+        }
     }
 
     .g1TR {
@@ -620,6 +633,162 @@ nav button {
             font-size: .8rem;
             color: #b5a31b;
         }
+    }
+}
+
+.g1EventsResults {
+    header {
+        cursor: pointer;
+        background-color: var(--color-primary);
+    }
+}
+
+
+/* FLOATING COMPONENTS */
+.g1Lightbox {
+    position: fixed;
+    max-height: 77vh;
+    width: clamp(60vw, 54rem, 56rem);
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    transform: translate(-50%, -50%);
+}
+
+.g1ModalDialog {
+    color: var(--color-black);
+
+    @media (min-width: 768px) {
+        max-width: 642px;
+    }
+
+    .modal-header,
+    .modal-footer {
+        background-color: #a3a9bf;
+    }
+
+    --modal-body-border: #827e96;
+        .modal-header {
+            border-bottom-color: var(--modal-body-border);
+        }
+        .modal-footer {
+            border-top-color: var(--modal-body-border);
+        }
+
+    .g1CloseContainer {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        bottom: 0;
+        left: 0;
+
+        .close {
+            color: red;
+            outline: none;
+        }
+    }
+
+    h5.modal-title {
+        color: var(--color-primary);
+        font-family: var(--ff-top);
+        font-size: 1.35rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .modal-body {
+        background-color: #c5c5c5;
+    }
+    .modal-footer { // necessary to place above Close button plane
+        z-index: var(--zi-popup-footer);
+    }
+
+    .g1ManageVols {
+        padding-top: .5rem;
+        background-image: linear-gradient(174deg, #efefef, #bfbfbf);
+
+        label {
+            cursor: pointer;
+        }
+    }
+
+    .g1EmptyMsg {
+        color: #999;
+        font-style: italic;
+    }
+
+    .g1VolNumConfirmed {
+        color: green;
+        font-style: italic;
+    }
+    .g1VolNumPending {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #da9905;
+        font-style: italic;
+    }
+    .g1VolNumRequested {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #999;
+        font-style: italic;
+    }
+
+    .g1VolConfirmedLabel {
+        color: #bbb;
+        transition: color .4s ease-out;
+    }
+    .g1VolConfirmedLabelOn {
+        color: green;
+    }
+
+    .g1VolName {
+        transition: color .4s ease-out;
+
+        @media (max-width: 576px) {
+            text-align: left;
+            position: relative;
+            top: 1px;
+        }
+    }
+    .g1VolNamePending {
+        color: #da9905;
+    }
+
+    .g1HoursForm .form-control {
+            width: 5.5rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: .5rem!important;
+
+            @media (max-width: 576px) {
+                margin-left: 2.6rem;
+            }
+    }
+
+    .g1NonAdminFooter {
+        flex-direction: column;
+    }
+
+    .g1Request {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 2rem;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+
+        &.g1Pending {
+            color: #ffe14e;
+        }
+        &.g1Confirmed {
+            color: green;
+        }
+
+    }
+
+    .g1MinimizeFooterButton {
+        margin-right: auto;
     }
 }
 
