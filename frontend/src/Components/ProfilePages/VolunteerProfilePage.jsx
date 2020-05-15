@@ -116,7 +116,7 @@ export default function VolunteerProfilePage(props) {
 
                                 <div className='col-12'>
                                     <img
-                                        className='g1ProfilePic d-block'
+                                        className='g1ProfilePic d-block mw-100'
                                         src={volunteer.v_picture || '/images/default_pic.png'}
                                         alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                                     />
@@ -133,8 +133,8 @@ export default function VolunteerProfilePage(props) {
                                     <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
 
                                     <div className='row'>
-                                        <div className='col'><strong>Skills: </strong></div>
-                                        <div className='col'>
+                                        <div className='col-4'><strong>Skills: </strong></div>
+                                        <div className='col-8'>
                                             { volunteer.skills
                                                 ? volunteer.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)
                                                 : null
