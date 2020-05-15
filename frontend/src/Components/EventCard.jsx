@@ -187,7 +187,11 @@ const EventCard = (props) => {
             <PMBody>
                 {
                     eventStart[0] === eventEnd[0]
-                        ?   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+                    ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                        ?   <p>{eventStart[0]}</p>
+                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
+                    :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                        ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
                         :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
                 }
                 <p className='card-text'>
