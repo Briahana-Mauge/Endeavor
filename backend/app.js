@@ -50,7 +50,7 @@ app.use('/api/mentor_pairs', /*checkUserLogged,*/ mentorPairsRouter);
 app.use('/api/event_attendees', /*checkUserLogged,*/ eventAttendeesRouter);
 
 app.use('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
+  res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
 });
 
 module.exports = app;
