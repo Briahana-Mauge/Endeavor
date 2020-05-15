@@ -8,7 +8,6 @@ const VolunteerCard = (props) => {
     const viewProfile = () => {
         props.setDisplayTargetUser(true);
         props.setTargetVolunteerId(props.volunteer.v_id);
-        props.setTargetVolunteerName(props.volunteer.v_first_name + ' ' + props.volunteer.v_last_name);
     }
 
     const skills = [];

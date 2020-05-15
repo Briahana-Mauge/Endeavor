@@ -13,7 +13,6 @@ export default function Volunteers (props) {
     const [filter, setFilter] = useState('');
     const [targetSkill, setTargetSkill] = useState('');
     const [targetVolunteerId, setTargetVolunteerId] = useState(null);
-    const [targetVolunteerName, setTargetVolunteerName] = useState('');
     const [displayTargetUser, setDisplayTargetUser] = useState(false);
     const [reload, setReload] = useState(false);
 
@@ -52,7 +51,6 @@ export default function Volunteers (props) {
     const hideVolunteer = () => {
         setDisplayTargetUser(false);
         setTargetVolunteerId(null);
-        setTargetVolunteerName('');
     }
 
 
@@ -84,7 +82,6 @@ export default function Volunteers (props) {
                         volunteer={volunteer}
                         setDisplayTargetUser={setDisplayTargetUser}
                         setTargetVolunteerId={setTargetVolunteerId}
-                        setTargetVolunteerName={setTargetVolunteerName}
                     />
                 )}
             </div>
