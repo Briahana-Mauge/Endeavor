@@ -52,8 +52,8 @@ html, body, #root, .g1App {
     --zi-popup-1st: 1100;
     --zi-popup-footer: 1150;
     --zi-popup-2nd: 1200;
-    --zi-navbar: 90;
-    --zi-subnav: 100;
+    --zi-navbar: 110;
+    --zi-subnav: 120;
     --zi-carousel-arrows: 100;
 }
 
@@ -264,6 +264,7 @@ div.card-text {
     @media (max-width: 992px) {
         margin-left: 25%;   // sizes dropdown menu width, removing left width
         border-radius: .75rem 0 .75rem .75rem;
+        border: solid 2px #222;
         // background-color: #000 !important;
         // background-image: linear-gradient(180deg, #8d8557, #8d855773);
     }
