@@ -41,8 +41,8 @@ const DashboardAdmin = (props) => {
   }, [reloadDashboard, setFeedback]);
 
   const hideEvent = () => {
-    setTargetEvent({});
     setShowEvent(false);
+    setTargetEvent({});
   };
 
 
