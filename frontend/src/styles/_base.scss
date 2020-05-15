@@ -163,6 +163,10 @@ nav button {
     color: var(--color-white);
 }
 
+div.card-text {
+    margin-bottom: 1rem;
+}
+
 .g1BtnAsLink {  // for buttons used as what look like links
     border: none;
     width: 100%;
@@ -715,6 +719,62 @@ nav button {
         @media (min-width: 768px) {
             height: 300px;
             width: 300px;
+        }
+    }
+
+    .g1ModalField {
+        display: block;
+
+        i { // for labels
+            display: inline-block;
+            width: 7.3rem;
+            margin-right: .7rem;
+
+            text-align: right;
+            font-style: normal;
+            color: #8c8557;
+
+            &.g1VolContact {
+                width: 2.11rem;
+            }
+
+
+            &.break {
+                display: block;
+            }
+
+            .g1ReactIconsSvg {
+                position: relative;
+            }
+        }
+
+        &[data-type='skills'],
+        &[data-type='interests'] {
+            display: grid;
+            grid-template-columns: 8rem auto;
+
+            span {
+                display: block;
+
+                &::before {
+                    content: '▸ ';
+                }
+            }
+        }
+
+        &[data-type='skills'] span::before {
+            color: #aaa;
+        }
+
+        &[data-type='skills'] {
+            i {
+                color: var(--color-primary);
+            }
+        }
+        &[data-type='interests'] {
+            i {
+                color: #d40000;
+            }
         }
     }
 

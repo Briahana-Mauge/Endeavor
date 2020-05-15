@@ -78,13 +78,13 @@ export default function VolunteerProfilePage(props) {
                     }
                     
                     setInterests([
-                        ['Personal Mentoring', info.mentoring],
+                        ['Being a Personal Mentor', info.mentoring],
                         ['Being an Office Hours Mentor', info.office_hours],
-                        ['Administering Practice Technical Interviews', info.tech_mock_interview],
-                        ['Administering Practice Behavioral Interviews', info.behavioral_mock_interview],
                         ['Being a Professional Skills Coach', info.professional_skills_coach],
-                        ['Hosting a Fellows Site Visit at Your Company', info.hosting_site_visit],
-                        ['Being an Industry Speaker', info.industry_speaker]
+                        ['Administering Mock Behavioral Interviews', info.behavioral_mock_interview],
+                        ['Administering Mock Technical Interviews', info.tech_mock_interview],
+                        ['Being an Industry Speaker', info.industry_speaker],
+                        ['Hosting a Fellows Site Visit at Your Company', info.hosting_site_visit]
                     ].filter(task => task[1]));
 
                     setOpenToMentor(info.mentoring);
@@ -116,61 +116,91 @@ export default function VolunteerProfilePage(props) {
                       }
 
                       <div className='col-12'>
+                          {/* PICTURE & NAME */}
                           <img
-                              className='g1ProfilePic d-block'
+                              className='g1ProfilePic'
                               src={volunteer.v_picture || '/images/default_pic.png'}
                               alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                           />
+                          <h3 className='h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</h3>
 
-                          <span className='d-block h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                          <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
-                              {volunteer.v_email}
-                          </a>
-                          {
-                              volunteer.v_linkedin
-                                  ? <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
-                                  : null
-                          }
-
-                          <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
-                          <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
-
-                          <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
-
-                          {
-                              volunteer.skills && volunteer.skills.length
-                                  ?   <div className='row'>
-                                          <div className='col'><strong>Skills: </strong></div>
-                                          <div className='col'>
-                                              {volunteer.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)}
-                                          </div>
+                          {/* CONTACT INFO */}
+                          <div className='card-text'>
+                            <div className='g1ModalField'>
+                              <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-.75px', left: '1px' }} /></i>
+                              <a href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
+                                  {volunteer.v_email}
+                              </a>
+                            </div>
+                            {
+                                volunteer.v_linkedin
+                                    ? <div className='g1ModalField'>
+                                        <i className='g1VolContact'><GrLinkedinOption className="g1ReactIconsSvg" style={{ top: '-2px', left: '1px' }} /></i>
+                                        <a href={volunteer.v_linkedin} target='_blank' rel='noopener noreferrer'>
+                                          {volunteer.v_linkedin}
+                                        </a>
                                       </div>
-                                  :   null
-                          }
+                                    : null
+                            }
+                          </div>
 
+                          {/* COMPANY, POSITION, HOURS */}
+                          <div className='card-text'>
+                            <div className='g1ModalField'><i>Company </i><span>{volunteer.company}</span></div>
+                            <div className='g1ModalField'><i>Position </i><span>{volunteer.title}</span></div>
+                          </div>
+
+                          <div className='card-text'>
+                            {/* SKILLS */}
+                            {
+                                volunteer.skills && volunteer.skills.length
+                                    // ?   <div className='row'>
+                                    ?   <div className='g1ModalField' data-type='skills'>
+                                          <i>Skills </i>
+                                          <div>
+                                            { volunteer.skills.map((skill, index) =>
+                                                <span key={index + skill}>
+                                                    {skill}
+                                                </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                    :   null
+                            }
+
+                            {/* INTERESTS */}
+                            {
+                                interests.length
+                                    ?   <div className='g1ModalField' data-type='interests'>
+                                          <i>Interested In </i>
+                                          <div>
+                                            { interests.map((interest, index) =>
+                                                <span key={index + interest[0]}>
+                                                    {interest[0]}
+                                                </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                    :   null
+                            }
+                          </div>
+
+                          {/* BIO */}
                           {
                               volunteer.v_bio
-                                  ? <span className='d-block'><strong>Bio: </strong>{volunteer.v_bio}</span>
+                                  ? <div className='d-block'><i>Bio </i>{volunteer.v_bio}</div>
                                   : null
                           }
 
-                          {
-                              interests.length
-                                  ?   <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                                          <strong className='d-block mx-2'>Interested in: </strong>
-                                          { interests.map((interest, index) =>
-                                              <span key={index + interest[0]} className='d-block mx-2'>
-                                                  {interest[0]}
-                                              </span>
-                                          )}
-                                      </div>
-                                  :   null
-                          }
+                          <div className='card-text'>
+                            <div className='g1ModalField'><i>Volunteer Hours </i><span>{volunteer.total_hours || 0}</span></div>
+                          </div>
 
+                          {/* MENTORING SECTION */}
                           {
                               openToMentor
                                   ?   <>
-                                          <strong>Active Mentor</strong><br />
+                                          <i>Active Mentor</i>
                                           {
                                               props.loggedUser && props.loggedUser.a_id
                                               ?   <button className='btn btn-info'
@@ -184,7 +214,7 @@ export default function VolunteerProfilePage(props) {
                                           {
                                               mentees.length
                                                   ?   <div className='d-flex flex-wrap justify-content-start'>
-                                                          <strong className='d-block mx-2'>Currently mentoring: </strong>
+                                                          <i className='d-block mx-2'>Currently Mentoring </i>
                                                           {
                                                               mentees.map(mentee =>
                                                                   <Link
@@ -207,12 +237,14 @@ export default function VolunteerProfilePage(props) {
                                           }
                                       </>
                                   :   mentees.length
-                                          ?   <><strong>Past Mentor</strong><br /></>
+                                          ?   <><i>Past Mentor</i><br /></>
                                           :   null
                           }
 
+                          {/* PAST & UPCOMING EVENTS */}
                           <div className='row'>
-                              <ul className='plainUl col-sm-6'><strong>Past Events: </strong>
+                              <i>Past Events </i>
+                              <ul className='plainUl col-sm-6'>
                               {
                                   pastEvents.map(event =>
                                       <Link
@@ -232,7 +264,9 @@ export default function VolunteerProfilePage(props) {
                                   )
                               }
                               </ul>
-                              <ul className='plainUl col-sm-6'><strong>Current / Upcoming Events: </strong>
+
+                              <i>Current / Upcoming Events </i>
+                              <ul className='plainUl col-sm-6'>
                               {
                                   events.map(event =>
                                       <Link
