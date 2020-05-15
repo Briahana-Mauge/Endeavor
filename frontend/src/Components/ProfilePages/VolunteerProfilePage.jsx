@@ -12,7 +12,7 @@ export default function VolunteerProfilePage(props) {
     const [ pastEvents, setPastEvents ] = useState([]);
     const [ events, setEvents ] = useState([]);
     const [ mentees, setMentees ] = useState([]);
-    const [ tasks, setTasks ] = useState([]);
+    const [ interests, setInterests ] = useState([]);
     const [ openToMentor, setOpenToMentor ] = useState(false);
     const [ profilePublic, setProfilePublic ] = useState(true);
     const [ waitingForData, setWaitingForData ] = useState(true);
@@ -76,14 +76,14 @@ export default function VolunteerProfilePage(props) {
                         setEvents(a);
                     }
                     
-                    setTasks([
-                        ['mentoring', info.mentoring], 
-                        ['being an Office Hours mentor', info.office_hours], 
-                        ['administering mock technical interviews', info.tech_mock_interview], 
-                        ['behavioral interviewing', info.behavioral_mock_interview], 
-                        ['being a professional skills coach', info.professional_skills_coach],
-                        ['hosting a Site Visit at your office', info.hosting_site_visit],
-                        ['being an Industry Speaker', info.industry_speaker]
+                    setInterests([
+                        ['Personal Mentoring', info.mentoring],
+                        ['Being an Office Hours Mentor', info.office_hours],
+                        ['Administering Practice Technical Interviews', info.tech_mock_interview],
+                        ['Administering Practice Behavioral Interviews', info.behavioral_mock_interview],
+                        ['Being a Professional Skills Coach', info.professional_skills_coach],
+                        ['Hosting a Fellows Site Visit at Your Company', info.hosting_site_visit],
+                        ['Being an Industry Speaker', info.industry_speaker]
                     ].filter(task => task[1]));
 
                     setOpenToMentor(info.mentoring);
@@ -100,138 +100,162 @@ export default function VolunteerProfilePage(props) {
 
     return (
         <>
-            {
-                waitingForData
-                    ?   null // OR it can be a spinner
-                    :   !profilePublic
-                        ? <h3 className='text-center'>Sorry, nothing to show</h3>
-                        // : <div className='row p-3'>
-                        : <>
-                            <PMBody>
-                                {
-                                    volunteer.deleted
-                                    ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
-                                    : null
-                                }
+          {
+            waitingForData
+              ? null // OR it can be a spinner
+              : !profilePublic
+                ? <h3 className='text-center'>Sorry, nothing to show</h3>
+                : <>
+                {/* : <div className='row p-3'> */}
+                    <PMBody>
+                      {
+                          volunteer.deleted
+                          ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
+                          : null
+                      }
 
-                                <div className='col-12'>
-                                    <img
-                                        className='g1ProfilePic d-block'
-                                        src={volunteer.v_picture || '/images/default_pic.png'}
-                                        alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
-                                    />
+                      <div className='col-12'>
+                          <img
+                              className='g1ProfilePic d-block'
+                              src={volunteer.v_picture || '/images/default_pic.png'}
+                              alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+                          />
 
-                                    <span className='d-block h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                                    <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
-                                        {volunteer.v_email}
-                                    </a>
-                                    <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
+                          <span className='d-block h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
+                          <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
+                              {volunteer.v_email}
+                          </a>
+                          {
+                              volunteer.v_linkedin
+                                  ? <span className='d-block'><strong>LinkedIn: </strong>{volunteer.v_linkedin}</span>
+                                  : null
+                          }
 
-                                    <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
-                                    <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
+                          <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
+                          <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
 
-                                    <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
+                          <span className='d-block mb-3'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
 
-                                    <div className='row'>
-                                        <div className='col'><strong>Skills: </strong></div>
-                                        <div className='col'>
-                                            { volunteer.skills
-                                                ? volunteer.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)
-                                                : null
-                                            }
-                                        </div>
-                                    </div>
+                          {
+                              volunteer.skills && volunteer.skills.length
+                                  ?   <div className='row'>
+                                          <div className='col'><strong>Skills: </strong></div>
+                                          <div className='col'>
+                                              {volunteer.skills.map((skill, index) => <span className='d-block' key={skill+index}>{skill}</span>)}
+                                          </div>
+                                      </div>
+                                  :   null
+                          }
 
-                                    <span className='d-block'><strong>Bio: </strong>{volunteer.v_bio}</span>
+                          {
+                              volunteer.v_bio
+                                  ? <span className='d-block'><strong>Bio: </strong>{volunteer.v_bio}</span>
+                                  : null
+                          }
 
-                                    <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
-                                        <strong className='d-block mx-2'>Interested in: </strong>
-                                        {
-                                            tasks.map((interest, index) =>
-                                                <span key={index + interest[0]} className='d-block mx-2'>
-                                                    {interest[0]}
-                                                </span>
-                                            )
-                                        }
-                                    </div>
+                          {
+                              interests.length
+                                  ?   <div className='col-sm-12 d-flex flex-wrap justify-content-start'>
+                                          <strong className='d-block mx-2'>Interested in: </strong>
+                                          { interests.map((interest, index) =>
+                                              <span key={index + interest[0]} className='d-block mx-2'>
+                                                  {interest[0]}
+                                              </span>
+                                          )}
+                                      </div>
+                                  :   null
+                          }
 
-                                    <div className='d-flex flex-wrap justify-content-start'>
-                                        <strong className='d-block mx-2'>Mentoring: </strong>
-                                        {
-                                            mentees.map(mentee =>
-                                                <Link
-                                                    key={mentee[0] + mentee[1] + mentee[2]}
-                                                    className='d-block mx-2'
-                                                    to={`/fellow/${mentee[0]}`}
-                                                    target="_blank"
-                                                >
-                                                    {mentee[1]}
-                                                </Link>
-                                                // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
-                                                //     data-dismiss='modal'
-                                                //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                                //     {mentee[1]}
-                                                // </span>
-                                            )
-                                        }
+                          {
+                              openToMentor
+                                  ?   <>
+                                          <strong>Active Mentor</strong><br />
+                                          {
+                                              props.loggedUser && props.loggedUser.a_id
+                                              ?   <button className='btn btn-info'
+                                                      data-dismiss='modal'
+                                                      onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}
+                                                  >
+                                                      Manage Mentoring
+                                                  </button>
+                                              :   null
+                                          }
+                                          {
+                                              mentees.length
+                                                  ?   <div className='d-flex flex-wrap justify-content-start'>
+                                                          <strong className='d-block mx-2'>Currently mentoring: </strong>
+                                                          {
+                                                              mentees.map(mentee =>
+                                                                  <Link
+                                                                      key={mentee[0] + mentee[1] + mentee[2]}
+                                                                      className='d-block mx-2'
+                                                                      to={`/fellow/${mentee[0]}`}
+                                                                      target="_blank"
+                                                                  >
+                                                                      {mentee[1]}
+                                                                  </Link>
+                                                                  // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
+                                                                  //     data-dismiss='modal'
+                                                                  //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                                                  //     {mentee[1]}
+                                                                  // </span>
+                                                              )
+                                                          }
+                                                      </div>
+                                                  :   null
+                                          }
+                                      </>
+                                  :   mentees.length
+                                          ?   <><strong>Past Mentor</strong><br /></>
+                                          :   null
+                          }
 
-                                        {
-                                            props.loggedUser && props.loggedUser.a_id && openToMentor
-                                            ?   <button className='btn btn-info'
-                                                    data-dismiss='modal'
-                                                    onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}>
-                                                    Manage Mentoring
-                                                </button>
-                                            : null
-                                        }
-                                    </div>
-
-                                    <div className='row'>
-                                        <ul className='plainUl col-sm-6'><strong>Past Events: </strong>
-                                        {
-                                            pastEvents.map(event =>
-                                                <Link
-                                                    key={event[0] + event[1] + event[2]}
-                                                    className='d-block mx-2'
-                                                    to={`event/${event[0]}`}
-                                                    target="_blank"
-                                                >
-                                                    {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
-                                                    { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                                </Link>
-                                                // <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                                //     onClick={e => history.push(`event/${event[0]}`)}>
-                                                //     {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
-                                                //     { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                                // </li>
-                                            )
-                                        }
-                                        </ul>
-                                        <ul className='plainUl col-sm-6'><strong>Current / Upcoming Events: </strong>
-                                        {
-                                            events.map(event =>
-                                                <Link
-                                                    key={event[0] + event[1] + event[2]} 
-                                                    className='d-block mx-2'
-                                                    to={`event/${event[0]}`}
-                                                    target="_blank"
-                                                >
-                                                    {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                                </Link>
-                                                // <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                                //     onClick={e => history.push(`event/${event[0]}`)}>
-                                                //     {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                                // </span>
-                                            )
-                                        }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </PMBody>
-                            <PMFooter className='g1NonAdminFooter' />
-                        </>
-                        // </div>
-            }
+                          <div className='row'>
+                              <ul className='plainUl col-sm-6'><strong>Past Events: </strong>
+                              {
+                                  pastEvents.map(event =>
+                                      <Link
+                                          key={event[0] + event[1] + event[2]}
+                                          className='d-block mx-2'
+                                          to={`event/${event[0]}`}
+                                          target="_blank"
+                                      >
+                                          {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
+                                          { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                      </Link>
+                                      // <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                      //     onClick={e => history.push(`event/${event[0]}`)}>
+                                      //     {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
+                                      //     { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                      // </li>
+                                  )
+                              }
+                              </ul>
+                              <ul className='plainUl col-sm-6'><strong>Current / Upcoming Events: </strong>
+                              {
+                                  events.map(event =>
+                                      <Link
+                                          key={event[0] + event[1] + event[2]}
+                                          className='d-block mx-2'
+                                          to={`event/${event[0]}`}
+                                          target="_blank"
+                                      >
+                                          {event[1]} ({new Date(event[2]).toLocaleDateString()})
+                                      </Link>
+                                      // <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                      //     onClick={e => history.push(`event/${event[0]}`)}>
+                                      //     {event[1]} ({new Date(event[2]).toLocaleDateString()})
+                                      // </span>
+                                  )
+                              }
+                              </ul>
+                          </div>
+                      </div>
+                  </PMBody>
+                  <PMFooter className='g1NonAdminFooter' />
+              </>
+              // </div>
+          }
         </>
     )
 }
