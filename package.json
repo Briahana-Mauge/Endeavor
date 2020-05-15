@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./backend/bin/www",
-    "back": "psql -f backend/db/seed.sql && cd backend && npm run dev",
+    "back": "createdb endeavor_db && cd backend && psql -f db/seed.sql -d endeavor_db && npm run dev",
     "front": "cd frontend && npm start",
     "heroku-postbuild": "cd backend && npm install && cd ../frontend && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"

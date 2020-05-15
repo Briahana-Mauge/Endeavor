@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS capstone_project_db;
-CREATE DATABASE capstone_project_db;
+-- DROP DATABASE IF EXISTS capstone_project_db;
+-- CREATE DATABASE capstone_project_db;
 
-\c capstone_project_db
+-- \c capstone_project_db
 
 DROP TABLE IF EXISTS volunteers_hours;
 DROP TABLE IF EXISTS event_fellows;
