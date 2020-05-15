@@ -5,8 +5,7 @@ Database Connection Helper | Capstone App (Pursuit Volunteer Mgr)
 
 
 const pgp = require('pg-promise')();
-  const connectString = process.env.DATABASE_URL || 'postgres://localhost:5432/capstone_project_db';
-  const db = pgp(connectString);
+const db = pgp(process.env.DATABASE_URL);
 
 
 module.exports = db;
