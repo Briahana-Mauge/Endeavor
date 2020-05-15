@@ -727,7 +727,7 @@ div.card-text {
 
         i { // for labels
             display: inline-block;
-            width: 7.3rem;
+            // width: 6.3rem;
             margin-right: .7rem;
 
             text-align: right;
@@ -735,7 +735,8 @@ div.card-text {
             color: #8c8557;
 
             &.g1VolContact {
-                width: 2.11rem;
+                // width: 2.11rem;
+                margin-left: 1rem;
             }
 
 
@@ -748,22 +749,25 @@ div.card-text {
             }
         }
 
-        &[data-type='skills'],
-        &[data-type='interests'] {
-            display: grid;
-            grid-template-columns: 8rem auto;
-
-            span {
-                display: block;
-
-                &::before {
-                    content: '▸ ';
-                }
-            }
+        &[data-type='hours'] {
+            margin-left: 1rem;
         }
 
-        &[data-type='skills'] span::before {
-            color: #aaa;
+        &[data-type='skills'],
+        &[data-type='interests'] {
+            // display: flex;
+            // margin-left: 1rem;
+            display: grid;
+            grid-template-columns: 7rem auto;
+        }
+
+        &[data-type='interests'] span {
+            display: block;
+
+            &::before {
+                content: '● ';
+                // color: #888;
+            }
         }
 
         &[data-type='skills'] {
@@ -773,11 +777,44 @@ div.card-text {
         }
         &[data-type='interests'] {
             i {
-                color: #d40000;
+                color: maroon;
             }
+        }
+
+        &[data-type='hours'] {
+            i {
+                color: green;
+            }
+        }
+
+        &[data-type='mentoring'] {
+            margin-left: 1rem;
         }
     }
 
+    .g1MentoringFlex {
+        display: grid;
+        grid-template-columns: 11rem auto;
+    }
+
+    // .g1ManageMentorBtn {
+    //     float: right;
+    //     margin-right: 45%;
+    //     position: relative;
+    //     top: 4px;
+    // }
+
+    .g1MentorActiveLabel {
+        display: block;
+        color: green;
+        font-style: normal;
+        text-transform: uppercase;
+    }
+
+    .g1VolMentees {
+        display: block;
+        width: max-content;
+    }
     .g1ManageVols {
         padding-top: .5rem;
         background-image: linear-gradient(174deg, #efefef, #bfbfbf);

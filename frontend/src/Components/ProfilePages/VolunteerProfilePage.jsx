@@ -124,7 +124,7 @@ export default function VolunteerProfilePage(props) {
                           />
                           <h3 className='h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</h3>
 
-                          {/* CONTACT INFO */}
+                          {/* CONTACT INFO, COMPANY, POSITION */}
                           <div className='card-text'>
                             <div className='g1ModalField'>
                               <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-.75px', left: '1px' }} /></i>
@@ -142,12 +142,8 @@ export default function VolunteerProfilePage(props) {
                                       </div>
                                     : null
                             }
-                          </div>
-
-                          {/* COMPANY, POSITION, HOURS */}
-                          <div className='card-text'>
-                            <div className='g1ModalField'><i>Company </i><span>{volunteer.company}</span></div>
-                            <div className='g1ModalField'><i>Position </i><span>{volunteer.title}</span></div>
+                            <div className='g1ModalField'><i className='g1VolContact'>Company </i><span>{volunteer.company}</span></div>
+                            <div className='g1ModalField'><i className='g1VolContact'>Position </i><span>{volunteer.title}</span></div>
                           </div>
 
                           <div className='card-text'>
@@ -158,11 +154,14 @@ export default function VolunteerProfilePage(props) {
                                     ?   <div className='g1ModalField' data-type='skills'>
                                           <i>Skills </i>
                                           <div>
-                                            { volunteer.skills.map((skill, index) =>
+                                            <span>
+                                              ● { volunteer.skills.join(' ● ')}
+                                            </span>
+                                            {/* { volunteer.skills.map((skill, index) =>
                                                 <span key={index + skill}>
                                                     {skill}
                                                 </span>
-                                            )}
+                                            )} */}
                                           </div>
                                         </div>
                                     :   null
@@ -188,57 +187,71 @@ export default function VolunteerProfilePage(props) {
                           {/* BIO */}
                           {
                               volunteer.v_bio
-                                  ? <div className='d-block'><i>Bio </i>{volunteer.v_bio}</div>
+                                  ? <div className='card-text'>
+                                      <div className='g1ModalField' data-type='bio'>
+                                        <i>Bio </i>
+                                        <span>
+                                          {volunteer.v_bio}
+                                        </span>
+                                      </div>
+                                    </div>
                                   : null
                           }
 
-                          <div className='card-text'>
-                            <div className='g1ModalField'><i>Volunteer Hours </i><span>{volunteer.total_hours || 0}</span></div>
+                          {/* VOLUNTEER HOURS */}
+                          <div className='card-text mb-5'>
+                            <div className='g1ModalField' data-type='hours'><i>{volunteer.total_hours || 0} </i><span>Volunteer Hours</span></div>
                           </div>
 
                           {/* MENTORING SECTION */}
                           {
                               openToMentor
                                   ?   <>
-                                          <i>Active Mentor</i>
-                                          {
-                                              props.loggedUser && props.loggedUser.a_id
-                                              ?   <button className='btn btn-info'
-                                                      data-dismiss='modal'
-                                                      onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}
-                                                  >
-                                                      Manage Mentoring
-                                                  </button>
-                                              :   null
-                                          }
+                                        <div className='g1MentoringFlex card-text'>
+                                          <div>
+                                            <i className='g1MentorActiveLabel'>Active Mentor</i>
+                                            {
+                                                props.loggedUser && props.loggedUser.a_id
+                                                ?   <button className='g1ManageMentorBtn btn btn-info'
+                                                        data-dismiss='modal'
+                                                        onClick={e => history.push(`/mentoring/volunteer/${volunteer.v_id}`)}
+                                                    >
+                                                        Manage Mentoring
+                                                    </button>
+                                                :   null
+                                            }
+                                          </div>
                                           {
                                               mentees.length
-                                                  ?   <div className='d-flex flex-wrap justify-content-start'>
-                                                          <i className='d-block mx-2'>Currently Mentoring </i>
-                                                          {
-                                                              mentees.map(mentee =>
-                                                                  <Link
-                                                                      key={mentee[0] + mentee[1] + mentee[2]}
-                                                                      className='d-block mx-2'
-                                                                      to={`/fellow/${mentee[0]}`}
-                                                                      target="_blank"
-                                                                  >
-                                                                      {mentee[1]}
-                                                                  </Link>
-                                                                  // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
-                                                                  //     data-dismiss='modal'
-                                                                  //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                                                  //     {mentee[1]}
-                                                                  // </span>
-                                                              )
-                                                          }
+                                                  ?   <div className='g1ModalField' data-type='mentoring'>
+                                                          <i>Current Mentees </i>
+                                                          <span>
+                                                            {
+                                                                mentees.map(mentee =>
+                                                                    <Link
+                                                                        key={mentee[0] + mentee[1] + mentee[2]}
+                                                                        className='g1VolMentees'
+                                                                        to={`/fellow/${mentee[0]}`}
+                                                                        target="_blank"
+                                                                    >
+                                                                        ▸ {mentee[1]}
+                                                                    </Link>
+                                                                    // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
+                                                                    //     data-dismiss='modal'
+                                                                    //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                                                    //     {mentee[1]}
+                                                                    // </span>
+                                                                )
+                                                            }
+                                                          </span>
                                                       </div>
                                                   :   null
                                           }
+                                        </div>
                                       </>
-                                  :   mentees.length
-                                          ?   <><i>Past Mentor</i><br /></>
-                                          :   null
+                                  : mentees.length
+                                      ?   <><i>Past Mentor</i><br /></>
+                                      :   null
                           }
 
                           {/* PAST & UPCOMING EVENTS */}
