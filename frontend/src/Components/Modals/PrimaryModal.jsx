@@ -23,7 +23,7 @@ export const PrimaryModalContainer = (props) => {
           <div className="g1CloseContainer">
             <button
               type="button"
-              className={`close sticky-top ${className.includes('g1VolunteerModal') ? 'pt-1' : 'pt-3' }`}
+              className='close sticky-top pt-3'
               data-dismiss="modal"
               aria-label="Close"
               onClick={runOnModalClose}
