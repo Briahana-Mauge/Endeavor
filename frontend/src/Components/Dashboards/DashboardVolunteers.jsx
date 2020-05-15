@@ -10,10 +10,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
-import Charts from './Charts'
-import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
-// import EventRender from '../EventRender';
+import Charts from './Charts_Volunteer';
+import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 
 
 const DashboardVolunteers = (props) => {
