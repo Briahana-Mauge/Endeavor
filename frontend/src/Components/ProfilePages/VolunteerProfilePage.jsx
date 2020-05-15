@@ -199,7 +199,7 @@ export default function VolunteerProfilePage(props) {
                           }
 
                           {/* VOLUNTEER HOURS */}
-                          <div className='card-text mb-5'>
+                          <div className='card-text mb-4'>
                             <div className='g1ModalField' data-type='hours'><i>{volunteer.total_hours || 0} </i><span>Volunteer Hours</span></div>
                           </div>
 
@@ -207,7 +207,9 @@ export default function VolunteerProfilePage(props) {
                           {
                               openToMentor
                                   ?   <>
-                                        <div className='g1MentoringFlex card-text'>
+                                        <hr />
+
+                                        <div className='g1MentoringFlex card-text mb-4'>
                                           <div>
                                             <i className='g1MentorActiveLabel'>Active Mentor</i>
                                             {
@@ -223,28 +225,30 @@ export default function VolunteerProfilePage(props) {
                                           </div>
                                           {
                                               mentees.length
-                                                  ?   <div className='g1ModalField' data-type='mentoring'>
-                                                          <i>Current Mentees </i>
-                                                          <span>
-                                                            {
-                                                                mentees.map(mentee =>
-                                                                    <Link
-                                                                        key={mentee[0] + mentee[1] + mentee[2]}
-                                                                        className='g1VolMentees'
-                                                                        to={`/fellow/${mentee[0]}`}
-                                                                        target="_blank"
-                                                                    >
-                                                                        ▸ {mentee[1]}
-                                                                    </Link>
-                                                                    // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
-                                                                    //     data-dismiss='modal'
-                                                                    //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                                                    //     {mentee[1]}
-                                                                    // </span>
-                                                                )
-                                                            }
-                                                          </span>
+                                                  ? <>
+                                                      <div className='g1ModalField' data-type='mentoring'>
+                                                          <i>Current Mentees ▸ </i>
                                                       </div>
+                                                      <span>
+                                                        {
+                                                            mentees.map(mentee =>
+                                                                <Link
+                                                                    key={mentee[0] + mentee[1] + mentee[2]}
+                                                                    className='g1VolMentees'
+                                                                    to={`/fellow/${mentee[0]}`}
+                                                                    target="_blank"
+                                                                >
+                                                                    {mentee[1]}
+                                                                </Link>
+                                                                // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
+                                                                //     data-dismiss='modal'
+                                                                //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                                                //     {mentee[1]}
+                                                                // </span>
+                                                            )
+                                                        }
+                                                      </span>
+                                                    </>
                                                   :   null
                                           }
                                         </div>
@@ -254,49 +258,65 @@ export default function VolunteerProfilePage(props) {
                                       :   null
                           }
 
-                          {/* PAST & UPCOMING EVENTS */}
-                          <div className='row'>
-                              <i>Past Events </i>
-                              <ul className='plainUl col-sm-6'>
-                              {
-                                  pastEvents.map(event =>
-                                      <Link
-                                          key={event[0] + event[1] + event[2]}
-                                          className='d-block mx-2'
-                                          to={`/event/${event[0]}`}
-                                          target="_blank"
-                                      >
-                                          {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
-                                          { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                      </Link>
-                                      // <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                      //     onClick={e => history.push(`event/${event[0]}`)}>
-                                      //     {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
-                                      //     { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                      // </li>
-                                  )
-                              }
-                              </ul>
+                          <hr />
 
-                              <i>Current / Upcoming Events </i>
-                              <ul className='plainUl col-sm-6'>
+                          {/* PAST & UPCOMING EVENTS */}
+                          <div className='g1VolModalEvents text-card mb-4'>
+                              <i>Past Events </i>
                               {
-                                  events.map(event =>
-                                      <Link
-                                          key={event[0] + event[1] + event[2]}
-                                          className='d-block mx-2'
-                                          to={`/event/${event[0]}`}
-                                          target="_blank"
-                                      >
-                                          {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                      </Link>
-                                      // <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                      //     onClick={e => history.push(`event/${event[0]}`)}>
-                                      //     {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                      // </span>
-                                  )
+                                pastEvents.length
+                                  ? <ul className='plainUl'>
+                                      {pastEvents.map(event => {
+                                        return(
+                                          <li className='mx-4'>
+                                            <Link
+                                                key={event[0] + event[1] + event[2]}
+                                                to={`/event/${event[0]}`}
+                                                target="_blank"
+                                            >
+                                                {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
+                                            </Link>
+                                            :: { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                            {/* <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                                onClick={e => history.push(`event/${event[0]}`)}>
+                                                {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
+                                                { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                            </li> */}
+                                          </li>
+                                        );
+
+                                      })}
+                                    </ul>
+                                  : <em className='g1EmptyMsg mx-4'>No past volunteered events</em>
                               }
-                              </ul>
+
+                          </div>
+
+                          <div className='g1VolModalEvents text-card mb-4'>
+                              <i>Current / Upcoming Events </i>
+                              {
+                                events.length
+                                  ? <ul className='plainUl'>
+                                      {events.map(event => {
+                                        return(
+                                          <li className='mx-4'>
+                                            <Link
+                                                key={event[0] + event[1] + event[2]}
+                                                to={`/event/${event[0]}`}
+                                                target="_blank"
+                                            >
+                                                {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
+                                            </Link>
+                                            {/* <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
+                                                onClick={e => history.push(`event/${event[0]}`)}>
+                                                {event[1]} ({new Date(event[2]).toLocaleDateString()})
+                                            </span> */}
+                                          </li>
+                                        );
+                                      })}
+                                    </ul>
+                                  : <em className='g1EmptyMsg mx-4'>No upcoming volunteered events</em>
+                              }
                           </div>
                       </div>
                   </PMBody>

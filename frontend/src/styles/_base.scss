@@ -787,14 +787,14 @@ div.card-text {
             }
         }
 
-        &[data-type='mentoring'] {
-            margin-left: 1rem;
+        &[data-type='mentoring'] i {
+            color: var(--color-black);
         }
     }
 
     .g1MentoringFlex {
         display: grid;
-        grid-template-columns: 11rem auto;
+        grid-template-columns: 13.5rem 9rem auto;
     }
 
     // .g1ManageMentorBtn {
@@ -809,6 +809,15 @@ div.card-text {
         color: green;
         font-style: normal;
         text-transform: uppercase;
+    }
+
+    .g1VolModalEvents {
+        i {
+            display: block;
+            color: var(--color-primary);
+            font-weight: bold;
+            font-style: normal;
+        }
     }
 
     .g1VolMentees {
