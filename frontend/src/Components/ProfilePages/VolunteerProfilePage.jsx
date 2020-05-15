@@ -109,23 +109,24 @@ export default function VolunteerProfilePage(props) {
                 : <>
                 {/* : <div className='row p-3'> */}
                     <PMBody>
-                      {
-                          volunteer.deleted
-                          ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
-                          : null
-                      }
+                      <div className='col-12 p-0'>
+                          {/* WARNINGS */}
+                          {
+                              volunteer.deleted
+                              ? <div className='g1ModalWarning card-text'>This volunteer has left the platform</div>
+                              : null
+                          }
 
-                      <div className='col-12'>
                           {/* PICTURE & NAME */}
                           <img
-                              className='g1ProfilePic'
+                              className='g1ProfilePic ml-sm-2 mb-2'
                               src={volunteer.v_picture || '/images/default_pic.png'}
                               alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
                           />
                           <h3 className='h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</h3>
 
                           {/* CONTACT INFO, COMPANY, POSITION */}
-                          <div className='card-text'>
+                          <div className='card-text' data-type='contactinfo'>
                             <div className='g1ModalField'>
                               <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-.75px', left: '1px' }} /></i>
                               <a href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
@@ -146,12 +147,12 @@ export default function VolunteerProfilePage(props) {
                             <div className='g1ModalField'><i className='g1VolContact'>Position </i><span>{volunteer.title}</span></div>
                           </div>
 
+                          {/* SKILLS AND INTERESTS */}
                           <div className='card-text'>
-                            {/* SKILLS */}
                             {
                                 volunteer.skills && volunteer.skills.length
                                     // ?   <div className='row'>
-                                    ?   <div className='g1ModalField' data-type='skills'>
+                                    ?   <div className='g1ModalField mb-4 mb-sm-0' data-type='skills'>
                                           <i>Skills </i>
                                           <div>
                                             <span>
@@ -167,7 +168,6 @@ export default function VolunteerProfilePage(props) {
                                     :   null
                             }
 
-                            {/* INTERESTS */}
                             {
                                 interests.length
                                     ?   <div className='g1ModalField' data-type='interests'>

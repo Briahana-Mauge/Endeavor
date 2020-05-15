@@ -143,7 +143,7 @@ nav button {
     z-index: var(--zi-popup-2nd) !important;
 }
 
-.lightBox,
+// .lightBox,
 .feedbackContainer {
     @media (max-width: 460px) {
         width: auto !important;
@@ -706,10 +706,17 @@ div.card-text {
         z-index: var(--zi-popup-footer);
     }
 
+    .g1ModalWarning {
+        background-color: #e69b9b;
+        padding: 1rem;
+        border: solid 1px red;
+        border-radius: var(--border-radii);
+    }
+
     .g1ProfilePic {
         object-fit: cover;
         height: auto;
-        max-width: 250px;
+        max-width: 270px;
         border: solid 2px var(--color-black);
         border-radius: var(--border-radii);
 
@@ -719,6 +726,13 @@ div.card-text {
         @media (min-width: 768px) {
             height: 300px;
             width: 300px;
+            max-width: 300px;
+        }
+    }
+
+    div[data-type='contactinfo'] {
+        @media (max-width: 768px) {
+            clear: both;
         }
     }
 
@@ -739,7 +753,6 @@ div.card-text {
                 margin-left: 1rem;
             }
 
-
             &.break {
                 display: block;
             }
@@ -751,6 +764,15 @@ div.card-text {
 
         &[data-type='hours'] {
             margin-left: 1rem;
+
+            @media (max-width: 576px) {
+                margin-left: 0;
+
+                span {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
         }
 
         &[data-type='skills'],
@@ -759,6 +781,17 @@ div.card-text {
             // margin-left: 1rem;
             display: grid;
             grid-template-columns: 7rem auto;
+
+            @media (max-width: 576px) {
+                display: block;
+
+                i {
+                    display: block;
+                    text-align: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
         }
 
         &[data-type='interests'] span {
@@ -923,8 +956,6 @@ div.card-text {
         }
 
         h5.modal-title {
-            margin-left: 15px;
-
             color: var(--color-yellow);
         }
     }
