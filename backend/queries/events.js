@@ -258,12 +258,13 @@ const getDashEventsForAdmin = async () => {
         materials_url,
         important,
         ARRAY_AGG(
-            CAST(v_id as CHAR(10)) || ' &$%& ' ||
-            v_first_name || ' ' || v_last_name || ' &$%& ' ||
-            v_email || ' &$%& ' ||
-            CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10))
-            || ' &$%& ' || CAST(ev_id as CHAR(10)) || ' &$%& ' ||
-            CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+          CAST(v_id as CHAR(10)) || ' &$%& ' ||
+          v_first_name || ' ' || v_last_name || ' &$%& ' ||
+          v_email || ' &$%& ' ||
+          CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+          CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+          CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10)) || ' &$%& ' ||
+          CAST(volunteered_time as CHAR(2))
         ) AS volunteers_list
 
     FROM events

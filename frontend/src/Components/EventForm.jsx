@@ -241,7 +241,7 @@ export default function EventForm (props) {
                         className='form-control mb-2' 
                         type='number' 
                         placeholder='Number of needed volunteers' 
-                        value={numberOfVolunteers}
+                        value={numberOfVolunteers || ''}
                         onChange={e => setNumberOfVolunteers(e.target.value)}
                     />
                 </div>
@@ -259,7 +259,7 @@ export default function EventForm (props) {
                         <div className='custom-control custom-switch mt-2'>
                             <input 
                                 type='checkbox' className='custom-control-input' id='publicProfile'
-                                checked={important} onChange={e => setImportant(e.target.checked)}
+                                checked={important || false} onChange={e => setImportant(e.target.checked)}
                             />
                             <label className='custom-control-label' htmlFor='publicProfile'>Important?</label>
                         </div>

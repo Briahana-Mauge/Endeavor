@@ -41,7 +41,7 @@ export default function Volunteers (props) {
         }
         getAllVolunteers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setFeedback, reload]);
+    }, [reload, filter, targetSkill]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
