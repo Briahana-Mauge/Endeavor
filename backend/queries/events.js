@@ -258,12 +258,13 @@ const getDashEventsForAdmin = async () => {
         materials_url,
         important,
         ARRAY_AGG(
-            CAST(v_id as CHAR(10)) || ' &$%& ' ||
-            v_first_name || ' ' || v_last_name || ' &$%& ' ||
-            v_email || ' &$%& ' ||
-            CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10))
-            || ' &$%& ' || CAST(ev_id as CHAR(10)) || ' &$%& ' ||
-            CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
+          CAST(v_id as CHAR(10)) || ' &$%& ' ||
+          v_first_name || ' ' || v_last_name || ' &$%& ' ||
+          v_email || ' &$%& ' ||
+          CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
+          CAST(ev_id as CHAR(10))|| ' &$%& ' ||
+          CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10)) || ' &$%& ' ||
+          CAST(volunteered_time as CHAR(2))
         ) AS volunteers_list
 
     FROM events
@@ -326,7 +327,7 @@ const getDashEventsForAdmin = async () => {
 	      COUNT(volunteers.signup_date) AS volunteers
 	    FROM volunteers
 	    WHERE signup_date > (CURRENT_DATE - INTERVAL '12 months') 
-	    	AND signup_date < CURRENT_DATE
+	    	AND signup_date <= CURRENT_DATE
 	    GROUP BY DATE
       ORDER BY DATE ASC;
       `
@@ -426,7 +427,8 @@ const getDashEventsForVolunteer = async (volunteerId) => {
 	    INNER JOIN event_volunteers ON volunteer_id = v_id
 	    INNER JOIN events ON eventv_id = event_id
 	    WHERE event_end > (current_date - INTERVAL '12 months') 
-	    	AND event_end < CURRENT_DATE AND volunteers.v_id = $1 
+        AND event_end <= CURRENT_DATE 
+        AND volunteers.v_id = $1 
 	    	AND event_volunteers.confirmed = TRUE
 	    GROUP BY date
 	    ORDER BY date ASC

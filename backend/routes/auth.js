@@ -13,6 +13,7 @@ const fellowsQueries = require('../queries/fellows');
 
 const processInput = require('../helpers/processInput');
 const handleError = require('../helpers/handleError');
+const { generateSlug } = require('../helpers/helpers');
 
 
 // LOGIN  A USER
@@ -67,11 +68,16 @@ const signupAdmin = async (request, response, next) => {
 // Expecting into the request body: email, password, firstName, lastName, company, title, mentor, officeHours, techMockInterview, behavioralMockInterview
 const signupVolunteer = async (request, response, next) => {
     try {
+        const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
+        const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
+        const slug = await generateSlug(firstName + lastName);
+
         const formattedRequestBody = {
             email: processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase(),
             password: processInput(request.body.password, 'hardVC', 'user password'),
-            firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
-            lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
+            firstName,
+            lastName,
+            slug,
             company: processInput(request.body.company, 'hardVC', 'company', 50),
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             skills: processInput(request.body.skills, 'array', 'skills list', 25),
@@ -215,6 +221,7 @@ const updateVolunteerUser = async (userId, request, response, next) => {
             password: processInput(request.body.password, 'hardVC', 'user password'),
             firstName: processInput(request.body.firstName, 'hardVC', 'user first name', 30),
             lastName: processInput(request.body.lastName, 'hardVC', 'user last name', 30),
+            slug: processInput(request.body.slug, 'hardVC', 'user slug', 30).toLowerCase(),
             company: processInput(request.body.company, 'hardVC', 'company', 50),
             title: processInput(request.body.title, 'hardVC', 'title', 50),
             bio: processInput(request.body.bio, 'softVC', 'bio'),

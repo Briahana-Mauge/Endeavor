@@ -45,8 +45,12 @@ CREATE TABLE administration (
     deleted DATE DEFAULT NULL
 );
 
+CREATE INDEX idx_admin 
+ON administration(a_email, a_first_name, a_last_name);
+
 CREATE TABLE volunteers (
     v_id SERIAL PRIMARY KEY,
+    v_slug VARCHAR (30) UNIQUE NOT NULL,
     v_first_name VARCHAR (30) NOT NULL,
     v_last_name VARCHAR (30) NOT NULL,
     v_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
@@ -71,6 +75,9 @@ CREATE TABLE volunteers (
     deleted DATE DEFAULT NULL
 );
 
+CREATE INDEX idx_volunteer 
+ON volunteers(v_slug, v_email, v_first_name, v_last_name);
+
 CREATE TABLE fellows (
     f_id SERIAL PRIMARY KEY,
     f_first_name VARCHAR (30) NOT NULL,
@@ -84,6 +91,9 @@ CREATE TABLE fellows (
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE,
     deleted DATE DEFAULT NULL
 );
+
+CREATE INDEX idx_fellow 
+ON fellows(f_email, f_first_name, f_last_name);
 
 CREATE TABLE volunteer_skills (
     vs_id SERIAL PRIMARY KEY,
@@ -253,6 +263,7 @@ INSERT INTO volunteers
     (
         v_first_name, 
         v_last_name, 
+        v_slug,
         v_email,
         v_picture, 
         company, 
@@ -269,16 +280,16 @@ INSERT INTO volunteers
         confirmed
     )
     VALUES 
-    ('Daniel', 'Lopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Daniel+Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),
-    ('Christina', 'Hall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Christina+Hall.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE),
-    ('Judith', 'Simmons', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Judith+Simmons.jpeg', 'WayFair', 'wayfair', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),
-    ('Catherine', 'Barnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Catherine+Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE),
-    ('Pamela', 'Young', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Pamela+Young.png', 'JPMorganChase', 'jpmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
-    ('John', 'Evans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589062822639-John%2BEvans.png', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE),
-    ('Bonnie', 'Simpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Bonnie+Simpson.jpeg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE),
-    ('Joseph', 'Parker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Joseph+Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
-    ('Kenneth', 'Wood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Kenneth+Wood.jpeg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE),
-    ('Thomas', 'Potter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/Thomas+Potter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE);   -- 10
+    ('Daniel', 'Lopez', 'dlopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589499527295-Daniel%20Lopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),
+    ('Christina', 'Hall', 'chall', 'chall@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589499403811-Christina%20Hall.jpg', 'Capital One', 'capitalone', 'Mobile Software Engineer', TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+    ('Judith', 'Simmons', 'jsimmon', 'jsimmons@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589506658327-Judith%20Simmons.png', 'WayFair', 'wayfair', 'Software Engineer', TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE),
+    ('Catherine', 'Barnes', 'cbarnes', 'cbarnes@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589499343965-Catherine%20Barnes.jpg', 'JustWorks', 'justworks', 'Software Engineer', FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE),
+    ('Pamela', 'Young', 'pyoung', 'pyoung@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589506988247-Pamela%20Young.png', 'JPMorganChase', 'jpmorganchase', 'Hiring Manager', FALSE, FALSE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),    -- 5
+    ('John', 'Evans', 'jevans', 'jevans@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589062822639-John%2BEvans.png', 'Google', 'google', 'Tech Lead', TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE),
+    ('Bonnie', 'Simpson', 'bsimpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589506898600-Bonnie%20Simpson.png', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE),
+    ('Joseph', 'Parker', 'jparker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589505381205-Joseph%20Parker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE),
+    ('Kenneth', 'Wood', 'kwood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589505205590-Kenneth%20Wood.png', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE),
+    ('Thomas', 'Potter', 'tpotter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/1589500889403-Thomas%20Potter.png', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE);   -- 10
 
 
 INSERT INTO fellows 
@@ -325,9 +336,9 @@ INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES
     (1, 1),
     (1, 2),
     (1, 21),
-    (2, 16),
-    (2, 18),    -- 5
-    (2, 19),
+    (2, 3),
+    (2, 5),    -- 5
+    (2, 9),
     (3, 1),
     (3, 2),
     (3, 4),
@@ -354,9 +365,9 @@ INSERT INTO volunteer_skills (volunteer_id, skill_id) VALUES
     (8, 14),    -- 30
     (8, 15),
     (8, 21),
-    (9, 3),
-    (9, 5),
-    (9, 9),     -- 35
+    (9, 16),
+    (9, 18),
+    (9, 19),     -- 35
     (10, 1),
     (10, 2),
     (10, 4),
@@ -475,7 +486,7 @@ INSERT INTO event_volunteers (eventv_id, volunteer_id, confirmed, volunteered_ti
     (6, 8, FALSE, 0),
     (6, 9, FALSE, 0),
     (7, 10, FALSE, 0), -- 15
-    (8, 10, TRUE, 0),
+    (8, 10, TRUE, 2),
     (8, 3, FALSE, 0),
     (9, 4, FALSE, 0),
     (9, 5, FALSE, 0),

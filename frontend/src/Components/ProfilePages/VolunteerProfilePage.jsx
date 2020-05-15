@@ -21,14 +21,20 @@ export default function VolunteerProfilePage(props) {
         const getVolunteerData = async () => {
             try { 
                 if (volunteerId) {
-                    const { data } = await axios.get(`/api/volunteers/id/${volunteerId}`);
-                    setVolunteer(data.payload);
-                    setProfilePublic(data.payload.v_id);
+                    let response = {data: {payload: null}};
+                    if (!isNaN(parseInt(volunteerId)) && Number(volunteerId).toString() === volunteerId.toString()) {
+                        response = await axios.get(`/api/volunteers/id/${volunteerId}`);
+                    } else {
+                        response = await axios.get(`/api/volunteers/slug/${volunteerId}`);
+                    }
+                    const info = response.data.payload;
+                    setVolunteer(info);
+                    setProfilePublic(!!info.v_id);
                     setWaitingForData(false);
 
-                    if (data.payload.mentees) {
+                    if (info.mentees) {
                         const tracker = {}
-                        data.payload.mentees.forEach(mentee => {
+                        info.mentees.forEach(mentee => {
                             /* After splitting, for each mentee we will have:
                                 index0: mentee id
                                 index1: full name
@@ -45,8 +51,8 @@ export default function VolunteerProfilePage(props) {
                         setMentees(Object.values(tracker));
                     }
 
-                    if (data.payload.past_events) {
-                        const parsedEvents = data.payload.past_events.map(event => event.split(' &$%& '));
+                    if (info.past_events) {
+                        const parsedEvents = info.past_events.map(event => event.split(' &$%& '));
                         /* After splitting, for each event we will have:
                             index0: event id
                             index1: event topic
@@ -58,8 +64,8 @@ export default function VolunteerProfilePage(props) {
                         setPastEvents(a);
                     }
 
-                    if (data.payload.future_events) {
-                        const parsedEvents = data.payload.future_events.map(event => event.split(' &$%& '));
+                    if (info.future_events) {
+                        const parsedEvents = info.future_events.map(event => event.split(' &$%& '));
                         /* After splitting, for each event we will have:
                             index0: event id
                             index1: event topic
@@ -71,16 +77,16 @@ export default function VolunteerProfilePage(props) {
                     }
                     
                     setTasks([
-                        ['mentoring', data.payload.mentoring], 
-                        ['being an Office Hours mentor', data.payload.office_hours], 
-                        ['administering mock technical interviews', data.payload.tech_mock_interview], 
-                        ['behavioral interviewing', data.payload.behavioral_mock_interview], 
-                        ['being a professional skills coach', data.payload.professional_skills_coach],
-                        ['hosting a Site Visit at your office', data.payload.hosting_site_visit],
-                        ['being an Industry Speaker', data.payload.industry_speaker]
+                        ['mentoring', info.mentoring], 
+                        ['being an Office Hours mentor', info.office_hours], 
+                        ['administering mock technical interviews', info.tech_mock_interview], 
+                        ['behavioral interviewing', info.behavioral_mock_interview], 
+                        ['being a professional skills coach', info.professional_skills_coach],
+                        ['hosting a Site Visit at your office', info.hosting_site_visit],
+                        ['being an Industry Speaker', info.industry_speaker]
                     ].filter(task => task[1]));
 
-                    setOpenToMentor(data.payload.mentoring);
+                    setOpenToMentor(info.mentoring);
 
                 }
             } catch (err) {
@@ -175,7 +181,7 @@ export default function VolunteerProfilePage(props) {
                                 {
                                     pastEvents.map(event => 
                                         <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                            onClick={e => history.push(`event/${event[0]}`)}>
+                                            onClick={e => history.push(`/event/${event[0]}`)}>
                                             {event[1]} ({new Date(event[2]).toLocaleDateString()}) - 
                                             { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
                                         </li>
@@ -186,7 +192,7 @@ export default function VolunteerProfilePage(props) {
                                 {
                                     events.map(event => 
                                         <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                            onClick={e => history.push(`event/${event[0]}`)}>
+                                            onClick={e => history.push(`/event/${event[0]}`)}>
                                             {event[1]} ({new Date(event[2]).toLocaleDateString()})
                                         </span>
                                     )          
