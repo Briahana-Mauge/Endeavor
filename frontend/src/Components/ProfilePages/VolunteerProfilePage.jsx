@@ -217,7 +217,7 @@ export default function VolunteerProfilePage(props) {
                                       <Link
                                           key={event[0] + event[1] + event[2]}
                                           className='d-block mx-2'
-                                          to={`event/${event[0]}`}
+                                          to={`/event/${event[0]}`}
                                           target="_blank"
                                       >
                                           {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
@@ -237,7 +237,7 @@ export default function VolunteerProfilePage(props) {
                                       <Link
                                           key={event[0] + event[1] + event[2]}
                                           className='d-block mx-2'
-                                          to={`event/${event[0]}`}
+                                          to={`/event/${event[0]}`}
                                           target="_blank"
                                       >
                                           {event[1]} ({new Date(event[2]).toLocaleDateString()})

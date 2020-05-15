@@ -10,13 +10,12 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 export default function Chart (props) {
-    const { xAxes , data, title, xText, color } = props;
+    const { xAxes , data, title, xText, color, yText } = props;
 
     const chartData = {
         labels: xAxes,
         datasets: [
             {
-                label: xText,
                 data: data,
                 backgroundColor: Array(12).fill(color),
                 borderWidth: 2
@@ -28,13 +27,26 @@ export default function Chart (props) {
         scales: {
             yAxes: [
                 {
+                    scaleLabel: {
+                        display: true,
+                        labelString: yText,
+                        fontColor: 'white'
+                      },
                     ticks: {
                         fontColor: 'white',
                         beginAtZero: true
+                    },
+                    gridLines:{
+                        color:'grey'
                     }
                 }
             ],
             xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: xText,
+                    fontColor: 'white'
+                  },
                 ticks: {
                     fontColor: 'white',
                     beginAtZero: true
