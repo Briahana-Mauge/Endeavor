@@ -13,7 +13,6 @@ export default function Volunteers (props) {
     const [filter, setFilter] = useState('');
     const [targetSkill, setTargetSkill] = useState('');
     const [targetVolunteerId, setTargetVolunteerId] = useState(null);
-    const [targetVolunteerName, setTargetVolunteerName] = useState('');
     const [displayTargetUser, setDisplayTargetUser] = useState(false);
     const [reload, setReload] = useState(false);
 
@@ -52,7 +51,6 @@ export default function Volunteers (props) {
     const hideVolunteer = () => {
         setDisplayTargetUser(false);
         setTargetVolunteerId(null);
-        setTargetVolunteerName('');
     }
 
 
@@ -78,19 +76,18 @@ export default function Volunteers (props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='row m-1'>
+            <div className='g1VolunteerResults d-flex flex-wrap'>
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
                         setDisplayTargetUser={setDisplayTargetUser}
                         setTargetVolunteerId={setTargetVolunteerId}
-                        setTargetVolunteerName={setTargetVolunteerName}
                     />
                 )}
             </div>
         </div>
 
-            <PrimaryModalContainer header={targetVolunteerName || ''} hideModal={hideVolunteer}>
+            <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
                 {
                     displayTargetUser
                         ? <ProfileRender

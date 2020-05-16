@@ -34,8 +34,6 @@ const DashboardAdmin = (props) => {
         .then(res => setEventsObj(res.data.payload))
         .catch(err => setFeedback(err));
     }
-
-
     getNewVolunteers();
     getEvents();
   }, [reloadDashboard, setFeedback]);
@@ -73,20 +71,20 @@ const DashboardAdmin = (props) => {
 
       <Charts chartData={[eventsObj]} />
 
-      <PrimaryModalContainer header={targetEvent.topic || ''} hideModal={hideEvent}>
-            {
-              showEvent
-                ? <EventCard
-                    loggedUser={loggedUser}
-                    event={targetEvent}
-                    setFeedback={setFeedback}
-                    reloadParent={reloadDashboard}
-                    setReloadParent={setReloadDashboard}
-                    hideEvent={hideEvent}
-                  />
-                : null
-            }
-		</PrimaryModalContainer>
+      <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+        {
+          showEvent
+            ? <EventCard
+                loggedUser={loggedUser}
+                event={targetEvent}
+                setFeedback={setFeedback}
+                reloadParent={reloadDashboard}
+                setReloadParent={setReloadDashboard}
+                hideEvent={hideEvent}
+              />
+            : null
+        }
+      </PrimaryModalContainer>
     </>
   )
 }

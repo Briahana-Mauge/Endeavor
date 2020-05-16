@@ -106,6 +106,7 @@ export default function EventPreviewCard(props) {
                 >
                     {event.topic}
                 </header>
+                <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div>
                 {
                     eventStart[0] === eventEnd[0]
                     ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
@@ -121,7 +122,7 @@ export default function EventPreviewCard(props) {
                 {
                     loggedUser && loggedUser.a_id
                     ?   <p>
-                            <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers}
+                            <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers + ' '}
                             {
                                 event.volunteers_list[0] && event.volunteers_list.length - acceptedVolunteers.length
                                 ? <span className='text-warning'> ({event.volunteers_list.length - acceptedVolunteers.length} pending)</span>

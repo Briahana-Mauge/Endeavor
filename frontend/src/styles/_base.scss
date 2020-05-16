@@ -52,8 +52,8 @@ html, body, #root, .g1App {
     --zi-popup-1st: 1100;
     --zi-popup-footer: 1150;
     --zi-popup-2nd: 1200;
-    --zi-navbar: 90;
-    --zi-subnav: 100;
+    --zi-navbar: 110;
+    --zi-subnav: 120;
     --zi-carousel-arrows: 100;
 }
 
@@ -132,24 +132,76 @@ nav button {
 }
 
 
-.card-body,
-.lightBox {
+.card-body {
     color: var(--color-black);
 }
 
-.lightBox {
-    z-index: var(--zi-popup-1st) !important;
-}
+// .lightBox {
+//     z-index: var(--zi-popup-1st) !important;
+// }
 .feedbackContainer {
     z-index: var(--zi-popup-2nd) !important;
 }
 
-.lightBox,
+// .lightBox,
 .feedbackContainer {
     @media (max-width: 460px) {
         width: auto !important;
         left: initial !important;
         margin-right: 1rem;
+    }
+}
+
+.g1VolunteerResults {
+    & > div > div {
+        height: 100%;
+    }
+
+    .card-body {
+        @media (min-width: 576px) {
+            min-height: 30rem;
+        }
+    }
+
+    .card-img-top {
+        cursor: pointer;
+        max-width: 100%;
+        height: 16rem;
+        object-fit: cover;
+    }
+
+    .g1FlexFill {
+        height: 100%;
+    }
+
+    h4 {
+        cursor: pointer;
+        height: 4rem;
+
+        @include link-states();
+    }
+
+    .g1VResultsJob {
+        @media (min-width: 576px) {
+            height: 4rem;
+        }
+    }
+}
+
+.g1EventsResults {
+    .rounded-lg {
+        background-color: #bbb;
+        color: var(--color-black);
+        border: solid 1px var(--color-purple) !important;
+        height: 100%;
+    }
+
+    header {
+        color: var(--color-white);
+    }
+
+    .text-warning {
+        color: #ffd65b !important;
     }
 }
 
@@ -162,6 +214,10 @@ nav button {
     padding-right: 0;
     padding-left: 0;
     color: var(--color-white);
+}
+
+div.card-text {
+    margin-bottom: 1rem;
 }
 
 .g1BtnAsLink {  // for buttons used as what look like links
@@ -261,6 +317,7 @@ nav button {
     @media (max-width: 992px) {
         margin-left: 25%;   // sizes dropdown menu width, removing left width
         border-radius: .75rem 0 .75rem .75rem;
+        border: solid 2px #222;
         // background-color: #000 !important;
         // background-image: linear-gradient(180deg, #8d8557, #8d855773);
     }
@@ -703,6 +760,157 @@ nav button {
         z-index: var(--zi-popup-footer);
     }
 
+    .g1ModalWarning {
+        background-color: #e69b9b;
+        padding: 1rem;
+        border: solid 1px red;
+        border-radius: var(--border-radii);
+    }
+
+    .g1ProfilePic {
+        object-fit: cover;
+        height: auto;
+        max-width: 270px;
+        border: solid 2px var(--color-black);
+        border-radius: var(--border-radii);
+
+        @media (min-width: 576px) {
+            float: right;
+        }
+        @media (min-width: 768px) {
+            height: 300px;
+            width: 300px;
+            max-width: 300px;
+        }
+    }
+
+    div[data-type='contactinfo'] {
+        @media (max-width: 768px) {
+            clear: both;
+        }
+    }
+
+    .g1ModalField {
+        display: block;
+
+        i { // for labels
+            display: inline-block;
+            // width: 6.3rem;
+            margin-right: .7rem;
+
+            text-align: right;
+            font-style: normal;
+            color: #8c8557;
+
+            &.g1VolContact {
+                // width: 2.11rem;
+                margin-left: 1rem;
+            }
+
+            &.break {
+                display: block;
+            }
+
+            .g1ReactIconsSvg {
+                position: relative;
+            }
+        }
+
+        &[data-type='hours'] {
+            margin-left: 1rem;
+
+            @media (max-width: 576px) {
+                margin-left: 0;
+
+                span {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+        }
+
+        &[data-type='skills'],
+        &[data-type='interests'] {
+            // display: flex;
+            // margin-left: 1rem;
+            display: grid;
+            grid-template-columns: 7rem auto;
+
+            @media (max-width: 576px) {
+                display: block;
+
+                i {
+                    display: block;
+                    text-align: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+        }
+
+        &[data-type='interests'] span {
+            display: block;
+
+            &::before {
+                content: '● ';
+                // color: #888;
+            }
+        }
+
+        &[data-type='skills'] {
+            i {
+                color: var(--color-primary);
+            }
+        }
+        &[data-type='interests'] {
+            i {
+                color: maroon;
+            }
+        }
+
+        &[data-type='hours'] {
+            i {
+                color: green;
+            }
+        }
+
+        &[data-type='mentoring'] i {
+            color: var(--color-black);
+        }
+    }
+
+    .g1MentoringFlex {
+        display: grid;
+        grid-template-columns: 13.5rem 9rem auto;
+    }
+
+    // .g1ManageMentorBtn {
+    //     float: right;
+    //     margin-right: 45%;
+    //     position: relative;
+    //     top: 4px;
+    // }
+
+    .g1MentorActiveLabel {
+        display: block;
+        color: green;
+        font-style: normal;
+        text-transform: uppercase;
+    }
+
+    .g1VolModalEvents {
+        i {
+            display: block;
+            color: var(--color-primary);
+            font-weight: bold;
+            font-style: normal;
+        }
+    }
+
+    .g1VolMentees {
+        display: block;
+        width: max-content;
+    }
     .g1ManageVols {
         padding-top: .5rem;
         background-image: linear-gradient(174deg, #efefef, #bfbfbf);
@@ -789,6 +997,21 @@ nav button {
 
     .g1MinimizeFooterButton {
         margin-right: auto;
+    }
+
+    &.g1VolunteerModal {
+        @media (min-width: 768px) {
+            max-width: 760px;
+        }
+
+        .modal-header,
+        .modal-footer {
+            background-color: #a7a078;
+        }
+
+        h5.modal-title {
+            color: var(--color-yellow);
+        }
     }
 }
 
