@@ -227,7 +227,7 @@ export default function EventForm (props) {
                 <div className='col-sm-12'>
                     <textarea 
                         className='form-control mb-2' 
-                        placeholder='Staff escription' 
+                        placeholder='Staff description' 
                         value={staffDescription || ''}
                         onChange={e => setStaffDescription(e.target.value)}
                     />
