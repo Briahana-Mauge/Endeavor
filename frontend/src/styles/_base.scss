@@ -158,7 +158,9 @@ nav button {
     }
 
     .card-body {
-        min-height: 30rem;
+        @media (min-width: 576px) {
+            min-height: 30rem;
+        }
     }
 
     .card-img-top {
@@ -180,7 +182,9 @@ nav button {
     }
 
     .g1VResultsJob {
-        height: 4rem;
+        @media (min-width: 576px) {
+            height: 4rem;
+        }
     }
 }
 

@@ -25,7 +25,7 @@ const VolunteerCard = (props) => {
     }
 
     return (
-        <div className='col-12 col-sm-4 col-lg-3 p-2'>
+        <div className='col-12 col-sm-6 col-lg-3 p-2'>
             <div className='border border-dark rounded bg-light m-1'>
                 <img
                     className='card-img-top'
