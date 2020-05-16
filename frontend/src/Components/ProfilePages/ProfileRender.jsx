@@ -13,14 +13,14 @@ export default function ProfileRender(props) {
     useEffect(() => {
         if ((originPath === 'volunteer' && volunteerId) 
             || (originPath === 'fellow' && fellowId)) {
-            setPageForm('');
+            setPageForm('g1ModalDialog g1TempProfilePatch');
         } else {
             setPageForm('lightBox'); // To be styled with CSS to be a lightbox on top of another page
         }
     }, [originPath, volunteerId, fellowId]);
 
     return (
-        <div className={`${pageForm} g1ModalDialog g1TempProfilePatch`}>
+        <div className={`${pageForm}`}>
             {/* {
                 pageForm === 'lightBox'
                 ?   <div className='text-right m-2 closeButton'>
