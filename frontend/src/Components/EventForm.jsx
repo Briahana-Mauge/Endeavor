@@ -62,7 +62,7 @@ export default function EventForm (props) {
             }
             return `${h}:${m}`
         }
-console.log(event)
+
         setStartDate(formatDate(event.event_start));
         setStartTime(formatTime(event.event_start));
         setEndDate(formatDate(event.event_end));
