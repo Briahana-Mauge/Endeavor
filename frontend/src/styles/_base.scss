@@ -184,6 +184,23 @@ nav button {
     }
 }
 
+.g1EventsResults {
+    .rounded-lg {
+        background-color: #bbb;
+        color: var(--color-black);
+        border: solid 1px var(--color-purple) !important;
+        height: 100%;
+    }
+
+    header {
+        color: var(--color-white);
+    }
+
+    .text-warning {
+        color: #ffd65b !important;
+    }
+}
+
 /* CLASS STYLINGS */
 #root {
     overflow-y: scroll;
