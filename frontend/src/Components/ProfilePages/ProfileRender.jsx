@@ -20,7 +20,7 @@ export default function ProfileRender(props) {
     }, [originPath, volunteerId, fellowId]);
 
     return (
-        <div className={pageForm}>
+        <div className={`${pageForm} g1ModalDialog g1TempProfilePatch`}>
             {/* {
                 pageForm === 'lightBox'
                 ?   <div className='text-right m-2 closeButton'>

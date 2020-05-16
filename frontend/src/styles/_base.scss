@@ -205,6 +205,31 @@ nav button {
     }
 }
 
+.g1TempProfilePatch.g1ModalDialog {
+    @media (min-width: 768px) {
+        max-width: unset;
+    }
+
+    @media (max-width: 576px) {
+        i.g1VolContact {
+            display: none;
+        }
+
+        div[data-type='contactinfo'] a {
+            font-size: .85rem;
+        }
+    }
+
+    .g1ProfilePic {
+        width: 100%;
+    }
+
+    .g1MentoringFlex {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 /* CLASS STYLINGS */
 #root {
     overflow-y: scroll;
@@ -855,6 +880,10 @@ div.card-text {
                 content: '● ';
                 // color: #888;
             }
+        }
+
+        .g1VolSkill {
+            margin-right: .5rem;
         }
 
         &[data-type='skills'] {
