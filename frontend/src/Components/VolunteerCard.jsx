@@ -25,20 +25,36 @@ const VolunteerCard = (props) => {
     }
 
     return (
-        <div className='col-12 col-sm-6 col-lg-4'>
+        <div className='col-12 col-sm-4 col-lg-3 p-2'>
             <div className='border border-dark rounded bg-light m-1'>
-                <img className='card-img-top' src={props.volunteer.v_picture || '/images/default_pic.png'} alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`} />
-                <div className='card-body'>
-                    <h4 className='card-title'>{props.volunteer.v_first_name} {props.volunteer.v_last_name}</h4>
-                    <p className='card-text'>{props.volunteer.title} at {props.volunteer.company}</p>
+                <img
+                    className='card-img-top'
+                    src={props.volunteer.v_picture || '/images/default_pic.png'}
+                    alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
+                    onClick={viewProfile}
+                    data-toggle="modal"
+                    data-target="#primaryModal"
+                />
+                <div className='card-body d-flex flex-column p-3'>
+                    <h4
+                        className='card-title'
+                        onClick={viewProfile}
+                        data-toggle="modal"
+                        data-target="#primaryModal"
+                    >
+                        {props.volunteer.v_first_name} {props.volunteer.v_last_name}
+                    </h4>
+                    <p className='card-text g1VResultsJob'>{props.volunteer.title} at {props.volunteer.company}</p>
                     <p className='card-text'>{props.volunteer.v_email}</p>
                     <h5>Skills:</h5>
-                    <ul> { skills.map((skill, index) => <p className='card-text' key={index+skill}>{skill}</p>) }</ul>
+                    <p className='card-text'>
+                        { skills.map((skill, index) => <div key={index+skill}>{skill}</div>) }
+                    </p>
                     {   props.volunteer.next_event
-                        ? <h5>Next Event: <span onClick={e => history.push(`/event/${nextEvent[0]}`)}>{nextEvent[1]}</span></h5>
+                        ? <><div className='card-text'>Next Event: <br /><span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}>{nextEvent[1]}</span></div></>
                         : null
                     }
-                    <div className='text-right'>
+                    <div className='text-left mt-auto'>
                         <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
                     </div>
                 </div>

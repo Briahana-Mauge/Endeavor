@@ -152,6 +152,38 @@ nav button {
     }
 }
 
+.g1VolunteerResults {
+    & > div > div {
+        height: 100%;
+    }
+
+    .card-body {
+        min-height: 30rem;
+    }
+
+    .card-img-top {
+        cursor: pointer;
+        max-width: 100%;
+        height: 16rem;
+        object-fit: cover;
+    }
+
+    .g1FlexFill {
+        height: 100%;
+    }
+
+    h4 {
+        cursor: pointer;
+        height: 4rem;
+
+        @include link-states();
+    }
+
+    .g1VResultsJob {
+        height: 4rem;
+    }
+}
+
 /* CLASS STYLINGS */
 #root {
     overflow-y: scroll;

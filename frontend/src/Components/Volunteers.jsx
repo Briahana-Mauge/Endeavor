@@ -76,7 +76,7 @@ export default function Volunteers (props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='row m-1'>
+            <div className='g1VolunteerResults d-flex flex-wrap'>
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}

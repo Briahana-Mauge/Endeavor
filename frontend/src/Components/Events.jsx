@@ -63,16 +63,16 @@ export default function EventSearch(props) {
         <>
             {
                 loggedUser && loggedUser.a_id
-                ?    <div className='text-right'>
-                        <button className='btn btn-primary' onClick={e => history.push('/event/add')}>Add Event</button>
-                    </div>
+                ?   <>
+                        <div className='text-right'>
+                            <button className='btn btn-primary' onClick={e => history.push('/event/add')}>Add Event</button>
+                        </div>
+                        <hr />
+                    </>
 
                 : null
             }
 
-            <hr />
-
-            <h3>Events: </h3>
             <form className='form-inline' onSubmit={handleSearch}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
                     placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
