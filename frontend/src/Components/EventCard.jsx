@@ -273,13 +273,18 @@ const EventCard = (props) => {
                                     {calendarLink}
                                     <PMFooterSpace />
                                     <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
-                                    <button
-                                        className='btn btn-danger g1MinimizeFooterButton'
-                                        onClick={deleteVolunteerForEvent}
-                                        disabled={waitingForRender}
-                                    >
-                                        Cancel commitment
-                                    </button>
+                                    {
+                                        new Date(event.event_start).getTime() > Date.now()
+                                        ?   <button
+                                                className='btn btn-danger g1MinimizeFooterButton'
+                                                onClick={deleteVolunteerForEvent}
+                                                disabled={waitingForRender}
+                                            >
+                                                Cancel commitment
+                                            </button>
+                                        : null
+                                    }
+                                    
                                 </>
                             :   <>
                                     <PMFooterSpace />

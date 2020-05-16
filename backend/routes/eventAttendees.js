@@ -14,6 +14,8 @@ const eventQueries = require('../queries/events');
 const volunteerQueries = require('../queries/volunteers');
 
 const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 const emailText = require('../emailBody/emailBody');
 
 
@@ -51,7 +53,6 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 event: event.topic
             }
 
-            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg = {
                 to: volunteerInfo.email,
                 from: 'endeavorapp2020@gmail.com',
@@ -107,7 +108,6 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             const adminEmailsList = admin.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
            
-            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg = {
                 personalizations: [{
                     to: adminEmailsList
@@ -151,16 +151,42 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
     try {
         const volunteerId = processInput(request.params.volunteer_id, 'idNum', 'volunteer id');
         if (request.user && request.user.v_id && request.user.v_id === volunteerId) {
-            const deleteData = {
-                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
-                volunteerId
-            }
-            const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent(deleteData);
+            const eventId = processInput(request.params.event_id, 'idNum', 'event id');
 
+            const promises= [];
+            promises.push(userQueries.getAllAdmin());
+            promises.push(eventQueries.getSingleEvent(eventId));
+            const [admins, event] = await Promise.all(promises);
+            const name = request.user.v_first_name + ' ' + request.user.v_last_name;
+            const adminEmailsList = admins.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
+           
+            const msg = {
+                personalizations: [{
+                    to: adminEmailsList
+                }],
+                from: 'endeavorapp2020@gmail.com',
+                subject: 'Important! - A confirmed volunteer cancelled their participation for Event',
+                html: emailText.cancelled(name, volunteerId, event.topic, event.event_id),
+            };
+
+            (async () => {
+                try {
+                    await sgMail.send(msg);
+                } catch (err) {
+                    if (err.response) {
+                        console.log(err.response.body)
+                    } else {
+                        console.log(err);
+                    }
+                    throw new Error('500__The request was not completed.');
+                }
+            })();
+            
+            // const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent({volunteerId, eventId});
             response.json({
                 err: false,
-                message: `Successfully deleted volunteer.${volunteerId} request to attend event.${deleteData.eventId}`,
-                payload: volunteerRequest,
+                message: `Successfully deleted volunteer.${volunteerId} request to attend event.${eventId}`,
+                // payload: volunteerRequest,
             });
 
         } else {

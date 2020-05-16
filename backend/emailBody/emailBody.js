@@ -26,9 +26,19 @@ const request = (name, userId, title, eventId) => {
     `
 };
 
+const cancelled = (name, userId, title, eventId) => {
+    return `
+        <p>${new Date().toLocaleString()}:</p>
+        <p><strong><a href="http://localhost:3008/volunteer/${userId}"> ${name} </a></strong> 
+        cancelled their approved request to volunteer for the <strong> <a href="http://localhost:3008/event/${eventId}"> '${title}' </a></strong> event.<p>
+        <p>Visit <strong><a href="http://localhost:3008/event/${eventId}"> Endeavor </a></strong> to find out more and manage the event's requests.</p>
+    `
+};
+
 
 module.exports = {
     accepted,
     removed,
-    request
+    request,
+    cancelled
 }
