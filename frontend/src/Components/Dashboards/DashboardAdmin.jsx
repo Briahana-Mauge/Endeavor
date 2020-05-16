@@ -12,7 +12,7 @@ import EventsDashAdmin from './EventsDash/EventsDashAdmin';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
-import Charts from './Chart_Admin';
+import Charts from './ChartsAdmin';
 
 const DashboardAdmin = (props) => {
   const { setFeedback, loggedUser } = props;
