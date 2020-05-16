@@ -155,9 +155,11 @@ export default function VolunteerProfilePage(props) {
                                     ?   <div className='g1ModalField mb-4 mb-sm-0' data-type='skills'>
                                           <i>Skills </i>
                                           <div>
-                                            <span>
-                                              ● { volunteer.skills.join(' ● ')}
-                                            </span>
+                                            { volunteer.skills.map((skill, index) =>
+                                                <span key={index + skill} className='g1VolSkill'>
+                                                    {` ● ${skill}`}
+                                                </span>
+                                            )}
                                             {/* { volunteer.skills.map((skill, index) =>
                                                 <span key={index + skill}>
                                                     {skill}
