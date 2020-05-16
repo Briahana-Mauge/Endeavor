@@ -40,7 +40,7 @@ export default function UsersTab(props) {
                 onChange={e => setPassword(e.target.value)}
             />
 
-            <select className='mb-2 mr-sm-2' value={role} onChange={e => setRole(e.target.value)}>
+            <select className='form-control mb-2 mr-sm-2' value={role} onChange={e => setRole(e.target.value)}>
                 <option value=''>-User Role-</option>
                 <option value='admin'>Admin</option>
                 <option value='staff'>Staff</option>

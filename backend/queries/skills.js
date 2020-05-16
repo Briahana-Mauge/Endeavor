@@ -24,7 +24,6 @@ const selectAllSkills = async () => {
 }
 
 const insertSkill = async (skill) => {
-  const formattedSkill = formatStr(skill);
   return await db.task( async t => {
     const checkQuery = `
       SELECT *
@@ -34,10 +33,10 @@ const insertSkill = async (skill) => {
     const existingSkill = await t.oneOrNone(checkQuery, skill);
     if (!existingSkill) {
       const postQuery = `
-        INSERT INTO skills ( skill, parsed_skill ) VALUES ( $1, $2 )
+        INSERT INTO skills ( skill) VALUES ( $1 )
         RETURNING *;
       `;
-      return await t.one(postQuery, [skill, formattedSkill]);
+      return await t.one(postQuery, skill);
     } else if (existingSkill && existingSkill.deleted) {
       const updateQuery = `
       UPDATE skills 
