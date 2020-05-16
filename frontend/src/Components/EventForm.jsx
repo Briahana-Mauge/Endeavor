@@ -15,6 +15,7 @@ export default function EventForm (props) {
     const [ endTime, setEndTime ] = useState('');
     const [ topic, setTopic ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ staffDescription, setStaffDescription ] = useState('');
     const [ attendees, setAttendees ] = useState('');
     const [ eventLocation, setEventLocation ] = useState('');
     const [ instructor, setInstructor ] = useState('');
@@ -61,17 +62,18 @@ export default function EventForm (props) {
             }
             return `${h}:${m}`
         }
-
+console.log(event)
         setStartDate(formatDate(event.event_start));
         setStartTime(formatTime(event.event_start));
         setEndDate(formatDate(event.event_end));
         setEndTime(formatTime(event.event_end));
         setTopic(event.topic);
         setDescription(event.description);
+        setStaffDescription(event.staff_description);
         setAttendees(event.cohort_id + '');
         setEventLocation(event.location);
         setInstructor(event.instructor);
-        setNumberOfVolunteers(event.volunteers_needed);
+        setNumberOfVolunteers(event.number_of_volunteers);
         setMaterialsUrl(event.materials_url);
         setImportant(event.important);
     }
@@ -124,6 +126,7 @@ export default function EventForm (props) {
                         end,
                         topic,
                         description,
+                        staffDescription,
                         attendees,
                         location: eventLocation,
                         instructor,
@@ -218,6 +221,15 @@ export default function EventForm (props) {
                         placeholder='Description' 
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                    />
+                </div>
+
+                <div className='col-sm-12'>
+                    <textarea 
+                        className='form-control mb-2' 
+                        placeholder='Staff escription' 
+                        value={staffDescription || ''}
+                        onChange={e => setStaffDescription(e.target.value)}
                     />
                 </div>
 
