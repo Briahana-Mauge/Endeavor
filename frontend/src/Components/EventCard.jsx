@@ -133,14 +133,14 @@ const EventCard = (props) => {
                         <span
                             className={`g1VolConfirmedLabel d-none d-sm-block ${isConfirmedForEvent === 'true' ? 'g1VolConfirmedLabelOn' : ''}`}
                         >
-                            CONFIRMED
+                            {isConfirmedForEvent === 'true' ? 'CONFIRMED' : 'PENDING'}
                         </span>
                     </label>
                 </div>
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
                     className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
                     to={`/volunteer/${volunteerId}`}
-                    target="_blank" // because this is alredy a modal, best sense is to open profile in new tab to preserve location
+                    target="_blank" // because this is already a modal, best sense is to open profile in new tab to preserve location
                 >
                     {fullname}
                 </Link>
@@ -177,6 +177,16 @@ const EventCard = (props) => {
 
     const eventStart = formatEventDate(event.event_start);
     const eventEnd = formatEventDate(event.event_end);
+
+    const calendarLink = <a
+            href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${
+                newStart}/${newEnd}&details=${event.description}&location=${event.location}&sf=true&output=xml`}
+            className='btn btn-primary'
+            target='_blank'
+            rel='noopener noreferrer'
+        >
+            Add To Calendar
+        </a>
 
     return (
         // <div className='lightBox'>
@@ -232,16 +242,7 @@ const EventCard = (props) => {
                 {
                     userIs.admin
                         ?   <>
-                                <a
-                                    href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
-                                        event.topic}&dates=${newStart}/${newEnd}&details=${
-                                        event.description}&location=${event.location}&sf=true&output=xml`}
-                                    className='btn btn-primary'
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    Add To Calendar
-                                </a>
+                                {calendarLink}
                                 <PMFooterSpace />
                                 <button
                                     className='btn btn-info'
@@ -265,16 +266,7 @@ const EventCard = (props) => {
                     userIs.volunteer && event.loggedVolunteerPartOfEvent
                         ?   event.loggedVolunteerRequestAccepted
                             ?   <>
-                                    <a
-                                        href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${
-                                            event.topic}&dates=${newStart}/${newEnd}&details=${event.description}&location=${
-                                            event.location}&sf=true&output=xml$`}
-                                        className='btn btn-primary'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        Add To Calendar
-                                    </a>
+                                    {calendarLink}
                                     <PMFooterSpace />
                                     <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
                                     <button

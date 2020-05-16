@@ -48,11 +48,16 @@ export default function EventForm (props) {
 
         const formatTime = (date) => {
             const t = new Date(date).toLocaleTimeString();
+            if (t === '12:00:00 AM' || t === '11:59:00 PM') {
+                return ''
+            }
             const amOrPm = t.split(' ')[1];
             let h = t.split(':')[0];
             const m = t.split(':')[1];
             if (amOrPm === 'pm' || amOrPm === 'Pm' || amOrPm === 'PM') {
                 h = parseInt(h) + 12;
+            } else if (h === '12') {
+                h = '00';
             }
             return `${h}:${m}`
         }
