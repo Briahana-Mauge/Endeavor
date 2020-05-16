@@ -95,9 +95,13 @@ const EventCard = (props) => {
     const handleDeleteEvent = async () => {
         try {
             setWaitingForRender(true);
-            await axios.delete(`/api/events/${event.event_id}`)
-            props.setReloadParent(!props.reloadParent);
-            props.hideEvent();
+            await axios.delete(`/api/events/${event.event_id}`);
+            if (props.parent === 'EventRender') {
+                history.push('/events')
+            } else {
+                props.setReloadParent(!props.reloadParent);
+                props.hideEvent();
+            }
         } catch (err) {
             setFeedback(err);
         }
