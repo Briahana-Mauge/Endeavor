@@ -48,10 +48,12 @@ const VolunteerCard = (props) => {
                     <p className='card-text'>{props.volunteer.v_email}</p>
                     <h5>Skills:</h5>
                     <p className='card-text'>
-                        { skills.map((skill, index) => <div key={index+skill}>{skill}</div>) }
+                        { skills.map((skill, index) => <span className='d-block' key={index+skill}>{skill}</span>) }
                     </p>
                     {   props.volunteer.next_event
-                        ? <><div className='card-text'>Next Event: <br /><span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}>{nextEvent[1]}</span></div></>
+                        ?   <div className='card-text'> Next Event: <br />
+                                <span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}>{nextEvent[1]}</span>
+                            </div>
                         : null
                     }
                     <div className='text-left mt-auto'>

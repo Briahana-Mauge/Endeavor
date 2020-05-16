@@ -15,6 +15,7 @@ export default function EventForm (props) {
     const [ endTime, setEndTime ] = useState('');
     const [ topic, setTopic ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ staffDescription, setStaffDescription ] = useState('');
     const [ attendees, setAttendees ] = useState('');
     const [ eventLocation, setEventLocation ] = useState('');
     const [ instructor, setInstructor ] = useState('');
@@ -48,11 +49,16 @@ export default function EventForm (props) {
 
         const formatTime = (date) => {
             const t = new Date(date).toLocaleTimeString();
+            if (t === '12:00:00 AM' || t === '11:59:00 PM') {
+                return ''
+            }
             const amOrPm = t.split(' ')[1];
             let h = t.split(':')[0];
             const m = t.split(':')[1];
             if (amOrPm === 'pm' || amOrPm === 'Pm' || amOrPm === 'PM') {
                 h = parseInt(h) + 12;
+            } else if (h === '12') {
+                h = '00';
             }
             return `${h}:${m}`
         }
@@ -63,10 +69,11 @@ export default function EventForm (props) {
         setEndTime(formatTime(event.event_end));
         setTopic(event.topic);
         setDescription(event.description);
+        setStaffDescription(event.staff_description);
         setAttendees(event.cohort_id + '');
         setEventLocation(event.location);
         setInstructor(event.instructor);
-        setNumberOfVolunteers(event.volunteers_needed);
+        setNumberOfVolunteers(event.number_of_volunteers);
         setMaterialsUrl(event.materials_url);
         setImportant(event.important);
     }
@@ -119,6 +126,7 @@ export default function EventForm (props) {
                         end,
                         topic,
                         description,
+                        staffDescription,
                         attendees,
                         location: eventLocation,
                         instructor,
@@ -213,6 +221,15 @@ export default function EventForm (props) {
                         placeholder='Description' 
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                    />
+                </div>
+
+                <div className='col-sm-12'>
+                    <textarea 
+                        className='form-control mb-2' 
+                        placeholder='Staff description' 
+                        value={staffDescription || ''}
+                        onChange={e => setStaffDescription(e.target.value)}
                     />
                 </div>
 
