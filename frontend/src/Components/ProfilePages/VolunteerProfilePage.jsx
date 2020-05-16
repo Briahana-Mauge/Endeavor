@@ -268,15 +268,14 @@ export default function VolunteerProfilePage(props) {
                                   ? <ul className='plainUl'>
                                       {pastEvents.map(event => {
                                         return(
-                                          <li className='mx-4'>
+                                          <li className='mx-4' key={event[0] + event[1] + event[2]}>
                                             <Link
-                                                key={event[0] + event[1] + event[2]}
                                                 to={`/event/${event[0]}`}
                                                 target="_blank"
                                             >
                                                 {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
                                             </Link>
-                                            :: { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
+                                            : { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
                                             {/* <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
                                                 onClick={e => history.push(`event/${event[0]}`)}>
                                                 {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
@@ -299,9 +298,8 @@ export default function VolunteerProfilePage(props) {
                                   ? <ul className='plainUl'>
                                       {events.map(event => {
                                         return(
-                                          <li className='mx-4'>
+                                          <li className='mx-4' key={event[0] + event[1] + event[2]}>
                                             <Link
-                                                key={event[0] + event[1] + event[2]}
                                                 to={`/event/${event[0]}`}
                                                 target="_blank"
                                             >
