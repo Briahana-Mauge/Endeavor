@@ -75,7 +75,7 @@ export default function Cohorts(props) {
     }
 
     return (
-        <div className='mt-4'>
+        <div className='mt-4 text-center'>
             <input 
                 type='text' 
                 className='inputFormText mb-2 mr-sm-2' 
