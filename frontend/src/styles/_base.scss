@@ -210,23 +210,8 @@ nav button {
         max-width: unset;
     }
 
-    @media (max-width: 576px) {
-        i.g1VolContact {
-            display: none;
-        }
-
-        div[data-type='contactinfo'] a {
-            font-size: .85rem;
-        }
-    }
-
     .g1ProfilePic {
         width: 100%;
-    }
-
-    .g1MentoringFlex {
-        display: flex;
-        flex-direction: column;
     }
 }
 
@@ -810,6 +795,9 @@ div.card-text {
     }
 
     div[data-type='contactinfo'] {
+        @media (max-width: 400px) {
+            font-size: .85rem;
+        }
         @media (max-width: 768px) {
             clear: both;
         }
@@ -911,14 +899,20 @@ div.card-text {
     .g1MentoringFlex {
         display: grid;
         grid-template-columns: 13.5rem 9rem auto;
-    }
 
-    // .g1ManageMentorBtn {
-    //     float: right;
-    //     margin-right: 45%;
-    //     position: relative;
-    //     top: 4px;
-    // }
+        @media (max-width: 576px) {
+            display: flex;
+            flex-direction: column;
+
+            .g1ModalField {
+                margin: 1rem 0 0 3rem;
+            }
+
+            span {
+                margin-left: 5rem;
+            }
+        }
+    }
 
     .g1MentorActiveLabel {
         display: block;
