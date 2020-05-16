@@ -182,11 +182,11 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
                 }
             })();
             
-            // const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent({volunteerId, eventId});
+            const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent({volunteerId, eventId});
             response.json({
                 err: false,
                 message: `Successfully deleted volunteer.${volunteerId} request to attend event.${eventId}`,
-                // payload: volunteerRequest,
+                payload: volunteerRequest,
             });
 
         } else {
