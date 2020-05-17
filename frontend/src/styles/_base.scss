@@ -1038,6 +1038,39 @@ div.card-text {
     }
 }
 
+.g1SecondaryModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -77%);
+    width: 33rem;
+    padding: 1rem 4.5rem;
+    border: solid 3px var(--color-yellow);
+    border-radius: var(--border-radii);
+    
+    background-color: var(--color-white);
+    color: var(--color-black);
+    text-align: center;
+    opacity: 0;
+    transition: opacity .1s linear;
+
+    &.g1FeedbackOn {
+        opacity: 1;
+    }
+    &.g1FeedbackOff {
+        display: none;
+    }
+
+    .g1SecondaryModalClose {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        outline: none;
+
+        color: red;
+    }
+}
+
 // .g1PopoverBtn {
 //     &, &:hover, &:active, &:focus {
 //         --event-indent: 1.5rem;
