@@ -38,7 +38,7 @@ function App() {
   // USER states
   const [loggedUser, setLoggedUser] = useState({});
   const [isUserStateReady, setIsUserStateReady] = useState(false);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState(null);
 
   // LOGIN/SIGNUP states
   const [formType, setFormType] = useState('login');
@@ -122,7 +122,7 @@ function App() {
   }
 
   const resetFeedback = () => {
-    setFeedback('');
+    setFeedback(null);
   }
 
 
