@@ -122,7 +122,7 @@ function App() {
   }
 
   const resetFeedback = () => {
-    setFeedback(null);
+    setFeedback('');
   }
 
 
