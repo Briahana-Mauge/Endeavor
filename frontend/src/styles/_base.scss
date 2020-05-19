@@ -48,6 +48,7 @@ html, body, #root, .g1App {
     --table-inner-gaps: .8rem;
     
     --navbar-height: 4.6rem;
+    --modal-body-border: #827e96;
 
     --zi-popup-1st: 1100;
     --zi-popup-footer: 1150;
@@ -734,7 +735,6 @@ div.card-text {
         background-color: #a3a9bf;
     }
 
-    --modal-body-border: #827e96;
         .modal-header {
             border-bottom-color: var(--modal-body-border);
         }
@@ -1040,34 +1040,73 @@ div.card-text {
 
 .g1SecondaryModal {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 39%;
+    left: -50%;
     transform: translate(-50%, -77%);
-    width: 33rem;
-    padding: 1rem 4.5rem;
-    border: solid 3px var(--color-yellow);
-    border-radius: var(--border-radii);
-    
-    background-color: var(--color-white);
+    max-width: 39rem;
+    border: solid 1px rgba(0,0,0,.4);
+    border-radius: .3rem;
+    box-shadow: var(--box-shadow);
+    outline: 0;
+
+    background-color: #f3f3f3;
     color: var(--color-black);
     text-align: center;
+    font-family: var(--ff-top);
+    font-size: .95rem;
+    z-index: -3000;
     opacity: 0;
-    transition: opacity .1s linear;
+    transition: none;
+
+    --modal-body-border: #5a5073;
+
+    strong {
+        font-weight: 900;
+    }
 
     &.g1FeedbackOn {
+        left: 50%;
         opacity: 1;
-    }
-    &.g1FeedbackOff {
-        display: none;
+        z-index: 3000;
+        transition: opacity .1s linear;
     }
 
     .g1SecondaryModalClose {
-        position: absolute;
-        top: 0;
-        right: 1rem;
         outline: none;
 
+        font-family: var(--ff-body);
         color: red;
+        text-shadow: 0 1px 0 #000;
+    }
+
+    .g1SModalHeader, .g1SModalFooter {
+        background-color: #6a5e6d;
+    }
+
+    .g1SModalHeader {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-pack: justify;
+        justify-content: flex-end;
+        padding: .5rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-bottom-color: var(--modal-body-border);
+        border-top-left-radius: calc(.3rem - 1px);
+        border-top-right-radius: calc(.3rem - 1px);
+    }
+
+    .g1SModalBody {
+        padding: .5rem 3.5rem;
+    }
+
+    .g1SModalFooter {
+        padding: .5rem;
+        border-top: 1px solid #dee2e6;
+        border-top-color: var(--modal-body-border);
+        border-bottom-left-radius: calc(.3rem - 1px);
+        border-bottom-right-radius: calc(.3rem - 1px);
     }
 }
 

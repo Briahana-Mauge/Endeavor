@@ -1,19 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 export default function Feedback({ feedback, resetFeedback }) {
-    const [ secondaryModalKill, setSecondaryModalKill ] = useState({})
+    let secondaryModalToggle = '';
+    let msg = <><strong>Error: </strong>Sorry, something went wrong. <br />Please try again</>;
 
-    const handleCloseFeedback = () => {
-        setSecondaryModalKill({ display: 'none' });
-        resetFeedback();
-        setTimeout(() => setSecondaryModalKill({}), 0);
-    }
-
-    let
-        secondaryModalToggleClass = '',
-        msg = 'Sorry, something went wrong \n Please try again';
     if (feedback) {
-        secondaryModalToggleClass = 'g1FeedbackOn';
+        secondaryModalToggle = 'g1FeedbackOn';
         if (feedback.response && feedback.response.data.message) {
             msg = feedback.response.data.message;
         } else if (feedback.message) {
@@ -21,16 +13,22 @@ export default function Feedback({ feedback, resetFeedback }) {
         } else {
             msg = `${feedback.response.status} - ${feedback.response.statusText}`;
         }
+        if (msg.slice(0, 6) === 'Error:') {
+            msg = <><strong>{msg.slice(0, 6)}</strong>{msg.slice(6)}</>
+        }
     }
 
 
     return(
         // <div className='p-2 text-center feedbackContainer col-12 col-md-11 col-lg-10 col-xl-8 p-0 mx-auto'>
-        <div className={`g1SecondaryModal ${secondaryModalToggleClass}`} style={secondaryModalKill}>
-            <button type='button' className='g1SecondaryModalClose close pt-2' onClick={handleCloseFeedback}><span>&times;</span></button>
-            <div className='mt-4'>
+        <div className={`g1SecondaryModal ${secondaryModalToggle}`}>
+            <div className='g1SModalHeader'>
+                <button type='button' className='g1SecondaryModalClose close' onClick={resetFeedback}><span>&times;</span></button>
+            </div>
+            <div className='g1SModalBody mt-4'>
                 <p>{msg}</p>
             </div>
+            <div className='g1SModalFooter'></div>
         </div>
     );
 }
