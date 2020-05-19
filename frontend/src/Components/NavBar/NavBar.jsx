@@ -77,7 +77,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
     ),
     toMenteesLink = <NAV_LINK to="/my_mentees" text="My Mentees" isBurgerOn={isBurgerOn} />,
     toMentorLink = <NAV_LINK to="/my_mentor" text="My Mentor" isBurgerOn={isBurgerOn} />,
-    endeavorSheetLink = <NAV_LINK to="/endeavor/:a_slug_goes_here" text="My Endeavor" isBurgerOn={isBurgerOn} />,
+    endeavorSheetLink = <NAV_LINK to={`/volunteer/${loggedUser.v_slug}`} text="My Endeavor" isBurgerOn={isBurgerOn} />,
     myFellowsLink = <NAV_LINK to='/my_fellows' text="My Fellows" />
     // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />, // for general search of fellows
   ;

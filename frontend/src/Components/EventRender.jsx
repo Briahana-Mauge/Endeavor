@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventCard from './EventCard';
 
-export default function ProfileRender(props) {
+export default function EventRender(props) {
     const { eventId } = useParams();
-    const { loggedUser, event, setFeedback } = props;
-            // reloadParent
-            // setReloadParent
-            // hideEvent
+    const history = useHistory();
+
+    const { loggedUser, setFeedback } = props;
     
-    const [ pageForm, setPageForm ] = useState('');
     const [ singleEvent, setSingleEvent ] = useState({ volunteers_list: []});
-    const [ eventObj, setEventObj ] = useState({ volunteersList: []});
+    const [ eventObj, setEventObj ] = useState({ volunteersList: [], acceptedVolunteers: []});
 
     const [ volunteersList, setVolunteersList ] = useState([]);
     const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
@@ -30,15 +28,13 @@ export default function ProfileRender(props) {
         }
     }
     useEffect(() => {
-        if (eventId && !event) {
-            setPageForm('container');
+        if (!isNaN(parseInt(eventId)) && parseInt(eventId).toString().length === eventId.length) {
             getEvent(eventId);
-        } else if (event) {
-            setPageForm('lightBox');
-            setSingleEvent(event)
+        } else {
+            history.push('/404');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [eventId, event, reload]);
+    }, [eventId, reload]);
     
 
     const mapVolunteersList = () => {
@@ -96,24 +92,16 @@ export default function ProfileRender(props) {
         volunteersList
     ]);
 
-    if (!pageForm) return null;
 
     return (
-        <div className={pageForm}>
-            {
-                pageForm === 'lightBox'
-                ?   <div className='text-right m-2 closeButton'>
-                        <button className='btn-sm btn-danger' onClick={props.hideEvent}>X</button>
-                    </div>
-                : null
-            }
-
+        <div className='container'>
             <EventCard 
                 loggedUser={loggedUser} 
                 event={eventObj}
                 setFeedback={setFeedback}
-                reloadParent={props.setReloadParent ? props.reloadParent : reload}
-                setReloadParent={props.setReloadParent ? props.setReloadParent : SetReload}
+                reloadParent={reload}
+                setReloadParent={SetReload}
+                parent='EventRender'
             />
         </div>
     )

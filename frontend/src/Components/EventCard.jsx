@@ -95,9 +95,13 @@ const EventCard = (props) => {
     const handleDeleteEvent = async () => {
         try {
             setWaitingForRender(true);
-            await axios.delete(`/api/events/${event.event_id}`)
-            props.setReloadParent(!props.reloadParent);
-            props.hideEvent();
+            await axios.delete(`/api/events/${event.event_id}`);
+            if (props.parent === 'EventRender') {
+                history.push('/events')
+            } else {
+                props.setReloadParent(!props.reloadParent);
+                props.hideEvent();
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -269,13 +273,18 @@ const EventCard = (props) => {
                                     {calendarLink}
                                     <PMFooterSpace />
                                     <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
-                                    <button
-                                        className='btn btn-danger g1MinimizeFooterButton'
-                                        onClick={deleteVolunteerForEvent}
-                                        disabled={waitingForRender}
-                                    >
-                                        Cancel commitment
-                                    </button>
+                                    {
+                                        new Date(event.event_start).getTime() > Date.now()
+                                        ?   <button
+                                                className='btn btn-danger g1MinimizeFooterButton'
+                                                onClick={deleteVolunteerForEvent}
+                                                disabled={waitingForRender}
+                                            >
+                                                Cancel commitment
+                                            </button>
+                                        : null
+                                    }
+                                    
                                 </>
                             :   <>
                                     <PMFooterSpace />
