@@ -1,19 +1,19 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-EventsDashRow Component | Capstone App (Pursuit Volunteer Mgr)
+Events Dash Table Row Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React from 'react';
 
-import EventListItem from './EventListItem';
+import EDashTableItem from './EDashTableItem';
 const moment = require('moment');
 
 
-const EventsDashRow = (props) => {
+const EDashTableRow = (props) => {
   const { event_id, event_start, event_end, topic, important } = props.event;
-  // const { tableType } = props;
+
   const {
     event, loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
   } = props;
@@ -96,9 +96,9 @@ const EventsDashRow = (props) => {
       <div role="gridcell" className="g1TD g1TopicCol">
 
         <div id={'event' + event_id} className="g1EventItem">
-          <EventListItem {...operationProps} className="g1EventLink">
+          <EDashTableItem {...operationProps} className="g1EventLink">
             {topic}
-          </EventListItem>
+          </EDashTableItem>
         </div>
 
       </div>
@@ -110,4 +110,4 @@ const EventsDashRow = (props) => {
 }
 
 
-export default EventsDashRow;
+export default EDashTableRow;

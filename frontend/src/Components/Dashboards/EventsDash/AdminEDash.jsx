@@ -1,16 +1,16 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-EventsDashAdmins Component | Capstone App (Pursuit Volunteer Mgr)
+Admin Events Dash Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React from 'react';
 
-import EventsDashRow from './EventsDashRow';
+import EDashTableRow from './subcomponents/EDashTableRow';
 
 
-const EventsDash = (props) => {
+const AdminEDash = (props) => {
   const {
     events, //  used by this component
     loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
@@ -25,7 +25,7 @@ const EventsDash = (props) => {
 
   const rowsTodays = events.todays.map(event => {
       return(
-        <EventsDashRow
+        <EDashTableRow
           key={'today' + event.event_id}
           tableType={"today"}
           event={event}
@@ -35,7 +35,7 @@ const EventsDash = (props) => {
   });
   const rowsImportants = events.importants.map(event => {
       return(
-        <EventsDashRow
+        <EDashTableRow
           key={'important' + event.event_id}
           tableType={"important"}
           event={event}
@@ -45,7 +45,7 @@ const EventsDash = (props) => {
   });
   const rowsUpcomings = events.upcomings.map(event => {
       return(
-        <EventsDashRow
+        <EDashTableRow
           key={'upcoming' + event.event_id}
           tableType={"upcoming"}
           event={event}
@@ -106,4 +106,4 @@ const EventsDash = (props) => {
 }
 
 
-export default EventsDash;
+export default AdminEDash;
