@@ -297,11 +297,7 @@ function App() {
 
       </Switch>
 
-      {
-        (feedback)
-          ? <Feedback feedback={feedback} resetFeedback={resetFeedback} />
-          : null
-      }
+      <Feedback feedback={feedback} resetFeedback={resetFeedback} />
 
     </div>
   );

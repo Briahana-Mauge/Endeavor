@@ -56,36 +56,36 @@ export default function Volunteers (props) {
 
     return (
         <>
-        <div className="Search">
-            <form className='form-inline' onSubmit={handleSubmit}>
-                <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
-                    placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
+            <div className="Search">
+                <form className='form-inline' onSubmit={handleSubmit}>
+                    <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
+                        placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
 
-                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
-                    <option value=''>Choose a search filter</option>
-                    <option value='name'>Name</option>
-                    <option value='v_email'>Email</option>
-                    <option value='company'>Company</option>
-                </select>
+                    <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
+                        <option value=''>Choose a search filter</option>
+                        <option value='name'>Name</option>
+                        <option value='v_email'>Email</option>
+                        <option value='company'>Company</option>
+                    </select>
 
-                <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setTargetSkill(e.target.value)}>
-                    <option value=''>-- Skill --</option>
-                    { skillsList.map(skill => <option key={skill.skill + skill.skill_id} value={skill.skill}>{skill.skill}</option>) }
-                </select>
+                    <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setTargetSkill(e.target.value)}>
+                        <option value=''>-- Skill --</option>
+                        { skillsList.map(skill => <option key={skill.skill + skill.skill_id} value={skill.skill}>{skill.skill}</option>) }
+                    </select>
 
-                <button className='btn btn-primary mb-2'>Search</button>
-            </form>
+                    <button className='btn btn-primary mb-2'>Search</button>
+                </form>
 
-            <div className='g1VolunteerResults d-flex flex-wrap'>
-                {results.map(volunteer => <VolunteerCard
-                        key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
-                        volunteer={volunteer}
-                        setDisplayTargetUser={setDisplayTargetUser}
-                        setTargetVolunteerId={setTargetVolunteerId}
-                    />
-                )}
+                <div className='g1VolunteerResults d-flex flex-wrap'>
+                    {results.map(volunteer => <VolunteerCard
+                            key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
+                            volunteer={volunteer}
+                            setDisplayTargetUser={setDisplayTargetUser}
+                            setTargetVolunteerId={setTargetVolunteerId}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
 
             <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
                 {
