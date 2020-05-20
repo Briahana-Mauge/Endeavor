@@ -374,55 +374,54 @@ div.card-text {
     padding-top: calc(var(--navbar-height) + .4rem);
 }
 
-.g1Card {
-    background-color: transparent;
-    background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
-    // background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
-    border-radius: var(--border-radii);
-    line-height: 1.2rem;
-    padding-bottom: .1rem;
+// .g1Card {
+//     background-color: transparent;
+//     background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+//     border-radius: var(--border-radii);
+//     line-height: 1.2rem;
+//     padding-bottom: .1rem;
 
-    &.g1CardImportant {
-        background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
+//     &.g1CardImportant {
+//         background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
 
-        .g1CardHeader span {
-            color: #b39d5d;
-        }
-        .g1THead {
-            color: #de9e3b;
-        }
-    }
+//         .g1CardHeader span {
+//             color: #b39d5d;
+//         }
+//         .g1THead {
+//             color: #de9e3b;
+//         }
+//     }
 
-    &.g1CardPast {
-        background-image: linear-gradient(90deg, #212121d1 0%, #1919197a 100%);
+//     &.g1CardPast {
+//         background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
 
-        .g1CardHeader span {
-            color: #717ca0;
-        }
-        .g1THead {
-            color: #af7394;
-        }
-    }
-}
+//         .g1CardHeader span {
+//             color: #717ca0;
+//         }
+//         .g1THead {
+//             color: #af7394;
+//         }
+//     }
+// }
 
-.g1CardHeader {
-    background-color: transparent;
-    border-bottom: none;
+// .g1CardHeader {
+//     background-color: transparent;
+//     border-bottom: none;
 
-    color: var(--color-white);
-    font-family: var(--ff-accent);
-    font-size: var(--fs-h3);
-    font-weight: 900;
+//     color: var(--color-white);
+//     font-family: var(--ff-accent);
+//     font-size: var(--fs-h3);
+//     font-weight: 900;
 
-    span {
-        color: var(--color-primary);
-        color: #476CEF;
-    }
-}
+//     span {
+//         color: var(--color-primary);
+//         color: #476CEF;
+//     }
+// }
 
-.g1CardBody {
-    color: var(--color-white);
-}
+// .g1CardBody {
+//     color: var(--color-white);
+// }
 
 
 // ALL: EVENTS DASH
