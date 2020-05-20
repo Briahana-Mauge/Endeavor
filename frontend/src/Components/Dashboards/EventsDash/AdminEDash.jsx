@@ -7,6 +7,8 @@ Admin Events Dash Component | Capstone App (Pursuit Volunteer Mgr)
 /* IMPORTS */
 import React from 'react';
 
+import UIModule from '../../UIModule';
+import EDashTable from './subcomponents/EDashTable';
 import EDashTableRow from './subcomponents/EDashTableRow';
 
 
@@ -54,53 +56,30 @@ const AdminEDash = (props) => {
       );
   });
 
-  const xPadding = "px-2";
-
 
   return(
     <>
-      <div className="g1Card card mb-3">
-        <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>Today's</span> Events</h3>
-        <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
 
-          <div role="grid" className="g1Table">
-            <div role="row" className="g1THead">
-              <div role="gridcell" className="g1TD g1TopicCol">Event</div>
-              <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
-            </div>
-            <div className="g1TBody">
-              {rowsTodays.length ? rowsTodays : <div className="g1EmptyRowMsg">There are no events today.</div>}
-            </div>
-          </div>
+      <UIModule className='currentEventsModule' titleColor="Today's" titleRegular='Events'>
+        <EDashTable>
+          {rowsTodays.length ? rowsTodays : <div className="g1EmptyRowMsg">There are no events today.</div>}
+        </EDashTable>
+      </UIModule>
 
-        </div>
-      </div>
 
-      <div className="g1Card card mb-3">
-        <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>On the</span> Horizon</h3>
-        <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
+      <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Major Events'>
+        <EDashTable>
+          {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
+        </EDashTable>
+      </UIModule>
 
-          <div role="grid" className="g1Table">
-            <div role="row" className="g1THead">
-              <div role="gridcell" className="g1TD g1TopicCol">Event</div>
-              <div role="gridcell" className="g1TD g1TimeCol">Date / Time</div>
-            </div>
-            <div className="g1TBody">
-              {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
-            </div>
-            <div className="g1TBody g1BufferRow">
-              <div role="row" className="g1TR">
-                <div role="gridcell" className="g1TD"></div>
-                <div role="gridcell" className="g1TD"></div>
-              </div>
-            </div>
-            <div className="g1TBody">
-              {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">There are no upcoming events at the moment.</div>}
-            </div>
-          </div>
 
-        </div>
-      </div>
+      <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Events'>
+        <EDashTable>
+          {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">There are no upcoming events at the moment.</div>}
+        </EDashTable>
+      </UIModule>
+
     </>
   );
 }

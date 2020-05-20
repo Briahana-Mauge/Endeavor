@@ -8,7 +8,7 @@ DashboardAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventsDashAdmin from './EventsDash/EventsDashAdmin';
+import AdminEDash from './EventsDash/AdminEDash';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
@@ -61,7 +61,7 @@ const DashboardAdmin = (props) => {
     <>
       <div className="row">
         <div className="col-12 col-md-5 pr-md-2">
-          <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
+          <AdminEDash events={eventsObj} {...eventsDashProps} />
         </div>
 
         <div className="col-12 col-md-7 pl-md-2">

@@ -21,14 +21,18 @@
     }
 
 
-    &.upcomingEventsModule::before {
-        filter: hue-rotate(17deg);
+    &.currentEventsModule {
+        &::before {
+            filter: hue-rotate(17deg);
+        }
     }
     &.pastEventsModule::before, &.importantEventsModule {
         filter: hue-rotate(-33deg);
     }
-    &.importantEventsModule .g1Module__header span {
-        color: #47b8ef;
+    &.importantEventsModule {
+        .g1Module__header span {
+            color: #47b8ef;
+        }
     }
 
     &.goldModule {

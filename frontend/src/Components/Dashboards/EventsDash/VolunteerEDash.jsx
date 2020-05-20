@@ -60,7 +60,7 @@ const VolunteerEDash = (props) => {
   return(
     <>
 
-      <UIModule className='upcomingEventsModule' titleColor='My Upcoming' titleRegular='Events'>
+      <UIModule className='currentEventsModule' titleColor='My Upcoming' titleRegular='Events'>
           <EDashTable>
               {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">You have no upcoming events.</div>}
           </EDashTable>
