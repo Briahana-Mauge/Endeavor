@@ -1,6 +1,6 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-EventsDashVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
+Volunteer Events Dash Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
@@ -12,7 +12,7 @@ import EDashTable from './subcomponents/EDashTable';
 import EDashTableRow from './subcomponents/EDashTableRow';
 
 
-const EventsDash = (props) => {
+const VolunteerEDash = (props) => {
   const {
     events, //  used by this component
     loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
@@ -56,11 +56,10 @@ const EventsDash = (props) => {
       );
   });
 
-  // const xPadding = "px-2";
-
 
   return(
     <>
+
       <UIModule className='upcomingEventsModule' titleColor='My Upcoming' titleRegular='Events'>
           <EDashTable>
               {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">You have no upcoming events.</div>}
@@ -86,4 +85,4 @@ const EventsDash = (props) => {
 }
 
 
-export default EventsDash;
+export default VolunteerEDash;
