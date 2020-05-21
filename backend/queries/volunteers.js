@@ -60,7 +60,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
       condition += ' AND volunteers.v_email = $/vEmail/ '
     }
     if (parsedCompany) {
-      condition += ' AND volunteers.parsed_company = $/parsedCompany/ '
+      condition += ` AND volunteers.parsed_company LIKE '%' || $/parsedCompany/ || '%' `
     }
     if (skill) {
       condition += ' AND LOWER(skills.skill) = $/skill/ '
