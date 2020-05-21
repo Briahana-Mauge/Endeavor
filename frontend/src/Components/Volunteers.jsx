@@ -73,7 +73,6 @@ export default function Volunteers (props) {
 
 
     useEffect(() => {
-        console.log(100000, 'WRITE')
         history.push(`/volunteers?skill=${urlTargetSkill}&${urlFilter}=${urlSearchValue}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, urlFilter, urlTargetSkill, urlSearchValue]);
