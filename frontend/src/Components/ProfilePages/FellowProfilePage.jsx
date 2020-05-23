@@ -10,6 +10,8 @@ export default function FellowProfilePage(props) {
     const [ events, setEvents ] = useState([]);
     const [ activeMentors, SetActiveMentors ] = useState([]);
     const [ pastMentors, setPastMentors ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
+
 
     
     useEffect(() => {
@@ -18,6 +20,7 @@ export default function FellowProfilePage(props) {
                 if (fellowId) {
                     const { data } = await axios.get(`/api/fellows/id/${fellowId}`);
                     setFellow(data.payload);
+                    setLoading(false);
 
                     if (data.payload.mentors_list) {
                         const active = [];
@@ -63,13 +66,21 @@ export default function FellowProfilePage(props) {
                     // setCohort(response[2].data.payload.cohort);
                 }
             } catch (err) {
-                setFeedback(err);
+                if (err.response && err.response.status === 404) {
+                    history.push('/404');
+                } else {
+                    setFeedback(err)
+                }
             }
         }
 
         getFellowData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fellowId])
+    }, [fellowId]);
+
+    if (loading) {
+        return <h1>Spinner Placeholder</h1>
+    }
 
     return (
         <>

@@ -18,13 +18,20 @@ export default function EventRender(props) {
     const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
     const [ acceptedVolunteers, setAcceptedVolunteers] = useState([]);
     const [ reload, SetReload ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
+
 
     const getEvent = async(id) => {
         try {
             const { data } = await axios.get(`/api/events/event/${id}`);
             setSingleEvent(data.payload);
+            setLoading(false);
         } catch (err) {
-            setFeedback(err);
+            if (err.response && err.response.status === 404) {
+                history.push('/404');
+            } else {
+                setFeedback(err)
+            }
         }
     }
     useEffect(() => {
@@ -92,6 +99,9 @@ export default function EventRender(props) {
         volunteersList
     ]);
 
+    if (loading) {
+        return <h1>Spinner Placeholder</h1>
+    }
 
     return (
         <div className='container'>

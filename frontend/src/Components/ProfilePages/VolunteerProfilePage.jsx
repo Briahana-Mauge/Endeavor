@@ -91,7 +91,11 @@ export default function VolunteerProfilePage(props) {
 
                 }
             } catch (err) {
-                setFeedback(err);
+                if (err.response && err.response.status === 404) {
+                    history.push('/404');
+                } else {
+                      setFeedback(err)
+                }
             }
         }
 

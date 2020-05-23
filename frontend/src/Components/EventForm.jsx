@@ -23,6 +23,7 @@ export default function EventForm (props) {
     const [ materialsUrl, setMaterialsUrl ] = useState(''); 
     const [ important, setImportant ] = useState(false);
     const [ cohortsList, setCohortsList ] = useState([]);
+    const [ loading, setLoading ] = useState(true);
 
 
     const getCohortsList = () => {
@@ -82,13 +83,20 @@ export default function EventForm (props) {
         const getEvent = async (id) => {
             try {
                 const { data } = await axios.get(`/api/events/event/${id}`);
-                preFillEvent(data.payload)
+                preFillEvent(data.payload);
+                setLoading(false);
             } catch (err) {
-                setFeedback(err)
+                if (err.response && err.response.status === 404) {
+                    history.push('/404');
+                } else {
+                    setFeedback(err)
+                }
             }
         }
         if (eventId) {
             getEvent(eventId);
+        } else {
+            setLoading(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formType, eventId]);
@@ -149,6 +157,10 @@ export default function EventForm (props) {
         } catch (err) {
             setFeedback(err);
         }
+    }
+
+    if (loading) {
+        return <h1>Spinner placeholder</h1>
     }
 
     return (
