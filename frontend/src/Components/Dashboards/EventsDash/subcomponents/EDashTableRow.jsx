@@ -32,11 +32,12 @@ const EDashTableRow = (props) => {
   */
 
   const simplifyHours = (momentString) => {
-    if (momentString.slice(-3) === ':00') {
-      return momentString.slice(0, -3);
-    } else if (momentString.slice(-5, -2) === ':00') {
-      return momentString.slice(0, -5) + momentString.slice(-2, -1);
-    } else if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
+    // if (momentString.slice(-3) === ':00') {
+    //   return momentString.slice(0, -3);
+    // } else if (momentString.slice(-5, -2) === ':00') {
+    //   return momentString.slice(0, -5) + momentString.slice(-2, -1);
+    // } else if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
+    if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
       return momentString.slice(0, -1);
     } else {
       return momentString;
@@ -65,23 +66,23 @@ const EDashTableRow = (props) => {
   }
 
   if (startedBeforeToday) {
-    showStart = 'Started ' + moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
+    showStart = simplifyHours(moment(event_start).format('M/D, h:mm')); // start hour becomes irrelevant in past
   } else if (startsToday && isOneDay) {
     showStart += isMidnightToMidnight
       ? 'All-Day'
       : simplifyHours(moment(event_start).format('h:mm'));
   } else if (isMidnightToMidnight) {
-    showStart = moment(event_start).format('MMM Do');
+    showStart = moment(event_start).format('M/D');
   } else {
     showStart = isOneDay
-      ? simplifyHours(moment(event_start).format('MMM Do, h:mm'))
-      : simplifyHours(moment(event_start).format('MMM Do, h:mma'));
+      ? simplifyHours(moment(event_start).format('M/D, h:mm'))
+      : simplifyHours(moment(event_start).format('M/D, h:mma'));
   }
 
   if (!isOneDay) {
     let tempString = endsToday
       ? 'Today'
-      : moment(event_end).format('MMM Do');
+      : moment(event_end).format('M/D');
     if (!isMidnightToMidnight) {
       tempString += simplifyHours(moment(event_end).format(', h:mma'));
     }
