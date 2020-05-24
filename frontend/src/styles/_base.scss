@@ -116,12 +116,15 @@ nav button {
 /* HELPERS */
 // for consistent styles between nav LINKS and nav BUTTONS
 @mixin link-states() {
+    transition: color .2s ease-out;
+
     &:link, &:visited {
         color: var(--color-white);
         text-decoration: none;
+
     }
     &:hover, &:active {
-        color: var(--color-primary);
+        color: #e8de5b;
     }
 }
 
