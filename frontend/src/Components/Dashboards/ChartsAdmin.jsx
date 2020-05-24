@@ -68,9 +68,9 @@ export default function ChartsAdmin(props) {
         <Chart
           xAxes={chartInterval}
           data={chartTotalVolunteerSignup}
-          // title={'New Volunteer Signups for a Year'}
+          title={''}
           xText={'Months'}
-          yText={'Number of Volunteers'}
+          yText={'New Volunteers Accepted'}
           color={'rgba(0, 210, 0, 1)'}
         />
       </UIModule>
@@ -78,9 +78,9 @@ export default function ChartsAdmin(props) {
         <Chart
           xAxes={chartInterval}
           data={chartTotalVolunteerHours}
-          // title={'Total Volunteer Hours in for a Year'}
+          title={''}
           xText={'Months'}
-          yText={'Number of Hours'}
+          yText={'Hours Earned'}
           color={'rgba(255, 99, 132, 1)'}
         />
       </UIModule>
@@ -88,9 +88,9 @@ export default function ChartsAdmin(props) {
         <Chart
           xAxes={chartInterval}
           data={chartTotalEvents}
-          // title={'Total Events Held in for a Year'}
+          title={''}
           xText={'Months'}
-          yText={'Number of Events'}
+          yText={'Events'}
           color={'rgba(155, 49, 117, 1)'}
         />
       </UIModule>
