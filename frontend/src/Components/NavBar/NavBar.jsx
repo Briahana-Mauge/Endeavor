@@ -10,8 +10,8 @@ import { NavLink, Link } from 'react-router-dom';
 
 
 /* BOOTSTRAP NAVBAR CLASSES */
-const liPadding = "px-2";
-const logoutLiPadding = "pl-2";
+const liPadding = "px-3";
+const logoutLiPadding = "pl-3";
 
 
 /* MAIN */
@@ -141,13 +141,13 @@ const NavBar = ({ h1, loggedUser, logout }) => {
           {showAdminLink}
           {/* {showAdminDropdown} */}
 
-          <div className='flex-fill'></div>
-
           {showEndeavorSheetLink}
 
           <NAV_LINK to='/profile' text="My Profile" isBurgerOn={isBurgerOn} />
 
           <Logout logout={logout} />
+
+          <div className='flex-fill'></div>
 
         </ul>
       </div>
