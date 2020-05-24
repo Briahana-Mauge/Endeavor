@@ -60,21 +60,21 @@ const VolunteerEDash = (props) => {
   return(
     <>
 
-      <UIModule className='currentEventsModule' titleColor='My Upcoming' titleRegular='Events'>
+      <UIModule className='currentEventsModule' titleColor='My Two-Week' titleRegular='Glance'>
           <EDashTable>
               {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">You have no upcoming events.</div>}
           </EDashTable>
       </UIModule>
 
 
-      <UIModule className='pastEventsModule' titleColor='My Previous' titleRegular='(3) Events'>
+      <UIModule className='pastEventsModule' titleColor='My Previous Three' titleRegular='Events'>
           <EDashTable>
               {rowsPasts.length ? rowsPasts : <div className="g1EmptyRowMsg">You have no past recent events.</div>}
           </EDashTable>
       </UIModule>
 
 
-      <UIModule className='importantEventsModule' titleColor='Important' titleRegular='Pursuit Dates'>
+      <UIModule className='importantEventsModule' titleColor='Other Events' titleRegular='This Week'>
           <EDashTable>
               {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
           </EDashTable>

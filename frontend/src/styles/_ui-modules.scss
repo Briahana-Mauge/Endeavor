@@ -26,14 +26,18 @@
             filter: hue-rotate(17deg);
         }
     }
-    &.pastEventsModule::before, &.importantEventsModule {
+    &.pastEventsModule::before, &.importantEventsModule::before {
         filter: hue-rotate(-33deg);
     }
-    &.importantEventsModule {
-        .g1Module__header span {
-            color: #47b8ef;
-        }
+    &.pastEventsModule .g1THead, &.importantEventsModule .g1THead,
+    &.pastEventsModule .g1Table .g1TimeCol u, &.importantEventsModule .g1Table .g1TimeCol u {
+        color: #374b86;
     }
+    // &.importantEventsModule {
+    //     .g1Module__header span {
+    //         color: #47b8ef;
+    //     }
+    // }
 
     &.goldModule {
         &::before {

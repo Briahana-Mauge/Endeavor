@@ -448,7 +448,7 @@ div.card-text {
             color: #f17f08eb;
         }
     }
-    .passed { color: #999; }
+    .passed { color: #555; }
 
     .g1THead {
         display: table-header-group;
@@ -512,9 +512,9 @@ div.card-text {
         }
     }
 
-    .passed .g1TimeCol u {
-        color: #5f5f5f;
-    }
+    // .passed .g1TimeCol u {
+    //     color: #5f5f5f;
+    // }
 }
 
 .g1TBody .g1TR:nth-of-type(odd) {
@@ -535,6 +535,7 @@ div.card-text {
 
 .g1EventLink {
     cursor: pointer;
+    @include link-states();
 }
 
 
