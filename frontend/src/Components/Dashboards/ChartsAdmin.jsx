@@ -71,8 +71,8 @@ export default function ChartsAdmin(props) {
             data={chartTotalVolunteerSignup}
             title={''}
             xText={'Months'}
-            yText={'New Volunteers Accepted'}
-            color={'rgba(0, 210, 0, 1)'}
+            yText={'New Volunteers'}
+            color={'rgba(52, 5, 191, 1)'}
           />
         </UIModule>
       </div>
