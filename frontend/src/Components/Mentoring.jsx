@@ -68,7 +68,11 @@ export default function Mentoring (props) {
                 // ].filter(task => task[1]));
 
             } catch (err) {
-                setFeedback(err);
+                if (err.response && err.response.status === 404) {
+                    history.push('/404');
+                } else {
+                    setFeedback(err)
+                }
             }
         }
 
