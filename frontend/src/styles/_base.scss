@@ -494,8 +494,9 @@ div.card-text {
 
         .g1EmptyRowMsg {
             margin-top: .6rem;
-            color: #888;
+            color: #a54d8e;
             font-style: italic;
+            white-space: nowrap;
         }
     }
 
@@ -529,7 +530,7 @@ div.card-text {
     .g1TimeCol {
         padding-right: var(--table-outer-gaps);
         padding-left: var(--table-inner-gaps);
-        border-left: 1px dashed #696969;
+        // border-left: 1px dashed #696969;
 
         u {
             text-decoration: none;
@@ -540,6 +541,11 @@ div.card-text {
     // .passed .g1TimeCol u {
     //     color: #5f5f5f;
     // }
+}
+
+.pastEventsModule .g1TBody .g1EmptyRowMsg,
+.importantEventsModule .g1TBody .g1EmptyRowMsg {
+    color: #415798;
 }
 
 .g1TBody .g1TR:nth-of-type(odd) {
