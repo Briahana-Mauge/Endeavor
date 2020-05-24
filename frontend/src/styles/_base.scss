@@ -371,7 +371,7 @@ div.card-text {
     h1 {
         padding-right: .5rem;
 
-        color: #0aa2dc;
+        color: #11ace8;
         font-family: var(--ff-top);
         font-weight: var(--fw-bold);
         font-size: var(--fs-h1);
@@ -562,6 +562,16 @@ div.card-text {
 
 // ADMIN: NEW VOLUNTEERS CAROUSEL
 .g1NewVolCarousel {
+    .carousel-indicators::before {
+        content: '(Initials)';
+        color: #974785;
+        padding: 0 .4rem 0 1.4rem;
+        text-transform: lowercase;
+        font-size: 14px;
+        position: relative;
+        top: 4px;
+    }
+
     .g1CarouselArrows {
         position: absolute;
         top: 12.5rem;
