@@ -9,6 +9,8 @@ import React, { useState, useEffect } from 'react';
 
 import UIModule from '../UIModule';
 import Chart from '../Chart';
+import yearRange from '../../yearRangeFormatting';
+
 
 export default function ChartsVolunteer (props) {
     const { chartData } = props;
@@ -18,31 +20,9 @@ export default function ChartsVolunteer (props) {
     const [chartVolunteerEvents, setChartVolunteerEvents] = useState([]);
 
     useEffect(() => {
-        let month = new Date().getMonth() + 2 ;
-        let year = new Date().getFullYear() - 1;
-        const datesArr = [];
+        const datesArr = yearRange();
         const hoursArr = [];
         const eventsArr = [];
-    
-        for (let i = 0; i < 12; i++) {
-          let date = '';
-          if (month <= 12) {
-            if (month < 10) {
-              date = '0' + month + '-' + year;
-            } else {
-              date = month + '-' + year;
-            }
-            month += 1;
-          } else {
-            if (month < 22) {
-              date =  '0' + (month - 12) + '-' + (year + 1);
-            } else {
-              date = (month - 12) + '-' + (year + 1);
-            }
-            month += 1;
-          }
-          datesArr.push(date);
-        }
     
         for (let date of datesArr) {
           let h = null;
@@ -66,12 +46,12 @@ export default function ChartsVolunteer (props) {
 
     return (
         <>
-          <UIModule className='dataModule' titleColor='My Volunteer Hours' titleRegular='This Year'>
+          <UIModule className='dataModule' titleColor='My Volunteering Hours' titleRegular='This Year'>
             <Chart
               xAxes={chartInterval}
               data={chartVolunteerHours} 
               title={''}
-              xText={'Months'}
+              xText={'Hours'}
               yText = {'Number of Hours'}
               color={'#2631bd'}
             />
@@ -81,7 +61,7 @@ export default function ChartsVolunteer (props) {
               xAxes={chartInterval}
               data={chartVolunteerEvents} 
               title={''}
-              xText={'Months'}
+              xText={'Events'}
               yText={'Number of Events'}
               color={'rgba(155, 49, 117, 1)'}
             />
