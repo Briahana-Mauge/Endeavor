@@ -1,11 +1,13 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
+Charts Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
+
+import UIModule from '../UIModule';
 import Chart from '../Chart';
 
 export default function Charts (props) {
@@ -64,10 +66,14 @@ export default function Charts (props) {
 
     return (
         <>
+          <UIModule>
             <Chart xAxes={chartInterval} data={chartVolunteerHours} 
                 title={"Events I've Participated in for a Year"} xText={"Hours"} color={'rgba(255, 99, 132, 1)'}/>
+          </UIModule>
+          <UIModule>
             <Chart xAxes={chartInterval} data={chartVolunteerEvents} 
                 title={"Events I've Participated in for a Year"} xText={"Events"} color={'rgba(155, 49, 117, 1)'}/>
+          </UIModule>
         </>
     )
 }
