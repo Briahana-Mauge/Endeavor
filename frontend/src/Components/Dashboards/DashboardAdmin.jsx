@@ -12,7 +12,7 @@ import AdminEDash from './EventsDash/AdminEDash';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
-import Charts from './Chart_Admin';
+import ChartsAdmin from './ChartsAdmin';
 
 const DashboardAdmin = (props) => {
   const { setFeedback, loggedUser } = props;
@@ -69,7 +69,7 @@ const DashboardAdmin = (props) => {
         </div>
       </div>
 
-      <Charts chartData={[eventsObj]} />
+      <ChartsAdmin chartData={[eventsObj]} />
 
       <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
         {
