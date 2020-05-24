@@ -51,9 +51,9 @@
         &::before {
             background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
         }
-        .g1Module__header span {
-            color: #717ca0;
-        }
+        // .g1Module__header span {
+        //     color: #717ca0;
+        // }
         .g1THead {
             color: #af7394;
         }
@@ -70,7 +70,7 @@
     
         span {
             color: var(--color-primary);
-            color: #10689c;
+            color: #0078bf;
         }
     }
     

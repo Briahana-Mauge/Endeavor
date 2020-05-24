@@ -435,12 +435,13 @@ div.card-text {
     .ongoing {
         color: #efefef;
 
-        .g1TD {
-            background-color: #ff658229;
+        .g1TopicCol {
+            color: #17ca1db8;
+            // background-color: #ff658229;
         }
     }
     .important {
-        color: #d4c358;
+        // color: #d4c358;
 
         .g1TimeCol u {
             text-decoration: none;
@@ -497,7 +498,7 @@ div.card-text {
         text-align: left;
         padding-right: var(--table-inner-gaps);
         padding-left: var(--table-outer-gaps);
-        width: 13rem;
+        width: 57%;
     }
 
     .g1TimeCol {
@@ -507,7 +508,7 @@ div.card-text {
 
         u {
             text-decoration: none;
-            color: #7cf;
+            color: #974785;
         }
     }
 
