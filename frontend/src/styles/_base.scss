@@ -264,13 +264,13 @@ div.card-text {
     .g1Collapse a {
         @include link-states();
 
-        // &:hover, &:active {
-        //     color: #e8de5b;
-        // }
-
         &:link, &:visited {
             color: #888;
         }
+        &:hover, &:active {
+            color: #e8de5b;
+        }
+
 
         &.active {
             color: var(--color-white);
