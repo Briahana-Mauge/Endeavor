@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import axios from 'axios';
 
 import VolunteerCard from './VolunteerCard';
@@ -6,16 +8,36 @@ import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
 export default function Volunteers (props) {
+    const {search} = useLocation();
+    const history = useHistory();
     const { setFeedback } = props;
-    const [search, setSearch] = useState('');
-    const [results, setResults] = useState([]);
-    const [skillsList, setSkillsList] = useState([]);
+
+    const getQueryStrings = () => {
+        const values = queryString.parse(search);
+        const skill = values.skill;
+        delete values.skill;
+        const valueKey = Object.keys(values);
+        const valueValue = Object.values(values);
+
+        return [valueKey, valueValue, skill];
+    }
+
+    const [searchValue, setSearchValue] = useState('');
     const [filter, setFilter] = useState('');
     const [targetSkill, setTargetSkill] = useState('');
+    
+    const [strQueryFilter, strQuerySearchValue, strQueryTargetSkill] = getQueryStrings();
+    const [urlSearchValue, setUrlSearchValue] = useState(strQuerySearchValue || '');
+    const [urlFilter, setUrlFilter] = useState(strQueryFilter || '');
+    const [urlTargetSkill, setUrlTargetSkill] = useState(strQueryTargetSkill || '');
+    
+    const [results, setResults] = useState([]);
+    const [skillsList, setSkillsList] = useState([]);
     const [targetVolunteerId, setTargetVolunteerId] = useState(null);
     const [displayTargetUser, setDisplayTargetUser] = useState(false);
     const [reload, setReload] = useState(false);
 
+    
     useEffect(() => {
         const getSkillsList = async () => {
             try {
@@ -25,14 +47,21 @@ export default function Volunteers (props) {
                 setFeedback(err)
             }
         }
+        
         getSkillsList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    
     useEffect(() => {
+        const [valueKey, valueValue, skill] = getQueryStrings();
+
+        setSearchValue(valueValue || '');
+        setFilter(valueKey || '');
+        setTargetSkill(skill || '');
+
         const getAllVolunteers = async () => {
             try {
-                const { data } = await axios.get(`/api/volunteers/all/?${filter}=${search}&skill=${targetSkill}`);
+                const { data } = await axios.get(`/api/volunteers/all${search}`);
                 setResults(data.payload);
             } catch (err) {
                 setFeedback(err);
@@ -40,7 +69,13 @@ export default function Volunteers (props) {
         }
         getAllVolunteers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload, filter, targetSkill]);
+    }, [search]);
+
+
+    useEffect(() => {
+        history.push(`/volunteers?skill=${urlTargetSkill}&${urlFilter}=${urlSearchValue}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload, urlFilter, urlTargetSkill, urlSearchValue]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -59,16 +94,16 @@ export default function Volunteers (props) {
             <div className="Search">
                 <form className='form-inline' onSubmit={handleSubmit}>
                     <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
-                        placeholder='Search' value={search} onChange={e => { setSearch(e.target.value) }} />
+                        placeholder='Search' value={searchValue} onChange={e => { setUrlSearchValue(e.target.value) }} />
 
-                    <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
+                    <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setUrlFilter(e.target.value)}>
                         <option value=''>Choose a search filter</option>
                         <option value='name'>Name</option>
                         <option value='v_email'>Email</option>
                         <option value='company'>Company</option>
                     </select>
 
-                    <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setTargetSkill(e.target.value)}>
+                    <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setUrlTargetSkill(e.target.value)}>
                         <option value=''>-- Skill --</option>
                         { skillsList.map(skill => <option key={skill.skill + skill.skill_id} value={skill.skill}>{skill.skill}</option>) }
                     </select>

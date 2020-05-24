@@ -9,7 +9,6 @@ export default function FellowPreviewCard(props) {
     
     const [ activeMentors, setActiveMentors ] = useState([]);
     const [ pastMentors, setPastMentors ] = useState([]);
-    // console.log(fellow)
 
     useEffect(() => {
         if (fellow.mentors_list) {
