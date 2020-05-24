@@ -8,6 +8,7 @@ NewVolunteersDash Component | Capstone App (Pursuit Volunteer Mgr)
 import React from 'react';
 import axios from 'axios';
 
+import UIModule from '../../UIModule';
 import VolunteerPreviewCard from './VolunteerPreviewCard';
 
 
@@ -56,13 +57,9 @@ const NewVolunteersDash = (props) => {
       );
   });
 
-  const xPadding = "px-2";
-
 
   return (
-    <div className="g1Card card mb-2">
-      <h3 className={`g1CardHeader card-header ${xPadding} pb-4`}><span>New Volunteer</span> Signups</h3>
-      <div className={`g1CardBody card-body pt-0 pb-1 ${xPadding}`}>
+    <UIModule className='currentEventsModule' titleColor="New Volunteer" titleRegular='Signups'>
 
         {newVolunteers.length <= 0
           ? (
@@ -94,8 +91,7 @@ const NewVolunteersDash = (props) => {
             )
         }
 
-      </div>
-    </div>
+    </UIModule>
   );
 }
 

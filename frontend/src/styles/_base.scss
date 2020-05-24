@@ -116,12 +116,14 @@ nav button {
 /* HELPERS */
 // for consistent styles between nav LINKS and nav BUTTONS
 @mixin link-states() {
+    transition: color .2s ease-out;
+
     &:link, &:visited {
         color: var(--color-white);
         text-decoration: none;
     }
     &:hover, &:active {
-        color: var(--color-primary);
+        color: #e8de5b;
     }
 }
 
@@ -259,12 +261,31 @@ div.card-text {
 
     font-family: var(--ff-top);
 
-    a {
+    .g1Collapse a {
         @include link-states();
+
+        &:link, &:visited {
+            color: #888;
+        }
+        &:hover, &:active {
+            color: #e8de5b;
+        }
+
+
+        &.active {
+            color: var(--color-white);
+            font-weight: bold;
+        }
 
         &.g1DisableLink {
             @include link-states-disabled();
         }
+    }
+
+    .g1BtnAsLink {
+        @include link-states();
+
+        color: #888;
     }
 
     @media (max-width: 576px) {
@@ -302,6 +323,10 @@ div.card-text {
 
     span {  // the accented "V"
         color: var(--color-yellow);
+    }
+
+    &:hover, &:active {
+        color: var(--color-white);
     }
 }
 
@@ -350,7 +375,7 @@ div.card-text {
     h1 {
         padding-right: .5rem;
 
-        color: #0aa2dc;
+        color: #11ace8;
         font-family: var(--ff-top);
         font-weight: var(--fw-bold);
         font-size: var(--fs-h1);
@@ -374,55 +399,54 @@ div.card-text {
     padding-top: calc(var(--navbar-height) + .4rem);
 }
 
-.g1Card {
-    background-color: transparent;
-    background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
-    // background-image: linear-gradient(90deg, rgba(35, 0, 79, 0.29) 0%, rgba(35, 0, 79, 0.1943) 100%);
-    border-radius: var(--border-radii);
-    line-height: 1.2rem;
-    padding-bottom: .1rem;
+// .g1Card {
+//     background-color: transparent;
+//     background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+//     border-radius: var(--border-radii);
+//     line-height: 1.2rem;
+//     padding-bottom: .1rem;
 
-    &.g1CardImportant {
-        background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
+//     &.g1CardImportant {
+//         background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
 
-        .g1CardHeader span {
-            color: #b39d5d;
-        }
-        .g1THead {
-            color: #de9e3b;
-        }
-    }
+//         .g1CardHeader span {
+//             color: #b39d5d;
+//         }
+//         .g1THead {
+//             color: #de9e3b;
+//         }
+//     }
 
-    &.g1CardPast {
-        background-image: linear-gradient(90deg, #212121d1 0%, #1919197a 100%);
+//     &.g1CardPast {
+//         background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
 
-        .g1CardHeader span {
-            color: #717ca0;
-        }
-        .g1THead {
-            color: #af7394;
-        }
-    }
-}
+//         .g1CardHeader span {
+//             color: #717ca0;
+//         }
+//         .g1THead {
+//             color: #af7394;
+//         }
+//     }
+// }
 
-.g1CardHeader {
-    background-color: transparent;
-    border-bottom: none;
+// .g1CardHeader {
+//     background-color: transparent;
+//     border-bottom: none;
 
-    color: var(--color-white);
-    font-family: var(--ff-accent);
-    font-size: var(--fs-h3);
-    font-weight: 900;
+//     color: var(--color-white);
+//     font-family: var(--ff-accent);
+//     font-size: var(--fs-h3);
+//     font-weight: 900;
 
-    span {
-        color: var(--color-primary);
-        color: #476CEF;
-    }
-}
+//     span {
+//         color: var(--color-primary);
+//         color: #476CEF;
+//     }
+// }
 
-.g1CardBody {
-    color: var(--color-white);
-}
+// .g1CardBody {
+//     color: var(--color-white);
+// }
 
 
 // ALL: EVENTS DASH
@@ -436,19 +460,20 @@ div.card-text {
     .ongoing {
         color: #efefef;
 
-        .g1TD {
-            background-color: #ff658229;
+        .g1TopicCol {
+            color: #17ca1db8;
+            // background-color: #ff658229;
         }
     }
     .important {
-        color: #d4c358;
+        // color: #d4c358;
 
         .g1TimeCol u {
             text-decoration: none;
             color: #f17f08eb;
         }
     }
-    .passed { color: #999; }
+    .passed { color: #555; }
 
     .g1THead {
         display: table-header-group;
@@ -469,8 +494,9 @@ div.card-text {
 
         .g1EmptyRowMsg {
             margin-top: .6rem;
-            color: #888;
+            color: #a54d8e;
             font-style: italic;
+            white-space: nowrap;
         }
     }
 
@@ -498,22 +524,24 @@ div.card-text {
         text-align: left;
         padding-right: var(--table-inner-gaps);
         padding-left: var(--table-outer-gaps);
+        width: 57%;
     }
 
     .g1TimeCol {
         padding-right: var(--table-outer-gaps);
         padding-left: var(--table-inner-gaps);
-        border-left: 1px dashed #696969;
+        // border-left: 1px dashed #696969;
 
         u {
             text-decoration: none;
-            color: #7cf;
+            color: #974785;
         }
     }
+}
 
-    .passed .g1TimeCol u {
-        color: #5f5f5f;
-    }
+.pastEventsModule .g1TBody .g1EmptyRowMsg,
+.importantEventsModule .g1TBody .g1EmptyRowMsg {
+    color: #415798;
 }
 
 .g1TBody .g1TR:nth-of-type(odd) {
@@ -534,11 +562,22 @@ div.card-text {
 
 .g1EventLink {
     cursor: pointer;
+    @include link-states();
 }
 
 
 // ADMIN: NEW VOLUNTEERS CAROUSEL
 .g1NewVolCarousel {
+    .carousel-indicators::before {
+        content: '(Initials)';
+        color: #974785;
+        padding: 0 .4rem 0 1.4rem;
+        text-transform: lowercase;
+        font-size: 14px;
+        position: relative;
+        top: 4px;
+    }
+
     .g1CarouselArrows {
         position: absolute;
         top: 12.5rem;

@@ -9,9 +9,9 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventsDashVolunteers from './EventsDash/EventsDashVolunteers';
+import VolunteerEDash from './EventsDash/VolunteerEDash';
 import EventCard from '../EventCard';
-import Charts from './ChartsVolunteer';
+import ChartsVolunteer from './ChartsVolunteer';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 
 
@@ -53,11 +53,11 @@ const DashboardVolunteers = (props) => {
 
       <div className="row">
           <div className="col-12 col-md-5">
-            <EventsDashVolunteers events={eventsObj} {...eventsDashProps} />
+            <VolunteerEDash events={eventsObj} {...eventsDashProps} />
           </div>
 
           <div className="col-12 col-md-7">
-            <Charts chartData={eventsObj.pastData} />
+            <ChartsVolunteer chartData={eventsObj.pastData} />
           </div>
       </div>
 

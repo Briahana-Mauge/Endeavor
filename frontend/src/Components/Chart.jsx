@@ -10,7 +10,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 export default function Chart (props) {
-    const { xAxes , data, title, xText, color, yText } = props;
+    const { xAxes, data, title, xText, color, yText } = props;
 
     const chartData = {
         labels: xAxes,
@@ -30,14 +30,14 @@ export default function Chart (props) {
                     scaleLabel: {
                         display: true,
                         labelString: yText,
-                        fontColor: 'white'
-                      },
+                        fontColor: '#9c9c9c'
+                    },
                     ticks: {
-                        fontColor: 'white',
+                        fontColor: '#9c9c9c',
                         beginAtZero: true
                     },
                     gridLines:{
-                        color:'grey'
+                        color: '#222'
                     }
                 }
             ],
@@ -45,10 +45,10 @@ export default function Chart (props) {
                 scaleLabel: {
                     display: true,
                     labelString: xText,
-                    fontColor: 'white'
-                  },
+                    fontColor: '#9c9c9c'
+                },
                 ticks: {
-                    fontColor: 'white',
+                    fontColor: '#9c9c9c',
                     beginAtZero: true
                 }
             }]
@@ -56,26 +56,24 @@ export default function Chart (props) {
         title: {
             display: true,
             text: title,
-            fontSize: 25,
-            fontColor: 'white'
+            fontSize: 1,
+            fontColor: '#9c9c9c'
         },
         legend: {
             display: false,
             position: 'top',
             labels: {
-                fontColor: 'white'
+                fontColor: '#9c9c9c'
             }   
         },
         datalabels: {
             display: true,
-            fontColor: 'white',
+            fontColor: '#9c9c9c',
         }
     };
 
 
-    return (
-        <>
-            <Bar data={chartData} options={options} />
-        </>
-    )
+    return(
+        <Bar data={chartData} options={options} />
+    );
 }

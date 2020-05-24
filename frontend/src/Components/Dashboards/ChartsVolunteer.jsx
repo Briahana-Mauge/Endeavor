@@ -1,16 +1,18 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
+ChartsVolunteer Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
-import Chart from '../Chart';
 
+import UIModule from '../UIModule';
+import Chart from '../Chart';
 import yearRange from '../../yearRangeFormatting';
 
-export default function Charts (props) {
+
+export default function ChartsVolunteer (props) {
     const { chartData } = props;
 
     const [chartInterval, setChartInterval] = useState([]);
@@ -44,10 +46,26 @@ export default function Charts (props) {
 
     return (
         <>
-            <Chart xAxes={chartInterval} data={chartVolunteerHours} 
-                title={"Events I've Participated in for a Year"} xText={"Hours"} color={'rgba(255, 99, 132, 1)'}/>
-            <Chart xAxes={chartInterval} data={chartVolunteerEvents} 
-                title={"Events I've Participated in for a Year"} xText={"Events"} color={'rgba(155, 49, 117, 1)'}/>
+          <UIModule className='dataModule' titleColor='My Volunteering Hours' titleRegular='This Year'>
+            <Chart
+              xAxes={chartInterval}
+              data={chartVolunteerHours} 
+              title={''}
+              xText={'Months'}
+              yText = {'Hours Earned'}
+              color={'#2631bd'}
+            />
+          </UIModule>
+          <UIModule className='dataModule' titleColor='My Events' titleRegular='This Year'>
+            <Chart
+              xAxes={chartInterval}
+              data={chartVolunteerEvents} 
+              title={''}
+              xText={'Months'}
+              yText={'Events Volunteered'}
+              color={'rgba(155, 49, 117, 1)'}
+            />
+          </UIModule>
         </>
     )
 }

@@ -1,19 +1,19 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-EventsDashRow Component | Capstone App (Pursuit Volunteer Mgr)
+Events Dash Table Row Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React from 'react';
 
-import EventListItem from './EventListItem';
+import EDashTableItem from './EDashTableItem';
 const moment = require('moment');
 
 
-const EventsDashRow = (props) => {
+const EDashTableRow = (props) => {
   const { event_id, event_start, event_end, topic, important } = props.event;
-  // const { tableType } = props;
+
   const {
     event, loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
   } = props;
@@ -32,11 +32,12 @@ const EventsDashRow = (props) => {
   */
 
   const simplifyHours = (momentString) => {
-    if (momentString.slice(-3) === ':00') {
-      return momentString.slice(0, -3);
-    } else if (momentString.slice(-5, -2) === ':00') {
-      return momentString.slice(0, -5) + momentString.slice(-2, -1);
-    } else if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
+    // if (momentString.slice(-3) === ':00') {
+    //   return momentString.slice(0, -3);
+    // } else if (momentString.slice(-5, -2) === ':00') {
+    //   return momentString.slice(0, -5) + momentString.slice(-2, -1);
+    // } else if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
+    if (momentString.slice(-2) === 'am' || momentString.slice(-2) === 'pm') {
       return momentString.slice(0, -1);
     } else {
       return momentString;
@@ -65,27 +66,28 @@ const EventsDashRow = (props) => {
   }
 
   if (startedBeforeToday) {
-    showStart = moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
+    showStart = simplifyHours(moment(event_start).format('M/D, h:mm')); // start hour becomes irrelevant in past
   } else if (startsToday && isOneDay) {
     showStart += isMidnightToMidnight
       ? 'All-Day'
       : simplifyHours(moment(event_start).format('h:mm'));
   } else if (isMidnightToMidnight) {
-    showStart = moment(event_start).format('MMM Do');
+    showStart = moment(event_start).format('M/D');
   } else {
     showStart = isOneDay
-      ? simplifyHours(moment(event_start).format('MMM Do, h:mm'))
-      : simplifyHours(moment(event_start).format('MMM Do, h:mma'));
+      ? simplifyHours(moment(event_start).format('M/D, h:mm'))
+      : simplifyHours(moment(event_start).format('M/D, h:mma'));
   }
 
   if (!isOneDay) {
     let tempString = endsToday
       ? 'Today'
-      : moment(event_end).format('MMM Do');
+      : moment(event_end).format('M/D');
     if (!isMidnightToMidnight) {
       tempString += simplifyHours(moment(event_end).format(', h:mma'));
     }
-    showEnd = <><u> to </u>{tempString}</>;
+    showEnd = <><u> thru </u>{tempString}</>;
+    // showEnd = <><u> to </u>{tempString}</>;
   } else if (!isMidnightToMidnight) {
     showEnd = <><u> – </u>{simplifyHours(moment(event_end).format('h:mma'))}</>;
   }
@@ -96,9 +98,9 @@ const EventsDashRow = (props) => {
       <div role="gridcell" className="g1TD g1TopicCol">
 
         <div id={'event' + event_id} className="g1EventItem">
-          <EventListItem {...operationProps} className="g1EventLink">
+          <EDashTableItem {...operationProps} className="g1EventLink">
             {topic}
-          </EventListItem>
+          </EDashTableItem>
         </div>
 
       </div>
@@ -110,4 +112,4 @@ const EventsDashRow = (props) => {
 }
 
 
-export default EventsDashRow;
+export default EDashTableRow;

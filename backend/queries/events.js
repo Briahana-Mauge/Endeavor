@@ -285,55 +285,54 @@ const getDashEventsForAdmin = async () => {
     AND event_end::DATE >= now()::DATE AND event_start::DATE <= now()::DATE
     ${queryEnd};
   `;
-  const importantsQuery = `
-    ${queryPrefix}
-    AND event_start::DATE > now()::DATE AND important = TRUE
-    ${queryEnd}
-    LIMIT 5;
-  `;
+  // const importantsQuery = `
+  //   ${queryPrefix}
+  //   AND event_start::DATE > now()::DATE AND important = TRUE
+  //   ${queryEnd}
+  //   LIMIT 5;
+  // `;
   const upcomingsQuery = `
     ${queryPrefix}
-    AND event_start::DATE > now()::DATE AND important = FALSE
-    ${queryEnd}
-    LIMIT 5;
+    AND event_end::DATE >= now()::DATE AND event_start::DATE <= (now() + interval '2 weeks')::DATE
+    ${queryEnd};
   `;
   const pastYearHours = `
-  SELECT
+    SELECT
         TO_CHAR(event_end, 'MM-YYYY') AS date,  
-	      SUM(event_volunteers.volunteered_time) AS hours
-	    FROM event_volunteers
-	    INNER JOIN events ON event_volunteers.eventv_id = events.event_id
-	    WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
-	    	AND event_end < CURRENT_DATE
-           AND event_volunteers.deleted IS NULL
-            AND events.deleted IS NULL
-	    GROUP BY DATE
-	    ORDER BY DATE ASC;
-      `;
+        SUM(event_volunteers.volunteered_time) AS hours
+    FROM event_volunteers
+    INNER JOIN events ON event_volunteers.eventv_id = events.event_id
+    WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
+        AND event_end < CURRENT_DATE
+        AND event_volunteers.deleted IS NULL
+        AND events.deleted IS NULL
+    GROUP BY DATE
+    ORDER BY DATE ASC;
+  `;
   const pastYearEventAmount = `
-      SELECT
+    SELECT
         TO_CHAR(event_end, 'MM-YYYY') AS date,  
         COUNT(events.event_id)
-      FROM events
-      WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
+    FROM events
+    WHERE event_end > (CURRENT_DATE - INTERVAL '12 months') 
         AND event_end < CURRENT_DATE
         AND events.deleted IS NULL
-      GROUP BY DATE
-      ORDER BY DATE ASC;
-      `;
+    GROUP BY DATE
+    ORDER BY DATE ASC;
+  `;
   const pastYearVolunteerSignups = `
-      SELECT
+    SELECT
         TO_CHAR(signup_date, 'MM-YYYY') AS date,  
-	      COUNT(volunteers.signup_date) AS volunteers
-	    FROM volunteers
-	    WHERE signup_date > (CURRENT_DATE - INTERVAL '12 months') 
-	    	AND signup_date <= CURRENT_DATE
-	    GROUP BY DATE
-      ORDER BY DATE ASC;
-      `
-  return db.multi(todaysQuery + importantsQuery + upcomingsQuery + pastYearHours + pastYearEventAmount + pastYearVolunteerSignups)
-    .then(([todays, importants, upcomings, hours, events, volunteers]) => {
-      return { todays, importants, upcomings, hours, events, volunteers };
+        COUNT(volunteers.signup_date) AS volunteers
+    FROM volunteers
+    WHERE signup_date > (CURRENT_DATE - INTERVAL '12 months') 
+        AND signup_date <= CURRENT_DATE
+    GROUP BY DATE
+    ORDER BY DATE ASC;
+  `;
+  return db.multi( todaysQuery + upcomingsQuery + pastYearHours + pastYearEventAmount + pastYearVolunteerSignups )
+    .then(([todays, upcomings, hours, events, volunteers]) => {
+        return { todays, upcomings, hours, events, volunteers };
     });
 }
 
@@ -375,7 +374,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
     WHERE event_start > now()
-        AND important = TRUE
+        AND event_start::DATE <= (now() + interval '1 week')::DATE
         AND events.deleted IS NULL
     GROUP BY event_id, cohort_id
     ORDER BY event_start ASC;

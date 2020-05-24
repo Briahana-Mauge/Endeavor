@@ -250,7 +250,7 @@ function App() {
     <div className="g1App container">
       <Switch>
 
-        <PrivateGate exact path='/' h1='Home' {...gateProps}>
+        <PrivateGate exact path='/' h1={userIs.admin ? 'Dashboard' : 'Home'} {...gateProps}>
           {allowedDashboard}
         </PrivateGate>
 

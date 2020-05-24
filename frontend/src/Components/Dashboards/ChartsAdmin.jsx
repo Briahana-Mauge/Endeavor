@@ -1,17 +1,18 @@
 /*
 ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
-DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
+ChartsAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 */
 
 
 /* IMPORTS */
 import React, { useState, useEffect } from 'react';
-import Chart from '../Chart';
 
+import UIModule from '../UIModule';
+import Chart from '../Chart';
 import yearRange from '../../yearRangeFormatting';
 
 
-export default function Charts(props) {
+export default function ChartsAdmin(props) {
   const { chartData } = props;
   const [chartInterval, setChartInterval] = useState([]);
   const [chartTotalVolunteerHours, setChartTotalVolunteerHours] = useState([]);
@@ -62,15 +63,43 @@ export default function Charts(props) {
 
 
   return (
-    <>
-      <Chart xAxes={chartInterval} data={chartTotalVolunteerSignup}
-        title={"New Volunteer Signups for a Year"} xText={"Months"} yText={'Number of Volunteers'} color={'rgba(0, 210, 0, 1)'} />
-      <br></br>
-      <Chart xAxes={chartInterval} data={chartTotalVolunteerHours}
-        title={"Total Volunteer Hours in for a Year"} xText={"Months"} yText={'Number of Hours'} color={'rgba(255, 99, 132, 1)'} />
-      <br></br>
-      <Chart xAxes={chartInterval} data={chartTotalEvents}
-        title={"Total Events Held in for a Year"} xText={"Months"} yText={'Number of Events'} color={'rgba(155, 49, 117, 1)'} />
-    </>
-  )
+    <div className="row px-3">
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalVolunteerSignup}
+            title={''}
+            xText={'Months'}
+            yText={'New Volunteers'}
+            color={'rgba(52, 5, 191, 1)'}
+          />
+        </UIModule>
+      </div>
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalVolunteerHours}
+            title={''}
+            xText={'Months'}
+            yText={'Hours Earned'}
+            color={'rgba(255, 99, 132, 1)'}
+          />
+        </UIModule>
+      </div>
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalEvents}
+            title={''}
+            xText={'Months'}
+            yText={'Events'}
+            color={'rgba(155, 49, 117, 1)'}
+          />
+        </UIModule>
+      </div>
+    </div>
+  );
 }

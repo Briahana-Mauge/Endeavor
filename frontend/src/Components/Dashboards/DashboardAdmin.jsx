@@ -8,17 +8,17 @@ DashboardAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import EventsDashAdmin from './EventsDash/EventsDashAdmin';
+import AdminEDash from './EventsDash/AdminEDash';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
 import { PrimaryModalContainer } from '../Modals/PrimaryModal';
 import EventCard from '../EventCard';
-import Charts from './ChartsAdmin';
+import ChartsAdmin from './ChartsAdmin';
 
 const DashboardAdmin = (props) => {
   const { setFeedback, loggedUser } = props;
 
   const [newVolunteers, setNewVolunteers] = useState([]);
-  const [eventsObj, setEventsObj] = useState({ todays: [], importants: [], upcomings: [], hours: [], events:[], volunteers:[] });
+  const [eventsObj, setEventsObj] = useState({ todays: [], upcomings: [], hours: [], events: [], volunteers: [] });
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
   const [reloadDashboard, setReloadDashboard] = useState(false);
@@ -61,7 +61,7 @@ const DashboardAdmin = (props) => {
     <>
       <div className="row">
         <div className="col-12 col-md-5 pr-md-2">
-          <EventsDashAdmin events={eventsObj} {...eventsDashProps} />
+          <AdminEDash events={eventsObj} {...eventsDashProps} />
         </div>
 
         <div className="col-12 col-md-7 pl-md-2">
@@ -69,7 +69,7 @@ const DashboardAdmin = (props) => {
         </div>
       </div>
 
-      <Charts chartData={[eventsObj]} />
+      <ChartsAdmin chartData={[eventsObj]} />
 
       <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
         {

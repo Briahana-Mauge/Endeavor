@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 
-export default function EventListItem(props) {
+export default function EDashTableItem(props) {
     const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent, children, className } = props;
 
     /* 
