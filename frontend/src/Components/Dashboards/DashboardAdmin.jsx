@@ -18,7 +18,7 @@ const DashboardAdmin = (props) => {
   const { setFeedback, loggedUser } = props;
 
   const [newVolunteers, setNewVolunteers] = useState([]);
-  const [eventsObj, setEventsObj] = useState({ todays: [], importants: [], upcomings: [], hours: [], events:[], volunteers:[] });
+  const [eventsObj, setEventsObj] = useState({ todays: [], upcomings: [], hours: [], events: [], volunteers: [] });
   const [showEvent, setShowEvent] = useState(false);
   const [targetEvent, setTargetEvent] = useState({});
   const [reloadDashboard, setReloadDashboard] = useState(false);

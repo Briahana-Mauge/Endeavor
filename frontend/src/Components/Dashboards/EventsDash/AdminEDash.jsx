@@ -35,16 +35,16 @@ const AdminEDash = (props) => {
         />
       );
   });
-  const rowsImportants = events.importants.map(event => {
-      return(
-        <EDashTableRow
-          key={'important' + event.event_id}
-          tableType={"important"}
-          event={event}
-          {...operationProps}
-        />
-      );
-  });
+  // const rowsImportants = events.importants.map(event => {
+  //     return(
+  //       <EDashTableRow
+  //         key={'important' + event.event_id}
+  //         tableType={"important"}
+  //         event={event}
+  //         {...operationProps}
+  //       />
+  //     );
+  // });
   const rowsUpcomings = events.upcomings.map(event => {
       return(
         <EDashTableRow
@@ -66,15 +66,13 @@ const AdminEDash = (props) => {
         </EDashTable>
       </UIModule>
 
-
-      <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Major Events'>
+      {/* <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Major Events'>
         <EDashTable>
           {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
         </EDashTable>
-      </UIModule>
+      </UIModule> */}
 
-
-      <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Events'>
+      <UIModule className='currentEventsModule' titleColor="The Two Weeks" titleRegular='Ahead'>
         <EDashTable>
           {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">There are no upcoming events at the moment.</div>}
         </EDashTable>
