@@ -63,37 +63,43 @@ export default function ChartsAdmin(props) {
 
 
   return (
-    <>
-      <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
-        <Chart
-          xAxes={chartInterval}
-          data={chartTotalVolunteerSignup}
-          title={''}
-          xText={'Months'}
-          yText={'New Volunteers Accepted'}
-          color={'rgba(0, 210, 0, 1)'}
-        />
-      </UIModule>
-      <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
-        <Chart
-          xAxes={chartInterval}
-          data={chartTotalVolunteerHours}
-          title={''}
-          xText={'Months'}
-          yText={'Hours Earned'}
-          color={'rgba(255, 99, 132, 1)'}
-        />
-      </UIModule>
-      <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
-        <Chart
-          xAxes={chartInterval}
-          data={chartTotalEvents}
-          title={''}
-          xText={'Months'}
-          yText={'Events'}
-          color={'rgba(155, 49, 117, 1)'}
-        />
-      </UIModule>
-    </>
-  )
+    <div className="row px-3">
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalVolunteerSignup}
+            title={''}
+            xText={'Months'}
+            yText={'New Volunteers Accepted'}
+            color={'rgba(0, 210, 0, 1)'}
+          />
+        </UIModule>
+      </div>
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalVolunteerHours}
+            title={''}
+            xText={'Months'}
+            yText={'Hours Earned'}
+            color={'rgba(255, 99, 132, 1)'}
+          />
+        </UIModule>
+      </div>
+      <div className="col-12 col-md-4 px-0">
+        <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
+          <Chart
+            xAxes={chartInterval}
+            data={chartTotalEvents}
+            title={''}
+            xText={'Months'}
+            yText={'Events'}
+            color={'rgba(155, 49, 117, 1)'}
+          />
+        </UIModule>
+      </div>
+    </div>
+  );
 }
