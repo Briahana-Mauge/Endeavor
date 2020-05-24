@@ -121,7 +121,6 @@ nav button {
     &:link, &:visited {
         color: var(--color-white);
         text-decoration: none;
-
     }
     &:hover, &:active {
         color: #e8de5b;
@@ -265,9 +264,28 @@ div.card-text {
     a {
         @include link-states();
 
+        // &:hover, &:active {
+        //     color: #e8de5b;
+        // }
+
+        &:link, &:visited {
+            color: #888;
+        }
+
+        &.active {
+            color: var(--color-white);
+            font-weight: bold;
+        }
+
         &.g1DisableLink {
             @include link-states-disabled();
         }
+    }
+
+    .g1BtnAsLink {
+        @include link-states();
+
+        color: #888;
     }
 
     @media (max-width: 576px) {

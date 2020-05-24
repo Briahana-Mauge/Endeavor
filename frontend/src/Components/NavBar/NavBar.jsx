@@ -115,7 +115,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
 
   return (
-    <nav className={`g1Navbar navbar navbar-expand-lg py-2 navbar-dark container`}>
+    <nav className={`g1Navbar navbar navbar-expand-lg py-2 container`}>
       <Logo />
       <div className="g1NavbarBg"></div>
       <div className="g1Subnav">
