@@ -126,7 +126,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
 
-          <NAV_LINK to="/" exact text="Home" isBurgerOn={isBurgerOn} />
+          <NAV_LINK to="/" exact text={navUser.admin ? 'Dashboard' : 'Home'} isBurgerOn={isBurgerOn} />
 
           {showVolunteersLink}
 
