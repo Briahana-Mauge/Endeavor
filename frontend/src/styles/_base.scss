@@ -261,7 +261,7 @@ div.card-text {
 
     font-family: var(--ff-top);
 
-    a {
+    .g1Collapse a {
         @include link-states();
 
         // &:hover, &:active {
