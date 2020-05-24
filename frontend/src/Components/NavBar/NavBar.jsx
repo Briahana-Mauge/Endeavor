@@ -10,8 +10,8 @@ import { NavLink, Link } from 'react-router-dom';
 
 
 /* BOOTSTRAP NAVBAR CLASSES */
-const liPadding = "px-3";
-const logoutLiPadding = "pl-3";
+const liPadding = "px-2";
+const logoutLiPadding = "pl-2";
 
 
 /* MAIN */
@@ -68,13 +68,14 @@ const NavBar = ({ h1, loggedUser, logout }) => {
   /* DEFINE LIMITED ACCESS NAVS */
   const
     volunteersLink = <NAV_LINK to="/volunteers" text="Volunteers" isBurgerOn={isBurgerOn} />,
-    adminDropdown = (
-      <NavDropdown topText="Admin">
-        <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
-        <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
-        <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
-      </NavDropdown>
-    ),
+    // adminDropdown = (
+    //   <NavDropdown topText="Admin">
+    //     <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
+    //     <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
+    //     <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
+    //   </NavDropdown>
+    // ),
+    adminLink = <NAV_LINK to="/tools" text="Admin Tools" isBurgerOn={isBurgerOn} />,
     toMenteesLink = <NAV_LINK to="/my_mentees" text="My Mentees" isBurgerOn={isBurgerOn} />,
     toMentorLink = <NAV_LINK to="/my_mentor" text="My Mentor" isBurgerOn={isBurgerOn} />,
     endeavorSheetLink = <NAV_LINK to={`/volunteer/${loggedUser.v_slug}`} text="My Endeavor" isBurgerOn={isBurgerOn} />,
@@ -85,7 +86,8 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
   /* TOGGLES NULL/SHOW */
   let
-    showAdminDropdown = null,
+    showAdminLink = null,
+    // showAdminDropdown = null,
     showVolunteersLink = null,
     showMentoringLink = null,
     showMyFellowsLink = null,
@@ -93,7 +95,8 @@ const NavBar = ({ h1, loggedUser, logout }) => {
     // showFellowsLink = null,
 
   if (navUser.admin) {
-    showAdminDropdown = adminDropdown;
+    showAdminLink = adminLink;
+    // showAdminDropdown = adminDropdown;
   }
   if (navUser.admin || navUser.staff) {
     showVolunteersLink = volunteersLink;
@@ -131,15 +134,18 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
           {showMentoringLink}
 
-          {showEndeavorSheetLink}
-
           {/* {showFellowsLink} */}
 
           {showMyFellowsLink}
 
-          {showAdminDropdown}
+          {showAdminLink}
+          {/* {showAdminDropdown} */}
 
-          <NAV_LINK to='/profile' text="My Profile" liClassName="ml-lg-auto" isBurgerOn={isBurgerOn} />
+          <div className='flex-fill'></div>
+
+          {showEndeavorSheetLink}
+
+          <NAV_LINK to='/profile' text="My Profile" isBurgerOn={isBurgerOn} />
 
           <Logout logout={logout} />
 
@@ -185,36 +191,36 @@ const NAV_LINK = ({ to, text, liClassName = "", isBurgerOn }) => {
   );
 }
 
-const NAV_DD_LINK = ({ to, text, isBurgerOn }) => {
-  return(
-    <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
-      <NavLink className="dropdown-item px-3" to={to}>{text}</NavLink>
-    </span>
-  );
-}
+// const NAV_DD_LINK = ({ to, text, isBurgerOn }) => {
+//   return(
+//     <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
+//       <NavLink className="dropdown-item px-3" to={to}>{text}</NavLink>
+//     </span>
+//   );
+// }
 
-const NavDropdown = (props) => {
-  const { topText, children } = props;
+// const NavDropdown = (props) => {
+//   const { topText, children } = props;
 
-  return (
-    <li className="g1MobileTextALign nav-item dropdown">
-      <NavLink
-        to="/" // does not affect execution because preventDefault but pointing at /home just in case
-        onClick={(e) => e.preventDefault()}
-        className={`nav-link dropdown-toggle g1MobileTextALign ${liPadding}`}
-        data-toggle="dropdown"
-        role="button"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        {topText}
-      </NavLink>
-      <div className={`g1DropdownMenu dropdown-menu bg-dark`}>
-        {children}
-      </div>
-    </li>
-  );
-}
+//   return (
+//     <li className="g1MobileTextALign nav-item dropdown">
+//       <NavLink
+//         to="/" // does not affect execution because preventDefault but pointing at /home just in case
+//         onClick={(e) => e.preventDefault()}
+//         className={`nav-link dropdown-toggle g1MobileTextALign ${liPadding}`}
+//         data-toggle="dropdown"
+//         role="button"
+//         aria-haspopup="true"
+//         aria-expanded="false"
+//       >
+//         {topText}
+//       </NavLink>
+//       <div className={`g1DropdownMenu dropdown-menu bg-dark`}>
+//         {children}
+//       </div>
+//     </li>
+//   );
+// }
 
 // const Divider = () => <div className="dropdown-divider"></div> // HIDDEN BECAUSE UNUSED
 
