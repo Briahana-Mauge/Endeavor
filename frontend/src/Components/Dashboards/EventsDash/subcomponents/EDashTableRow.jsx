@@ -65,7 +65,7 @@ const EDashTableRow = (props) => {
   }
 
   if (startedBeforeToday) {
-    showStart = moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
+    showStart = 'Started ' + moment(event_start).format('MMM Do');  // start hour becomes irrelevant in past
   } else if (startsToday && isOneDay) {
     showStart += isMidnightToMidnight
       ? 'All-Day'
@@ -85,7 +85,8 @@ const EDashTableRow = (props) => {
     if (!isMidnightToMidnight) {
       tempString += simplifyHours(moment(event_end).format(', h:mma'));
     }
-    showEnd = <><u> to </u>{tempString}</>;
+    showEnd = <><u> thru </u>{tempString}</>;
+    // showEnd = <><u> to </u>{tempString}</>;
   } else if (!isMidnightToMidnight) {
     showEnd = <><u> – </u>{simplifyHours(moment(event_end).format('h:mma'))}</>;
   }
