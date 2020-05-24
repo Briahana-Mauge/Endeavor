@@ -324,6 +324,10 @@ div.card-text {
     span {  // the accented "V"
         color: var(--color-yellow);
     }
+
+    &:hover, &:active {
+        color: var(--color-white);
+    }
 }
 
 .g1NavbarToggler {   // burger positioning
