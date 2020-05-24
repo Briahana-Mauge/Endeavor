@@ -126,7 +126,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
 
-          <NAV_LINK to="/" text="Home" isBurgerOn={isBurgerOn} />
+          <NAV_LINK to="/" exact text="Home" isBurgerOn={isBurgerOn} />
 
           {showVolunteersLink}
 
@@ -181,11 +181,11 @@ const Burger = () => {
   );
 }
 
-const NAV_LINK = ({ to, text, liClassName = "", isBurgerOn }) => {
+const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
   return(
     <li className={`nav-item g1MobileTextALign ${liClassName}`}>
       <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
-        <NavLink className={`nav-link ${liPadding}`} to={to}>{text}</NavLink>
+        <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>{text}</NavLink>
       </span>
     </li>
   );
