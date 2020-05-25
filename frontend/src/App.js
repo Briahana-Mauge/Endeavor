@@ -70,20 +70,27 @@ function App() {
   const history = useHistory();
 
   // USEEFFECT
-  const checkForLoggedInUser = () => {
+  useEffect(() => {
+    let isMounted = true;
     axios.get('/api/auth/is_logged')
-      .then(res => settleUser(res.data.payload))
+      .then(res => {
+        if (isMounted) {
+          settleUser(res.data.payload)
+        }
+      })
       .catch(err => {
-          if (err.response && err.response.status === 401) {
+          if (isMounted && err.response && err.response.status === 401) {
             setIsUserStateReady(true);
             history.push('/login', { from: location });
             setWait(false);
-          } else {
+          } else if(isMounted) {
             setFeedback(err);
           }
       });
-  }
-  useEffect(checkForLoggedInUser, []);
+
+    //cleanup
+    return () => isMounted = false;
+  }, []);
 
 
   /* HELPER FUNCTIONS */

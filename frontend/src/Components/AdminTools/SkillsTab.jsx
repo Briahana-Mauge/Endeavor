@@ -10,20 +10,32 @@ export default function Skills(props) {
     const [ tracker, setTracker ] = useState({});
     const [ reload, setReload ] = useState(0);
 
-    const getSkillsList = () => {
+    const getSkillsList = (isMounted) => {
         axios.get('/api/skills')
             .then(res => {
-                setSkillsList(res.data.payload);
-                const map = {};
-                for (let elem of res.data.payload) {
-                    map[elem.skill_id] = elem.skill;
+                if (isMounted) {
+                    setSkillsList(res.data.payload);
+                    const map = {};
+                    for (let elem of res.data.payload) {
+                        map[elem.skill_id] = elem.skill;
+                    }
+                    setTracker(map);
                 }
-                setTracker(map);
             })
-            .catch(err => setFeedback(err))
+            .catch(err => {
+                if (isMounted) {
+                    setFeedback(err)
+                }
+            })
         ;
     }
-    useEffect(getSkillsList, [reload]);
+    useEffect(() => {
+        let isMounted = true;
+        getSkillsList(isMounted);
+
+        // Cleanup
+        return () => isMounted = false;
+    }, [reload]);
 
     const deleteSkill = async (skillId) => {
         try {
