@@ -26,6 +26,7 @@ import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
 import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
+import PageNotFound from './Components/PageNotFound';
 
 const identifyUser = require('./helpers/identifyUser');
 
@@ -289,9 +290,9 @@ function App() {
         </Route>
 
         {/* CATCHALL */}
-        <Route path='/404'>
-          <h1 className='text-center'>We can have a message here or a 404 page</h1>
-        </Route>
+        <PrivateGate path='/404' h1='Page Not Found' {...gateProps}>
+          <PageNotFound />
+        </PrivateGate>
 
         <Redirect to='/404' />  
 
