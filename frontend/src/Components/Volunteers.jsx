@@ -7,8 +7,9 @@ import VolunteerCard from './VolunteerCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
+
 export default function Volunteers (props) {
-    const {search} = useLocation();
+    const { search } = useLocation();
     const history = useHistory();
     const { setFeedback } = props;
 
@@ -41,7 +42,7 @@ export default function Volunteers (props) {
     useEffect(() => {
         let isMounted = true;
 
-        const getSkillsList = (isMounted) => {
+        const getSkillsList = () => {
             axios.get('/api/skills')
                 .then(response => {
                     if (isMounted) {
@@ -55,7 +56,7 @@ export default function Volunteers (props) {
                 });
         }
         
-        getSkillsList(isMounted);
+        getSkillsList();
 
         // Cleanup
         return () => isMounted = false;
@@ -71,7 +72,7 @@ export default function Volunteers (props) {
 
         let isMounted = true;
 
-        const getAllVolunteers = (isMounted) => {
+        const getAllVolunteers = () => {
             axios.get(`/api/volunteers/all${search}`)
                 .then(response => {
                     if (isMounted) {
@@ -85,7 +86,7 @@ export default function Volunteers (props) {
                 })
         }
 
-        getAllVolunteers(isMounted);
+        getAllVolunteers();
         
         // Cleanup
         return () => isMounted = false;

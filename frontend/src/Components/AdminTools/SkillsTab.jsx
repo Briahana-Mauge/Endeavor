@@ -10,28 +10,29 @@ export default function Skills(props) {
     const [ tracker, setTracker ] = useState({});
     const [ reload, setReload ] = useState(0);
 
-    const getSkillsList = (isMounted) => {
-        axios.get('/api/skills')
-            .then(res => {
-                if (isMounted) {
-                    setSkillsList(res.data.payload);
-                    const map = {};
-                    for (let elem of res.data.payload) {
-                        map[elem.skill_id] = elem.skill;
-                    }
-                    setTracker(map);
-                }
-            })
-            .catch(err => {
-                if (isMounted) {
-                    setFeedback(err)
-                }
-            })
-        ;
-    }
+    
     useEffect(() => {
         let isMounted = true;
-        getSkillsList(isMounted);
+
+        const getSkillsList = () => {
+            axios.get('/api/skills')
+                .then(res => {
+                    if (isMounted) {
+                        setSkillsList(res.data.payload);
+                        const map = {};
+                        for (let elem of res.data.payload) {
+                            map[elem.skill_id] = elem.skill;
+                        }
+                        setTracker(map);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err)
+                    }
+                });
+        }
+        getSkillsList();
 
         // Cleanup
         return () => isMounted = false;
