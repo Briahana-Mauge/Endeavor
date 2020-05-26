@@ -33,7 +33,9 @@ export default function AdminProfile(props) {
         setFirstName(loggedUser.a_first_name);
         setLastName(loggedUser.a_last_name);
         setEmail(loggedUser.a_email);
-    }, [loggedUser, setFirstName, setLastName, setEmail]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loggedUser]);
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
