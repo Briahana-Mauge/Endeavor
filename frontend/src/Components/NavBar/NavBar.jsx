@@ -125,6 +125,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
       <Burger />
       <div className="g1Collapse collapse navbar-collapse bg-dark mt-1 ml-lg-5" id="navbarSupportedContent">
         <ul className="container-lg navbar-nav align-items-start pr-0">
+          <div className='flex-fill'></div>
 
           <NAV_LINK to="/" exact text={navUser.admin ? 'Dashboard' : 'Home'} isBurgerOn={isBurgerOn} />
 
@@ -146,8 +147,6 @@ const NavBar = ({ h1, loggedUser, logout }) => {
           <NAV_LINK to='/profile' text="My Profile" isBurgerOn={isBurgerOn} />
 
           <Logout logout={logout} />
-
-          <div className='flex-fill'></div>
 
         </ul>
       </div>
@@ -228,7 +227,7 @@ const Logout = ({logout}) => {
   return(
     <li className={`nav-item g1MobileTextALign`}>
       <button
-        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-0 pr-lg-auto`}
+        className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-2 pr-lg-auto`}
         onClick={logout}
       >
         Logout
