@@ -60,11 +60,11 @@ const DashboardAdmin = (props) => {
   return (
     <>
       <div className="row">
-        <div className="col-12 col-md-6 pr-md-2">
+        <div className="col-12 col-md-5 pr-md-2">
           <AdminEDash events={eventsObj} {...eventsDashProps} />
         </div>
 
-        <div className="col-12 col-md-6 pl-md-2">
+        <div className="col-12 col-md-7 pl-md-2">
           <NewVolunteersDash newVolunteers={newVolunteers} {...newVolunteersProps} />
         </div>
       </div>
