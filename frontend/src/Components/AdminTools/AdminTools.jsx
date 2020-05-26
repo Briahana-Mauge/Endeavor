@@ -20,6 +20,7 @@ export default function AdminTools(props) {
         } else {
             history.push('tools/skills');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
     return (

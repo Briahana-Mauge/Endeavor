@@ -35,6 +35,7 @@ export default function Skills(props) {
 
         // Cleanup
         return () => isMounted = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload]);
 
     const deleteSkill = async (skillId) => {
