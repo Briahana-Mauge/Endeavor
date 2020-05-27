@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from 'axios';
 
+import UIResultsModeToggle from './UIResultsModeToggle';
 import VolunteerCard from './VolunteerCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';

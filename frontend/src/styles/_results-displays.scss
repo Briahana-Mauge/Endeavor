@@ -1,0 +1,27 @@
+.g1ToggleListOrGrid {
+    .g1LeftLabel {
+        margin-left: 1rem;
+    }
+    .custom-switch {
+        display: inline-block;
+        margin-left: .4rem;
+
+        label::before {
+            left: -2.2rem;
+        }
+        label::after {
+            left: calc(-2.2rem + 2px);
+        }
+    }
+}
+
+
+
+.g1ListResults {
+    display: grid;
+}
+
+.g1GridResults {
+    display: flex;
+    flex-wrap: wrap;
+}

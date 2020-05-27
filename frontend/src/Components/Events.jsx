@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import UIResultsModeToggle from './UIResultsModeToggle';
 import EventPreviewCard from './EventPreviewCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import EventCard from './EventCard';
