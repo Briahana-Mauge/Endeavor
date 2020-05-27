@@ -8,7 +8,7 @@ import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
 export default function Volunteers (props) {
-    const {search} = useLocation();
+    const { search } = useLocation();
     const history = useHistory();
     const { setFeedback } = props;
 

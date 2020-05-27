@@ -64,7 +64,7 @@ export default function ChartsAdmin(props) {
 
   return (
     <div className="row px-3">
-      <div className="col-12 col-md-4 col-lg-6 px-0">
+      <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
           <Chart
             xAxes={chartInterval}
@@ -76,7 +76,7 @@ export default function ChartsAdmin(props) {
           />
         </UIModule>
       </div>
-      <div className="col-12 col-md-4 col-lg-6 px-0">
+      <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
           <Chart
             xAxes={chartInterval}
@@ -88,7 +88,7 @@ export default function ChartsAdmin(props) {
           />
         </UIModule>
       </div>
-      <div className="col-12 col-md-4 col-lg-6 px-0">
+      <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
           <Chart
             xAxes={chartInterval}
