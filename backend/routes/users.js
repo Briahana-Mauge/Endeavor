@@ -96,21 +96,20 @@ const deleteAccount = async(request, response, next) => {
         const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
 
         if (targetId === loggedUserId) {
-            // if (request.user && request.user.a_id) {
-            //     await adminQueries.deleteAdmin(loggedUserId);
-            // } 
-            // else if (request.user.v_id) {
-            //     await volunteersQueries.deleteVolunteer(loggedUserId);
-            //     // NEED: delete volunteer skills
-            // } 
-            // else {
-            //     await fellowsQueries.deleteFellow(loggedUserId);
-            // }
+            if (request.user && request.user.a_id) {
+                await adminQueries.deleteAdmin(loggedUserId);
+            } 
+            else if (request.user.v_id) {
+                await volunteersQueries.deleteVolunteer(loggedUserId);
+                // NEED: delete volunteer skills
+            } 
+            else {
+                await fellowsQueries.deleteFellow(loggedUserId);
+            }
     
-            // await usersQueries.deleteUser(loggedUserEmail);
+            await usersQueries.deleteUser(loggedUserEmail);
 
             const profilePic = request.user.a_picture || request.user.v_picture || request.user.f_picture;
-            console.log('From Router', profilePic);
             // Check if a user has a stored profile picture stored in S3 then delete it
             if (profilePic && profilePic.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(profilePic);
