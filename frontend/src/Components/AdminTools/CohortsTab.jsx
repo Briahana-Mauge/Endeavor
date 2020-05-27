@@ -34,11 +34,13 @@ export default function Cohorts(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload]);
 
-    const deleteCohort = async (cohortId) => {
+    const deleteCohort = async (cohortId, cohort) => {
         try {
-            const { data } = await axios.delete(`/api/cohorts/del/${cohortId}`);
-            setReload(!reload);
-            setFeedback(data);
+            if (window.confirm(`Are you sure you want to delete ${cohort} from the list of cohorts?`)) {
+                const { data } = await axios.delete(`/api/cohorts/del/${cohortId}`);
+                setReload(!reload);
+                setFeedback(data);
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -101,7 +103,7 @@ export default function Cohorts(props) {
                     />
                     <div className=''>
                         <button className='btn btn-info mx-2 my-1' onClick={e => editCohort(cohort.cohort_id, tracker[cohort.cohort_id])}>Save</button>
-                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id)}>Delete</button>
+                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id, cohort.cohort)}>Delete</button>
                     </div>
                 </div>)
             }

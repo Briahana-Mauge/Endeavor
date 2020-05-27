@@ -39,12 +39,14 @@ export default function Skills(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload]);
 
-    const deleteSkill = async (skillId) => {
+    const deleteSkill = async (skillId, skill) => {
         try {
-            const { data } = await axios.delete(`/api/skills/del/${skillId}`);
-            // getSkillsList();
-            setReload(reload + 1);
-            setFeedback(data);
+            if (window.confirm(`Are you sure you want to delete ${skill} from the list of skills?`)) {
+                const { data } = await axios.delete(`/api/skills/del/${skillId}`);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -109,7 +111,7 @@ export default function Skills(props) {
                     />
                     <div className=''>
                         <button className='btn btn-info mx-2 my-1' onClick={e => editSkill(skill.skill_id, tracker[skill.skill_id])}>Save</button>
-                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteSkill(skill.skill_id)}>Delete</button>
+                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteSkill(skill.skill_id, skill.skill)}>Delete</button>
                     </div>
                 </div>)
             }
