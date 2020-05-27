@@ -11,7 +11,7 @@ import ProfileRender from './ProfilePages/ProfileRender';
 export default function Volunteers (props) {
     const { search } = useLocation();
     const history = useHistory();
-    const { setFeedback } = props;
+    const { setFeedback, isVolunteerSearchGrided, setIsVolunteerSearchGrided } = props;
 
     const getQueryStrings = () => {
         const values = queryString.parse(search);
@@ -33,7 +33,6 @@ export default function Volunteers (props) {
     const [urlTargetSkill, setUrlTargetSkill] = useState(strQueryTargetSkill || '');
     
     const [results, setResults] = useState([]);
-    const [isDisplayModeGrid, setIsDisplayModeGrid] = useState(false);
     const [skillsList, setSkillsList] = useState([]);
     const [targetVolunteerId, setTargetVolunteerId] = useState(null);
     const [displayTargetUser, setDisplayTargetUser] = useState(false);
@@ -93,6 +92,7 @@ export default function Volunteers (props) {
 
     return (
         <>
+            {/* Search form */}
             <form className='form-inline' onSubmit={handleSubmit}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text'
                     placeholder='Search' value={searchValue} onChange={e => { setUrlSearchValue(e.target.value) }} />
@@ -113,22 +113,13 @@ export default function Volunteers (props) {
             </form>
 
             {/* List or grid toggle */}
-            <div className='g1ToggleListOrGrid'>
-                View Mode:
-                <label class='g1LeftLabel' for="customSwitch1">List</label>
-                <div class="custom-control custom-switch">
-                    <input
-                        type="checkbox"
-                        checked={isDisplayModeGrid}
-                        onClick={() => setIsDisplayModeGrid(!isDisplayModeGrid)}
-                        class="custom-control-input"
-                        id="customSwitch1" />
-                    <label class="custom-control-label" for="customSwitch1">Grid</label>
-                </div>
-            </div>
+            <UIResultsModeToggle
+                isDisplayModeGrid={isVolunteerSearchGrided}
+                setIsDisplayModeGrid={setIsVolunteerSearchGrided}
+            />
 
             {/* Search results */}
-            <div className={`g1VolunteerResults ${isDisplayModeGrid ? 'g1ListResults' : 'g1GridResults'}`}>
+            <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1ListResults' : 'g1GridResults'}`}>
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}

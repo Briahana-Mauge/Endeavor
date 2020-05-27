@@ -11,7 +11,7 @@ import EventCard from './EventCard';
 
 export default function EventSearch(props) {
     const history = useHistory();
-    const { setFeedback, loggedUser } = props;
+    const { setFeedback, loggedUser, isEventSearchGrided, setIsEventSearchGrided } = props;
 
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
@@ -74,6 +74,7 @@ export default function EventSearch(props) {
                 : null
             }
 
+            {/* Search form */}
             <form className='form-inline' onSubmit={handleSearch}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
                     placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
@@ -94,7 +95,14 @@ export default function EventSearch(props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='g1EventsResults d-flex flex-wrap'>
+            {/* List or grid toggle */}
+            <UIResultsModeToggle
+                isDisplayModeGrid={isEventSearchGrided}
+                setIsDisplayModeGrid={setIsEventSearchGrided}
+            />
+
+            {/* Search results */}
+            <div className={`g1EventsResults ${isEventSearchGrided ? 'g1ListResults' : 'g1GridResults'}`}>
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}
