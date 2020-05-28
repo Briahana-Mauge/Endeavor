@@ -90,6 +90,8 @@
 
         &__Job {
             margin: 0 var(--margin-x) .5rem var(--margin-x);
+            color: var(--color-yellow);
+            text-shadow: 0px 1px 1.5px #8c8557;
         }
 
         &__Avatar {
@@ -107,6 +109,7 @@
             flex-direction: row;
             flex-wrap: nowrap;
 
+            cursor: default;
             margin: 0 var(--margin-x) .5rem var(--margin-x);
             list-style: none;
 
@@ -114,6 +117,30 @@
 
             li {
                 padding-right: .6rem;
+                font-family: var(--ff-accent);
+                font-weight: bold;
+
+                &:hover::after {
+                    position: absolute;
+                    content: attr(data-tooltip);
+                    left: 50%;
+                    padding: .25em .5em;
+                    border-radius: var(--border-radii);
+                    background-color: #fff;
+                    text-align: center;
+                    color: #111;
+                    transform: translate(-50%, -3.3rem);
+                }
+            }
+
+            .g1Interest {
+                &--Mentor { color: #16b716 }
+                &--OHours { color: #16b716 }
+                &--TechInt { color: #e000e0 }
+                &--BehaveInt { color: #e000e0 }
+                &--ProSkills { color: #e09305 }
+                &--SiteHost { color: #12b9b9 }
+                &--Speaker { color: #12b9b9 }
             }
         }
 
@@ -124,8 +151,14 @@
             li::before {
                 content: '▸ ';
             }
-            li.g1MoreItemsMsg::before {
-                display: none;
+
+            li.g1MoreItemsMsg {
+                font-style: italic;
+                color: #888;
+
+                &::before {
+                    display: none;
+                }
             }
         }
 
