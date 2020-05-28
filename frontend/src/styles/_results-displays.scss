@@ -82,7 +82,7 @@
                 top: -3px;
                 margin: 0 0 .3rem var(--margin-x);
                 font-size: 1rem;
-                color: var(--color-black);
+                color: var(--color-primary);
             }
 
             @include link-states();
@@ -90,8 +90,8 @@
 
         &__Job {
             margin: 0 var(--margin-x) .5rem var(--margin-x);
-            color: var(--color-yellow);
-            text-shadow: 0px 1px 1.5px #8c8557;
+            // color: var(--color-yellow);
+            // text-shadow: 0px 1px 1.5px #8c8557;
         }
 
         &__Avatar {
@@ -122,14 +122,14 @@
 
                 &:hover::after {
                     position: absolute;
-                    content: attr(data-tooltip);
+                    content: 'Interested in ' attr(data-tooltip);
                     left: 50%;
                     padding: .25em .5em;
                     border-radius: var(--border-radii);
                     background-color: #fff;
                     text-align: center;
                     color: #111;
-                    transform: translate(-50%, -3.3rem);
+                    transform: translate(-50%, -4rem);
                 }
             }
 
