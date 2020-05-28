@@ -102,7 +102,7 @@ export default function EventSearch(props) {
             />
 
             {/* Search results */}
-            <div className={`g1EventsResults ${isEventSearchGrided ? 'g1ListResults' : 'g1GridResults'}`}>
+            <div className={`g1EventsResults ${isEventSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}

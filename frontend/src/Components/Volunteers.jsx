@@ -119,7 +119,7 @@ export default function Volunteers (props) {
             />
 
             {/* Search results */}
-            <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1ListResults' : 'g1GridResults'}`}>
+            <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
