@@ -39,7 +39,7 @@ const VolunteerCard = (props) => {
     }
     const listSkills = shownSkills.map((skill, index) => <li key={index+skill}>{skill}</li>);
     if (props.volunteer.skills.length > 3) {
-        listSkills.push(<li className='g1MoreItemsMsg'><i>+ {props.volunteer.skills.length - 3} more . . .</i></li>)
+        listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'><i>+ {props.volunteer.skills.length - 3} more . . .</i></li>)
     }
 
 
