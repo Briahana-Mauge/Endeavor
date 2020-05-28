@@ -25,7 +25,7 @@ const VolunteerCard = (props) => {
     }
 
     return (
-        <div className='g1VolResultCard p-2'>
+        <div className='g1VolResultCard px-1 py-2'>
             <div className='g1InnerVolResultCard'>
                 <h4
                     className='g1VolResultCard__Name'
