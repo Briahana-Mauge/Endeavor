@@ -7,22 +7,30 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 /* IMPORTS */
 
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+
+
+// Chart.defaults.global.datasets.line.showLine = true;
 
 export default function Chart (props) {
     const { xAxes, data, title, xText, color, yText } = props;
 
+
     const chartData = {
         labels: xAxes,
+        type: 'line',
         datasets: [
             {
                 data: data,
                 backgroundColor: Array(12).fill(color),
-                borderWidth: 2
-            }
+                borderWidth: 2,
+                lineTension: .1,
+                borderColor: 'red',
+                fill: false
+            },
         ]
     };
-    
+
     const options = {
         scales: {
             yAxes: [
@@ -74,6 +82,6 @@ export default function Chart (props) {
 
 
     return(
-        <Bar data={chartData} options={options} />
+        <Line data={chartData} options={options} />
     );
 }
