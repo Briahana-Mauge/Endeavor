@@ -102,8 +102,23 @@
             object-fit: cover;
         }
 
-        &__SkillsInterests {
+        &__Interests {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+
             margin: 0 var(--margin-x) .5rem var(--margin-x);
+            list-style: none;
+
+            font-size: 1rem;
+
+            li {
+                padding-right: .6rem;
+            }
+        }
+
+        &__Skills {
+            margin: 0 var(--margin-x) .4rem var(--margin-x);
             list-style: none;
 
             li::before {
@@ -111,6 +126,21 @@
             }
             li.g1MoreItemsMsg::before {
                 display: none;
+            }
+        }
+
+        hr {
+            margin: 1rem 0 .1rem 0;
+        }
+
+        &__NextEvent {
+            margin: 0 var(--margin-x) .6rem var(--margin-x);
+            color: #888;
+
+            strong {
+                color: var(--color-black);
+
+                @include link-states();
             }
         }
     }

@@ -42,6 +42,15 @@ const VolunteerCard = (props) => {
         listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'><i>+ {props.volunteer.skills.length - 3} more . . .</i></li>)
     }
 
+    const listInterests = [];
+    const interest = props.volunteer.interests;
+    if (interest.mentoring) listInterests.push(<li key='m' className='g1Interest--Mentor'>M</li>);
+    if (interest.office_hours) listInterests.push(<li key='hrs' className='g1Interest--OHours'>HRS</li>);
+    if (interest.tech_mock_interview) listInterests.push(<li key='ti' className='g1Interest--TechInt'>TI</li>);
+    if (interest.behavioral_mock_interview) listInterests.push(<li key='bi' className='g1Interest--BehaveInt'>BI</li>);
+    if (interest.professional_skills_coach) listInterests.push(<li key='ps' className='g1Interest--ProSkills'>PS</li>);
+    if (interest.hosting_site_visit) listInterests.push(<li key='sh' className='g1Interest--SiteHost'>SH</li>);
+    if (interest.industry_speaker) listInterests.push(<li key='is' className='g1Interest--Speaker'>IS</li>);
 
 
     /* next event is an string containing the event id and topic, separated by ' &$%& '
@@ -77,27 +86,27 @@ const VolunteerCard = (props) => {
                     data-toggle="modal"
                     data-target="#primaryModal"
                 />
-                <ul className='g1VolResultCard__SkillsInterests'>
+                <ul className='g1VolResultCard__Interests'>
+                    {listInterests}
+                </ul>
+                <ul className='g1VolResultCard__Skills'>
                     {listSkills}
                 </ul>
 
 
 
-                    {/* <p className='card-text'></p>
-                    <h5>Skills:</h5>
-                    <p className='card-text'>
-                        { skills.map((skill, index) => <span className='d-block' key={index+skill}>{skill}</span>) }
-                    </p> */}
-                    {   props.volunteer.next_event
-                        ?   <div className='card-text'> Next Event: <br />
-                                <span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}>{nextEvent[1]}</span>
+                {   props.volunteer.next_event
+                    ?   <>
+                            <hr />
+                            <div className='g1VolResultCard__NextEvent'>next event:<br />
+                                <span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}><strong>{nextEvent[1]}</strong></span>
                             </div>
-                        : null
-                    }
-                    <div className='text-left mt-auto'>
-                        <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
-                    </div>
-                {/* </div> */}
+                        </>
+                    : null
+                }
+                {/* <div className='text-left mt-auto'>
+                    <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
+                </div> */}
             </div>
         </div>
     );

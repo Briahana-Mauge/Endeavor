@@ -414,7 +414,7 @@ INSERT INTO events
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
 
-    ('2020-05-28 13:00-04', '2020-05-28 13:45-04', 'Let''s Do Remote Lunch!',
+    ('2020-05-31 13:00-04', '2020-05-31 13:45-04', 'Let''s Do Remote Lunch!',
     'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
     1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
 
