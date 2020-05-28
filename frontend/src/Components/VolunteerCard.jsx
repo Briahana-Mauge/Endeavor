@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import IconEmail from './IconEmail';
@@ -104,8 +105,11 @@ const VolunteerCard = (props) => {
                 {   props.volunteer.next_event
                     ?   <>
                             <hr />
-                            <div className='g1VolResultCard__NextEvent'>next event:<br />
-                                <span style={{ cursor: 'pointer' }} onClick={e => history.push(`/event/${nextEvent[0]}`)}><strong>{nextEvent[1]}</strong></span>
+                            <div className='g1VolResultCard__NextEvent'>
+                                next event:<br />
+                                <Link to={`/event/${nextEvent[0]}`}>
+                                    {nextEvent[1]}
+                                </Link>
                             </div>
                         </>
                     : null
