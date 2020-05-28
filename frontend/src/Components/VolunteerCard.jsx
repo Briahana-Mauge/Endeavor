@@ -25,10 +25,25 @@ const VolunteerCard = (props) => {
     }
 
     return (
-        <div className='col-12 col-sm-6 col-lg-3 p-2'>
-            <div className='border border-dark rounded bg-light m-1'>
+        <div className='g1VolResultCard p-2'>
+            <div className='g1InnerVolResultCard'>
+                <h4
+                    className='g1VolResultCard__Name'
+                    onClick={viewProfile}
+                    data-toggle="modal"
+                    data-target="#primaryModal"
+                >
+                    {props.volunteer.v_first_name} {props.volunteer.v_last_name}
+                </h4>
+                <div className='g1VolResultCard__Email'>
+                    {props.volunteer.v_email}
+                </div>
+                <div className='g1VolResultCard__Job'>
+                    {props.volunteer.company}<br />
+                    {props.volunteer.title}
+                </div>
                 <img
-                    className='card-img-top'
+                    className='g1VolResultCard__Avatar'
                     src={props.volunteer.v_picture || '/images/default_pic.png'}
                     alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
                     onClick={viewProfile}
@@ -36,16 +51,10 @@ const VolunteerCard = (props) => {
                     data-target="#primaryModal"
                 />
                 <div className='card-body d-flex flex-column p-3'>
-                    <h4
-                        className='card-title'
-                        onClick={viewProfile}
-                        data-toggle="modal"
-                        data-target="#primaryModal"
-                    >
-                        {props.volunteer.v_first_name} {props.volunteer.v_last_name}
-                    </h4>
-                    <p className='card-text g1VResultsJob'>{props.volunteer.title} at {props.volunteer.company}</p>
-                    <p className='card-text'>{props.volunteer.v_email}</p>
+
+
+
+                    <p className='card-text'></p>
                     <h5>Skills:</h5>
                     <p className='card-text'>
                         { skills.map((skill, index) => <span className='d-block' key={index+skill}>{skill}</span>) }
@@ -60,7 +69,7 @@ const VolunteerCard = (props) => {
                         <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
     );
 }
