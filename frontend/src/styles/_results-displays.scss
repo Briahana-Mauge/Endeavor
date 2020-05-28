@@ -21,6 +21,10 @@
     display: grid;
 }
 
+.g1IconEmail {
+    @include link-states();
+}
+
 .g1GridResults {
     display: flex;
     flex-wrap: wrap;
@@ -29,10 +33,11 @@
         position: relative;
         width: 100%;
 
-        line-height: 1.3rem;
         color: var(--color-black);
+        font-size: .8rem;
+        line-height: 1rem;
 
-        --padding-x: .5rem;
+        --margin-x: .5rem;
 
         .g1InnerVolResultCard {
             display: flex;
@@ -67,21 +72,46 @@
 
         &__Name {
             cursor: pointer;
-            margin-bottom: .6rem;
-            padding: .2rem var(--padding-x);
+            margin: .2rem var(--margin-x) 0 var(--margin-x);
             font-size: 1.3rem;
         }
 
+        &__IconEmail {
+            &:link, &:visited {
+                position: relative;
+                top: -3px;
+                margin: 0 0 .3rem var(--margin-x);
+                font-size: 1rem;
+                color: var(--color-black);
+            }
+
+            @include link-states();
+        }
+
+        &__Job {
+            margin: 0 var(--margin-x) .5rem var(--margin-x);
+        }
+
         &__Avatar {
-            border-radius: var(--border-radii), var(--border-radii), 0, 0;
+            border: solid 1px #bbb;
+            border-width: 1px 0;
+            margin-bottom: .5rem;
             cursor: pointer;
             width: 100%;
             height: 13rem;
             object-fit: cover;
         }
 
-        &__Job {
-            padding: 0 var(--padding-x);
+        &__SkillsInterests {
+            margin: 0 var(--margin-x) .5rem var(--margin-x);
+            list-style: none;
+
+            li::before {
+                content: '▸ ';
+            }
+            li.g1MoreItemsMsg::before {
+                display: none;
+            }
         }
     }
 
