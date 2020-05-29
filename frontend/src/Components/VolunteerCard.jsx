@@ -69,14 +69,16 @@ const VolunteerCard = (props) => {
     }
 
     return (
-        <div className='g1VolResultCard px-1 py-2'>
+        <div className='g1VolResultCard px-1'>
             <div className='g1InnerVolResultCard'>
                 <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__Name'>
                     <h4>
                         {props.volunteer.v_first_name} {props.volunteer.v_last_name}
                     </h4>
                 </Link>
-                <IconEmail email={props.volunteer.v_email} className='g1VolResultCard__IconEmail' />
+                <div className='g1VolResultCard__IconsBar'>
+                    <IconEmail email={props.volunteer.v_email} className='g1VolResultCard__IconEmail' />
+                </div>
                 <div className='g1VolResultCard__Job'>
                     {props.volunteer.company}<br />
                     {props.volunteer.title}

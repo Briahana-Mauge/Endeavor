@@ -129,11 +129,12 @@ nav button {
     // color: #12ace8;
 }
 
-@mixin link-states-disabled() {
-    &, &:link, &:visited, &:hover, &:active {
-        cursor: default;
-        color: #666;
-    }
+@mixin flex-straight($direction: row, $justify-content: flex-start, $align-items: flex-start) {
+    display: flex;
+    flex-direction: $direction;
+    flex-wrap: nowrap;
+    justify-content: $justify-content;
+    align-items: $align-items;
 }
 
 
@@ -157,41 +158,6 @@ nav button {
     }
 }
 
-.g1VolunteerResults {
-    & > div > div {
-        height: 100%;
-    }
-
-    .card-body {
-        @media (min-width: 576px) {
-            min-height: 30rem;
-        }
-    }
-
-    .card-img-top {
-        cursor: pointer;
-        max-width: 100%;
-        height: 16rem;
-        object-fit: cover;
-    }
-
-    .g1FlexFill {
-        height: 100%;
-    }
-
-    // h4 {
-    //     cursor: pointer;
-    //     height: 4rem;
-
-    //     @include link-states();
-    // }
-
-    // .g1VResultsJob {
-    //     @media (min-width: 576px) {
-    //         height: 4rem;
-    //     }
-    // }
-}
 
 .g1EventsResults {
     .rounded-lg {
@@ -247,10 +213,6 @@ div.card-text {
     &:focus {
         outline: none;
     }
-
-    &.g1DisableLink {
-        @include link-states-disabled();
-    }
 }
 
 .g1Navbar {
@@ -277,10 +239,6 @@ div.card-text {
         &.active {
             color: var(--color-white);
             font-weight: bold;
-        }
-
-        &.g1DisableLink {
-            @include link-states-disabled();
         }
     }
 
