@@ -73,35 +73,32 @@ const VolunteerCard = (props) => {
     return (
         <div className='g1VolResultCard px-1 py-2'>
             <div className='g1InnerVolResultCard'>
-                <h4
-                    className='g1VolResultCard__Name'
-                    onClick={viewProfile}
-                    data-toggle="modal"
-                    data-target="#primaryModal"
-                >
-                    {props.volunteer.v_first_name} {props.volunteer.v_last_name}
-                </h4>
+                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__Name'>
+                    <h4>
+                        {props.volunteer.v_first_name} {props.volunteer.v_last_name}
+                    </h4>
+                </Link>
                 <IconEmail email={props.volunteer.v_email} className='g1VolResultCard__IconEmail' />
                 <div className='g1VolResultCard__Job'>
                     {props.volunteer.company}<br />
                     {props.volunteer.title}
                 </div>
-                <img
-                    className='g1VolResultCard__Avatar'
-                    src={props.volunteer.v_picture || '/images/default_pic.png'}
-                    alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
-                    onClick={viewProfile}
-                    data-toggle="modal"
-                    data-target="#primaryModal"
-                />
+                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__AvatarLink'>
+                    <img
+                        className='g1VolResultCard__Avatar'
+                        src={props.volunteer.v_picture || '/images/default_pic.png'}
+                        alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
+                        // onClick={viewProfile}
+                        // data-toggle="modal"
+                        // data-target="#primaryModal"
+                    />
+                </Link>
                 <ul className='g1VolResultCard__Interests'>
                     {listInterests}
                 </ul>
                 <ul className='g1VolResultCard__Skills'>
                     {listSkills}
                 </ul>
-
-
                 {   props.volunteer.next_event
                     ?   <>
                             <hr />

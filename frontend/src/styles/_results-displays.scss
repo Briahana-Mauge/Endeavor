@@ -22,6 +22,7 @@
 }
 
 .g1IconEmail {
+    color: black;
     @include link-states();
 }
 
@@ -37,6 +38,29 @@
         line-height: 1rem;
 
         --margin-x: .5rem;
+
+        .g1VolResultCard__Name::after,
+        .g1VolResultCard__AvatarLink::after {
+            content: 'See Profile';
+            position: absolute;
+            top: 6rem;
+            right: 0;
+            padding: 0.25rem 0.7rem;
+            border: solid 1px #333;
+            border-radius: var(--border-radii);
+            box-shadow: 2px 1px 4px #0009;
+            font-size: 1rem;
+            line-height: 1.2;
+            color: #fff;
+            background-color: #12ace8;
+            opacity: 0;
+            transition: opacity .4s ease-out;
+        }
+
+        .g1VolResultCard__Name:hover::after,
+        .g1VolResultCard__AvatarLink:hover::after {
+            opacity: 1;
+        }
 
         .g1InnerVolResultCard {
             display: flex;
@@ -70,21 +94,37 @@
         }
 
         &__Name {
-            cursor: pointer;
-            margin: .2rem var(--margin-x) 0 var(--margin-x);
-            font-size: 1.3rem;
+            h4 {
+                margin-bottom: 0px;
+                padding: 0.2rem var(--margin-x) .2rem var(--margin-x);
+                border-radius: var(--border-radii) var(--border-radii) 0 0;
+                color: #000000;
+                background-color: #c1ba93;
+                font-size: 1.3rem;
+                transition: color .2s ease-out;
+            }
+
+            @include link-states();
+            h4:hover, h4:active {
+                color: #106b8e;
+            }
         }
 
         &__IconEmail {
             &:link, &:visited {
                 position: relative;
-                top: -2px;
-                margin: 0 0 .3rem var(--margin-x);
-                font-size: 1rem;
+                top: -7px;
+                padding: 0 1rem 0.3rem var(--margin-x);
+                width: fit-content;
+                font-size: 1.2rem;
                 color: var(--color-primary);
             }
 
             @include link-states();
+
+            &:hover, &:active {
+                filter: drop-shadow(0px 0px 2px #12ace8);
+            }
         }
 
         &__Job {
@@ -120,16 +160,23 @@
                 font-family: var(--ff-accent);
                 font-weight: bold;
 
-                &:hover::after {
+                &::after {
                     position: absolute;
                     content: 'Interested in ' attr(data-tooltip);
                     left: 50%;
                     padding: .25em .5em;
+                    border: solid 1px #333;
                     border-radius: var(--border-radii);
-                    background-color: #fff;
+                    background-color: #dddd;
                     text-align: center;
                     color: #111;
                     transform: translate(-50%, -4rem);
+                    opacity: 0;
+                    transition: opacity .2s ease-out;
+                }
+
+                &:hover::after {
+                    opacity: 1;
                 }
             }
 

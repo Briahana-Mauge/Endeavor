@@ -122,9 +122,11 @@ nav button {
         transition: color .2s ease-out;
     }
     &:hover, &:active {
-        color: #12ace8;
+        color: #fff;
         text-decoration: none;
     }
+
+    // color: #12ace8;
 }
 
 @mixin link-states-disabled() {
