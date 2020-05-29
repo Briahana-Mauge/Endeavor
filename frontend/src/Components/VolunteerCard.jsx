@@ -1,17 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 
 import IconEmail from './IconEmail';
 
 
 const VolunteerCard = (props) => {
-    const history = useHistory();
 
-    const viewProfile = () => {
-        props.setDisplayTargetUser(true);
-        props.setTargetVolunteerId(props.volunteer.v_id);
-    }
+    // const viewProfile = () => {
+    //     props.setDisplayTargetUser(true);
+    //     props.setTargetVolunteerId(props.volunteer.v_id);
+    // }
 
     const shownSkills = [];
     let skillsPool = [...props.volunteer.skills];
