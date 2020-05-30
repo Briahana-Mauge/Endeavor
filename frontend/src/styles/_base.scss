@@ -39,6 +39,7 @@ html, body, #root, .g1App {
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
+    --color-highlight: #12ace8;
     --color-bodybase: #0c053a;
 
     --border-radii: .2rem;
@@ -117,16 +118,14 @@ nav button {
 // for consistent styles between nav LINKS and nav BUTTONS
 @mixin link-states() {
     &:link, &:visited {
-        // color: var(--color-white);
+        color: var(--color-black);
         text-decoration: none;
         transition: color .2s ease-out;
     }
     &:hover, &:active {
-        color: #fff;
+        color: var(--color-highlight);
         text-decoration: none;
     }
-
-    // color: #12ace8;
 }
 
 @mixin flex-straight($direction: row, $justify-content: flex-start, $align-items: flex-start) {

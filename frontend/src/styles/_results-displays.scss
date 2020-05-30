@@ -15,11 +15,6 @@
     }
 }
 
-.g1IconEmail {
-    color: black;
-    @include link-states();
-}
-
 // FONT ASSIGNMENTS
 .g1VolResultCard {
     font-family: var(--ff-body);
@@ -29,25 +24,61 @@
     &__NameLink {
         @include link-states();
 
-        &:link, &:visited {
-            color: #000;
+        &:link,  &:visited {
+            color: #111;
+            transition: color .2s ease-out;
         }
         &:hover, &:active {
-            color: #106b8e;
+            color: #eee;
+        }
+    }
+
+    .g1IconEmail {
+        @include link-states();
+
+        &:link, &:visited {
+            font-size: 1.2rem;
+            color: #a59a63;
+        }
+        &:hover, &:active {
+            color: #eee;
+            filter: drop-shadow(0px 0px 2px var(--color-highlight));
         }
     }
 
     &__Interests li {
         font-family: var(--ff-accent);
         font-weight: bold;
+        color: #261fb3;
+
+        &::after {
+            text-align: center;
+            font-size: .8rem;
+            line-height: .8rem;
+            color: #eee;
+            background-color: var(--color-primary);
+        }
     }
 
     &__Skills li.g1MoreItemsMsg {
         font-style: italic;
     }
 
-    &__NextEvent a {
-        font-weight: bold;
+    &__NextEvent {
+        color: #888;
+        font-size: .8rem;
+
+        a {
+            @include link-states();
+
+            &:link, &:visited {
+                font-weight: bold;
+                color: #111;
+            }
+            &:hover, &:active {
+                color: var(--color-highlight);
+            }
+        }
     }
 }
 
@@ -191,11 +222,6 @@
                     padding: .25em .5em;
                     border: solid 1px #333;
                     border-radius: var(--border-radii);
-                    background-color: #dddd;
-                    text-align: center;
-                    font-size: .8rem;
-                    line-height: .8rem;
-                    color: #eee;
                     transform: translate(-4%, -.15rem);
                     opacity: 0;
                     z-index: -3000;
@@ -207,23 +233,6 @@
                     z-index: 3000;
                 }
             }
-
-            // .g1Interest {
-            //     &--Mentor { color: #16b716; grid-column: 1; }
-            //     &--Mentor::after { background-color: #16b716; }
-            //     &--OHours { color: #16b716; grid-column: 2; }
-            //     &--OHours::after { background-color: #16b716; }
-            //     &--TechInt { color: #e000e0; grid-column: 3; }
-            //     &--TechInt::after { background-color: #e000e0; }
-            //     &--BehaveInt { color: #e000e0; grid-column: 4; }
-            //     &--BehaveInt::after { background-color: #e000e0; }
-            //     &--ProSkills { color: #e09305; grid-column: 5; }
-            //     &--ProSkills::after { background-color: #e09305; }
-            //     &--SiteHost { color: #12b9b9; grid-column: 6; }
-            //     &--SiteHost::after { background-color: #12b9b9; }
-            //     &--Speaker { color: #12b9b9; grid-column: 7; }
-            //     &--Speaker::after { background-color: #12b9b9; }
-            // }
 
             @media (min-width: 565px) {
                 margin-left: 1.3rem;
@@ -272,13 +281,13 @@
             border-radius: var(--border-radii);
             transform: translateX(-50%);
             box-shadow: 2px 1px 4px #0009;
+            color: #fff;
             font-size: 1rem;
             line-height: 1.2;
-            color: #fff;
-            background-color: #12ace8;
+            background-color: var(--color-highlight);
             opacity: 0;
             z-index: -3000;
-            transition: opacity .1s ease-out;
+            transition: opacity .3s ease-out;
         }
 
         .g1VolResultCard__NameLink:hover::after,
@@ -289,7 +298,7 @@
 
         .g1VolResultCard__AvatarLink:hover ~ .g1VolResultCard__NameLink {
             &:link,  &:visited {
-                background-color: #12ace8;
+                background-color: var(--color-highlight);
                 color: #eee;
             }
         }
@@ -340,12 +349,10 @@
 
             &:link,  &:visited {
                 background-color: #c1ba93;
-                color: #111;
-                transition: background-color .3s ease-out, color .2s ease-out;
+                transition: background-color .2s ease-out;
             }
             &:hover, &:active {
-                background-color: #12ace8;
-                color: #eee;
+                background-color: var(--color-highlight);
             }
         }
 
@@ -358,14 +365,6 @@
             &:link, &:visited {
                 padding: 0 1rem 0.3rem var(--margin-x);
                 width: fit-content;
-                font-size: 1.2rem;
-                color: var(--color-primary);
-            }
-
-            @include link-states();
-
-            &:hover, &:active {
-                filter: drop-shadow(0px 0px 2px #12ace8);
             }
         }
 
@@ -410,11 +409,6 @@
                     padding: .25em .5em;
                     border: solid 1px #333;
                     border-radius: var(--border-radii);
-                    background-color: #dddd;
-                    text-align: center;
-                    font-size: .8rem;
-                    line-height: .8rem;
-                    color: #eee;
                     transform: translate(-50%, -2.5rem);
                     opacity: 0;
                     z-index: -3000;
@@ -426,23 +420,6 @@
                     z-index: 3000;
                 }
             }
-
-            // .g1Interest {
-            //     &--Mentor { color: #16b716; grid-column: 1; }
-            //     &--Mentor::after { background-color: #16b716; }
-            //     &--OHours { color: #16b716; grid-column: 2; }
-            //     &--OHours::after { background-color: #16b716; }
-            //     &--TechInt { color: #e000e0; grid-column: 3; }
-            //     &--TechInt::after { background-color: #e000e0; }
-            //     &--BehaveInt { color: #e000e0; grid-column: 4; }
-            //     &--BehaveInt::after { background-color: #e000e0; }
-            //     &--ProSkills { color: #e09305; grid-column: 5; }
-            //     &--ProSkills::after { background-color: #e09305; }
-            //     &--SiteHost { color: #12b9b9; grid-column: 6; }
-            //     &--SiteHost::after { background-color: #12b9b9; }
-            //     &--Speaker { color: #12b9b9; grid-column: 7; }
-            //     &--Speaker::after { background-color: #12b9b9; }
-            // }
         }
 
         &__Skills {
@@ -465,14 +442,6 @@
 
         &__NextEvent {
             margin: 0 var(--margin-x) .6rem var(--margin-x);
-            color: #888;
-            font-size: .8rem;
-
-            a {
-                color: var(--color-black);
-
-                @include link-states();
-            }
         }
     }
 
