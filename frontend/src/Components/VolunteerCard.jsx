@@ -71,7 +71,14 @@ const VolunteerCard = (props) => {
     return (
         <div className='g1VolResultCard px-1'>
             <div className='g1InnerVolResultCard'>
-                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__Name'>
+                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__AvatarLink'>
+                    <img
+                        className='g1VolResultCard__Avatar'
+                        src={props.volunteer.v_picture || '/images/default_pic.png'}
+                        alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
+                    />
+                </Link>
+                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__NameLink'>
                     <h4>
                         {props.volunteer.v_first_name} {props.volunteer.v_last_name}
                     </h4>
@@ -81,18 +88,8 @@ const VolunteerCard = (props) => {
                 </div>
                 <div className='g1VolResultCard__Job'>
                     {props.volunteer.company}<br />
-                    {props.volunteer.title}
+                    — {props.volunteer.title}
                 </div>
-                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__AvatarLink'>
-                    <img
-                        className='g1VolResultCard__Avatar'
-                        src={props.volunteer.v_picture || '/images/default_pic.png'}
-                        alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
-                        // onClick={viewProfile}
-                        // data-toggle="modal"
-                        // data-target="#primaryModal"
-                    />
-                </Link>
                 <ul className='g1VolResultCard__Interests'>
                     {listInterests}
                 </ul>

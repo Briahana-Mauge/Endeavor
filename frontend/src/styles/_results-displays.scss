@@ -20,6 +20,39 @@
     @include link-states();
 }
 
+// FONT ASSIGNMENTS
+.g1VolResultCard {
+    font-family: var(--ff-body);
+    color: var(--color-black);
+    line-height: 1rem;
+
+    &__NameLink {
+        @include link-states();
+
+        &:link, &:visited {
+            color: #000;
+        }
+        &:hover, &:active {
+            color: #106b8e;
+        }
+    }
+
+    &__Interests li {
+        font-family: var(--ff-accent);
+        font-weight: bold;
+    }
+
+    &__Skills li.g1MoreItemsMsg {
+        font-style: italic;
+    }
+
+    &__NextEvent a {
+        font-weight: bold;
+    }
+}
+
+
+// LIST VIEW STYLING
 .g1ListResults {
     display: flex;
     flex-direction: column;
@@ -34,7 +67,7 @@
 
             display: grid;
             grid-template-columns: min-content auto min-content;
-                @media (min-width: 565px) { grid-template-columns: min-content 2fr min-content 3fr; }
+                @media (min-width: 565px) { grid-template-columns: min-content 11rem min-content auto; }
             grid-template-rows: 1.5rem auto 1rem;
 
             width: 100%;
@@ -42,52 +75,76 @@
 
             background-color: var(--color-white);
             border: solid 1px var(--color-white);
-            color: var(--color-black);
             line-height: 1rem;
+
+            --col2-padding-left: .3rem;
+
+            &::after {
+                content: '';
+                grid-area: 1 / 1 / 1 / -1;
+                width: 100%;
+                height: 100%;
+                border-bottom: solid 1px #fff;
+                background-color: #c1ba93;
+            }
         }
 
         &__IconsBar { grid-area: 1 / 1 / -1 / 1; }
-        &__Name { grid-area: 1 / 2; }
+        &__NameLink { grid-area: 1 / 2; }
         &__Job { grid-area: 2 / 2; }
         &__AvatarLink { grid-area: 1 / 3 / -1 / 3; }
-        &__Interests { grid-area: 3 / 2 / 3 / -2; }
-        &__Skills { grid-area: 1 / 4; }
+        &__Interests { grid-area: 3 / 2 / 3 / -2;
+            @media (min-width: 565px) { grid-area: 1 / 4 / 1 / -1; }
+        }
+        &__Skills { grid-area: 2 / 4; }
 
         &__IconsBar {
             @include flex-straight(column);
 
             height: 100%;
-            padding: .3rem .4rem;
-            border-right: solid 1px #fff;
+            padding: 0 .4rem;
+            z-index: 2000;
 
-            font-size: 1.3rem;
+            font-size: 1.4rem;
 
-            background-color: #c1ba93;
+            @media (min-width: 768px) {
+                padding: .3rem 1.1rem .3rem 1rem;
+            }
         }
 
-        &__Name {
-            h4 {
-                margin: .3rem;
-                font-size: 1rem;
-                transition: color .2s ease-out;
-            }
+        &__NameLink {
+            z-index: 2000;
 
-            @include link-states();
-            h4:hover, h4:active {
-                color: #106b8e;
+            h4 {
+                @include flex-straight(row, flex-start, center);
+                margin: 0 0 0 var(--col2-padding-left);
+
+                font-size: 1.1rem;
+
+                transition: color .2s ease-out;
+
+                @media (min-width: 768px) {
+                    margin-left: 1rem;
+                    font-size: 1.3rem;
+                }
             }
         }
 
         &__Job {
-            margin-bottom: .7rem;
-            margin-left: .3rem;
+            margin: .3rem 0 .6rem var(--col2-padding-left);
             font-size: .9rem;
             line-height: .9rem;
+
+            @media (min-width: 768px) {
+                margin-top: .6rem;
+                margin-left: 1rem;
+
+                line-height: 1.1rem;
+            }
         }
 
         &__Avatar {
             position: relative;
-            left: .7rem;
             border: solid 1px #bbb;
             border-radius: 50%;
             object-fit: cover;
@@ -100,6 +157,9 @@
                 height: 4rem;
                 width: 4rem;
             }
+            @media (max-width: 575px) {
+                left: .7rem;
+            }
         }
 
         &__Interests {
@@ -111,10 +171,13 @@
 
             font-size: .9rem;
 
+            @media (min-width: 768px) {
+                margin-bottom: 0;
+                align-items: flex-end;
+            }
+
             li {
                 padding-right: .6rem;
-                font-family: var(--ff-accent);
-                font-weight: bold;
 
                 @media (max-width: 370px) {
                     padding-right: .3rem;
@@ -123,8 +186,8 @@
                 &::after {
                     position: absolute;
                     content: 'Interested in ' attr(data-tooltip);
-                    left: 50%;
-                    width: 75%;
+                    right: 0%;
+                    width: 33%;
                     padding: .25em .5em;
                     border: solid 1px #333;
                     border-radius: var(--border-radii);
@@ -132,32 +195,38 @@
                     text-align: center;
                     font-size: .8rem;
                     line-height: .8rem;
-                    color: #111;
-                    transform: translate(-50%, -2.5rem);
+                    color: #eee;
+                    transform: translate(-4%, -.15rem);
                     opacity: 0;
+                    z-index: -3000;
                     transition: opacity .2s ease-out;
                 }
 
                 &:hover::after {
                     opacity: 1;
+                    z-index: 3000;
                 }
             }
 
-            .g1Interest {
-                &--Mentor { color: #16b716; grid-column: 1; }
-                &--Mentor::after { background-color: #16b716; }
-                &--OHours { color: #16b716; grid-column: 2; }
-                &--OHours::after { background-color: #16b716; }
-                &--TechInt { color: #e000e0; grid-column: 3; }
-                &--TechInt::after { background-color: #e000e0; }
-                &--BehaveInt { color: #e000e0; grid-column: 4; }
-                &--BehaveInt::after { background-color: #e000e0; }
-                &--ProSkills { color: #e09305; grid-column: 5; }
-                &--ProSkills::after { background-color: #e09305; }
-                &--SiteHost { color: #12b9b9; grid-column: 6; }
-                &--SiteHost::after { background-color: #12b9b9; }
-                &--Speaker { color: #12b9b9; grid-column: 7; }
-                &--Speaker::after { background-color: #12b9b9; }
+            // .g1Interest {
+            //     &--Mentor { color: #16b716; grid-column: 1; }
+            //     &--Mentor::after { background-color: #16b716; }
+            //     &--OHours { color: #16b716; grid-column: 2; }
+            //     &--OHours::after { background-color: #16b716; }
+            //     &--TechInt { color: #e000e0; grid-column: 3; }
+            //     &--TechInt::after { background-color: #e000e0; }
+            //     &--BehaveInt { color: #e000e0; grid-column: 4; }
+            //     &--BehaveInt::after { background-color: #e000e0; }
+            //     &--ProSkills { color: #e09305; grid-column: 5; }
+            //     &--ProSkills::after { background-color: #e09305; }
+            //     &--SiteHost { color: #12b9b9; grid-column: 6; }
+            //     &--SiteHost::after { background-color: #12b9b9; }
+            //     &--Speaker { color: #12b9b9; grid-column: 7; }
+            //     &--Speaker::after { background-color: #12b9b9; }
+            // }
+
+            @media (min-width: 565px) {
+                margin-left: 1.3rem;
             }
         }
 
@@ -169,7 +238,7 @@
                 display: flex;
             }
 
-            margin: .7rem .1rem .1rem 1rem;
+            margin: .7rem .1rem .1rem 1.3rem;
             list-style: none;
             font-size: .9rem;
             line-height: .9rem;
@@ -178,7 +247,7 @@
 }
 
 
-
+// GRID VIEW STYLING
 .g1GridResults {
     display: flex;
     flex-direction: row;
@@ -190,32 +259,39 @@
         padding-top: .5rem;
         padding-bottom: .5rem;
 
-        color: var(--color-black);
-        line-height: 1rem;
-
         --margin-x: .5rem;
 
-        .g1VolResultCard__Name::after,
+        .g1VolResultCard__NameLink::after,
         .g1VolResultCard__AvatarLink::after {
             content: 'See Profile';
             position: absolute;
             top: 6rem;
-            right: 0;
+            left: 50%;
             padding: 0.25rem 0.7rem;
             border: solid 1px #333;
             border-radius: var(--border-radii);
+            transform: translateX(-50%);
             box-shadow: 2px 1px 4px #0009;
             font-size: 1rem;
             line-height: 1.2;
             color: #fff;
             background-color: #12ace8;
             opacity: 0;
-            transition: opacity .4s ease-out;
+            z-index: -3000;
+            transition: opacity .1s ease-out;
         }
 
-        .g1VolResultCard__Name:hover::after,
+        .g1VolResultCard__NameLink:hover::after,
         .g1VolResultCard__AvatarLink:hover::after {
             opacity: 1;
+            z-index: 3000;
+        }
+
+        .g1VolResultCard__AvatarLink:hover ~ .g1VolResultCard__NameLink {
+            &:link,  &:visited {
+                background-color: #12ace8;
+                color: #eee;
+            }
         }
 
         .g1InnerVolResultCard {
@@ -251,27 +327,35 @@
             max-width: 25%;
         }
 
-        &__Name {
+        &__NameLink {
+            order: -1;
+
             h4 {
                 margin-bottom: 0px;
                 padding: 0.2rem var(--margin-x) .2rem var(--margin-x);
                 border-radius: var(--border-radii) var(--border-radii) 0 0;
-                color: #000000;
-                background-color: #c1ba93;
+
                 font-size: 1.3rem;
-                transition: color .2s ease-out;
             }
 
-            @include link-states();
-            h4:hover, h4:active {
-                color: #106b8e;
+            &:link,  &:visited {
+                background-color: #c1ba93;
+                color: #111;
+                transition: background-color .3s ease-out, color .2s ease-out;
             }
+            &:hover, &:active {
+                background-color: #12ace8;
+                color: #eee;
+            }
+        }
+
+        &__IconsBar {
+            order: -1;
+            margin: .1rem .3rem .5rem 0;
         }
 
         &__IconEmail {
             &:link, &:visited {
-                position: relative;
-                top: -7px;
                 padding: 0 1rem 0.3rem var(--margin-x);
                 width: fit-content;
                 font-size: 1.2rem;
@@ -286,10 +370,9 @@
         }
 
         &__Job {
+            order: -1;
             margin: 0 var(--margin-x) .5rem var(--margin-x);
-            line-height: 1.1rem;
-            // color: var(--color-yellow);
-            // text-shadow: 0px 1px 1.5px #8c8557;
+            line-height: 1.2rem;
         }
 
         &__Avatar {
@@ -318,8 +401,6 @@
 
             li {
                 padding-right: .6rem;
-                font-family: var(--ff-accent);
-                font-weight: bold;
 
                 &::after {
                     position: absolute;
@@ -333,33 +414,35 @@
                     text-align: center;
                     font-size: .8rem;
                     line-height: .8rem;
-                    color: #111;
+                    color: #eee;
                     transform: translate(-50%, -2.5rem);
                     opacity: 0;
+                    z-index: -3000;
                     transition: opacity .2s ease-out;
                 }
 
                 &:hover::after {
                     opacity: 1;
+                    z-index: 3000;
                 }
             }
 
-            .g1Interest {
-                &--Mentor { color: #16b716; grid-column: 1; }
-                &--Mentor::after { background-color: #16b716; }
-                &--OHours { color: #16b716; grid-column: 2; }
-                &--OHours::after { background-color: #16b716; }
-                &--TechInt { color: #e000e0; grid-column: 3; }
-                &--TechInt::after { background-color: #e000e0; }
-                &--BehaveInt { color: #e000e0; grid-column: 4; }
-                &--BehaveInt::after { background-color: #e000e0; }
-                &--ProSkills { color: #e09305; grid-column: 5; }
-                &--ProSkills::after { background-color: #e09305; }
-                &--SiteHost { color: #12b9b9; grid-column: 6; }
-                &--SiteHost::after { background-color: #12b9b9; }
-                &--Speaker { color: #12b9b9; grid-column: 7; }
-                &--Speaker::after { background-color: #12b9b9; }
-            }
+            // .g1Interest {
+            //     &--Mentor { color: #16b716; grid-column: 1; }
+            //     &--Mentor::after { background-color: #16b716; }
+            //     &--OHours { color: #16b716; grid-column: 2; }
+            //     &--OHours::after { background-color: #16b716; }
+            //     &--TechInt { color: #e000e0; grid-column: 3; }
+            //     &--TechInt::after { background-color: #e000e0; }
+            //     &--BehaveInt { color: #e000e0; grid-column: 4; }
+            //     &--BehaveInt::after { background-color: #e000e0; }
+            //     &--ProSkills { color: #e09305; grid-column: 5; }
+            //     &--ProSkills::after { background-color: #e09305; }
+            //     &--SiteHost { color: #12b9b9; grid-column: 6; }
+            //     &--SiteHost::after { background-color: #12b9b9; }
+            //     &--Speaker { color: #12b9b9; grid-column: 7; }
+            //     &--Speaker::after { background-color: #12b9b9; }
+            // }
         }
 
         &__Skills {
@@ -371,13 +454,8 @@
                 content: '▸ ';
             }
 
-            li.g1MoreItemsMsg {
-                font-style: italic;
-                // color: #888;
-
-                &::before {
-                    display: none;
-                }
+            li.g1MoreItemsMsg::before {
+                display: none;
             }
         }
 
@@ -392,7 +470,6 @@
 
             a {
                 color: var(--color-black);
-                font-weight: bold;
 
                 @include link-states();
             }
