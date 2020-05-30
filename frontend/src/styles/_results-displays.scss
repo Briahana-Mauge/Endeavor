@@ -25,43 +25,71 @@
         @include link-states();
 
         &:link,  &:visited {
-            color: #111;
-            transition: color .2s ease-out;
+            color: #2621b3;
+            transition: color .4s ease-out, background-color .2s ease-out;
         }
         &:hover, &:active {
             color: #eee;
         }
     }
 
-    .g1IconEmail {
+    &__NameLink::after,
+    &__AvatarLink::after {
+        content: 'See Profile';
+        color: #fff;
+        font-size: 1rem;
+        line-height: 1.2;
+        background-color: var(--color-highlight);
+    }
+
+    &__IconEmail {
         @include link-states();
 
         &:link, &:visited {
+            display: inline-block;
             font-size: 1.2rem;
-            color: #a59a63;
+            color: #2621b3;
+            transition: color .3s ease-out, transform .3s ease-in-out;
         }
         &:hover, &:active {
             color: #eee;
-            filter: drop-shadow(0px 0px 2px var(--color-highlight));
+            transform: translate(-3px, -1px);
+            filter: drop-shadow(4px 4px 4px var(--color-highlight));
         }
     }
 
     &__Interests li {
         font-family: var(--ff-accent);
         font-weight: bold;
-        color: #261fb3;
+        color: #8327bb;
 
         &::after {
-            text-align: center;
+            content: 'interested in \A' attr(data-tooltip);
+            white-space: pre-wrap; // required for line-break in content above
+            text-align: left;
             font-size: .8rem;
-            line-height: .8rem;
+            line-height: 1rem;
             color: #eee;
-            background-color: var(--color-primary);
+            background-color: #8327bb;
         }
     }
 
-    &__Skills li.g1MoreItemsMsg {
-        font-style: italic;
+    &__Skills {
+        list-style: none;
+        font-size: .8rem;
+
+        li::before {
+            content: '▸ ';
+        }
+
+        li.g1MoreItemsMsg {
+            margin-left: 1rem;
+            font-style: italic;
+        }
+
+        li.g1MoreItemsMsg::before {
+            display: none;
+        }
     }
 
     &__NextEvent {
@@ -73,7 +101,7 @@
 
             &:link, &:visited {
                 font-weight: bold;
-                color: #111;
+                color: #2621b3;
             }
             &:hover, &:active {
                 color: var(--color-highlight);
@@ -140,6 +168,16 @@
 
             @media (min-width: 768px) {
                 padding: .3rem 1.1rem .3rem 1rem;
+            }
+        }
+
+        &__IconEmail {
+            &:link, &:visited {
+                color: #111;
+                font-size: 1.4rem;
+            }
+            &:hover, &:active {
+                color: #eee;
             }
         }
 
@@ -272,22 +310,17 @@
 
         .g1VolResultCard__NameLink::after,
         .g1VolResultCard__AvatarLink::after {
-            content: 'See Profile';
             position: absolute;
-            top: 6rem;
-            left: 50%;
+            bottom: .6rem;
+            right: .3rem;
+            text-align: center;
             padding: 0.25rem 0.7rem;
-            border: solid 1px #333;
-            border-radius: var(--border-radii);
-            transform: translateX(-50%);
-            box-shadow: 2px 1px 4px #0009;
-            color: #fff;
-            font-size: 1rem;
-            line-height: 1.2;
-            background-color: var(--color-highlight);
+            border: solid 1px #fff;
+            border-width: 1px 0 0 1px;
+            border-radius: var(--border-radii) 0 var(--border-radii) 0;
             opacity: 0;
             z-index: -3000;
-            transition: opacity .3s ease-out;
+            transition: opacity .2s ease-out;
         }
 
         .g1VolResultCard__NameLink:hover::after,
@@ -343,13 +376,13 @@
                 margin-bottom: 0px;
                 padding: 0.2rem var(--margin-x) .2rem var(--margin-x);
                 border-radius: var(--border-radii) var(--border-radii) 0 0;
+                border-bottom: solid 1px #fff;
 
                 font-size: 1.3rem;
             }
 
             &:link,  &:visited {
                 background-color: #c1ba93;
-                transition: background-color .2s ease-out;
             }
             &:hover, &:active {
                 background-color: var(--color-highlight);
@@ -374,23 +407,20 @@
             line-height: 1.2rem;
         }
 
+        &__AvatarLink {
+            margin-bottom: .5rem;
+        }
+
         &__Avatar {
             border: solid 1px #bbb;
             border-width: 1px 0;
-            margin-bottom: .5rem;
             width: 100%;
             height: 13rem;
-            object-fit: cover;
-            object-position: top;
+            object-fit: contain;
         }
 
         &__Interests {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            // display: grid;
-            // grid-template-columns: repeat(7, 1fr);
-            // grid-template-rows: 1fr;
+            @include flex-straight(row);
 
             cursor: default;
             margin: 0 var(--margin-x) .5rem var(--margin-x);
@@ -403,13 +433,13 @@
 
                 &::after {
                     position: absolute;
-                    content: 'Interested in ' attr(data-tooltip);
-                    left: 50%;
-                    width: 75%;
-                    padding: .25em .5em;
+                    bottom: 7.2rem;
+                    left: .2rem;
+                    width: auto;
+                    padding: .25rem .6rem;
                     border: solid 1px #333;
-                    border-radius: var(--border-radii);
-                    transform: translate(-50%, -2.5rem);
+                    border-radius: 0 var(--border-radii) 0 0;
+                    transform: translateY(-2.5rem);
                     opacity: 0;
                     z-index: -3000;
                     transition: opacity .2s ease-out;
@@ -424,16 +454,6 @@
 
         &__Skills {
             margin: 0 var(--margin-x) .4rem var(--margin-x);
-            list-style: none;
-            font-size: .8rem;
-
-            li::before {
-                content: '▸ ';
-            }
-
-            li.g1MoreItemsMsg::before {
-                display: none;
-            }
         }
 
         hr {

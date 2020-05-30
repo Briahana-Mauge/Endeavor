@@ -44,19 +44,19 @@ const VolunteerCard = (props) => {
     const listInterests = [];
     const interest = props.volunteer.interests;
     if (interest.mentoring) listInterests.push(
-        <li key='m' className='g1Interest--Mentor' data-tooltip='Mentoring'>M</li>);
+        <li key='m' className='g1Interest--Mentor' data-tooltip='MENTORING'>M</li>);
     if (interest.office_hours) listInterests.push(
-        <li key='hrs' className='g1Interest--OHours' data-tooltip='Office Hours'>HRS</li>);
+        <li key='hrs' className='g1Interest--OHours' data-tooltip='OFFICE HOURS'>HRS</li>);
     if (interest.tech_mock_interview) listInterests.push(
-        <li key='ti' className='g1Interest--TechInt' data-tooltip='Technical Interviewing'>TI</li>);
+        <li key='ti' className='g1Interest--TechInt' data-tooltip='TECHNICAL INTERVIEWING'>TI</li>);
     if (interest.behavioral_mock_interview) listInterests.push(
-        <li key='bi' className='g1Interest--BehaveInt' data-tooltip='Behavioral Interviewing'>BI</li>);
+        <li key='bi' className='g1Interest--BehaveInt' data-tooltip='BEHAVIORAL INTERVIEWING'>BI</li>);
     if (interest.professional_skills_coach) listInterests.push(
-        <li key='ps' className='g1Interest--ProSkills' data-tooltip='Professional Skills'>PS</li>);
+        <li key='ps' className='g1Interest--ProSkills' data-tooltip='PROFESSIONAL SKILLS'>PS</li>);
     if (interest.hosting_site_visit) listInterests.push(
-        <li key='sh' className='g1Interest--SiteHost' data-tooltip='Site Hosting'>SH</li>);
+        <li key='sh' className='g1Interest--SiteHost' data-tooltip='SITE HOSTING'>SH</li>);
     if (interest.industry_speaker) listInterests.push(
-        <li key='is' className='g1Interest--Speaker' data-tooltip='Industry Speaker'>IS</li>);
+        <li key='is' className='g1Interest--Speaker' data-tooltip='INDUSTRY SPEAKER'>IS</li>);
 
 
     /* next event is an string containing the event id and topic, separated by ' &$%& '
