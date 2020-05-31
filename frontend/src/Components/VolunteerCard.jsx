@@ -38,7 +38,7 @@ const VolunteerCard = (props) => {
     }
     const listSkills = shownSkills.map((skill, index) => <li key={index+skill}>{skill}</li>);
     if (props.volunteer.skills.length > 3) {
-        listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'>+ {props.volunteer.skills.length - 3} more skills . . .</li>)
+        listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'>+{props.volunteer.skills.length - 3} more skills . . .</li>)
     }
 
     const listInterests = [];
@@ -86,9 +86,9 @@ const VolunteerCard = (props) => {
                 <div className='g1VolResultCard__IconsBar'>
                     <IconEmail email={props.volunteer.v_email} className='g1VolResultCard__IconEmail' />
                 </div>
-                <div className='g1VolResultCard__Job'>
-                    {props.volunteer.company}<br />
-                    — {props.volunteer.title}
+                <div className='g1VolResultCard__JobBox'>
+                    <div className='g1VolResultCard__Company'>{props.volunteer.company}</div>
+                    <div className='g1VolResultCard__Title'>{props.volunteer.title}</div>
                 </div>
                 <ul className='g1VolResultCard__Interests'>
                     {listInterests}
@@ -100,7 +100,7 @@ const VolunteerCard = (props) => {
                     ?   <>
                             <hr />
                             <div className='g1VolResultCard__NextEvent'>
-                                next event:<br />
+                                <span>next event:<br /></span>
                                 <Link to={`/event/${nextEvent[0]}`}>
                                     {nextEvent[1]}
                                 </Link>

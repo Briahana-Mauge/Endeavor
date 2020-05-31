@@ -34,7 +34,8 @@ html, body, #root, .g1App {
 
     --fw-bold: 800;
 
-    --color-primary: #27237c;
+    --color-primary: #2621b3;
+    // --color-primary: #27237c;
     --color-yellow: #8d8558;
     --color-purple: #483569;
     --color-white: #e2e2e2;
@@ -116,11 +117,11 @@ nav button {
 
 /* HELPERS */
 // for consistent styles between nav LINKS and nav BUTTONS
-@mixin link-states() {
+@mixin link-states($restcolor: var(--color-primary)) {
     &:link, &:visited {
-        color: var(--color-black);
+        color: $restcolor;
         text-decoration: none;
-        transition: color .2s ease-out;
+        transition: color .4s ease-out;
     }
     &:hover, &:active {
         color: var(--color-highlight);

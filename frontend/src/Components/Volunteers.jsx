@@ -120,6 +120,20 @@ export default function Volunteers (props) {
 
             {/* Search results */}
             <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
+                {isVolunteerSearchGrided
+                    ?   null
+                    :   <div className='g1VolResultCard px-1'>
+                            <div className='g1InnerVolResultCard g1InnerVolResultCard__Header'>
+                                <div></div>
+                                <div>Name</div>
+                                <div></div>
+                                <div>Company + Position</div>
+                                <div>Skills</div>
+                                <div data-col='interests'>Interests</div>
+                                <div>Next Event</div>
+                            </div>
+                        </div>
+                }
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
