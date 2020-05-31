@@ -297,7 +297,7 @@ div.card-text {
 }
 
 .g1DropdownMenu {
-    @media (max-width: 992px) {   // sub-dropdown menus
+    @media (max-width: 991px) {   // sub-dropdown menus
         border-radius: 0;
         text-align: right;
     }
@@ -310,7 +310,7 @@ div.card-text {
 }
 
 .g1Collapse {
-    @media (max-width: 992px) {
+    @media (max-width: 991px) {
         margin-left: 25%;   // sizes dropdown menu width, removing left width
         border-radius: .75rem 0 .75rem .75rem;
         border: solid 2px #222;
@@ -1206,7 +1206,7 @@ div.card-text {
 // }
 
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     .g1MobileTextALign {
         width: 100%;
         text-align: left;   // MASTER TEXT-ALIGN for small device nav dropdown

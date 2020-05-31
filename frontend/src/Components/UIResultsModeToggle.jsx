@@ -11,7 +11,7 @@ import React from 'react';
 const UIResultsModeToggle = ({ isDisplayModeGrid, setIsDisplayModeGrid }) => {
   return(
     <div className='g1ToggleListOrGrid'>
-      View Mode:
+      <span>View Mode:</span>
       <label className='g1LeftLabel' htmlFor="customSwitch1">List</label>
       <div className="custom-control custom-switch">
         <input
