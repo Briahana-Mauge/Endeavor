@@ -124,13 +124,13 @@ export default function Volunteers (props) {
                     ?   null
                     :   <div className='g1VolResultCard px-1'>
                             <div className='g1InnerVolResultCard g1InnerVolResultCard__Header'>
-                                <div></div>
-                                <div>Name</div>
-                                <div></div>
-                                <div>Company + Position</div>
-                                <div>Skills</div>
-                                <div data-col='interests'>Interests</div>
-                                <div>Next Event</div>
+                                <div className='g1VRHeader--empty1'></div>
+                                <div className='g1VRHeader--name'>Name</div>
+                                <div className='g1VRHeader--empty2'></div>
+                                <div className='g1VRHeader--job'>Company + Position</div>
+                                <div className='g1VRHeader--skills'>Skills</div>
+                                <div className='g1VRHeader--interests'>Interests</div>
+                                <div className='g1VRHeader--nextevent'>Next Event</div>
                             </div>
                         </div>
                 }

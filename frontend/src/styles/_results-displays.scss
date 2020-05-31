@@ -181,7 +181,7 @@
             position: relative;
 
             display: grid;
-            grid-template-columns: 5rem 11rem 2.5rem 10rem 15rem 6.4rem auto;
+            grid-template-columns: 5rem 12rem 2.5rem 11.5rem 14rem 6.4rem auto;
 
             width: 100%;
             height: 100%;
@@ -319,6 +319,34 @@
         &__NextEvent {
             span {
                 display: none;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 1.2rem 1.2rem auto;
+                grid-template-columns: 5rem 2.5rem 12rem 16rem auto;
+            }
+
+            &__IconsBar { grid-area: 1 / 2 / -1 / 2; }
+            &__NameLink { grid-area: 1 / 3; }
+            &__JobBox { grid-area: 2 / 3 / -1 / 3; }
+            &__AvatarLink { grid-area: 1 / 1 / -1 / 1; }
+            &__Interests { grid-area: 1 / 5; margin-left: 0; }
+            &__Skills { grid-area: 1 / 4 / -1 / 4; }
+            &__NextEvent { grid-area: 3 / 5 / 3 / 5; }
+
+            .g1VRHeader {
+                .g1InnerVolResultCard__Header {
+                    grid-template-rows: 1.2rem 1.2rem;
+                }
+                &--empty1 { grid-area: 1 / 1; }
+                &--empty2 { grid-area: 1 / 2; }
+                &--name { grid-area: 1 / 3; }
+                &--job { grid-area: 2 / 3; }
+                &--skills { grid-area: 1 / 4; }
+                &--interests { grid-area: 1 / 5; margin-left: 0 !important; }
+                &--nextevent { grid-area: 2 / 5; }
             }
         }
     }
