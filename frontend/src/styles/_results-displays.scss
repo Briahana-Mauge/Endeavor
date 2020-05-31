@@ -21,12 +21,26 @@
     color: var(--color-black);
     line-height: 1rem;
 
+    .g1InnerVolResultCard > * {
+        z-index: 2100;
+    }
+
+    .g1InnerVolResultCard > .g1VolResultCard__BackgroundShift {
+        z-index: 2000;
+    }
+
     &__NameLink {
+        height: min-content;
+
+        h4 {
+            display: inline-block;
+            margin: 0;
+        }
+
         @include link-states();
 
         &:link,  &:visited {
             color: #2621b3;
-            transition: color .4s ease-out, background-color .2s ease-out;
         }
         &:hover, &:active {
             color: #eee;
@@ -46,8 +60,8 @@
         @include link-states();
 
         &:link, &:visited {
-            display: inline-block;
             // font-size defined below in list and grid
+            display: inline-block;
             transition: color .3s ease-out, transform .2s ease-in-out;
         }
         &:hover, &:active {
@@ -130,7 +144,17 @@
             }
         }
     }
+
+    &__BackgroundShift {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color .4s linear, border 1s linear;
+    }
 }
+
+
 
 
 // LIST VIEW STYLING
@@ -188,7 +212,6 @@
             @include flex-straight(column);
 
             padding: 0 .4rem;
-            z-index: 2000;
         }
 
         &__IconEmail {
@@ -198,17 +221,24 @@
         }
 
         &__NameLink {
-            // margin: auto 0;
             margin-right: var(--margin-right);
-            z-index: 2000;
+            width: max-content;
+
+            transition: color .1s ease-out;
 
             h4 {
-                margin: 0 0 0 var(--col2-padding-left);
-
                 font-size: 1rem;
-
-                transition: color .2s ease-out;
             }
+
+            &:hover, &:active {
+                color: var(--color-highlight);
+            }
+        }
+
+        &__NameLink:hover ~ .g1VolResultCard__BackgroundShift,
+        &__AvatarLink:hover ~ .g1VolResultCard__BackgroundShift {
+            outline: solid 2px var(--color-highlight);
+            background-color: #b8ebff;
         }
 
         &__NameLink::after,
@@ -217,7 +247,6 @@
         }
 
         &__JobBox {
-            // margin: auto .5rem;
             margin-right: var(--margin-right);
 
             font-size: .9rem;
@@ -232,14 +261,10 @@
             object-position: top;
             height: 4rem;
             width: 4rem;
-            margin: auto var(--margin-right);
+            margin: 0 var(--margin-right);
 
-            @media (max-width: 370px) {
-                height: 4rem;
-                width: 4rem;
-            }
-            @media (max-width: 575px) {
-                left: .7rem;
+            &:hover, &:active {
+                border-color: var(--color-hightlight);
             }
         }
 

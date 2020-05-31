@@ -108,9 +108,7 @@ const VolunteerCard = (props) => {
                         </>
                     : null
                 }
-                {/* <div className='text-left mt-auto'>
-                    <button className='btn btn-primary' onClick={viewProfile} data-toggle="modal" data-target="#primaryModal">See Profile</button>
-                </div> */}
+                <div className='g1VolResultCard__BackgroundShift'></div>
             </div>
         </div>
     );
