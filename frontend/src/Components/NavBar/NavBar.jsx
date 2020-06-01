@@ -167,7 +167,7 @@ const Logo = () => {
 const Burger = () => {
   return(
     <button
-      className="g1NavbarToggler navbar-toggler"
+      className="g1NavbarToggler navbar-toggler navbar-dark"
       type="button"
       data-toggle="collapse"
       data-target="#navbarSupportedContent"

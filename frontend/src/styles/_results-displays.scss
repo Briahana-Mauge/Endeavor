@@ -440,7 +440,7 @@
                 &--empty1 { grid-area: 3 / 1; }
                 &--empty2 { grid-area: 3 / 1; }
                 &--name { grid-area: 1 / 1; justify-self: end; margin-right: 1rem; }
-                &--job { grid-area: 2 / 1; justify-self: end; margin-right: 1rem; }
+                &--job { grid-area: 2 / 1; justify-self: end; margin-right: 1rem; text-align: right; }
                 &--skills { grid-area: 3 / 2; }
                 &--interests { grid-area: 2 / 2; margin-left: 0 !important; }
                 &--nextevent { grid-area: 1 / 2; }
