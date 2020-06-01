@@ -596,7 +596,7 @@
 
                 &::before {
                     position: absolute;
-                    bottom: 7.2rem;
+                    // bottom: 7.2rem;
                     left: .2rem;
                     width: auto;
                     padding: .25rem .6rem;
@@ -606,7 +606,7 @@
                 }
 
                 &:hover::before {
-                    transform: translateY(-2.5rem);
+                    transform: translateY(-3.15rem);
                 }
             }
         }
