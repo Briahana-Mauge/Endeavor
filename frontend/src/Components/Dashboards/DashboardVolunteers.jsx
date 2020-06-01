@@ -24,13 +24,27 @@ const DashboardVolunteers = (props) => {
   const [reloadDashboard, setReloadDashboard] = useState(false);
 
   useEffect(() => {
-    const getEventsData = async () => {
+    let isMounted = true;
+
+    const getEventsData = () => {
       axios.get(`/api/events/dashboard/volunteer`)
-        .then(res => setEventsObj(res.data.payload))
-        .catch(err => setFeedback(err));
+        .then(response => {
+          if (isMounted) {
+            setEventsObj(response.data.payload);
+          }
+        })
+        .catch(err => {
+          if (isMounted) {
+            setFeedback(err)
+          }
+        });
     }
     getEventsData();
-  }, [reloadDashboard, loggedUser.v_id, setFeedback]);
+
+    //Cleanup
+    return () => isMounted = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reloadDashboard, loggedUser.v_id]);
 
 
   const hideEvent = () => {

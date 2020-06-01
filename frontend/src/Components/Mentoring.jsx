@@ -6,7 +6,8 @@ import Fellows from './Fellows';
 
 
 export default function Mentoring (props) {
-    const { volunteerId, loggedUser } = useParams();
+    const { loggedUser } = props;
+    const { volunteerId } = useParams();
     const history = useHistory();
 
     // Redirecting to 404 page not found if not a valid volunteer id
@@ -24,59 +25,57 @@ export default function Mentoring (props) {
     const [ showFellowsList, setShowFellowsList ] = useState(false);
 
     useEffect(() => {
-        const getVolunteerData = async () => {
-            try { 
-                setWaitingForData(true);
-                const { data } = await axios.get(`/api/volunteers/id/${volunteerId}`);
-                setVolunteer(data.payload);
-                setWaitingForData(false);
+        let isMounted = true;
 
-                if (!data.payload.mentoring) { // Volunteer didn't sign up to be a mentor
-                    history.push('/404');
-                }
-
-                if (data.payload.mentees) {
-                    const active = [];
-                    const past = [];
-                    data.payload.mentees.forEach(mentee => {
-                        /* After splitting, for each mentee we will have:
-                            index0: mentee id
-                            index1: full name
-                            index2: When the mentoring relation started
-                            index3: text for relation deleted: date means relation ended, false it's still on
-                        */
-                        const menteeArr = mentee.split(' &$%& ');
-                        if (menteeArr[3] === 'false') {
-                            active.push(menteeArr);
-                        } else {
-                            past.push(menteeArr);
+        const getVolunteerData = (isMounted) => {
+            setWaitingForData(true);
+            axios.get(`/api/volunteers/id/${volunteerId}`)
+                .then(response => {
+                    if (isMounted) {
+                        const vol = response.data.payload;
+                        setVolunteer(vol);
+                        setWaitingForData(false);
+            
+                        if (!vol.mentoring) { // Volunteer didn't sign up to be a mentor
+                            history.push('/404');
                         }
-                    });
-
-                    setCurrentMentees(active);
-                    setPastMentees(past);
-                }
-                
-                // setTasks([
-                //     ['mentoring', data.payload.mentoring], 
-                //     ['being an Office Hours mentor', data.payload.office_hours], 
-                //     ['administering mock technical interviews', data.payload.tech_mock_interview], 
-                //     ['behavioral interviewing', data.payload.behavioral_mock_interview], 
-                //     ['being a professional skills coach', data.payload.professional_skills_coach],
-                //     ['hosting a Site Visit at your office', data.payload.hosting_site_visit],
-                //     ['being an Industry Speaker', data.payload.industry_speaker]
-                // ].filter(task => task[1]));
-
-            } catch (err) {
-                if (err.response && err.response.status === 404) {
-                    history.push('/404');
-                } else {
-                    setFeedback(err)
-                }
-            }
+            
+                        if (vol.mentees) {
+                            const active = [];
+                            const past = [];
+                            vol.mentees.forEach(mentee => {
+                                /* After splitting, for each mentee we will have:
+                                    index0: mentee id
+                                    index1: full name
+                                    index2: When the mentoring relation started
+                                    index3: text for relation deleted: date means relation ended, false it's still on
+                                */
+                                const menteeArr = mentee.split(' &$%& ');
+                                if (menteeArr[3] === 'false') {
+                                    active.push(menteeArr);
+                                } else {
+                                    past.push(menteeArr);
+                                }
+                            });
+            
+                            setCurrentMentees(active);
+                            setPastMentees(past);
+                        }
+                    }
+                })
+                .catch (err => {
+                    if (isMounted && err.response && err.response.status === 404) {
+                        history.push('/404');
+                    } else if (isMounted) {
+                        setFeedback(err)
+                    }
+                })
         }
 
-        getVolunteerData();
+        getVolunteerData(isMounted);
+
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload]);
 

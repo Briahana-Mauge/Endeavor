@@ -27,12 +27,15 @@ export default function AdminProfile(props) {
     const pathName = pathname.split('/');
 
     const [ picFile, setPicFile ] = useState(null);
+    const [ loading, setLoading ] = useState(false);
 
     useEffect(() => {
         setFirstName(loggedUser.a_first_name);
         setLastName(loggedUser.a_last_name);
         setEmail(loggedUser.a_email);
-    }, [loggedUser, setFirstName, setLastName, setEmail]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loggedUser]);
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -57,17 +60,24 @@ export default function AdminProfile(props) {
                     }
                 }
 
+                setLoading(true);
                 const { data } = await axios.put(`/api/auth/${loggedUser.a_id}`, profile);
                 props.settleUser(data.payload);
+                setLoading(false);
                 props.setPassword('');
                 props.setFeedback({message: 'Profile updated successfully'});
             } else {
+                setLoading(false);
                 props.setFeedback({message: 'All fields are required'});
             }
 
         } catch (err) {
             props.setFeedback(err);
         }
+    }
+
+    if (loading) {
+        return <h1>Spinner Placeholder</h1>
     }
 
     return (

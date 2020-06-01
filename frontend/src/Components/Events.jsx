@@ -8,7 +8,7 @@ import EventCard from './EventCard';
 // import EventRender from './EventRender';
 
 
-export default function EventSearch(props) {
+export default function Events(props) {
     const history = useHistory();
     const { setFeedback, loggedUser } = props;
 
@@ -22,30 +22,44 @@ export default function EventSearch(props) {
     const [showEvent, setShowEvent] = useState(false);
 
 
-    const getAllEvents = async () => {
-        try {
-            let dateFilter = '';
-            if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
-                dateFilter = 'true'
-            }
-            if (props.loggedUser && props.loggedUser.a_id) {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                setResults(data.payload);
-            }
-            else {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                setResults(data.payload);
-            }
-
-        } catch (err) {
-            setFeedback(err)
-        }
-    }
     useEffect(() => {
-        getAllEvents();
+        let isMounted = true;
+        let dateFilter = '';
+        if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
+            dateFilter = 'true'
+        }
+        if (props.loggedUser && props.loggedUser.a_id) {
+            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
+        } else {
+            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+            // axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
+        }
+
+        //Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, filter, pastOrUpcoming]);
+
 
     const handleSearch = (e) => {
         e.preventDefault();
