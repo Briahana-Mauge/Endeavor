@@ -58,8 +58,10 @@ export default function ProfilePage(props) {
         const userId = loggedUser.a_id || loggedUser.v_id || loggedUser.f_id
 
         try {
-            await axios.delete(`api/users/${userId}`);
-            props.resetState();
+            if (window.confirm(`Are you sure you want to delete your profile ?\nThis action is not reversible and once done you'll lose all your data in the app`)) {
+                await axios.delete(`api/users/${userId}`);
+                props.resetState();
+            }
         } catch (err) {
             props.setFeedback(err);
         }

@@ -111,7 +111,7 @@ const deleteAccount = async(request, response, next) => {
 
             const profilePic = request.user.a_picture || request.user.v_picture || request.user.f_picture;
             // Check if a user has a stored profile picture stored in S3 then delete it
-            if (profilePic && rprofilePic.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            if (profilePic && profilePic.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(profilePic);
             }
             next();
