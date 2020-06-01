@@ -10,27 +10,43 @@ export default function Skills(props) {
     const [ tracker, setTracker ] = useState({});
     const [ reload, setReload ] = useState(0);
 
-    const getSkillsList = () => {
-        axios.get('/api/skills')
-            .then(res => {
-                setSkillsList(res.data.payload);
-                const map = {};
-                for (let elem of res.data.payload) {
-                    map[elem.skill_id] = elem.skill;
-                }
-                setTracker(map);
-            })
-            .catch(err => setFeedback(err))
-        ;
-    }
-    useEffect(getSkillsList, [reload]);
+    
+    useEffect(() => {
+        let isMounted = true;
 
-    const deleteSkill = async (skillId) => {
+        const getSkillsList = () => {
+            axios.get('/api/skills')
+                .then(res => {
+                    if (isMounted) {
+                        setSkillsList(res.data.payload);
+                        const map = {};
+                        for (let elem of res.data.payload) {
+                            map[elem.skill_id] = elem.skill;
+                        }
+                        setTracker(map);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err)
+                    }
+                });
+        }
+        getSkillsList();
+
+        // Cleanup
+        return () => isMounted = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload]);
+
+    const deleteSkill = async (skillId, skill) => {
         try {
-            const { data } = await axios.delete(`/api/skills/del/${skillId}`);
-            // getSkillsList();
-            setReload(reload + 1);
-            setFeedback(data);
+            if (window.confirm(`Are you sure you want to delete ${skill} from the list of skills?`)) {
+                const { data } = await axios.delete(`/api/skills/del/${skillId}`);
+                // getSkillsList();
+                setReload(reload + 1);
+                setFeedback(data);
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -95,7 +111,7 @@ export default function Skills(props) {
                     />
                     <div className=''>
                         <button className='btn btn-info mx-2 my-1' onClick={e => editSkill(skill.skill_id, tracker[skill.skill_id])}>Save</button>
-                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteSkill(skill.skill_id)}>Delete</button>
+                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteSkill(skill.skill_id, skill.skill)}>Delete</button>
                     </div>
                 </div>)
             }

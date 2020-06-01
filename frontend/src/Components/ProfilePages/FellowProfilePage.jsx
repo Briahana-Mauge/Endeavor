@@ -15,66 +15,75 @@ export default function FellowProfilePage(props) {
 
     
     useEffect(() => {
-        const getFellowData = async () => {
-            try { 
-                if (fellowId) {
-                    const { data } = await axios.get(`/api/fellows/id/${fellowId}`);
-                    setFellow(data.payload);
-                    setLoading(false);
+        let isMounted = true;
 
-                    if (data.payload.mentors_list) {
-                        const active = [];
-                        const past = [];
-                        data.payload.mentors_list.forEach(mentor => {
-                            /* After splitting, for each mentee we will have:
-                                index0: mentor id
-                                index1: full name
-                                index2: When the mentoring relation started
-                                index3: text for relation deleted: date means relation ended, false it's still on
-                            */
-                            const mentorArr = mentor.split(' &$%& ');
-                            if (mentorArr[3] === 'false') {
-                                active.push(mentorArr);
-                            } else {
-                                past.push(mentorArr);
+        const getFellowData = () => {
+            if (fellowId) {
+                axios.get(`/api/fellows/id/${fellowId}`)
+                    .then(response => {
+                        if (isMounted) {
+                            const fel = response.data.payload;
+                            setFellow(fel);
+                            setLoading(false);
+            
+                            if (fel.mentors_list) {
+                                const active = [];
+                                const past = [];
+                                fel.mentors_list.forEach(mentor => {
+                                    /* After splitting, for each mentee we will have:
+                                        index0: mentor id
+                                        index1: full name
+                                        index2: When the mentoring relation started
+                                        index3: text for relation deleted: date means relation ended, false it's still on
+                                    */
+                                    const mentorArr = mentor.split(' &$%& ');
+                                    if (mentorArr[3] === 'false') {
+                                        active.push(mentorArr);
+                                    } else {
+                                        past.push(mentorArr);
+                                    }
+                                });
+            
+                                SetActiveMentors(active);
+                                setPastMentors(past);
                             }
-                        });
-    
-                        SetActiveMentors(active);
-                        setPastMentors(past);
-                    }
+            
+                            if (fel.events_list) {
+                                const eventsList = fel.events_list.map(event => event.split(' &$%& '));
+                                /* After splitting, for each mentee we will have:
+                                    index0: event id
+                                    index1: event topic/title
+                                    index2: event start
+                                    index3: event end
+                                */
+                                setEvents(eventsList);
+                            }
+                
+                            // const promises = [];
+                            // promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
+                            // promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
+                            // promises.push(axios.get(`/api/cohorts/id/${fel.cohort_id}`));
+                            // const response = await Promise.all(promises);
+            
+                            // setMentors(response[0].fel);
+                            // setEvents(response[1].fel);
+                            // setCohort(response[2].fel.cohort);
 
-                    if (data.payload.events_list) {
-                        const eventsList = data.payload.events_list.map(event => event.split(' &$%& '));
-                        /* After splitting, for each mentee we will have:
-                            index0: event id
-                            index1: event topic/title
-                            index2: event start
-                            index3: event end
-                        */
-                        setEvents(eventsList);
-                    }
-        
-                    // const promises = [];
-                    // promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
-                    // promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
-                    // promises.push(axios.get(`/api/cohorts/id/${data.payload.cohort_id}`));
-                    // const response = await Promise.all(promises);
-    
-                    // setMentors(response[0].data.payload);
-                    // setEvents(response[1].data.payload);
-                    // setCohort(response[2].data.payload.cohort);
-                }
-            } catch (err) {
-                if (err.response && err.response.status === 404) {
-                    history.push('/404');
-                } else {
-                    setFeedback(err)
-                }
+                        }
+                    })
+                    .catch(err => {
+                        if (isMounted && err.response && err.response.status === 404) {
+                            history.push('/404');
+                        } else if (isMounted) {
+                            setFeedback(err)
+                        }
+                    })
             }
         }
-
         getFellowData();
+        
+        //Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fellowId]);
 

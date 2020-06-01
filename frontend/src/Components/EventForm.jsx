@@ -26,12 +26,24 @@ export default function EventForm (props) {
     const [ loading, setLoading ] = useState(true);
 
 
-    const getCohortsList = () => {
+    useEffect(() => {
+        let isMounted = true; 
         axios.get(`/api/cohorts`)
-            .then(response => setCohortsList(response.data.payload))
-            .catch(err => setFeedback(err))
-    }
-    useEffect(getCohortsList, []);
+            .then(response => {
+                if (isMounted) {
+                    setCohortsList(response.data.payload)
+                }
+            })
+            .catch(err => {
+                if (isMounted) {
+                    setFeedback(err)
+                }
+            });
+
+        //Cleanup
+        return () => isMounted = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const preFillEvent = (event) => {
         const formatDate = (strDate) => {
@@ -80,24 +92,28 @@ export default function EventForm (props) {
     }
 
     useEffect(() => {
-        const getEvent = async (id) => {
-            try {
-                const { data } = await axios.get(`/api/events/event/${id}`);
-                preFillEvent(data.payload);
-                setLoading(false);
-            } catch (err) {
-                if (err.response && err.response.status === 404) {
-                    history.push('/404');
-                } else {
-                    setFeedback(err)
-                }
-            }
-        }
+        let isMounted = false;
         if (eventId) {
-            getEvent(eventId);
-        } else {
+            axios.get(`/api/events/event/${eventId}`)
+                .then(response => {
+                    if (isMounted) {
+                        preFillEvent(response.data.payload);
+                        setLoading(false);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted && err.response && err.response.status === 404) {
+                        history.push('/404');
+                    } else if (isMounted) {
+                        setFeedback(err)
+                    }
+                });
+        } else if (isMounted) {
             setLoading(false);
         }
+
+        //Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formType, eventId]);
 

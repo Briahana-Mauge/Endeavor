@@ -182,7 +182,7 @@ const Burger = () => {
 
 const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
   return(
-    <li className={`nav-item g1MobileTextALign ${liClassName}`}>
+    <li className={`nav-item g1MobileTextAlign ${liClassName}`}>
       <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
         <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>{text}</NavLink>
       </span>
@@ -202,11 +202,11 @@ const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
 //   const { topText, children } = props;
 
 //   return (
-//     <li className="g1MobileTextALign nav-item dropdown">
+//     <li className="g1MobileTextAlign nav-item dropdown">
 //       <NavLink
 //         to="/" // does not affect execution because preventDefault but pointing at /home just in case
 //         onClick={(e) => e.preventDefault()}
-//         className={`nav-link dropdown-toggle g1MobileTextALign ${liPadding}`}
+//         className={`nav-link dropdown-toggle g1MobileTextAlign ${liPadding}`}
 //         data-toggle="dropdown"
 //         role="button"
 //         aria-haspopup="true"
@@ -225,7 +225,7 @@ const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
 
 const Logout = ({logout}) => {
   return(
-    <li className={`nav-item g1MobileTextALign`}>
+    <li className={`nav-item g1MobileTextAlign`}>
       <button
         className={`nav-link g1BtnAsLink ${logoutLiPadding} pr-2 pr-lg-auto`}
         onClick={logout}

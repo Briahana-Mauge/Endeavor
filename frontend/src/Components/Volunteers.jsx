@@ -8,6 +8,7 @@ import VolunteerCard from './VolunteerCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
+
 export default function Volunteers (props) {
     const { search } = useLocation();
     const history = useHistory();
@@ -40,16 +41,26 @@ export default function Volunteers (props) {
 
     
     useEffect(() => {
-        const getSkillsList = async () => {
-            try {
-                const { data } = await axios.get('/api/skills');
-                setSkillsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
+        let isMounted = true;
+
+        const getSkillsList = () => {
+            axios.get('/api/skills')
+                .then(response => {
+                    if (isMounted) {
+                        setSkillsList(response.data.payload);
+                    }
+                })
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err)
+                    }
+                });
         }
         
         getSkillsList();
+
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
@@ -60,15 +71,26 @@ export default function Volunteers (props) {
         setFilter(valueKey || '');
         setTargetSkill(skill || '');
 
-        const getAllVolunteers = async () => {
-            try {
-                const { data } = await axios.get(`/api/volunteers/all${search}`);
-                setResults(data.payload);
-            } catch (err) {
-                setFeedback(err);
-            }
+        let isMounted = true;
+
+        const getAllVolunteers = () => {
+            axios.get(`/api/volunteers/all${search}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
         }
+
         getAllVolunteers();
+        
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
@@ -80,7 +102,6 @@ export default function Volunteers (props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         setReload(!reload);
     }
 

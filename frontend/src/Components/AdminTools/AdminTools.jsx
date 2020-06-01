@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 
 import AdminToolsTabs from './AdminToolsTabs';
@@ -8,15 +8,20 @@ import SkillsTab from './SkillsTab';
 
 
 export default function AdminTools(props) {
-    const path = useLocation().pathname.split('/');
+    const location = useLocation();
     const history = useHistory();
 
-    let tab = '';
-    if (path[2]) {
-        tab = path[2];
-    } else {
-        history.push('tools/skills');
-    }
+    const [ tab, setTab ] = useState('');
+
+    useEffect(() => {
+        const path = location.pathname.split('/')
+        if (path[2]) {
+            setTab(path[2]);
+        } else {
+            history.push('tools/skills');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
 
     return (
         <>

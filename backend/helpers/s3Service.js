@@ -17,7 +17,7 @@ const storage = multerS3({
       cb(null, {fieldName: file.fieldname});
     },
     key: function (request, file, cb) {
-      cb(null, Date.now().toString() + '-' + file.originalname)
+      cb(null, Date.now().toString() + '-' + (file.originalname).replace(/ /g, ''));
     }
 })
 
@@ -47,11 +47,11 @@ const deleteFile = (fileLink) => {
     };
     
     s3.deleteObject(params, function (err, data) {
-        if (data) {
-            console.log("File deleted successfully", data);
+        if (err) {
+            console.log(`Check if you have sufficient permissions : ${err}`);
         }
         else {
-            console.log(`Check if you have sufficient permissions : ${err}`);
+            console.log("File deleted successfully", data);
         }
     });
 }

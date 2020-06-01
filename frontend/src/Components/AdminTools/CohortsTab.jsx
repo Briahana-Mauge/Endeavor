@@ -8,31 +8,39 @@ export default function Cohorts(props) {
     const [ cohortsList, setCohortsList ] = useState([]);
     const [ cohortName, setCohortName ] = useState('');
     const [ tracker, setTracker ] = useState({});
-    const [ reload, setReload ] = useState(0);
+    const [ reload, setReload ] = useState(false);
 
     useEffect(() => {
-        const getCohortsList = async () => {
-            axios.get('/api/cohorts')
-            .then(res => {
+        let isMounted = true;
+        axios.get('/api/cohorts')
+        .then(res => {
+            if (isMounted) {
                 setCohortsList(res.data.payload);
                 const map = {};
                 for (let elem of res.data.payload) {
                     map[elem.cohort_id] = elem.cohort;
                 }
                 setTracker(map);
-            })
-            .catch(err => setFeedback(err));
-        }
+            }
+        })
+        .catch(err => {
+            if (isMounted) {
+                setFeedback(err)
+            }
+        });
 
-        getCohortsList();
-    }, [setFeedback, reload]);
+        // Cleanup
+        return () => isMounted = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload]);
 
-    const deleteCohort = async (cohortId) => {
+    const deleteCohort = async (cohortId, cohort) => {
         try {
-            const { data } = await axios.delete(`/api/cohorts/del/${cohortId}`);
-            // getCohortsList();
-            setReload(reload + 1);
-            setFeedback(data);
+            if (window.confirm(`Are you sure you want to delete ${cohort} from the list of cohorts?`)) {
+                const { data } = await axios.delete(`/api/cohorts/del/${cohortId}`);
+                setReload(!reload);
+                setFeedback(data);
+            }
         } catch (err) {
             setFeedback(err);
         }
@@ -48,8 +56,7 @@ export default function Cohorts(props) {
         try {
             if (text) {
                 const { data } = await axios.put(`/api/cohorts/edit/${cohortId}`, {cohort: text});
-                // getCohortsList();
-                setReload(reload + 1);
+                setReload(!reload);
                 setFeedback(data);
             } else {
                 setFeedback({message: 'Please enter a cohort'});
@@ -63,8 +70,7 @@ export default function Cohorts(props) {
         try {
             if (cohortName) {
                 const { data } = await axios.post(`/api/cohorts/add`, {cohort: cohortName});
-                // getCohortsList();
-                setReload(reload + 1);
+                setReload(!reload);
                 setFeedback(data);
             } else {
                 setFeedback({message: 'Please enter a cohort'});
@@ -97,7 +103,7 @@ export default function Cohorts(props) {
                     />
                     <div className=''>
                         <button className='btn btn-info mx-2 my-1' onClick={e => editCohort(cohort.cohort_id, tracker[cohort.cohort_id])}>Save</button>
-                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id)}>Delete</button>
+                        <button className='btn btn-danger mx-2 my-1' onClick={e => deleteCohort(cohort.cohort_id, cohort.cohort)}>Delete</button>
                     </div>
                 </div>)
             }
