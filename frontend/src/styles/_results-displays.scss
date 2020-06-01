@@ -229,6 +229,8 @@
 
         &__IconEmail {
             &:link, &:visited {
+                position: relative;
+                top: 1px;
                 font-size: 1rem;
             }
         }
@@ -325,13 +327,24 @@
             display: none;
         }
 
-        &__NextEvent {
-            span {
-                display: none;
+        // &__NextEvent {
+        //     span {
+        //         display: none;
+        //     }
+        // }
+
+        // LIST MEDIA QUERIES GOING SMALLER
+        @media (max-width: 767px) {
+            .g1InnerVolResultCard {
+                border-top-width: 2px;
+            }
+
+            .g1InnerVolResultCard__Header {
+                border-top-width: 1px;
             }
         }
 
-        // LIST MEDIA QUERIES GOING SMALLER
+
         @media (min-width: 768px) and (max-width: 991px) {
             .g1InnerVolResultCard {
                 grid-template-rows: 1.2rem 1.2rem auto;
@@ -346,10 +359,11 @@
             &__Skills { grid-area: 1 / 4 / -1 / 4; }
             &__NextEvent { grid-area: 3 / 5 / 3 / 5; }
 
+            .g1InnerVolResultCard__Header {
+                grid-template-rows: repeat(2, 1rem);
+            }
+
             .g1VRHeader {
-                .g1InnerVolResultCard__Header {
-                    grid-template-rows: 1.2rem 1.2rem;
-                }
                 &--empty1 { grid-area: 1 / 1; }
                 &--empty2 { grid-area: 1 / 2; }
                 &--name { grid-area: 1 / 3; }
@@ -362,7 +376,7 @@
 
         @media (min-width: 576px) and (max-width: 767px) {
             .g1InnerVolResultCard {
-                grid-template-rows: 3fr 5fr 2fr;
+                grid-template-rows: 1.5rem 3.7rem auto;
                 grid-template-columns: 5rem 11rem auto;
             }
 
@@ -374,17 +388,62 @@
             &__Skills { grid-area: 2 / 3 / -1 / 3; }
             &__NextEvent { grid-area: 3 / 2 / 4 / 2; }
 
+            .g1InnerVolResultCard__Header {
+                grid-template-rows:  repeat(3, 1rem);
+            }
+
             .g1VRHeader {
-                .g1InnerVolResultCard__Header {
-                    grid-template-rows: 1.2rem 1.2rem;
-                }
                 &--empty1 { grid-area: 1 / 1; }
-                &--empty2 { grid-area: 1 / 2; }
-                &--name { grid-area: 1 / 3; }
-                &--job { grid-area: 2 / 3; }
-                &--skills { grid-area: 1 / 4; }
-                &--interests { grid-area: 1 / 5; margin-left: 0 !important; }
-                &--nextevent { grid-area: 2 / 5; }
+                &--empty2 { grid-area: 1 / 1; }
+                &--name { grid-area: 1 / 2; }
+                &--job { grid-area: 2 / 2; }
+                &--skills { grid-area: 2 / 3; }
+                &--interests { grid-area: 1 / 3; margin-left: 0 !important; }
+                &--nextevent { grid-area: 3 / 2; }
+            }
+        }
+
+        @media (max-width: 575px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 2.7rem 1.5rem 2.3rem min-content 1fr;
+                grid-template-columns: 2fr 3fr;
+            }
+
+            &__IconsBar { grid-area: 4 / 1; justify-self: end; position: relative; top: -2px; padding-right: 1rem; }
+            &__NameLink {
+                grid-area: 3 / 1;
+                padding-right: 1rem;
+                width: inherit;
+                text-align: right;
+                h4 { line-height: 1rem !important; text-align: right; }
+            }
+            &__JobBox {
+                grid-area: 5 / 1;
+                margin-right: 0;
+                padding-right: 1rem;
+                text-align: right;
+                &::before {
+                    content: '—';
+                }
+            }
+            &__AvatarLink { grid-area: 1 / 1 / 3 / 1; justify-self: end; margin-right: 1rem; }
+                &__Avatar { margin: 0; }
+            &__Interests { grid-area: 3 / 2 / 4 / 2; margin-left: 0; }
+            &__Skills { grid-area: 4 / 2 / -1 / 2; }
+            &__NextEvent { grid-area: 1 / 2; }
+
+            .g1InnerVolResultCard__Header {
+                grid-template-rows:  repeat(3, 1rem);
+            }
+
+            .g1VRHeader {
+                &--empty1 { grid-area: 3 / 1; }
+                &--empty2 { grid-area: 3 / 1; }
+                &--name { grid-area: 1 / 1; justify-self: end; margin-right: 1rem; }
+                &--job { grid-area: 2 / 1; justify-self: end; margin-right: 1rem; }
+                &--skills { grid-area: 3 / 2; }
+                &--interests { grid-area: 2 / 2; margin-left: 0 !important; }
+                &--nextevent { grid-area: 1 / 2; }
             }
         }
     }
