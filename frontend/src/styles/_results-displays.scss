@@ -33,6 +33,10 @@
         z-index: 2100;
     }
 
+    .g1VolResultCard__Interests {   // necessary for raising ::before tooltip above stack
+        z-index: 3000;
+    }
+
     .g1InnerVolResultCard > .g1VolResultCard__BackgroundShift {
         z-index: 2000;
     }
@@ -103,6 +107,7 @@
 
                 opacity: 0;
                 z-index: -3000;
+                transform: translateX(700%);
                 transition: opacity .2s ease-out;
             }
 
@@ -289,6 +294,10 @@
                     padding: .25em .5em;
                     border: solid 1px #333;
                     border-radius: var(--border-radii);
+                    transform: scale(0);
+                }
+
+                &:hover::before {
                     transform: translateX(-115%);
                 }
 
@@ -322,10 +331,11 @@
             }
         }
 
+        // LIST MEDIA QUERIES GOING SMALLER
         @media (min-width: 768px) and (max-width: 991px) {
             .g1InnerVolResultCard {
                 grid-template-rows: 1.2rem 1.2rem auto;
-                grid-template-columns: 5rem 2.5rem 12rem 16rem auto;
+                grid-template-columns: 5rem 2.5rem 11rem 16rem auto;
             }
 
             &__IconsBar { grid-area: 1 / 2 / -1 / 2; }
@@ -335,6 +345,34 @@
             &__Interests { grid-area: 1 / 5; margin-left: 0; }
             &__Skills { grid-area: 1 / 4 / -1 / 4; }
             &__NextEvent { grid-area: 3 / 5 / 3 / 5; }
+
+            .g1VRHeader {
+                .g1InnerVolResultCard__Header {
+                    grid-template-rows: 1.2rem 1.2rem;
+                }
+                &--empty1 { grid-area: 1 / 1; }
+                &--empty2 { grid-area: 1 / 2; }
+                &--name { grid-area: 1 / 3; }
+                &--job { grid-area: 2 / 3; }
+                &--skills { grid-area: 1 / 4; }
+                &--interests { grid-area: 1 / 5; margin-left: 0 !important; }
+                &--nextevent { grid-area: 2 / 5; }
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 3fr 5fr 2fr;
+                grid-template-columns: 5rem 11rem auto;
+            }
+
+            &__IconsBar { grid-area: 1 / 1; justify-self: end; margin-right: .5rem; }
+            &__NameLink { grid-area: 1 / 2; }
+            &__JobBox { grid-area: 2 / 2 / 3 / 2; }
+            &__AvatarLink { grid-area: 2 / 1 / -1 / 1; }
+            &__Interests { grid-area: 1 / 3; margin-top: .1rem; margin-left: 0; }
+            &__Skills { grid-area: 2 / 3 / -1 / 3; }
+            &__NextEvent { grid-area: 3 / 2 / 4 / 2; }
 
             .g1VRHeader {
                 .g1InnerVolResultCard__Header {
@@ -435,6 +473,7 @@
             border-radius: var(--border-radii) 0 var(--border-radii) 0;
             opacity: 0;
             z-index: -3000;
+            transform: scale(0);
             transition: opacity .2s ease-out;
         }
 
@@ -442,6 +481,7 @@
         &__AvatarLink:hover::after {
             opacity: 1;
             z-index: 3000;
+            transform: scale(1);
         }
 
         &__AvatarLink:hover ~ &__NameLink {
@@ -499,6 +539,10 @@
                     padding: .25rem .6rem;
                     border: solid 1px #333;
                     border-radius: 0 var(--border-radii) 0 0;
+                    transform: translateX(700%);
+                }
+
+                &:hover::before {
                     transform: translateY(-2.5rem);
                 }
             }
