@@ -62,7 +62,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     `
     const endOfQuery = `
       GROUP BY volunteers.v_id
-      ORDER BY v_first_name ASC
+      ORDER BY v_last_name ASC
     `
 
     let condition = ' WHERE volunteers.confirmed = TRUE AND volunteers.deleted IS NULL ';
@@ -96,11 +96,6 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
 
     for (let volunteer of volunteersList) {
       volunteer.interests = volunteer.interests[0];
-      for (let key in volunteer.interests) {
-        if (volunteer.interests[key] === false) {
-          delete volunteer.interests[key];
-        }
-      }
     };
     return volunteersList;
   })
