@@ -327,11 +327,11 @@
             display: none;
         }
 
-        // &__NextEvent {
-        //     span {
-        //         display: none;
-        //     }
-        // }
+        &__NextEvent {
+            span {
+                display: none;
+            }
+        }
 
         // LIST MEDIA QUERIES GOING SMALLER
         @media (max-width: 767px) {
@@ -341,6 +341,10 @@
 
             .g1InnerVolResultCard__Header {
                 border-top-width: 1px;
+            }
+
+            &__NextEvent span {
+                display: block;
             }
         }
 
