@@ -26,34 +26,37 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     }
 
     const selectQuery = `
-      SELECT 
-          volunteers.v_id,
-          volunteers.v_first_name,
-          volunteers.v_last_name,
-          v_slug,
-          volunteers.v_picture,
-          volunteers.v_email,
-          volunteers.v_linkedin,
-          volunteers.company,
-          volunteers.title,
-          volunteers.active,
-          volunteers.mentoring,
-          volunteers.office_hours,
-          volunteers.tech_mock_interview,
-          volunteers.behavioral_mock_interview,
-          volunteers.professional_skills_coach,
-          volunteers.hosting_site_visit,
-          volunteers.industry_speaker,
-          ARRAY_AGG(DISTINCT skills.skill) AS skills,
-          (SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
-		      	FROM  events
-		      	INNER JOIN event_volunteers ON events.event_id = eventv_id
-		      	WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
-		      	ORDER BY event_start ASC
-		      	LIMIT 1
-          ) AS next_event
+      SELECT
+        volunteers.v_id,
+        volunteers.v_first_name,
+        volunteers.v_last_name,
+        v_slug,
+        volunteers.v_picture,
+        volunteers.v_email,
+        volunteers.v_linkedin,
+        volunteers.company,
+        volunteers.title,
+        volunteers.active,
+        ARRAY_AGG(DISTINCT skills.skill) AS skills,
+        JSON_AGG(
+          DISTINCT JSONB_BUILD_OBJECT(
+            'mentoring', volunteers.mentoring,
+            'office_hours', volunteers.office_hours,
+            'tech_mock_interview', volunteers.tech_mock_interview,
+            'behavioral_mock_interview', volunteers.behavioral_mock_interview,
+            'professional_skills_coach', volunteers.professional_skills_coach,
+            'hosting_site_visit', volunteers.hosting_site_visit,
+            'industry_speaker', volunteers.industry_speaker
+          )) AS interests,
+        ( SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
+            FROM  events
+            INNER JOIN event_volunteers ON events.event_id = eventv_id
+            WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
+            ORDER BY event_start ASC
+            LIMIT 1
+        ) AS next_event
 
-      FROM volunteers 
+      FROM volunteers
       INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
       INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
     `
@@ -92,27 +95,12 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     }
 
     for (let volunteer of volunteersList) {
-      volunteer['interests'] = {
-        mentoring: volunteer.mentoring,
-        office_hours: volunteer.office_hours,
-        tech_mock_interview: volunteer.tech_mock_interview,
-        behavioral_mock_interview: volunteer.behavioral_mock_interview,
-        professional_skills_coach: volunteer.professional_skills_coach,
-        hosting_site_visit: volunteer.hosting_site_visit,
-        industry_speaker: volunteer.industry_speaker
-      }
-      for (let key in volunteer['interests']) {
-        if (volunteer['interests'][key] === false) {
-          delete volunteer['interests'][key];
+      volunteer.interests = volunteer.interests[0];
+      for (let key in volunteer.interests) {
+        if (volunteer.interests[key] === false) {
+          delete volunteer.interests[key];
         }
       }
-      delete volunteer.mentoring;
-      delete volunteer.office_hours;
-      delete volunteer.tech_mock_interview;
-      delete volunteer.behavioral_mock_interview;
-      delete volunteer.professional_skills_coach;
-      delete volunteer.hosting_site_visit;
-      delete volunteer.industry_speaker;
     };
     return volunteersList;
   })
