@@ -38,8 +38,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
         volunteers.title,
         volunteers.active,
         ARRAY_AGG(DISTINCT skills.skill) AS skills,
-        JSON_AGG(
-          DISTINCT JSONB_BUILD_OBJECT(
+        JSONB_BUILD_OBJECT(
             'mentoring', volunteers.mentoring,
             'office_hours', volunteers.office_hours,
             'tech_mock_interview', volunteers.tech_mock_interview,
@@ -47,7 +46,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
             'professional_skills_coach', volunteers.professional_skills_coach,
             'hosting_site_visit', volunteers.hosting_site_visit,
             'industry_speaker', volunteers.industry_speaker
-          )) AS interests,
+          ) AS interests,
         ( SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
             FROM  events
             INNER JOIN event_volunteers ON events.event_id = eventv_id
@@ -94,9 +93,6 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
       }
     }
 
-    for (let volunteer of volunteersList) {
-      volunteer.interests = volunteer.interests[0];
-    };
     return volunteersList;
   })
 }
