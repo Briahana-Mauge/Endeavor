@@ -1,0 +1,631 @@
+.g1ToggleListOrGrid {
+    .g1LeftLabel,
+    .custom-switch,
+    .custom-switch label,
+    .custom-switch label::before,
+    .custom-switch label::after {
+        cursor: pointer;
+    }
+
+    .g1LeftLabel {
+        margin-left: 1rem;
+    }
+    .custom-switch {
+        display: inline-block;
+        margin-left: .4rem;
+
+        label::before {
+            left: -2.2rem;
+        }
+        label::after {
+            left: calc(-2.2rem + 2px);
+        }
+    }
+}
+
+// FONT ASSIGNMENTS
+.g1VolResultCard {
+    font-family: var(--ff-body);
+    color: var(--color-black);
+    line-height: 1rem;
+
+    .g1InnerVolResultCard > * {
+        z-index: 2100;
+    }
+
+    .g1VolResultCard__Interests {   // necessary for raising ::before tooltip above stack
+        z-index: 3000;
+    }
+
+    .g1InnerVolResultCard > .g1VolResultCard__BackgroundShift {
+        z-index: 2000;
+    }
+
+    &__NameLink {
+        height: min-content;
+
+        h4 {
+            display: inline-block;
+            margin: 0;
+        }
+
+        @include link-states();
+
+        &:link,  &:visited {
+            color: #2621b3;
+        }
+        &:hover, &:active {
+            color: #eee;
+        }
+    }
+
+    &__NameLink::after,
+    &__AvatarLink::after {
+        content: 'See Profile';
+        color: #fff;
+        font-size: 1rem;
+        line-height: 1.2;
+        background-color: var(--color-highlight);
+    }
+
+    &__IconEmail {
+        @include link-states();
+
+        &:link, &:visited {
+            // font-size defined below in list and grid
+            display: inline-block;
+            transition: color .3s ease-out, transform .2s ease-in-out;
+        }
+        &:hover, &:active {
+            color: #eee;
+            transform: scale(1.2);
+            filter: drop-shadow(0px 1px 2px var(--color-highlight));
+        }
+    }
+
+    &__Company {
+        color: var(--color-yellow);
+    }
+
+    &__Interests {
+        cursor: help;
+        list-style: none;
+
+        li {
+            font-family: var(--ff-accent);
+            font-weight: bold;
+            color: #8327bb;
+
+            &::before {
+                content: 'interested in \A' attr(data-tooltip);
+                white-space: pre-wrap; // required for line-break in content above
+                text-align: left;
+                font-size: .8rem;
+                line-height: 1rem;
+                color: #eee;
+                background-color: #8327bb;
+
+                opacity: 0;
+                z-index: -3000;
+                transform: translateX(700%);
+                transition: opacity .2s ease-out;
+            }
+
+            &:hover::before {
+                opacity: 1;
+                z-index: 3000;
+            }
+        }
+    }
+
+    &__Skills {
+        list-style: none;
+        font-size: .8rem;
+
+        li::before {
+            content: '▹ ';
+        }
+
+        li.g1MoreItemsMsg {
+            margin-left: .5rem;
+
+            color: var(--color-yellow);
+            font-style: italic;
+        }
+
+        li.g1MoreItemsMsg::before {
+            display: none;
+        }
+    }
+
+    &__NextEvent {
+        font-size: .8rem;
+
+        span {
+            color: var(--color-yellow);
+        }
+
+        a {
+            @include link-states();
+
+            &:link, &:visited {
+                font-weight: bold;
+                color: #2621b3;
+            }
+            &:hover, &:active {
+                color: var(--color-highlight);
+            }
+        }
+    }
+
+    &__BackgroundShift {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color .4s linear, border 1s linear;
+    }
+}
+
+
+
+
+// LIST VIEW STYLING
+.g1ListResults {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    .g1VolResultCard {
+
+        &:last-of-type .g1InnerVolResultCard {
+            border-bottom: solid 1px #fff;
+        }
+
+        .g1InnerVolResultCard {
+            position: relative;
+
+            display: grid;
+            grid-template-columns: 5rem 12rem 2.5rem 11.5rem 14rem 6.4rem auto;
+
+            width: 100%;
+            height: 100%;
+            padding: .4rem 0 1rem 0;
+
+            font-size: .9rem;
+            background-color: var(--color-white);
+            border: solid 1px #fff;
+            border-bottom: 0;
+            line-height: 1rem;
+
+            --margin-right: .6rem;
+
+            &.g1InnerVolResultCard__Header {
+                padding: .4rem 0;
+                font-weight: bold;
+                background-color: #ccc59d;
+
+                .g1VRHeader--interests {
+                    margin-left: calc(var(--margin-right) * 2);
+                }
+            }
+        }
+
+        // LIST GRID PLACEMENT
+        &__IconsBar { grid-area: 1 / 3; }
+        &__NameLink { grid-area: 1 / 2; }
+        &__JobBox { grid-area: 1 / 4; }
+        &__AvatarLink { grid-area: 1 / 1; }
+        &__Interests { grid-area: 1 / 6; }
+        &__Skills { grid-area: 1 / 5; }
+        &__NextEvent { grid-area: 1 / 7; }
+
+        // LIST POSITIONAL STYLING
+        &__IconsBar {
+            @include flex-straight(column);
+
+            padding: 0 .4rem;
+        }
+
+        &__IconEmail {
+            &:link, &:visited {
+                position: relative;
+                top: 1px;
+                font-size: 1rem;
+            }
+        }
+
+        &__NameLink {
+            margin-right: var(--margin-right);
+            width: max-content;
+
+            transition: color .1s ease-out;
+
+            h4 {
+                font-size: 1rem;
+            }
+
+            &:hover, &:active {
+                color: var(--color-highlight);
+            }
+        }
+
+        &__NameLink:hover ~ .g1VolResultCard__BackgroundShift,
+        &__AvatarLink:hover ~ .g1VolResultCard__BackgroundShift {
+            outline: solid 2px var(--color-highlight);
+            background-color: #b8ebff;
+        }
+
+        &__NameLink::after,
+        &__AvatarLink::after {
+            display: none;
+        }
+
+        &__JobBox {
+            margin-right: var(--margin-right);
+
+            font-size: .9rem;
+            line-height: 1.1rem;
+        }
+
+        &__Avatar {
+            position: relative;
+            border: solid 1px #bbb;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+            height: 4rem;
+            width: 4rem;
+            margin: 0 var(--margin-right);
+
+            &:hover, &:active {
+                border-color: var(--color-hightlight);
+            }
+        }
+
+        &__Interests {
+            margin: 0 calc(var(--margin-right) * 2);
+
+            li {
+                display: inline-block;
+                padding-right: .3rem;
+
+                &::before {
+                    position: absolute;
+                    width: 9rem;
+                    padding: .25em .5em;
+                    border: solid 1px #333;
+                    border-radius: var(--border-radii);
+                    transform: scale(0);
+                }
+
+                &:hover::before {
+                    transform: translateX(-115%);
+                }
+
+                &::after {
+                    content: ',';
+                }
+
+                &:last-of-type::after {
+                    content: '';
+                }
+            }
+        }
+
+        &__Skills {
+            @include flex-straight(column);
+
+            margin-right: var(--margin-right);
+            margin-bottom: 0;
+
+            list-style: none;
+            font-size: .9rem;
+        }
+
+        .g1VolResultCard__Skills + hr {
+            display: none;
+        }
+
+        &__NextEvent {
+            span {
+                display: none;
+            }
+        }
+
+        // LIST MEDIA QUERIES GOING SMALLER
+        @media (max-width: 767px) {
+            .g1InnerVolResultCard {
+                border-top-width: 2px;
+            }
+
+            .g1InnerVolResultCard__Header {
+                border-top-width: 1px;
+            }
+
+            &__NextEvent span {
+                display: block;
+            }
+        }
+
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 1.2rem 1.2rem auto;
+                grid-template-columns: 5rem 2.5rem 11rem 16rem auto;
+            }
+
+            &__IconsBar { grid-area: 1 / 2 / -1 / 2; }
+            &__NameLink { grid-area: 1 / 3; }
+            &__JobBox { grid-area: 2 / 3 / -1 / 3; }
+            &__AvatarLink { grid-area: 1 / 1 / -1 / 1; }
+            &__Interests { grid-area: 1 / 5; margin-left: 0; }
+            &__Skills { grid-area: 1 / 4 / -1 / 4; }
+            &__NextEvent { grid-area: 3 / 5 / 3 / 5; }
+
+            .g1InnerVolResultCard__Header {
+                grid-template-rows: repeat(2, 1rem);
+            }
+
+            .g1VRHeader {
+                &--empty1 { grid-area: 1 / 1; }
+                &--empty2 { grid-area: 1 / 2; }
+                &--name { grid-area: 1 / 3; }
+                &--job { grid-area: 2 / 3; }
+                &--skills { grid-area: 1 / 4; }
+                &--interests { grid-area: 1 / 5; margin-left: 0 !important; }
+                &--nextevent { grid-area: 2 / 5; }
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 1.5rem 3.7rem auto;
+                grid-template-columns: 5rem 11rem auto;
+            }
+
+            &__IconsBar { grid-area: 1 / 1; justify-self: end; margin-right: .5rem; }
+            &__NameLink { grid-area: 1 / 2; }
+            &__JobBox { grid-area: 2 / 2 / 3 / 2; }
+            &__AvatarLink { grid-area: 2 / 1 / -1 / 1; }
+            &__Interests { grid-area: 1 / 3; margin-top: .1rem; margin-left: 0; }
+            &__Skills { grid-area: 2 / 3 / -1 / 3; }
+            &__NextEvent { grid-area: 3 / 2 / 4 / 2; }
+
+            .g1InnerVolResultCard__Header {
+                grid-template-rows:  repeat(3, 1rem);
+            }
+
+            .g1VRHeader {
+                &--empty1 { grid-area: 1 / 1; }
+                &--empty2 { grid-area: 1 / 1; }
+                &--name { grid-area: 1 / 2; }
+                &--job { grid-area: 2 / 2; }
+                &--skills { grid-area: 2 / 3; }
+                &--interests { grid-area: 1 / 3; margin-left: 0 !important; }
+                &--nextevent { grid-area: 3 / 2; }
+            }
+        }
+
+        @media (max-width: 575px) {
+            .g1InnerVolResultCard {
+                grid-template-rows: 2.7rem 1.5rem 2.3rem min-content 1fr;
+                grid-template-columns: 2fr 3fr;
+            }
+
+            &__IconsBar { grid-area: 4 / 1; justify-self: end; position: relative; top: -2px; padding-right: 1rem; }
+            &__NameLink {
+                grid-area: 3 / 1;
+                padding-right: 1rem;
+                width: inherit;
+                text-align: right;
+                h4 { line-height: 1rem !important; text-align: right; }
+            }
+            &__JobBox {
+                grid-area: 5 / 1;
+                margin-right: 0;
+                padding-right: 1rem;
+                text-align: right;
+                &::before {
+                    content: '—';
+                }
+            }
+            &__AvatarLink { grid-area: 1 / 1 / 3 / 1; justify-self: end; margin-right: 1rem; }
+                &__Avatar { margin: 0; }
+            &__Interests { grid-area: 3 / 2 / 4 / 2; margin-left: 0; }
+            &__Skills { grid-area: 4 / 2 / -1 / 2; }
+            &__NextEvent { grid-area: 1 / 2; }
+
+            .g1InnerVolResultCard__Header {
+                grid-template-rows:  repeat(3, 1rem);
+            }
+
+            .g1VRHeader {
+                &--empty1 { grid-area: 3 / 1; }
+                &--empty2 { grid-area: 3 / 1; }
+                &--name { grid-area: 1 / 1; justify-self: end; margin-right: 1rem; }
+                &--job { grid-area: 2 / 1; justify-self: end; margin-right: 1rem; text-align: right; }
+                &--skills { grid-area: 3 / 2; }
+                &--interests { grid-area: 2 / 2; margin-left: 0 !important; }
+                &--nextevent { grid-area: 1 / 2; }
+            }
+        }
+    }
+}
+
+
+// GRID VIEW STYLING
+.g1GridResults {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .g1VolResultCard {
+        position: relative;
+        width: 100%;
+        padding-top: .5rem;
+        padding-bottom: .5rem;
+
+        --margin-x: .5rem;
+
+        .g1InnerVolResultCard {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            height: 100%;
+
+            background-color: var(--color-white);
+            border: solid 1px var(--color-white);
+            border-radius: var(--border-radii);
+        }
+
+        // col-12
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+
+        @media (min-width: 500px) { // col-sm-6 (altered down to 500px from 576px)
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        @media (min-width: 768px) { // col-md-4
+            -ms-flex: 0 0 33.333333%;
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        @media (min-width: 992px) { // col-lg-3
+            -ms-flex: 0 0 25%;
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
+        &__NameLink {
+            order: -1;
+            width: 100%;
+
+            h4 {
+                display: block;
+                margin-bottom: 0px;
+                padding: 0.2rem var(--margin-x) .2rem var(--margin-x);
+                border-radius: var(--border-radii) var(--border-radii) 0 0;
+                border-bottom: solid 1px #fff;
+
+                font-size: 1.3rem;
+            }
+
+            &:link,  &:visited {
+                background-color: #c1ba93;
+                transition: color .4s ease-out, background-color .2s ease-out;
+            }
+            &:hover, &:active {
+                background-color: var(--color-highlight);
+            }
+        }
+
+        &__NameLink::after,
+        &__AvatarLink::after {
+            position: absolute;
+            bottom: .6rem;
+            right: .3rem;
+            text-align: center;
+            padding: 0.25rem 0.7rem;
+            border: solid 1px #fff;
+            border-width: 1px 0 0 1px;
+            border-radius: var(--border-radii) 0 var(--border-radii) 0;
+            opacity: 0;
+            z-index: -3000;
+            transform: scale(0);
+            transition: opacity .2s ease-out;
+        }
+
+        &__NameLink:hover::after,
+        &__AvatarLink:hover::after {
+            opacity: 1;
+            z-index: 3000;
+            transform: scale(1);
+        }
+
+        &__AvatarLink:hover ~ &__NameLink {
+            &:link,  &:visited {
+                background-color: var(--color-highlight);
+                color: #eee;
+            }
+        }
+
+        &__IconsBar {
+            order: -1;
+            margin: .1rem .3rem .5rem 0;
+        }
+
+        &__IconEmail {
+            &:link, &:visited {
+                padding: 0 1rem 0.3rem var(--margin-x);
+                width: fit-content;
+            }
+        }
+
+        &__JobBox {
+            order: -1;
+            margin: 0 var(--margin-x) .5rem var(--margin-x);
+            line-height: 1.2rem;
+        }
+
+        &__AvatarLink {
+            margin-bottom: .5rem;
+        }
+
+        &__Avatar {
+            border: solid 1px #bbb;
+            border-width: 1px 0;
+            width: 100%;
+            height: 13rem;
+            object-fit: contain;
+        }
+
+        &__Interests {
+            @include flex-straight(row);
+
+            margin: 0 var(--margin-x) .5rem var(--margin-x);
+
+            font-size: 1rem;
+
+            li {
+                padding-right: .6rem;
+
+                &::before {
+                    position: absolute;
+                    // bottom: 7.2rem;
+                    left: .2rem;
+                    width: auto;
+                    padding: .25rem .6rem;
+                    border: solid 1px #333;
+                    border-radius: 0 var(--border-radii) 0 0;
+                    transform: translateX(700%);
+                }
+
+                &:hover::before {
+                    transform: translateY(-3.15rem);
+                }
+            }
+        }
+
+        &__Skills {
+            margin: 0 var(--margin-x) .4rem var(--margin-x);
+        }
+
+        hr {
+            margin: 1rem 0 .1rem 0;
+        }
+
+        &__NextEvent {
+            margin: 0 var(--margin-x) .6rem var(--margin-x);
+        }
+
+        &__BackgroundShift {
+            display: none;
+        }
+    }
+
+}

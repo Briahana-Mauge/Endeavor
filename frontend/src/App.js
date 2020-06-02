@@ -64,6 +64,10 @@ function App() {
   const [industrySpeaker, setIndustrySpeaker] = useState(false);
   const [publicProfile, setPublicProfile] = useState(false);
 
+  // SEARCH states
+  const [isVolunteerSearchGrided, setIsVolunteerSearchGrided] = useState(false);
+  const [isEventSearchGrided, setIsEventSearchGrided] = useState(false);
+
   // OTHER variables
   const userIs = identifyUser(loggedUser);
   const location = useLocation();
@@ -169,6 +173,10 @@ function App() {
     industrySpeaker, setIndustrySpeaker,
     publicProfile, setPublicProfile
   }
+  const searchProps = {
+    isVolunteerSearchGrided, setIsVolunteerSearchGrided,
+    isEventSearchGrided, setIsEventSearchGrided
+  }
 
 
   /* BUILD LIMITED ACCESS ROUTES */
@@ -179,7 +187,7 @@ function App() {
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
       <PrivateGate path='/volunteers' h1='Volunteers List' {...gateProps}>
-        <Volunteers {...userProps} />
+        <Volunteers {...userProps} {...searchProps} />
       </PrivateGate>
     ),
     volunteersProfile = (
@@ -277,7 +285,7 @@ function App() {
         </PrivateGate>
 
         <PrivateGate path='/events' h1='Events List' {...gateProps}>
-          <Events {...userProps} />
+          <Events {...userProps} {...searchProps} />
         </PrivateGate>
 
 
