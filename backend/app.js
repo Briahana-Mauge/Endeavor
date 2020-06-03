@@ -16,6 +16,7 @@ const eventsRouter = require('./routes/events');
 const cohortsRouter = require('./routes/cohorts');
 const mentorPairsRouter = require('./routes/mentorPairs');
 const eventAttendeesRouter = require('./routes/eventAttendees');
+const viewTypeRouter = require('./routes/viewType');
 
 
 const { checkUserLogged } = require('./auth/helpers');
@@ -47,6 +48,7 @@ app.use('/api/events', /*checkUserLogged,*/ eventsRouter);
 app.use('/api/cohorts', /*checkUserLogged,*/ cohortsRouter);
 app.use('/api/mentor_pairs', /*checkUserLogged,*/ mentorPairsRouter);
 app.use('/api/event_attendees', /*checkUserLogged,*/ eventAttendeesRouter);
+app.use('/api/view', checkUserLogged, viewTypeRouter);
 
 app.use('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../frontend/build/index.html'));
