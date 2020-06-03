@@ -93,7 +93,7 @@ const DashboardAdmin = (props) => {
 
       <ChartsAdmin chartData={[eventsObj]} />
 
-      <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+      <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
         {
           showEvent
             ? <EventCard
