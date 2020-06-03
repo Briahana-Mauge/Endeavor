@@ -13,22 +13,22 @@ export const PrimaryModalContainer = (props) => {
 
 
   return(
-    <div className="modal fade" id="primaryModal" tabIndex="-1" role="dialog" aria-labelledby="primaryModalTitle" aria-hidden="true">
-      <div className={`g1ModalDialog modal-dialog ${className}`} role="document">
-        <div className="modal-content">
+    <div className='modal fade' id='primaryModal' tabIndex='-1' role='dialog' aria-labelledby='primaryModalTitle' aria-hidden='true' style={{zIndex: 6000}}>
+      <div className={`g1ModalDialog modal-dialog ${className}`} role='document'>
+        <div className='modal-content'>
 
-          <div className="modal-header">
-            <h5 className="modal-title" id="primaryModalTitle">{header}</h5>
+          <div className='modal-header'>
+            <h5 className='modal-title' id='primaryModalTitle'>{header}</h5>
           </div>
-          <div className="g1CloseContainer">
+          <div className='g1CloseContainer'>
             <button
-              type="button"
+              type='button'
               className='close sticky-top pt-3'
-              data-dismiss="modal"
-              aria-label="Close"
+              data-dismiss='modal'
+              aria-label='Close'
               onClick={runOnModalClose}
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden='true'>&times;</span>
             </button>
           </div>
 
@@ -55,7 +55,7 @@ export const PMFooterSpace = () => <span className='flex-fill'></span>;
 
 export const PMFooter = ({children, className = ''}) => {
   return(
-    <div className="modal-footer py-1">
+    <div className='modal-footer py-1'>
       <div className={`d-flex w-100 m-2 ${className}`}>
         {children}
       </div>
