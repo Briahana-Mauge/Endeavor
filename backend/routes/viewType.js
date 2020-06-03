@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const { hashPassword, comparePasswords } = require('../auth/helpers');
-
 const adminQueries = require('../queries/admin');
 const volunteersQueries = require('../queries/volunteers');
 const fellowsQueries = require('../queries/fellows');
