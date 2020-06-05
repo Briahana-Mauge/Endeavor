@@ -131,7 +131,7 @@ export default function Events(props) {
                 }
             </div>
             
-            <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+            <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
                 {
                     showEvent
                         ?   <EventCard
