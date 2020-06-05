@@ -1,0 +1,31 @@
+// COMMON STYLINGS between events LIST & GRID
+.g1EventsResultCard {
+    font-family: var(--ff-body);
+    color: var(--color-black);
+    line-height: 1rem;
+}
+
+
+
+
+// LIST VIEW STYLING
+.g1ListResults {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+
+}
+
+
+
+
+
+// GRID VIEW STYLING
+.g1GridResults {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+
+}
