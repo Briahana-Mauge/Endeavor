@@ -23,7 +23,7 @@
     }
 }
 
-// FONT ASSIGNMENTS
+// COMMON STYLINGS between events LIST & GRID
 .g1VolResultCard {
     font-family: var(--ff-body);
     color: var(--color-black);
@@ -107,7 +107,7 @@
 
                 opacity: 0;
                 z-index: -3000;
-                transform: translateX(700%);
+                transform: translateX(-1000%);
                 transition: opacity .2s ease-out;
             }
 
@@ -602,7 +602,6 @@
                     padding: .25rem .6rem;
                     border: solid 1px #333;
                     border-radius: 0 var(--border-radii) 0 0;
-                    transform: translateX(700%);
                 }
 
                 &:hover::before {
