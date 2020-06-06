@@ -181,6 +181,7 @@ export default function EventPreviewCard(props) {
                         :   <strong>Request pending</strong>
                     :   null
                 }
+                <div className='g1EvResultCard__BackgroundShift'></div>
             </div>
         </div>
     )

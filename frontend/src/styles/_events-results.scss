@@ -50,6 +50,20 @@
     &__VolsPending {
         color: #ce7b00;
     }
+
+    &__BackgroundShift {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color .4s linear, border 1s linear;
+        z-index: 2000;
+    }
+
+    &__TitleLink:hover ~ .g1EvResultCard__BackgroundShift {
+        outline: solid 2px var(--color-highlight);
+        background-color: #b8ebff;
+    }
 }
 
 
@@ -161,24 +175,46 @@
             padding: 0 var(--margin-x);
         }
 
-        // &__DateTime {
-        //     font-size: 1rem;
-        //     background-color: #cecce6;
-        //     margin-bottom: 1rem;
-        //     padding: 0 var(--margin-x) .1rem var(--margin-x);
-        // }
-
         &__Location {
             margin: 1rem 0;
         }
 
         &__Hosts,
         &__Cohorts {
-
             b {
                 display: inline-block;
                 margin-right: .4rem;
             }
+        }
+
+        &__TitleLink::after {
+            content: 'Open Event';
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1.2;
+            background-color: var(--color-highlight);
+            position: absolute;
+            bottom: 1rem;
+            right: .25rem;
+            text-align: center;
+            padding: 0.25rem 0.7rem;
+            border: solid 1px #fff;
+            border-width: 1px 0 0 1px;
+            border-radius: var(--border-radii) 0 var(--border-radii) 0;
+            opacity: 0;
+            z-index: -3000;
+            transform: scale(0);
+            transition: opacity .2s ease-out;
+        }
+
+        &__TitleLink:hover::after {
+            opacity: 1;
+            z-index: 3000;
+            transform: scale(1);
+        }
+
+        &__BackgroundShift {
+            display: none;
         }
     }
 }
