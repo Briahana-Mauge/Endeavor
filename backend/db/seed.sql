@@ -1,9 +1,8 @@
--- DROP DATABASE IF EXISTS capstone_project_db;
--- CREATE DATABASE capstone_project_db;
+-- DROP DATABASE IF EXISTS endeavor_db;
+-- CREATE DATABASE endeavor_db;
 
--- \c capstone_project_db
+-- \c endeavor_db
 
-DROP TABLE IF EXISTS volunteers_hours;
 DROP TABLE IF EXISTS event_fellows;
 DROP TABLE IF EXISTS event_volunteers;
 DROP TABLE IF EXISTS events;
@@ -30,7 +29,7 @@ CREATE TABLE cohorts (
 
 CREATE TABLE users_data (
     user_email VARCHAR (50) PRIMARY KEY,
-    password VARCHAR,
+    password VARCHAR NOT NULL,
     role VARCHAR (10) NOT NULL,
     deleted DATE DEFAULT NULL
 );
@@ -112,7 +111,6 @@ CREATE TABLE mentor_pairs (
     m_id SERIAL PRIMARY KEY,
     mentor INT NOT NULL REFERENCES volunteers(v_id),
     mentee INT NOT NULL REFERENCES fellows(f_id),
-    -- m_active BOOLEAN NOT NULL DEFAULT TRUE,
     starting_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
     deleted DATE DEFAULT NULL
 );
@@ -152,13 +150,6 @@ CREATE TABLE event_fellows (
     UNIQUE (eventf_id, fellow_id)
 );
 
-CREATE TABLE volunteers_hours (
-    vh_id SERIAL PRIMARY KEY,
-    volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
-    banked_time INT NOT NULL DEFAULT 0,
-    planned_time INT NOT NULL DEFAULT 0,
-    deleted DATE DEFAULT NULL
-);
 
 
 -- SEEDING DATABASE
@@ -254,8 +245,7 @@ INSERT INTO users_data (user_email, password, role) VALUES
     ('sherrarkhan@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),  -- 35
     ('suzetteislam@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('vonielbrown@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
-    ('aminebensalem@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
-    ('karenmorisset@pursuit.org', NULL, 'fellow');
+    ('aminebensalem@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow');
 
 
 INSERT INTO administration (a_first_name, a_last_name, a_email, admin, a_picture) VALUES
@@ -519,15 +509,3 @@ INSERT INTO event_fellows (eventf_id, fellow_id) VALUES
     (8, 3),
     (9, 4),
     (9, 5);
-
-INSERT INTO volunteers_hours (volunteer_id, banked_time, planned_time) VALUES
-    (1, 20, 4),
-    (2, 45, 2),
-    (3, 23, 3),
-    (4, 7, 5),
-    (5, 65, 0),     -- 5
-    (6, 78, 0),
-    (7, 3, 5),
-    (8, 44, 7),
-    (9, 34, 1),
-    (10, 88, 0);    -- 10

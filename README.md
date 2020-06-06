@@ -51,6 +51,9 @@
 
 ## Developers' Notes
 
+### **Database Schema**
+![Database Schema](/docs/DatabaseSchema.png)
+
 ### **Server Endpoints**
 - **Fellows**
 
