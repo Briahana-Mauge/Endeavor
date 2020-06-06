@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import Spinner from './Spinner';
 
 export default function EventForm (props) {
     const { setFeedback } = props;
@@ -176,7 +177,7 @@ export default function EventForm (props) {
     }
 
     if (loading) {
-        return <h1>Spinner placeholder</h1>
+        return <Spinner/>
     }
 
     return (
