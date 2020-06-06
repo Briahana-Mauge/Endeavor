@@ -5,6 +5,10 @@
     color: var(--color-black);
     line-height: 1rem;
 
+    &__Inner--Header {
+        line-height: .8rem;
+    }
+
     &__TitleLink,
     &__Hosts,
     &__Cohorts,
@@ -109,6 +113,8 @@
 
             &--Header {
                 padding: .4rem 0;
+                font-size: .8rem;
+                line-height: .8rem;
                 font-weight: bold;
                 background-color: #aeabe2;
             }
@@ -193,6 +199,7 @@
             }
             &__TitleLink {
                 @include flex-straight(column);
+                display: flex !important;
             }
 
             &__TitleLink { grid-area: 1 / 1 / -1 / 1; }
@@ -202,7 +209,7 @@
             &__VolsCounts { grid-area: 1 / 4 / -1 / 4; }
 
             &__Inner--Header {
-                grid-template-rows: repeat(2, 1rem);
+                grid-template-rows: repeat(2, .8rem);
             }
 
             .g1ERHeader {
@@ -233,7 +240,7 @@
             &__VolsCounts { grid-area: 1 / 3 / -1 / 3; }
 
             &__Inner--Header {
-                grid-template-rows: repeat(3, 1rem);
+                grid-template-rows: repeat(3, .8rem);
             }
 
             &__Inner--Header > div { grid-area: 1 / 1; }
@@ -248,52 +255,41 @@
             }
         }
 
-        // @media (max-width: 575px) {
-        //     .g1InnerVolResultCard {
-        //         grid-template-rows: 2.7rem 1.5rem 2.3rem min-content 1fr;
-        //         grid-template-columns: 2fr 3fr;
-        //     }
+        @media (max-width: 575px) {
+            &__Inner {
+                grid-template-rows: min-content 1.5rem auto;
+                grid-template-columns: minmax(10.5rem, auto) minmax(6.5rem, 9rem);
+                border-width: 2px;
+            }
+            &__TitleLink,
+            &__Inner--Header > div {
+                @include flex-straight(column);
+                display: flex !important;
+            }
 
-        //     &__IconsBar { grid-area: 4 / 1; justify-self: end; position: relative; top: -2px; padding-right: 1rem; }
-        //     &__NameLink {
-        //         grid-area: 3 / 1;
-        //         padding-right: 1rem;
-        //         width: inherit;
-        //         text-align: right;
-        //         h4 { line-height: 1rem !important; text-align: right; }
-        //     }
-        //     &__JobBox {
-        //         grid-area: 5 / 1;
-        //         margin-right: 0;
-        //         padding-right: 1rem;
-        //         text-align: right;
-        //         &::before {
-        //             content: '—';
-        //         }
-        //     }
-        //     &__AvatarLink { grid-area: 1 / 1 / 3 / 1; justify-self: end; margin-right: 1rem; }
-        //         &__Avatar { margin: 0; }
-        //     &__Interests { grid-area: 3 / 2 / 4 / 2; margin-left: 0; }
-        //     &__Skills { grid-area: 4 / 2 / -1 / 2; }
-        //     &__NextEvent { grid-area: 1 / 2; }
+            &__TitleLink { grid-area: 1 / 1 / 3 / 1; }
+            &__Hosts { grid-area: 1 / 2; }
+            &__Cohorts { grid-area: 2 / 2; }
+            &__Location { grid-area: 3 / 1 / -1 / 1; margin: 0 0 0 calc(var(--margin-right) * 2); }
+            &__VolsCounts { grid-area: 3 / 2 / -1 / 2; }
 
-        //     .g1InnerVolResultCard__Header {
-        //         grid-template-rows:  repeat(3, 1rem);
-        //     }
+            &__Inner--Header {
+                grid-template-rows: repeat(3, .8rem);
+            }
 
-        //     .g1VRHeader {
-        //         &--empty1 { grid-area: 3 / 1; }
-        //         &--empty2 { grid-area: 3 / 1; }
-        //         &--name { grid-area: 1 / 1; justify-self: end; margin-right: 1rem; }
-        //         &--job { grid-area: 2 / 1; justify-self: end; margin-right: 1rem; text-align: right; }
-        //         &--skills { grid-area: 3 / 2; }
-        //         &--interests { grid-area: 2 / 2; margin-left: 0 !important; }
-        //         &--nextevent { grid-area: 1 / 2; }
-        //     }
-        // }
+            &__Inner--Header > div { grid-area: 1 / 1; }
+
+            .g1ERHeader {
+                    &--event { grid-area: 1 / 1; margin-left: var(--margin-right); }
+                    &--dateTime { grid-area: 2 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--host { grid-area: 1 / 2; }
+                &--cohorts { grid-area: 2 / 2; }
+                &--location { grid-area: 3 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--volunteers { grid-area: 3 / 2; }
+            }
+        }
     }
 }
-
 
 
 
