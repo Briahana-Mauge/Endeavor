@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 
 export default function EventPreviewCard(props) {
-    const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
+    const { event, loggedUser, targetEvent, setTargetEvent } = props;
 
     /* 
         props.event.volunteers_list is an array of STRING 
@@ -81,10 +82,10 @@ export default function EventPreviewCard(props) {
     }, [ event, volunteersList, targetEvent.event_id, setEventAsTarget ]);
 
     
-    const handleClickOnEvent = () => {
-        setEventAsTarget();
-        setShowEvent(true);
-    }
+    // const handleClickOnEvent = () => {
+    //     setEventAsTarget();
+    //     setShowEvent(true);
+    // }
     
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -95,40 +96,72 @@ export default function EventPreviewCard(props) {
     const eventStart = formatEventDate(event.event_start);
     const eventEnd = formatEventDate(event.event_end);
 
+    // temporary visual functions to keep consistency with dashboard dates. eventually convert all dates to one handling system
+    const simplifyDate = (dateString) => {
+        if (dateString.slice(-5, -4) === '/') {
+            return dateString.slice(0, -5);
+        } else {
+            return dateString;
+        }
+    }
+
+    const simplifyHours = (timeString) => {
+        if (timeString.slice(-2) === 'AM' || timeString.slice(-2) === 'PM') {
+            return timeString.slice(0, -3) + timeString.slice(-2, -1).toLowerCase();
+        } else {
+            return timeString;
+        }
+    }
+
     return (
-        <div className='col-12 col-sm-6 col-lg-4 col-xl-3 p-2'>
-            <div className='border rounded-lg p-2'>
-                <header
-                    className='text-center font-weight-bolder'
-                    onClick={handleClickOnEvent}
-                    data-toggle="modal"
-                    data-target="#primaryModal"
-                >
-                    {event.topic}
-                </header>
-                <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div>
-                {
-                    eventStart[0] === eventEnd[0]
-                    ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
-                    :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
-                }
-                <p><strong>Host: </strong>{event.instructor}</p>
-                <p><strong>For: </strong>{event.cohort}</p>
-                <p><strong>Location: </strong>{event.location}</p>
+        <div className='g1EvResultCard px-1'>
+            <div className='g1EvResultCard__Inner'>
+                <Link to={`/event/${event.event_id}`} className='g1EvResultCard__TitleLink'>
+                    <h5
+                        // onClick={handleClickOnEvent}
+                        // data-toggle="modal"
+                        // data-target="#primaryModal"
+                    >
+                        {event.topic}
+                    </h5>
+                    <div className='g1EvResultCard__DateTime'>
+                        {/* <b>Date / Time</b> */}
+                        {
+                            eventStart[0] === eventEnd[0]
+                            ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                                ?   <>{simplifyDate(eventStart[0])}</>
+                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>—</span> {simplifyHours(eventEnd[1])}</>
+                            :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                                ?   <>{simplifyDate(eventStart[0])} <span>thru</span> {simplifyDate(eventEnd[0])}</>
+                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>thru</span> {simplifyDate(eventEnd[0])}, {simplifyHours(eventEnd[1])}</>
+                        }
+                    </div>
+                </Link>
+                <div className='g1EvResultCard__Hosts'>
+                    <b>Host</b>
+                    {event.instructor}
+                </div>
+                <div className='g1EvResultCard__Cohorts'>
+                    <b>For</b>
+                    {event.cohort}
+                </div>
+                <div className='g1EvResultCard__Location'>
+                    <b>Location</b>
+                    {event.location}
+                </div>
                 {
                     loggedUser && loggedUser.a_id
-                    ?   <p>
-                            <strong>Volunteers: </strong>{acceptedVolunteers.length + ' / ' + event.number_of_volunteers + ' '}
-                            {
-                                event.volunteers_list[0] && event.volunteers_list.length - acceptedVolunteers.length
-                                ? <span className='text-warning'> ({event.volunteers_list.length - acceptedVolunteers.length} pending)</span>
+                    ?   <div className='g1EvResultCard__VolsCounts'>
+                            <b>Volunteers</b>
+                            <div>
+                                <i>{acceptedVolunteers.length} confirmed</i> /
+                                {' ' + event.number_of_volunteers} requested
+                            </div>
+                            {event.volunteers_list.length - acceptedVolunteers.length > 0
+                                ? <div className='g1EvResultCard__VolsPending'>{event.volunteers_list.length - acceptedVolunteers.length} pending</div>
                                 : null
                             }
-                        </p>
+                        </div>
                     :   null
                 }
                 {
