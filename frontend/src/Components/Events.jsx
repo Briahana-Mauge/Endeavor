@@ -101,7 +101,7 @@ export default function Events(props) {
                 </select>
 
                 <select className='form-control mb-2 mr-sm-2' value={pastOrUpcoming} onChange={e => setPastOrUpcoming(e.target.value)}>
-                    <option value='upcoming'>Upcoming events</option>
+                    <option value='upcoming'>Ongoing/Upcoming events</option>
                     <option value='past'>Past events</option>
                 </select>
 

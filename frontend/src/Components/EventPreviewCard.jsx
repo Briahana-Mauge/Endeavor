@@ -107,7 +107,7 @@ export default function EventPreviewCard(props) {
                 >
                     <Link to={`/event/${event.event_id}`} className='plainLink'>{event.topic}</Link>
                 </header>
-                <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div>
+                {/* <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div> */}
                 {
                     eventStart[0] === eventEnd[0]
                     ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'

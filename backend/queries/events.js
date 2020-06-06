@@ -170,20 +170,27 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
 
+  // const endOfQuery = `
+  //   GROUP BY
+  //     event_id,
+  //     cohort_id
+  //   ORDER BY (
+  //     CASE 
+  //       WHEN event_start > NOW()
+  //         THEN 2
+  //       WHEN event_end > NOW()
+  //         THEN 1
+  //       ELSE 0
+  //       END
+  //     ) DESC, event_start ASC
+  // `;
   const endOfQuery = `
     GROUP BY
       event_id,
       cohort_id
-    ORDER BY (
-      CASE 
-        WHEN event_start > NOW()
-          THEN 2
-        WHEN event_end > NOW()
-          THEN 1
-        ELSE 0
-        END
-      ) DESC, event_start ASC
+    ORDER BY event_start ASC
   `;
+
   let condition = ' WHERE events.deleted IS NULL ';
 
   if (vName) {
@@ -199,7 +206,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   }
 
   if (upcoming) {
-    condition += `AND event_start > now() `
+    condition += `AND event_end > now() `
   }
   if (past) {
     condition += `AND event_start <= now() `
