@@ -1,14 +1,16 @@
 // COMMON STYLINGS between events LIST & GRID
 .g1EvResultCard {
+    position: relative;
     font-family: var(--ff-body);
     color: var(--color-black);
     line-height: 1rem;
 
-    b {
-        display: block;
-        color: #000;
-        font-size: .8rem;
-        text-transform: lowercase;
+    &__TitleLink,
+    &__Hosts,
+    &__Cohorts,
+    &__Location,
+    &__VolsCounts {
+        z-index: 2100;
     }
 
     &__TitleLink {
