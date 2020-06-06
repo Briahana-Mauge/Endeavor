@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import Fellows from './Fellows';
+import Spinner from './Spinner';
 
 export default function Mentoring (props) {
     const { loggedUser } = props;
@@ -93,7 +94,7 @@ export default function Mentoring (props) {
         <>
             {
                 waitingForData
-                ?   null // OR it can be a spinner 
+                ?   <Spinner size= {300}/> //null // OR it can be a spinner 
                 :   <div className='row p-3'>
                         {
                             volunteer.deleted
@@ -190,19 +191,6 @@ export default function Mentoring (props) {
             }
                     </div>
             }
-
-            {/* {
-                showFellowsList
-                ?   <Fellows 
-                        setFeedback={setFeedback} 
-                        volunteer={volunteer}
-                        reload={reload}
-                        setReload={setReload}
-                        setShowFellowsList={setShowFellowsList}
-                        loggedUser={loggedUser}
-                    /> 
-                : null
-            } */}
         </>
     )
 }
