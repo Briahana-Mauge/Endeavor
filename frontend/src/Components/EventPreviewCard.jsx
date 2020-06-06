@@ -117,23 +117,18 @@ export default function EventPreviewCard(props) {
         <div className='g1EvResultCard px-1'>
             <div className='g1EvResultCard__Inner'>
                 <Link to={`/event/${event.event_id}`} className='g1EvResultCard__TitleLink'>
-                    <h5
-                        // onClick={handleClickOnEvent}
-                        // data-toggle="modal"
-                        // data-target="#primaryModal"
-                    >
+                    <h5>
                         {event.topic}
                     </h5>
                     <div className='g1EvResultCard__DateTime'>
-                        {/* <b>Date / Time</b> */}
                         {
                             eventStart[0] === eventEnd[0]
                             ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
                                 ?   <>{simplifyDate(eventStart[0])}</>
-                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>—</span> {simplifyHours(eventEnd[1])}</>
+                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>-</span> {simplifyHours(eventEnd[1])}</>
                             :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                                ?   <>{simplifyDate(eventStart[0])} <span>thru</span> {simplifyDate(eventEnd[0])}</>
-                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>thru</span> {simplifyDate(eventEnd[0])}, {simplifyHours(eventEnd[1])}</>
+                                ?   <>{simplifyDate(eventStart[0])} <span>—</span> {simplifyDate(eventEnd[0])}</>
+                                :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>—</span> {simplifyDate(eventEnd[0])}, {simplifyHours(eventEnd[1])}</>
                         }
                     </div>
                 </Link>
