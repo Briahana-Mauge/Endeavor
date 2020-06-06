@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function EventPreviewCard(props) {
-    const { event, loggedUser, targetEvent, setTargetEvent } = props;
+    const { event, loggedUser, isEventSearchGrided, targetEvent, setTargetEvent } = props;
 
     /* 
         props.event.volunteers_list is an array of STRING 
@@ -153,14 +153,29 @@ export default function EventPreviewCard(props) {
                     loggedUser && loggedUser.a_id
                     ?   <div className='g1EvResultCard__VolsCounts'>
                             <b>Volunteers</b>
-                            <div>
-                                <i>{acceptedVolunteers.length} confirmed</i> /
-                                {' ' + event.number_of_volunteers} requested
-                            </div>
-                            {event.volunteers_list.length - acceptedVolunteers.length > 0
-                                ? <div className='g1EvResultCard__VolsPending'>{event.volunteers_list.length - acceptedVolunteers.length} pending</div>
-                                : null
+                            {isEventSearchGrided
+                                ?   <>
+                                        <div>
+                                            <i>{acceptedVolunteers.length} confirmed</i>
+                                            <span>{' / ' + event.number_of_volunteers} requested</span>
+                                        </div>
+                                        {event.volunteers_list.length - acceptedVolunteers.length > 0
+                                            ? <div className='g1EvResultCard__VolsPending'>{event.volunteers_list.length - acceptedVolunteers.length} pending</div>
+                                            : null
+                                        }
+                                    </>
+                                :   <>
+                                        <div>
+                                            <i>{acceptedVolunteers.length} confirmed</i>, <br />
+                                            <span>{event.number_of_volunteers} requested</span><br />
+                                            {event.volunteers_list.length - acceptedVolunteers.length > 0
+                                                ? <span className='g1EvResultCard__VolsPending'>≫ {event.volunteers_list.length - acceptedVolunteers.length} pending</span>
+                                                : null
+                                            }
+                                        </div>
+                                    </>
                             }
+
                         </div>
                     :   null
                 }

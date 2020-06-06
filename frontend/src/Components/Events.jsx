@@ -125,6 +125,7 @@ export default function Events(props) {
                         setShowEvent={setShowEvent}
                         targetEvent={targetEvent}
                         setTargetEvent={setTargetEvent}
+                        isEventSearchGrided={isEventSearchGrided}
                     />)
                 }
             </div>
