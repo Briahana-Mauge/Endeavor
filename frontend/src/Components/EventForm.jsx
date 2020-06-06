@@ -176,9 +176,9 @@ export default function EventForm (props) {
         }
     }
 
-    if (loading) {
-        return <Spinner/>
-    }
+    // if (loading) {
+    //     return <Spinner/>
+    // }
 
     return (
             <form className='form-row m-3' onSubmit={handleSubmitForm}>

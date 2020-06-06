@@ -107,9 +107,9 @@ export default function EventRender(props) {
         volunteersList
     ]);
 
-    if (loading) {
-        return <Spinner/>
-    }
+     // if (loading) {
+    //     return <Spinner/>
+    // }
 
     return (
         <div className='container'>
