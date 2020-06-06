@@ -113,6 +113,10 @@ export default function EventRender(props) {
 
     return (
         <div className='container'>
+            <div className='modal-header'>
+                <h4 className='font-weight-bold'>{eventObj.topic}</h4>
+            </div>
+            
             <EventCard 
                 loggedUser={loggedUser} 
                 event={eventObj}

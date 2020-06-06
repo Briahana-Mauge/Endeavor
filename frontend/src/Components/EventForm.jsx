@@ -93,7 +93,7 @@ export default function EventForm (props) {
     }
 
     useEffect(() => {
-        let isMounted = false;
+        let isMounted = true;
         if (eventId) {
             axios.get(`/api/events/event/${eventId}`)
                 .then(response => {

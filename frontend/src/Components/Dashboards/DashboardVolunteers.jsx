@@ -75,7 +75,7 @@ const DashboardVolunteers = (props) => {
           </div>
       </div>
 
-      <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+      <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
         {
           showEvent
             ? <EventCard
