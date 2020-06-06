@@ -5,8 +5,8 @@ import axios from 'axios';
 
 import UIResultsModeToggle from './UIResultsModeToggle';
 import VolunteerCard from './VolunteerCard';
-import { PrimaryModalContainer } from './Modals/PrimaryModal';
-import ProfileRender from './ProfilePages/ProfileRender';
+// import { PrimaryModalContainer } from './Modals/PrimaryModal';
+// import ProfileRender from './ProfilePages/ProfileRender';
 
 
 export default function Volunteers (props) {
@@ -123,6 +123,7 @@ export default function Volunteers (props) {
                     <option value='name'>Name</option>
                     <option value='v_email'>Email</option>
                     <option value='company'>Company</option>
+                    <option value='title'>Title</option>
                 </select>
 
                 <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setUrlTargetSkill(e.target.value)}>
@@ -166,7 +167,7 @@ export default function Volunteers (props) {
                 )}
             </div>
 
-            <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
+            {/* <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
                 {
                     displayTargetUser
                         ? <ProfileRender
@@ -177,7 +178,7 @@ export default function Volunteers (props) {
                         />
                         : null
                 }
-            </PrimaryModalContainer>
+            </PrimaryModalContainer> */}
         </>
     );
 }

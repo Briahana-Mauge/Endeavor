@@ -4,8 +4,8 @@ import axios from 'axios';
 
 import UIResultsModeToggle from './UIResultsModeToggle';
 import EventPreviewCard from './EventPreviewCard';
-import { PrimaryModalContainer } from './Modals/PrimaryModal';
-import EventCard from './EventCard';
+// import { PrimaryModalContainer } from './Modals/PrimaryModal';
+// import EventCard from './EventCard';
 // import EventRender from './EventRender';
 
 
@@ -16,7 +16,7 @@ export default function Events(props) {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
     const [filter, setFilter] = useState('');
-    const [pastOrUpcoming, setPastOrUpcoming] = useState('');
+    const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
     const [reload, setReload] = useState(false); 
     
     const [targetEvent, setTargetEvent] = useState({});
@@ -101,7 +101,6 @@ export default function Events(props) {
                 </select>
 
                 <select className='form-control mb-2 mr-sm-2' value={pastOrUpcoming} onChange={e => setPastOrUpcoming(e.target.value)}>
-                    <option value=''>Any date</option>
                     <option value='upcoming'>Upcoming events</option>
                     <option value='past'>Past events</option>
                 </select>
@@ -131,7 +130,7 @@ export default function Events(props) {
                 }
             </div>
             
-            <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
+            {/* <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
                 {
                     showEvent
                         ?   <EventCard
@@ -144,7 +143,7 @@ export default function Events(props) {
                             />
                         :   null
                 }
-            </PrimaryModalContainer>
+            </PrimaryModalContainer> */}
             {/* {
                 showEvent 
                 ?   <EventRender 

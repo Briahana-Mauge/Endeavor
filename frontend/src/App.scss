@@ -42,3 +42,12 @@
 .plainUl {
     list-style: none;
 }
+
+.plainLink {
+    text-decoration: inherit;
+    color: inherit;
+}
+.plainLink:hover {
+    text-decoration: inherit;
+    color: inherit;
+}

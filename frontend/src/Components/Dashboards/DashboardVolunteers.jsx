@@ -10,9 +10,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import VolunteerEDash from './EventsDash/VolunteerEDash';
-import EventCard from '../EventCard';
 import ChartsVolunteer from './ChartsVolunteer';
-import { PrimaryModalContainer } from '../Modals/PrimaryModal';
+// import { PrimaryModalContainer } from '../Modals/PrimaryModal';
+// import EventCard from '../EventCard';
 
 
 const DashboardVolunteers = (props) => {
@@ -75,7 +75,7 @@ const DashboardVolunteers = (props) => {
           </div>
       </div>
 
-      <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
+      {/* <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
         {
           showEvent
             ? <EventCard
@@ -88,7 +88,7 @@ const DashboardVolunteers = (props) => {
               />
             : null
         }
-      </PrimaryModalContainer>
+      </PrimaryModalContainer> */}
 
     </>
     // {
