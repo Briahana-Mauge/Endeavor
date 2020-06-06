@@ -117,6 +117,21 @@ export default function Events(props) {
 
             {/* Search results */}
             <div className={`g1EventsResults ${isEventSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
+                {isEventSearchGrided
+                    ?   null
+                    :   <div className='g1EvResultCard px-1'>
+                            <div className='g1EvResultCard__Inner g1EvResultCard__Inner--Header'>
+                                <div>
+                                    <div className='g1ERHeader--event'>Event</div>
+                                    <div className='g1ERHeader--dateTime'>Date / Time</div>
+                                </div>
+                                <div className='g1ERHeader--host'>Host(s)</div>
+                                <div className='g1ERHeader--cohorts'>Cohorts</div>
+                                <div className='g1ERHeader--location'>Location</div>
+                                <div className='g1ERHeader--volunteers'>Volunteers</div>
+                            </div>
+                        </div>
+                }
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}
