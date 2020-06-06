@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import Fellows from './Fellows';
 
-
 export default function Mentoring (props) {
     const { loggedUser } = props;
     const { volunteerId } = useParams();
@@ -149,7 +148,7 @@ export default function Mentoring (props) {
                                 {
                                     currentMentees.map(mentee => 
                                         <li key={mentee[0] + mentee[1] + mentee[2]} className='ml-3'>
-                                            <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>X</button>
+                                            <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>End Pairing</button>
                                             <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
                                                 {mentee[1]}
                                             </span>: {new Date(mentee[2]).toLocaleDateString()}
@@ -177,11 +176,7 @@ export default function Mentoring (props) {
                                 : null
                             }
                         </div>
-
-                    </div>
-            }
-
-            {
+                        {
                 showFellowsList
                 ?   <Fellows 
                         setFeedback={setFeedback} 
@@ -193,6 +188,21 @@ export default function Mentoring (props) {
                     /> 
                 : null
             }
+                    </div>
+            }
+
+            {/* {
+                showFellowsList
+                ?   <Fellows 
+                        setFeedback={setFeedback} 
+                        volunteer={volunteer}
+                        reload={reload}
+                        setReload={setReload}
+                        setShowFellowsList={setShowFellowsList}
+                        loggedUser={loggedUser}
+                    /> 
+                : null
+            } */}
         </>
     )
 }
