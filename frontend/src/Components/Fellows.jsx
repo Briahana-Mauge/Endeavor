@@ -94,7 +94,7 @@ export default function Volunteers (props) {
                 </select>
 
                 <button className='btn btn-primary mb-2'>Search</button>
-                <span className='btn btn-danger mb-2 float-right ml-auto' onClick={e => props.setShowFellowsList(false)} >X</span> 
+                <span className='btn btn-danger mb-2 float-right ml-auto' onClick={e => props.setShowFellowsList(false)} >Close</span> 
             </form>
 
             <div className='row m-1'>
