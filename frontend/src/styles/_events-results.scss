@@ -1,8 +1,55 @@
 // COMMON STYLINGS between events LIST & GRID
-.g1EventsResultCard {
+.g1EvResultCard {
     font-family: var(--ff-body);
     color: var(--color-black);
     line-height: 1rem;
+
+    b {
+        display: block;
+        color: #000;
+        font-size: .8rem;
+        text-transform: lowercase;
+    }
+
+    &__TitleLink {
+        height: min-content;
+
+        h5 {
+            display: block;
+            margin: 0;
+        }
+
+        @include link-states();
+
+        &:link,  &:visited {
+            color: #2621b3;
+        }
+        &:hover, &:active {
+            color: #eee;
+        }
+    }
+
+    &__DateTime {
+        span {
+            // color: #777;
+            font-size: .8rem;
+            font-style: italic;
+        }
+    }
+
+    &__VolsCounts {
+        b {
+            color: var(--color-primary);
+        }
+        i {
+            font-style: normal;
+            color: green;
+        }
+    }
+
+    &__VolsPending {
+        color: #ce7b00;
+    }
 }
 
 
@@ -27,5 +74,111 @@
     flex-direction: row;
     flex-wrap: wrap;
 
+    .g1EvResultCard {
+        position: relative;
+        width: 100%;
+        padding-top: .5rem;
+        padding-bottom: 1rem;
 
+        --margin-x: .5rem;
+
+        &__Inner {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            height: 100%;
+            padding-bottom: .8rem;
+
+            background-color: var(--color-white);
+            border: solid 1px var(--color-white);
+            border-radius: var(--border-radii);
+        }
+
+        // col-12
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+
+        @media (min-width: 500px) { // col-sm-6 (altered down to 500px from 576px)
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        @media (min-width: 768px) { // col-md-4
+            -ms-flex: 0 0 33.333333%;
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        @media (min-width: 992px) { // col-lg-3
+            -ms-flex: 0 0 25%;
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
+
+        &__TitleLink {
+            margin-bottom: 1rem;
+            padding: .2rem var(--margin-x) .2rem var(--margin-x);
+            border-bottom: solid 1px #aeabe2;
+
+            h5 {
+                margin-bottom: 0px;
+                border-radius: var(--border-radii) var(--border-radii) 0 0;
+
+                font-size: 1.2rem;
+            }
+
+            &:link,  &:visited {
+                background-color: #cecce6;
+                transition: color .4s ease-out, background-color .2s ease-out;
+
+                .g1EvResultCard__DateTime {
+                    margin-top: .2rem;
+                    color: var(--color-black);
+                    transition: color .4s ease-out;
+
+                    span { color: var(--color-primary); transition: color .4s ease-out; }
+                }
+            }
+            &:hover, &:active {
+                color: var(--color-white);
+                background-color: var(--color-highlight);
+
+                .g1EvResultCard__DateTime {
+                    // color: var(--color-white);
+
+                    span { color: var(--color-white); }
+                }
+            }
+        }
+
+
+        &__Hosts,
+        &__Cohorts,
+        &__Location,
+        &__VolsCounts {
+            padding: 0 var(--margin-x);
+        }
+
+        // &__DateTime {
+        //     font-size: 1rem;
+        //     background-color: #cecce6;
+        //     margin-bottom: 1rem;
+        //     padding: 0 var(--margin-x) .1rem var(--margin-x);
+        // }
+
+        &__Location {
+            margin: 1rem 0;
+        }
+
+        &__Hosts,
+        &__Cohorts {
+
+            b {
+                display: inline-block;
+                margin-right: .4rem;
+            }
+        }
+    }
 }
