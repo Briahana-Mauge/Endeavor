@@ -33,9 +33,6 @@ export default function Events(props) {
     const [urlSearchValue, setUrlSearchValue] = useState(strQuerySearchValue || '');
     const [urlFilter, setUrlFilter] = useState(strQueryFilter || '');
     const [urlPastOrUpcoming, setUrlPastOrUpcoming] = useState(strQueryPastOrUpcoming || 'upcoming');
-    // const [urlSearchValue, setUrlSearchValue] = useState('');
-    // const [urlFilter, setUrlFilter] = useState('');
-    // const [urlPastOrUpcoming, setUrlPastOrUpcoming] = useState('upcoming');
 
     const [results, setResults] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
