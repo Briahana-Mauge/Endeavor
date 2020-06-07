@@ -118,11 +118,15 @@ const NavBar = ({ h1, loggedUser, logout }) => {
         <ul className="container-lg navbar-nav align-items-start pr-0">
           <div className='flex-fill'></div>
 
-          <NAV_LINK to="/" exact text={navUser.admin ? 'Dashboard' : 'Home'} isBurgerOn={isBurgerOn} />
+          <SingleNavLink to="/" exact isBurgerOn={isBurgerOn}>
+            {navUser.admin ? 'Dashboard' : 'Home'}
+          </SingleNavLink>
 
           {showVolunteersLink}
 
-          <NAV_LINK to='/events' text="Events" isBurgerOn={isBurgerOn} />
+          <SingleNavLink to='/events' isBurgerOn={isBurgerOn}>
+            Events
+          </SingleNavLink>
 
           {showMentoringLink}
 
@@ -172,11 +176,13 @@ const Burger = () => {
   );
 }
 
-const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
+const SingleNavLink = ({ to, exact, children, liClassName = "", isBurgerOn }) => {
   return(
     <li className={`nav-item g1MobileTextAlign ${liClassName}`}>
       <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
-        <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>{text}</NavLink>
+        <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>
+          {children}
+        </NavLink>
       </span>
     </li>
   );
