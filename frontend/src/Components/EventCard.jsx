@@ -272,7 +272,7 @@ const EventCard = (props) => {
                             ?   <>
                                     {calendarLink}
                                     <PMFooterSpace />
-                                    <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
+                                    <div className="g1Request g1Confirmed mr-2 pt-2">Confirmed! See you there!</div>
                                     {
                                         new Date(event.event_start).getTime() > Date.now()
                                         ?   <button

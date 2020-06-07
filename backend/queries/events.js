@@ -420,7 +420,8 @@ const getDashEventsForVolunteer = async (volunteerId) => {
         AND volunteers.v_id = $1
         AND event_volunteers.confirmed = TRUE
     GROUP BY volunteers.v_id, event_id, cohort_id
-    ORDER BY event_start ASC;
+    ORDER BY event_start ASC
+    LIMIT 3;
   `;
 
   const pastYearData = `
