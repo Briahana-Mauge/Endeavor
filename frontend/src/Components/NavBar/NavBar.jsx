@@ -75,7 +75,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
     myFellowsLink = <SingleNavLink to='/my_fellows'>My Fellows</SingleNavLink>
     // fellowsLink = <SingleNavLink to='/fellows'>Fellows</SingleNavLink>, // for general search of fellows
   ;
-
+console.log(loggedUser);
 
   /* TOGGLES NULL/SHOW */
   let
@@ -138,8 +138,15 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
           {showEndeavorSheetLink}
 
+          <li className={`nav-item g1MobileTextAlign`}>
+              <NavLink className='g1Navbar__AvatarLink' to={'/profile'}>
+            <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
+                <img src={loggedUser.a_picture} alt={`${loggedUser.a_first_name}'s profile pic`} />
+            </span>
+              </NavLink>
+          </li>
           <SingleNavLink to='/profile' isBurgerOn={isBurgerOn}>
-            My Profile
+            {loggedUser.a_first_name}
           </SingleNavLink>
 
           <Logout logout={logout} />
