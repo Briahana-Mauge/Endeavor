@@ -457,8 +457,9 @@
 // GRID VIEW STYLING
 .g1GridResults {
     display: flex;
-    flex-direction: row;
+    // flex-direction: row;
     flex-wrap: wrap;
+    overflow: hidden;
 
     .g1VolResultCard {
         position: relative;

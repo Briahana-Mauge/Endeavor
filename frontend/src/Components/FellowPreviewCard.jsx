@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 
 export default function FellowPreviewCard(props) {
@@ -71,7 +71,7 @@ export default function FellowPreviewCard(props) {
                 </ul>
 
                 <div className='text-right'>
-                    <button className='btn btn-primary' onClick={viewProfile}>See Profile</button>
+                    <Link className='btn btn-primary' to={`/fellow/${fellow.f_id}`}>See Profile</Link>
                 </div>
             </div>
         </div>
