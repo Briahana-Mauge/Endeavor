@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import axios from 'axios';
 
 import UIResultsModeToggle from './UIResultsModeToggle';
@@ -10,27 +11,49 @@ import EventPreviewCard from './EventPreviewCard';
 
 
 export default function Events(props) {
+    const { search } = useLocation();
     const history = useHistory();
     const { setFeedback, loggedUser, isEventSearchGrided, setIsEventSearchGrided } = props;
 
-    const [search, setSearch] = useState('');
-    const [results, setResults] = useState([]);
+    const getQueryStrings = () => {
+        const values = queryString.parse(search);
+        const date = values.date;
+        delete values.date;
+        const key = Object.keys(values);
+        const value = Object.values(values);
+
+        return [date, key, value];
+    }
+
+    const [searchValue, setSearchValue] = useState('');
     const [filter, setFilter] = useState('');
     const [pastOrUpcoming, setPastOrUpcoming] = useState('upcoming');
-    const [reload, setReload] = useState(false); 
     
+    const [strQueryPastOrUpcoming, strQueryFilter, strQuerySearchValue] = getQueryStrings();
+    const [urlSearchValue, setUrlSearchValue] = useState(strQuerySearchValue || '');
+    const [urlFilter, setUrlFilter] = useState(strQueryFilter || '');
+    const [urlPastOrUpcoming, setUrlPastOrUpcoming] = useState(strQueryPastOrUpcoming || 'upcoming');
+    // const [urlSearchValue, setUrlSearchValue] = useState('');
+    // const [urlFilter, setUrlFilter] = useState('');
+    // const [urlPastOrUpcoming, setUrlPastOrUpcoming] = useState('upcoming');
+
+    const [results, setResults] = useState([]);
     const [targetEvent, setTargetEvent] = useState({});
     const [showEvent, setShowEvent] = useState(false);
+    const [reload, setReload] = useState(false); 
 
 
     useEffect(() => {
+        const [date, searchKey, searchVal] = getQueryStrings();
+
+        setSearchValue(searchVal || '');
+        setFilter(searchKey || '');
+        setPastOrUpcoming(date || 'upcoming');
+
         let isMounted = true;
-        let dateFilter = '';
-        if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
-            dateFilter = 'true'
-        }
+
         if (props.loggedUser && props.loggedUser.a_id) {
-            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);
@@ -42,8 +65,8 @@ export default function Events(props) {
                     }
                 })
         } else {
-            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
-            // axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
+            // axios.get(`/api/events/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=${dateFilter}`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);
@@ -59,7 +82,13 @@ export default function Events(props) {
         //Cleanup
         return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload, filter, pastOrUpcoming]);
+    }, [reload, search]);
+
+
+    useEffect(() => {
+        history.push(`/events?date=${urlPastOrUpcoming}&${urlFilter}=${urlSearchValue}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reload, urlPastOrUpcoming, urlFilter, urlSearchValue]);
 
 
     const handleSearch = (e) => {
@@ -91,16 +120,16 @@ export default function Events(props) {
             {/* Search form */}
             <form className='form-inline' onSubmit={handleSearch}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
-                    placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
+                    placeholder='Search' value={searchValue}  onChange={e => setUrlSearchValue(e.target.value)} />
                 
-                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setFilter(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setUrlFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
                     <option value='topic'>Event Name</option>
                     <option value='v_name'>Volunteer</option>
                     <option value='instructor'>Instructor</option>
                 </select>
 
-                <select className='form-control mb-2 mr-sm-2' value={pastOrUpcoming} onChange={e => setPastOrUpcoming(e.target.value)}>
+                <select className='form-control mb-2 mr-sm-2' value={pastOrUpcoming} onChange={e => setUrlPastOrUpcoming(e.target.value)}>
                     <option value='upcoming'>Ongoing/Upcoming events</option>
                     <option value='past'>Past events</option>
                 </select>

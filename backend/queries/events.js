@@ -206,10 +206,10 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   }
 
   if (upcoming) {
-    condition += `AND event_end > now() `
+    condition += `AND event_end >= now() `
   }
   if (past) {
-    condition += `AND event_start <= now() `
+    condition += `AND event_end < now() `
   }
 
   return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });

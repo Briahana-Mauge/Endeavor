@@ -116,7 +116,7 @@ export default function Volunteers (props) {
             {/* Search form */}
             <form className='form-inline' onSubmit={handleSubmit}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text'
-                    placeholder='Search' value={searchValue} onChange={e => { setUrlSearchValue(e.target.value) }} />
+                    placeholder='Search' value={searchValue} onChange={e => setUrlSearchValue(e.target.value)} />
 
                 <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setUrlFilter(e.target.value)}>
                     <option value=''>Choose a search filter</option>
