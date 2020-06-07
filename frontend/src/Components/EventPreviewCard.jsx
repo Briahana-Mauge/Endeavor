@@ -176,10 +176,13 @@ export default function EventPreviewCard(props) {
                 }
                 {
                     loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
-                    ?   loggedVolunteerRequestAccepted
-                        ?   <strong>I'm part of this event</strong>
-                        :   <strong>Request pending</strong>
-                    :   null
+                        ?   <>
+                                { loggedVolunteerRequestAccepted
+                                    ?   <div className='g1EvResultCard__VolStatus confirmed'>Participation CONFIRMED</div>
+                                    :   <div className='g1EvResultCard__VolStatus'>Participation Pending</div>
+                                }
+                            </>
+                        :   null
                 }
                 <div className='g1EvResultCard__BackgroundShift'></div>
             </div>
