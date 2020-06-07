@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import Spinner from '../Spinner';
 
 export default function FellowProfilePage(props) {
     const history = useHistory();
@@ -88,7 +89,7 @@ export default function FellowProfilePage(props) {
     }, [fellowId]);
 
     if (loading) {
-        return <h1>Spinner Placeholder</h1>
+        return <Spinner/>
     }
 
     return (
