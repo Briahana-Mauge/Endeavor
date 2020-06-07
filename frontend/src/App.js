@@ -260,7 +260,7 @@ function App() {
   }
 
   if (wait) {
-    return <h1 className='text-center text-danger'><Spinner size = {300}/></h1>
+    return <h1 className='text-center text-danger'><Spinner/></h1>
   }
 
 
