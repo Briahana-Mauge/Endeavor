@@ -11,7 +11,7 @@
     "heroku-postbuild": "cd backend && npm install && cd ../frontend && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Amine Bensalem, Briahana Maugé, Joseph P. Pasaoa",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Briahana-Mauge/CapstoneGroup1.git"
