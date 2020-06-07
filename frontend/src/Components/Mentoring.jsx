@@ -88,106 +88,102 @@ export default function Mentoring(props) {
             setFeedback(err);
         }
     }
-    const volunteerInfo = () => {
-        return (
+    const volunteerInfo =
+        <div className='row p-3'>
+            {
+                volunteer.deleted
+                    ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
+                    : null
+            }
 
-            <div className='row p-3'>
-                {
-                    volunteer.deleted
-                        ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
-                        : null
-                }
-
-                <div className='col-sm-6'>
-                    <img
-                        className='d-block imageIcon rounded-circle'
-                        src={volunteer.v_picture || '/images/default_pic.png'}
-                        alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
-                    />
-                    <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
-                </div>
-
-                <div className='col-sm-6'>
-                    <span className='d-block h3'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                    <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
-                        {volunteer.v_email}
-                    </a>
-                    <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
-                    <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
-                    <ul className='plainUl'> Skills:
-                                    {volunteer.skills
-                            ? volunteer.skills.map((skill, index) => <li className='ml-2' key={skill + index}>{skill}</li>)
-                            : null
-                        }
-                    </ul>
-                </div>
+            <div className='col-sm-6'>
+                <img
+                    className='d-block imageIcon rounded-circle'
+                    src={volunteer.v_picture || '/images/default_pic.png'}
+                    alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+                />
+                <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
             </div>
-        )
-    }
 
-    const mentoringInfo = () => {
-        return (
-            <>
-                <div className='col-sm-12'>
-                    <strong className='d-block mx-2'>Mentoring: </strong>
-                    <ul className='plainUl'>
-                        Active:
+            <div className='col-sm-6'>
+                <span className='d-block h3'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
+                <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
+                    {volunteer.v_email}
+                </a>
+                <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
+                <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
+                <ul className='plainUl'> Skills:
+                                    {volunteer.skills
+                        ? volunteer.skills.map((skill, index) => <li className='ml-2' key={skill + index}>{skill}</li>)
+                        : null
+                    }
+                </ul>
+            </div>
+        </div>
+
+
+    const mentoringInfo =
+        <>
+            <div className='col-sm-12'>
+                <strong className='d-block mx-2'>Mentoring: </strong>
+                <ul className='plainUl'>
+                    Active:
                                 {
-                            currentMentees.map(mentee =>
-                                <li key={mentee[0] + mentee[1] + mentee[2]} className='ml-3'>
-                                    <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>End Pairing</button>
-                                    <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                        {mentee[1]}
-                                    </span>: {new Date(mentee[2]).toLocaleDateString()}
-                                </li>
-                            )
-                        }
+                        currentMentees.map(mentee =>
+                            <li key={mentee[0] + mentee[1] + mentee[2]} className='ml-3'>
+                                <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>End Pairing</button>
+                                <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                    {mentee[1]}
+                                </span>: {new Date(mentee[2]).toLocaleDateString()}
+                            </li>
+                        )
+                    }
                                 Ended:
                                 {
-                            pastMentees.map((mentee, index) =>
-                                <li key={index + mentee[0] + mentee[1] + mentee[3]} className='ml-3'>
-                                    <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                        {mentee[1]}
-                                    </span>: {new Date(mentee[2]).toLocaleDateString()} - {new Date(mentee[3]).toLocaleDateString()}
-                                </li>
-                            )
-                        }
-                    </ul>
-
-                    {
-                        props.loggedUser && props.loggedUser.a_id
-                            ? <button className='btn btn-primary d-block'
-                                onClick={e => setShowFellowsList(true)}>
-                                Add
-                                    </button>
-                            : null
+                        pastMentees.map((mentee, index) =>
+                            <li key={index + mentee[0] + mentee[1] + mentee[3]} className='ml-3'>
+                                <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
+                                    {mentee[1]}
+                                </span>: {new Date(mentee[2]).toLocaleDateString()} - {new Date(mentee[3]).toLocaleDateString()}
+                            </li>
+                        )
                     }
-                </div>
+                </ul>
+
                 {
-                    showFellowsList
-                        ? <Fellows
-                            setFeedback={setFeedback}
-                            volunteer={volunteer}
-                            reload={reload}
-                            setReload={setReload}
-                            setShowFellowsList={setShowFellowsList}
-                            loggedUser={loggedUser}
-                        />
+                    props.loggedUser && props.loggedUser.a_id
+                        ? <button className='btn btn-primary d-block'
+                            onClick={e => setShowFellowsList(true)}>
+                            Add
+                                    </button>
                         : null
                 }
+            </div>
+            {
+                showFellowsList
+                    ? <Fellows
+                        setFeedback={setFeedback}
+                        volunteer={volunteer}
+                        reload={reload}
+                        setReload={setReload}
+                        setShowFellowsList={setShowFellowsList}
+                        loggedUser={loggedUser}
+                    />
+                    : null
+            }
 
-            </>
-        )
-    }
+        </>
+
+
     return (
         <>
-            {volunteerInfo()}
+            {volunteerInfo}
             {
                 waitingForData
-                    ? <> <Spinner className = 'mentoring' size = {100}/> {mentoringInfo()} </> 
-                    : <>{mentoringInfo()}</>
+                    ? <> <Spinner className='mentoring' size={100} /> {mentoringInfo} </>
+                    : <>{mentoringInfo}</>
 
             }
-            </>
-      )
-            }
+        </>
+    )
+}
