@@ -550,7 +550,7 @@ VALUES
         
         ('2019-11-16 10:00-04', '2019-11-16 13:00-04', '6.2: Professional Skills: Diversity & Inclusion in Tech Workshop',
         'Join us to learn about diversity and inclusion in the workplace and how to foster it.',
-        2, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 5, FALSE);;
+        2, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 5, FALSE);
 
         
 
