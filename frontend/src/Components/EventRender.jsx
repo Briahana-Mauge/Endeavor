@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventCard from './EventCard';
+import Spinner from './Spinner';
 
 export default function EventRender(props) {
     const { eventId } = useParams();
@@ -21,25 +22,32 @@ export default function EventRender(props) {
     const [ loading, setLoading ] = useState(true);
 
 
-    const getEvent = async(id) => {
-        try {
-            const { data } = await axios.get(`/api/events/event/${id}`);
-            setSingleEvent(data.payload);
-            setLoading(false);
-        } catch (err) {
-            if (err.response && err.response.status === 404) {
-                history.push('/404');
-            } else {
-                setFeedback(err)
-            }
-        }
+    const getEvent = (id, isMounted) => {
+        axios.get(`/api/events/event/${id}`)
+            .then(response => {
+                if (isMounted) {
+                    setSingleEvent(response.data.payload);
+                    setLoading(false);
+                }
+            })
+            .catch (err => {
+                if (isMounted && err.response && err.response.status === 404) {
+                    history.push('/404');
+                } else if (isMounted) {
+                    setFeedback(err)
+                }
+            });
     }
     useEffect(() => {
+        let isMounted = true;
         if (!isNaN(parseInt(eventId)) && parseInt(eventId).toString().length === eventId.length) {
-            getEvent(eventId);
+            getEvent(eventId, isMounted);
         } else {
             history.push('/404');
         }
+
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventId, reload]);
     
@@ -99,12 +107,16 @@ export default function EventRender(props) {
         volunteersList
     ]);
 
-    if (loading) {
-        return <h1>Spinner Placeholder</h1>
+     if (loading) {
+        return <Spinner/>
     }
 
     return (
         <div className='container'>
+            <div className='modal-header'>
+                <h4 className='font-weight-bold'>{eventObj.topic}</h4>
+            </div>
+            
             <EventCard 
                 loggedUser={loggedUser} 
                 event={eventObj}

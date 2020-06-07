@@ -7,7 +7,7 @@ import EmailPassword from '../LoginSignup/EmailPassword';
 import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
-
+import Spinner from '../Spinner';
 
 export default function FellowProfile(props) {
     const {
@@ -32,28 +32,39 @@ export default function FellowProfile(props) {
     const [ linkedIn, setLinkedIn ] = useState(loggedUser.f_linkedin);
     const [ github, setGithub ] = useState(loggedUser.f_github);
     const [ picFile, setPicFile ] = useState(null);
+    const [ loading, setLoading ] = useState(false);
 
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
     
     useEffect(() => {
-        const getCohortsList = async () => {
-            try {
-                const { data } = await axios.get(`/api/cohorts`);
-                setCohortsList(data.payload);
-            } catch (err) {
-                setFeedback(err);
-            }
-        }
+        let isMounted = true;
 
+        const getCohortsList = () => {
+            axios.get(`/api/cohorts`)
+                .then(response => {
+                    if (isMounted) {
+                        setCohortsList(response.data.payload);
+                    }
+                }) 
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
+        }
         getCohortsList();
         
         setFirstName(loggedUser.f_first_name);
         setLastName(loggedUser.f_last_name);
         setEmail(loggedUser.f_email);
         setCohortId(loggedUser.cohort_id);
-    }, [loggedUser, setFirstName, setLastName, setEmail, setCohortId, setFeedback])
+
+        //Cleanup
+        return () => isMounted = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loggedUser])
 
     const handleUpdateInfo = async (e) => {
         e.preventDefault();
@@ -88,8 +99,10 @@ export default function FellowProfile(props) {
                     }
                 }
 
+                setLoading(true);
                 const { data } = await axios.put(`/api/auth/${loggedUser.f_id}`, profile);
                 props.settleUser(data.payload);
+                setLoading(false);
                 props.setPassword('');
                 setFeedback({message: 'Profile updated successfully'});
 
@@ -98,8 +111,13 @@ export default function FellowProfile(props) {
             }
 
         } catch (err) {
+            setLoading(false);
             setFeedback(err);
         }
+    }
+
+    if (loading) {
+        return <Spinner/>
     }
     
     return (

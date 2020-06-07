@@ -34,11 +34,13 @@ html, body, #root, .g1App {
 
     --fw-bold: 800;
 
-    --color-primary: #27237c;
+    --color-primary: #2621b3;
+    // --color-primary: #27237c;
     --color-yellow: #8d8558;
     --color-purple: #483569;
     --color-white: #e2e2e2;
     --color-black: #323232;
+    --color-highlight: #12ace8;
     --color-bodybase: #0c053a;
 
     --border-radii: .2rem;
@@ -53,8 +55,8 @@ html, body, #root, .g1App {
     --zi-popup-1st: 1100;
     --zi-popup-footer: 1150;
     --zi-popup-2nd: 1200;
-    --zi-navbar: 110;
-    --zi-subnav: 120;
+    --zi-navbar: 5100;
+    --zi-subnav: 5200;
     --zi-carousel-arrows: 100;
 }
 
@@ -115,23 +117,24 @@ nav button {
 
 /* HELPERS */
 // for consistent styles between nav LINKS and nav BUTTONS
-@mixin link-states() {
-    transition: color .2s ease-out;
-
+@mixin link-states($restcolor: var(--color-primary)) {
     &:link, &:visited {
-        color: var(--color-white);
+        color: $restcolor;
         text-decoration: none;
+        transition: color .4s ease-out;
     }
     &:hover, &:active {
-        color: #e8de5b;
+        color: var(--color-highlight);
+        text-decoration: none;
     }
 }
 
-@mixin link-states-disabled() {
-    &, &:link, &:visited, &:hover, &:active {
-        cursor: default;
-        color: #666;
-    }
+@mixin flex-straight($direction: row, $justify-content: flex-start, $align-items: flex-start) {
+    display: flex;
+    flex-direction: $direction;
+    flex-wrap: nowrap;
+    justify-content: $justify-content;
+    align-items: $align-items;
 }
 
 
@@ -155,41 +158,6 @@ nav button {
     }
 }
 
-.g1VolunteerResults {
-    & > div > div {
-        height: 100%;
-    }
-
-    .card-body {
-        @media (min-width: 576px) {
-            min-height: 30rem;
-        }
-    }
-
-    .card-img-top {
-        cursor: pointer;
-        max-width: 100%;
-        height: 16rem;
-        object-fit: cover;
-    }
-
-    .g1FlexFill {
-        height: 100%;
-    }
-
-    h4 {
-        cursor: pointer;
-        height: 4rem;
-
-        @include link-states();
-    }
-
-    .g1VResultsJob {
-        @media (min-width: 576px) {
-            height: 4rem;
-        }
-    }
-}
 
 .g1EventsResults {
     .rounded-lg {
@@ -245,10 +213,6 @@ div.card-text {
     &:focus {
         outline: none;
     }
-
-    &.g1DisableLink {
-        @include link-states-disabled();
-    }
 }
 
 .g1Navbar {
@@ -275,10 +239,6 @@ div.card-text {
         &.active {
             color: var(--color-white);
             font-weight: bold;
-        }
-
-        &.g1DisableLink {
-            @include link-states-disabled();
         }
     }
 
@@ -337,7 +297,7 @@ div.card-text {
 }
 
 .g1DropdownMenu {
-    @media (max-width: 992px) {   // sub-dropdown menus
+    @media (max-width: 991px) {   // sub-dropdown menus
         border-radius: 0;
         text-align: right;
     }
@@ -350,7 +310,7 @@ div.card-text {
 }
 
 .g1Collapse {
-    @media (max-width: 992px) {
+    @media (max-width: 991px) {
         margin-left: 25%;   // sizes dropdown menu width, removing left width
         border-radius: .75rem 0 .75rem .75rem;
         border: solid 2px #222;
@@ -764,6 +724,7 @@ div.card-text {
 
 .g1ModalDialog {
     color: var(--color-black);
+    margin-top: var(--navbar-height);
 
     @media (min-width: 768px) {
         max-width: 642px;
@@ -1246,8 +1207,8 @@ div.card-text {
 // }
 
 
-@media (max-width: 992px) {
-    .g1MobileTextALign {
+@media (max-width: 991px) {
+    .g1MobileTextAlign {
         width: 100%;
         text-align: left;   // MASTER TEXT-ALIGN for small device nav dropdown
     }

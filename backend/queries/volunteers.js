@@ -26,32 +26,42 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     }
 
     const selectQuery = `
-      SELECT 
-          volunteers.v_id, 
-          volunteers.v_first_name, 
-          volunteers.v_last_name, 
-          v_slug,
-          volunteers.v_picture, 
-          volunteers.v_email, 
-          volunteers.company, 
-          volunteers.title, 
-          volunteers.active,
-          ARRAY_AGG(DISTINCT skills.skill) AS skills,  
-          (SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
-		      	FROM  events
-		      	INNER JOIN event_volunteers ON events.event_id = eventv_id
-		      	WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
-		      	ORDER BY event_start ASC
-		      	LIMIT 1
-          ) AS next_event
+      SELECT
+        volunteers.v_id,
+        volunteers.v_first_name,
+        volunteers.v_last_name,
+        v_slug,
+        volunteers.v_picture,
+        volunteers.v_email,
+        volunteers.v_linkedin,
+        volunteers.company,
+        volunteers.title,
+        volunteers.active,
+        ARRAY_AGG(DISTINCT skills.skill) AS skills,
+        JSONB_BUILD_OBJECT(
+            'mentoring', volunteers.mentoring,
+            'office_hours', volunteers.office_hours,
+            'tech_mock_interview', volunteers.tech_mock_interview,
+            'behavioral_mock_interview', volunteers.behavioral_mock_interview,
+            'professional_skills_coach', volunteers.professional_skills_coach,
+            'hosting_site_visit', volunteers.hosting_site_visit,
+            'industry_speaker', volunteers.industry_speaker
+          ) AS interests,
+        ( SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
+            FROM  events
+            INNER JOIN event_volunteers ON events.event_id = eventv_id
+            WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
+            ORDER BY event_start ASC
+            LIMIT 1
+        ) AS next_event
 
-      FROM volunteers 
+      FROM volunteers
       INNER JOIN volunteer_skills ON volunteer_skills.volunteer_id = volunteers.v_id
       INNER JOIN skills ON volunteer_skills.skill_id = skills.skill_id
     `
     const endOfQuery = `
       GROUP BY volunteers.v_id
-      ORDER BY v_first_name ASC
+      ORDER BY v_last_name ASC
     `
 
     let condition = ' WHERE volunteers.confirmed = TRUE AND volunteers.deleted IS NULL ';

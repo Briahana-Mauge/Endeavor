@@ -3,14 +3,16 @@ import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from 'axios';
 
+import UIResultsModeToggle from './UIResultsModeToggle';
 import VolunteerCard from './VolunteerCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import ProfileRender from './ProfilePages/ProfileRender';
 
+
 export default function Volunteers (props) {
-    const {search} = useLocation();
+    const { search } = useLocation();
     const history = useHistory();
-    const { setFeedback } = props;
+    const { setFeedback, isVolunteerSearchGrided, setIsVolunteerSearchGrided } = props;
 
     const getQueryStrings = () => {
         const values = queryString.parse(search);
@@ -39,16 +41,26 @@ export default function Volunteers (props) {
 
     
     useEffect(() => {
-        const getSkillsList = async () => {
-            try {
-                const { data } = await axios.get('/api/skills');
-                setSkillsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
+        let isMounted = true;
+
+        const getSkillsList = () => {
+            axios.get('/api/skills')
+                .then(response => {
+                    if (isMounted) {
+                        setSkillsList(response.data.payload);
+                    }
+                })
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err)
+                    }
+                });
         }
         
         getSkillsList();
+
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     
@@ -59,15 +71,26 @@ export default function Volunteers (props) {
         setFilter(valueKey || '');
         setTargetSkill(skill || '');
 
-        const getAllVolunteers = async () => {
-            try {
-                const { data } = await axios.get(`/api/volunteers/all${search}`);
-                setResults(data.payload);
-            } catch (err) {
-                setFeedback(err);
-            }
+        let isMounted = true;
+
+        const getAllVolunteers = () => {
+            axios.get(`/api/volunteers/all${search}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
         }
+
         getAllVolunteers();
+        
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
@@ -79,7 +102,6 @@ export default function Volunteers (props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         setReload(!reload);
     }
 
@@ -91,35 +113,55 @@ export default function Volunteers (props) {
 
     return (
         <>
-            <div className="Search">
-                <form className='form-inline' onSubmit={handleSubmit}>
-                    <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
-                        placeholder='Search' value={searchValue} onChange={e => { setUrlSearchValue(e.target.value) }} />
+            {/* Search form */}
+            <form className='form-inline' onSubmit={handleSubmit}>
+                <input className='form-control mb-2 mr-sm-2 min-w-25' type='text'
+                    placeholder='Search' value={searchValue} onChange={e => { setUrlSearchValue(e.target.value) }} />
 
-                    <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setUrlFilter(e.target.value)}>
-                        <option value=''>Choose a search filter</option>
-                        <option value='name'>Name</option>
-                        <option value='v_email'>Email</option>
-                        <option value='company'>Company</option>
-                    </select>
+                <select className='form-control mb-2 mr-sm-2' value={filter} onChange={e => setUrlFilter(e.target.value)}>
+                    <option value=''>Choose a search filter</option>
+                    <option value='name'>Name</option>
+                    <option value='v_email'>Email</option>
+                    <option value='company'>Company</option>
+                </select>
 
-                    <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setUrlTargetSkill(e.target.value)}>
-                        <option value=''>-- Skill --</option>
-                        { skillsList.map(skill => <option key={skill.skill + skill.skill_id} value={skill.skill}>{skill.skill}</option>) }
-                    </select>
+                <select className='form-control mb-2 mr-sm-2' value={targetSkill} onChange={e => setUrlTargetSkill(e.target.value)}>
+                    <option value=''>-- Skill --</option>
+                    { skillsList.map(skill => <option key={skill.skill + skill.skill_id} value={skill.skill}>{skill.skill}</option>) }
+                </select>
 
-                    <button className='btn btn-primary mb-2'>Search</button>
-                </form>
+                <button className='btn btn-primary mb-2'>Search</button>
+            </form>
 
-                <div className='g1VolunteerResults d-flex flex-wrap'>
-                    {results.map(volunteer => <VolunteerCard
-                            key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
-                            volunteer={volunteer}
-                            setDisplayTargetUser={setDisplayTargetUser}
-                            setTargetVolunteerId={setTargetVolunteerId}
-                        />
-                    )}
-                </div>
+            {/* List or grid toggle */}
+            <UIResultsModeToggle
+                isDisplayModeGrid={isVolunteerSearchGrided}
+                setIsDisplayModeGrid={setIsVolunteerSearchGrided}
+            />
+
+            {/* Search results */}
+            <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
+                {isVolunteerSearchGrided
+                    ?   null
+                    :   <div className='g1VolResultCard px-1'>
+                            <div className='g1InnerVolResultCard g1InnerVolResultCard__Header'>
+                                <div className='g1VRHeader--empty1'></div>
+                                <div className='g1VRHeader--name'>Name</div>
+                                <div className='g1VRHeader--empty2'></div>
+                                <div className='g1VRHeader--job'>Company + Position</div>
+                                <div className='g1VRHeader--skills'>Skills</div>
+                                <div className='g1VRHeader--interests'>Interests</div>
+                                <div className='g1VRHeader--nextevent'>Next Event</div>
+                            </div>
+                        </div>
+                }
+                {results.map(volunteer => <VolunteerCard
+                        key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
+                        volunteer={volunteer}
+                        setDisplayTargetUser={setDisplayTargetUser}
+                        setTargetVolunteerId={setTargetVolunteerId}
+                    />
+                )}
             </div>
 
             <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>

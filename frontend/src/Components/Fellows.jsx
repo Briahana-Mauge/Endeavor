@@ -17,29 +17,41 @@ export default function Volunteers (props) {
     const [ reload, setReload ] = useState(false);
 
     useEffect(() => {
-        const getCohorts = async () => {
-            try {
-                const { data } = await axios.get('/api/cohorts');
-                setCohortsList(data.payload);
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
-
-        getCohorts();
+        let isMounted = true;
+        axios.get('/api/cohorts')
+            .then(response => {
+                if (isMounted) {
+                    setCohortsList(response.data.payload);
+                }
+            })
+            .catch(err => {
+                if (isMounted) {
+                    setFeedback(err)
+                }
+            });
+        
+        
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        const getFellowsList = async () => {
-            try {
-                const { data } = await axios.get(`/api/fellows/?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`);
-                setFellowsList(data.payload);
-            } catch (err) {
-                setFeedback(err);
-            }
-        }
-        getFellowsList();
+        let isMounted = true;
+        axios.get(`/api/fellows/?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`)
+            .then(response => {
+                if (isMounted) {
+                    setFellowsList(response.data.payload);
+                }
+            })
+            .catch (err => {
+                if (isMounted) {
+                    setFeedback(err);
+                }
+            })
+
+        // Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, targetCohort, requestedMentor]);
 
@@ -82,7 +94,7 @@ export default function Volunteers (props) {
                 </select>
 
                 <button className='btn btn-primary mb-2'>Search</button>
-                <span className='btn btn-danger mb-2 float-right ml-auto' onClick={e => props.setShowFellowsList(false)} >X</span> 
+                <span className='btn btn-danger mb-2 float-right ml-auto' onClick={e => props.setShowFellowsList(false)} >Close</span> 
             </form>
 
             <div className='row m-1'>

@@ -8,7 +8,7 @@ import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
 import SignupVolunteerSubForm from '../LoginSignup/SignupVolunteerSubForm';
-
+import Spinner from '../Spinner';
 
 export default function VolunteerProfile(props) {
     const {
@@ -52,21 +52,28 @@ export default function VolunteerProfile(props) {
     const [ bio, setBio ] = useState(loggedUser.v_bio);
     const [ linkedIn, setLinkedIn ] = useState(loggedUser.v_linkedin);
     const [ picFile, setPicFile ] = useState(null);
+    const [ loading, setLoading ] = useState(false);
 
     const {pathname} = useLocation();
     const pathName = pathname.split('/');
 
     
     useEffect(() => {
-        const getVolunteerSkills = async () => {
-            try {
-                const { data } = await axios.get(`api/volunteers/skills/${loggedUser.v_id}`);
-                setVolunteerSkills(data.payload.skills_list);
-            } catch (err) {
-                setFeedback(err)
-            }
-        }
+        let isMounted = true;
 
+        const getVolunteerSkills = () => {
+            axios.get(`api/volunteers/skills/${loggedUser.v_id}`)
+                .then(response => {
+                    if (isMounted) {
+                        setVolunteerSkills(response.data.payload.skills_list);
+                    }
+                })
+                .catch (err => {
+                    if (isMounted) {
+                        setFeedback(err)
+                    }
+                })
+        }
         getVolunteerSkills();
 
         setFirstName(loggedUser.v_first_name);
@@ -85,6 +92,9 @@ export default function VolunteerProfile(props) {
         setHostSiteVisit(loggedUser.hosting_site_visit);
         setIndustrySpeaker(loggedUser.industry_speaker);
         setPublicProfile(loggedUser.public_profile);
+
+        //Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loggedUser]);
 
@@ -140,8 +150,10 @@ export default function VolunteerProfile(props) {
                     };
                 }
 
+                setLoading(true);
                 const { data } = await axios.put(`/api/auth/${loggedUser.v_id}`, profile);
                 props.settleUser(data.payload);
+                setLoading(false);
                 props.setPassword('');
                 setFeedback({message: 'Profile updated successfully'});
             } else {
@@ -149,8 +161,13 @@ export default function VolunteerProfile(props) {
             }
 
         } catch (err) {
+            setLoading(false);
             setFeedback(err);
         }
+    }
+
+    if (loading) {
+        return <Spinner/>
     }
     
     return (

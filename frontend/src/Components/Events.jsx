@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+import UIResultsModeToggle from './UIResultsModeToggle';
 import EventPreviewCard from './EventPreviewCard';
 import { PrimaryModalContainer } from './Modals/PrimaryModal';
 import EventCard from './EventCard';
 // import EventRender from './EventRender';
 
 
-export default function EventSearch(props) {
+export default function Events(props) {
     const history = useHistory();
-    const { setFeedback, loggedUser } = props;
+    const { setFeedback, loggedUser, isEventSearchGrided, setIsEventSearchGrided } = props;
 
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
@@ -22,30 +23,44 @@ export default function EventSearch(props) {
     const [showEvent, setShowEvent] = useState(false);
 
 
-    const getAllEvents = async () => {
-        try {
-            let dateFilter = '';
-            if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
-                dateFilter = 'true'
-            }
-            if (props.loggedUser && props.loggedUser.a_id) {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                setResults(data.payload);
-            }
-            else {
-                const { data } = await axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                // const { data } = await axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`);
-                setResults(data.payload);
-            }
-
-        } catch (err) {
-            setFeedback(err)
-        }
-    }
     useEffect(() => {
-        getAllEvents();
+        let isMounted = true;
+        let dateFilter = '';
+        if (pastOrUpcoming === 'upcoming' || pastOrUpcoming === 'past') {
+            dateFilter = 'true'
+        }
+        if (props.loggedUser && props.loggedUser.a_id) {
+            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
+        } else {
+            axios.get(`/api/events/admin/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+            // axios.get(`/api/events/all/?${filter}=${search}&${pastOrUpcoming}=${dateFilter}`)
+                .then(response => {
+                    if (isMounted) {
+                        setResults(response.data.payload);
+                    }
+                })
+                .catch(err => {
+                    if (isMounted) {
+                        setFeedback(err);
+                    }
+                })
+        }
+
+        //Cleanup
+        return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, filter, pastOrUpcoming]);
+
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -73,6 +88,7 @@ export default function EventSearch(props) {
                 : null
             }
 
+            {/* Search form */}
             <form className='form-inline' onSubmit={handleSearch}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
                     placeholder='Search' value={search}  onChange={e => setSearch(e.target.value)} />
@@ -93,7 +109,14 @@ export default function EventSearch(props) {
                 <button className='btn btn-primary mb-2'>Search</button>
             </form>
 
-            <div className='g1EventsResults d-flex flex-wrap'>
+            {/* List or grid toggle */}
+            <UIResultsModeToggle
+                isDisplayModeGrid={isEventSearchGrided}
+                setIsDisplayModeGrid={setIsEventSearchGrided}
+            />
+
+            {/* Search results */}
+            <div className={`g1EventsResults ${isEventSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
                 {
                     results.map(event => <EventPreviewCard 
                         key={event.event_id + event.event_end + event.event_start}
@@ -106,7 +129,7 @@ export default function EventSearch(props) {
                 }
             </div>
             
-            <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+            <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
                 {
                     showEvent
                         ?   <EventCard

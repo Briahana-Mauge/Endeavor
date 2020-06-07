@@ -24,19 +24,41 @@ const DashboardAdmin = (props) => {
   const [reloadDashboard, setReloadDashboard] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     const getNewVolunteers = () => {
       axios.get('/api/volunteers/new')
-        .then(res => setNewVolunteers(res.data.payload))
-        .catch(err => setFeedback(err));
+        .then(response => {
+          if (isMounted) {
+            setNewVolunteers(response.data.payload)
+          }
+        })
+        .catch(err => {
+          if (isMounted) {
+            setFeedback(err)
+          }
+        });
     }
     const getEvents = () => {
       axios.get('/api/events/dashboard/admin')
-        .then(res => setEventsObj(res.data.payload))
-        .catch(err => setFeedback(err));
+        .then(response => {
+          if (isMounted) {
+            setEventsObj(response.data.payload)
+          }
+        })
+        .catch(err => {
+          if (isMounted) {
+            setFeedback(err)
+          }
+        });
     }
     getNewVolunteers();
     getEvents();
-  }, [reloadDashboard, setFeedback]);
+
+    // Cleanup
+    return () => isMounted = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reloadDashboard]);
 
   const hideEvent = () => {
     setShowEvent(false);
@@ -71,7 +93,7 @@ const DashboardAdmin = (props) => {
 
       <ChartsAdmin chartData={[eventsObj]} />
 
-      <PrimaryModalContainer header={targetEvent.topic || ''} runOnModalClose={hideEvent}>
+      <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
         {
           showEvent
             ? <EventCard

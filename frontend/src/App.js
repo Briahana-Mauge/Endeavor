@@ -26,6 +26,8 @@ import ProfileRender from './Components/ProfilePages/ProfileRender';
 import Mentoring from './Components/Mentoring';
 import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
+import PageNotFound from './Components/PageNotFound';
+import Spinner from './Components/Spinner';
 
 const identifyUser = require('./helpers/identifyUser');
 
@@ -63,26 +65,38 @@ function App() {
   const [industrySpeaker, setIndustrySpeaker] = useState(false);
   const [publicProfile, setPublicProfile] = useState(false);
 
+  // SEARCH states
+  const [isVolunteerSearchGrided, setIsVolunteerSearchGrided] = useState(false);
+  const [isEventSearchGrided, setIsEventSearchGrided] = useState(false);
+
   // OTHER variables
   const userIs = identifyUser(loggedUser);
   const location = useLocation();
   const history = useHistory();
 
   // USEEFFECT
-  const checkForLoggedInUser = () => {
+  useEffect(() => {
+    let isMounted = true;
     axios.get('/api/auth/is_logged')
-      .then(res => settleUser(res.data.payload))
+      .then(res => {
+        if (isMounted) {
+          settleUser(res.data.payload)
+        }
+      })
       .catch(err => {
-          if (err.response && err.response.status === 401) {
+          if (isMounted && err.response && err.response.status === 401) {
             setIsUserStateReady(true);
             history.push('/login', { from: location });
             setWait(false);
-          } else {
+          } else if(isMounted) {
             setFeedback(err);
           }
       });
-  }
-  useEffect(checkForLoggedInUser, []);
+
+    //cleanup
+    return () => isMounted = false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
   /* HELPER FUNCTIONS */
@@ -160,6 +174,10 @@ function App() {
     industrySpeaker, setIndustrySpeaker,
     publicProfile, setPublicProfile
   }
+  const searchProps = {
+    isVolunteerSearchGrided, setIsVolunteerSearchGrided,
+    isEventSearchGrided, setIsEventSearchGrided
+  }
 
 
   /* BUILD LIMITED ACCESS ROUTES */
@@ -170,7 +188,7 @@ function App() {
     fellowsDashboard = <DashboardFellows {...userProps} />,
     volunteersHome = (
       <PrivateGate path='/volunteers' h1='Volunteers List' {...gateProps}>
-        <Volunteers {...userProps} />
+        <Volunteers {...userProps} {...searchProps} />
       </PrivateGate>
     ),
     volunteersProfile = (
@@ -242,7 +260,7 @@ function App() {
   }
 
   if (wait) {
-    return <h1 className='text-center text-danger'>this will be a spinner</h1>
+    return <h1 className='text-center text-danger'><Spinner/></h1>
   }
 
 
@@ -268,7 +286,7 @@ function App() {
         </PrivateGate>
 
         <PrivateGate path='/events' h1='Events List' {...gateProps}>
-          <Events {...userProps} />
+          <Events {...userProps} {...searchProps} />
         </PrivateGate>
 
 
@@ -289,9 +307,9 @@ function App() {
         </Route>
 
         {/* CATCHALL */}
-        <Route path='/404'>
-          <h1 className='text-center'>We can have a message here or a 404 page</h1>
-        </Route>
+        <PrivateGate path='/404' h1='Page Not Found' {...gateProps}>
+          <PageNotFound />
+        </PrivateGate>
 
         <Redirect to='/404' />  
 
