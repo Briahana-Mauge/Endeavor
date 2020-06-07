@@ -7,7 +7,7 @@ import EmailPassword from '../LoginSignup/EmailPassword';
 import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
-
+import Spinner from '../Spinner';
 
 export default function FellowProfile(props) {
     const {
@@ -117,7 +117,7 @@ export default function FellowProfile(props) {
     }
 
     if (loading) {
-        return <h1>Spinner Placeholder</h1>
+        return <Spinner/>
     }
     
     return (

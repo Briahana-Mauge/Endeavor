@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import EventCard from './EventCard';
+import Spinner from './Spinner';
 
 export default function EventRender(props) {
     const { eventId } = useParams();
@@ -106,8 +107,8 @@ export default function EventRender(props) {
         volunteersList
     ]);
 
-    if (loading) {
-        return <h1>Spinner Placeholder</h1>
+     if (loading) {
+        return <Spinner/>
     }
 
     return (

@@ -51,3 +51,30 @@
     text-decoration: inherit;
     color: inherit;
 }
+.spinner{
+position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+.mentoring{
+    position: absolute;
+      top: 70%;
+      left: 58%;
+    //   margin-top: 70px;
+    //   margin-left: 0px;
+
+    }
+    .pre-fill{
+    padding: .25rem .25rem;
+    font-size: 1px;
+    border: -51px;
+    border-radius: 0;
+    background-color: rgba(108, 117, 125, .3);
+    border-color: rgba(108, 117, 125, .3);
+    }
+    .pre-fill:hover{
+    background-color:rgba(108, 117, 125, .2);
+    border-color: rgba(108, 117, 125, .2);
+    }

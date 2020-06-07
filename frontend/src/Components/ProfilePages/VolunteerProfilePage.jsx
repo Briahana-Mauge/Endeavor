@@ -4,6 +4,7 @@ import { GrMail, GrLinkedinOption } from 'react-icons/gr';
 import axios from 'axios';
 
 import { PMBody, PMFooter } from '../Modals/PrimaryModal';
+import Spinner from '../Spinner';
 
 export default function VolunteerProfilePage(props) {
     const history = useHistory();
@@ -126,7 +127,7 @@ export default function VolunteerProfilePage(props) {
     }, [volunteerId]);
 
     if (waitingForData) {
-        return <h1>Spinner Placeholder</h1>
+        return <Spinner/>
     }
 
     return (
