@@ -27,6 +27,7 @@ import Mentoring from './Components/Mentoring';
 import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
 import PageNotFound from './Components/PageNotFound';
+import Spinner from './Components/Spinner';
 
 const identifyUser = require('./helpers/identifyUser');
 
@@ -263,7 +264,7 @@ function App() {
   }
 
   if (wait) {
-    return <h1 className='text-center text-danger'>this will be a spinner</h1>
+    return <h1 className='text-center text-danger'><Spinner/></h1>
   }
 
 
