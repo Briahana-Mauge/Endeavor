@@ -266,7 +266,7 @@ export default function VolunteerProfilePage(props) {
                                                                         key={mentee[0] + mentee[1] + mentee[2]}
                                                                         className='g1VolMentees'
                                                                         to={`/fellow/${mentee[0]}`}
-                                                                        target="_blank"
+                                                                        // target="_blank"
                                                                     >
                                                                         {mentee[1]}
                                                                     </Link>
@@ -301,7 +301,7 @@ export default function VolunteerProfilePage(props) {
                                                     <li className='mx-4' key={event[0] + event[1] + event[2]}>
                                                         <Link
                                                             to={`/event/${event[0]}`}
-                                                            target="_blank"
+                                                            // target="_blank"
                                                         >
                                                             {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
                                                         </Link>
@@ -331,7 +331,7 @@ export default function VolunteerProfilePage(props) {
                                                     <li className='mx-4' key={event[0] + event[1] + event[2]}>
                                                         <Link
                                                             to={`/event/${event[0]}`}
-                                                            target="_blank"
+                                                            // target="_blank"
                                                         >
                                                             {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
                                                         </Link>
