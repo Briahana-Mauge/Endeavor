@@ -41,7 +41,7 @@ export default function FellowPreviewCard(props) {
 
 
     return (
-        <div className='row mb-1 border rounded-lg'>
+        <div className='row mb-1 border rounded-lg' style={{minHeight: '320px'}}>
             {
                 fellow.want_mentor
                 ?   <button className='btn btn-primary btn-block my-1 mx-3' onClick={e => props.pairFellow(fellow.f_id)}>Pair</button>
