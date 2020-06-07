@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-
+import { Link } from 'react-router-dom';
 
 export default function EventPreviewCard(props) {
     const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
@@ -118,7 +118,16 @@ export default function EventPreviewCard(props) {
                 }
                 <p><strong>Host: </strong>{event.instructor}</p>
                 <p><strong>For: </strong>{event.cohort}</p>
-                <p><strong>Location: </strong>{event.location}</p>
+
+                {
+                /* If location is a link for google meet or zoom, create a link for the location to open in a new tab
+                If not, leave the location as plan text */
+                
+                    event.location[0]==='z' || event.location[0]==='m'
+                    ?   <p><strong>Location: </strong><a href={"http://"+event.location} target="_blank">{event.location}</a></p> 
+                    :   <p><strong>Location: </strong>{event.location}</p> 
+                }
+               
                 {
                     loggedUser && loggedUser.a_id
                     ?   <p>
