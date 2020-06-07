@@ -134,19 +134,13 @@ nav button {
 
 // .lightBox {
 //     z-index: var(--zi-popup-1st) !important;
+//
+//     @media (max-width: 460px) {
+//         width: auto !important;
+//         left: initial !important;
+//         margin-right: 1rem;
+//     }
 // }
-.feedbackContainer {
-    z-index: var(--zi-popup-2nd) !important;
-}
-
-// .lightBox,
-.feedbackContainer {
-    @media (max-width: 460px) {
-        width: auto !important;
-        left: initial !important;
-        margin-right: 1rem;
-    }
-}
 
 .g1TempProfilePatch.g1ModalDialog {
     @media (min-width: 768px) {
