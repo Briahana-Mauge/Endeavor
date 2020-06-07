@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-
 export default function EventPreviewCard(props) {
     const { event, loggedUser, isEventSearchGrided, targetEvent, setTargetEvent } = props;
 
@@ -21,10 +20,10 @@ export default function EventPreviewCard(props) {
         which will break the code since all next data will be shifted
     */
 
-    const [ volunteersList, setVolunteersList ] = useState([]);
-    const [ loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent ] = useState(false);
-    const [ loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted ] = useState(false);
-    const [ acceptedVolunteers, setAcceptedVolunteers] = useState([]);
+    const [volunteersList, setVolunteersList] = useState([]);
+    const [loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent] = useState(false);
+    const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState(false);
+    const [acceptedVolunteers, setAcceptedVolunteers] = useState([]);
 
 
     const mapVolunteersList = () => {
@@ -36,7 +35,7 @@ export default function EventPreviewCard(props) {
         if (event.volunteers_list && event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
             for (let volunteer of event.volunteers_list) {
                 const volunteerInfo = volunteer.split(' &$%& ');
-                if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
+                if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) {
                     found = true;
                     if (volunteerInfo[5] === 'true') {
                         accepted = true
@@ -48,7 +47,7 @@ export default function EventPreviewCard(props) {
                 volList.push(volunteerInfo);
             }
         }
-        volList.sort((a, b) => a[0]-b[0]);
+        volList.sort((a, b) => a[0] - b[0]);
 
         setLoggedVolunteerPartOfEvent(found);
         setLoggedVolunteerRequestAccepted(accepted);
@@ -79,13 +78,14 @@ export default function EventPreviewCard(props) {
         if (targetEvent.event_id && targetEvent.event_id === event.event_id) {
             setEventAsTarget();
         }
-    }, [ event, volunteersList, targetEvent.event_id, setEventAsTarget ]);
+    }, [event, volunteersList, targetEvent.event_id, setEventAsTarget]);
 
-    
+
     // const handleClickOnEvent = () => {
     //     setEventAsTarget();
     //     setShowEvent(true);
     // }
+
     
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -142,7 +142,16 @@ export default function EventPreviewCard(props) {
                 </div>
                 <div className='g1EvResultCard__Location'>
                     <b>Location</b>
-                    {event.location}
+                    {
+                        /* If location is a link for google meet or zoom, create a link for the location to open in a new tab
+                        If not, leave the location as plan text */
+
+                        event.location.slice(0, 7).toLowerCase() === 'zoom.us' || event.location.slice(0, 11).toLowerCase() === 'meet.google'
+                            ? <a href={"http://" + event.location} target="_blank" rel="noopener noreferrer">{event.location}</a>
+                            : event.location.slice(0, 4).toLowerCase() === 'http'
+                                ? <a href={event.location} target="_blank" rel="noopener noreferrer">{event.location}</a>
+                                : <>{event.location}</>
+                    }
                 </div>
                 {
                     loggedUser && loggedUser.a_id

@@ -8,7 +8,7 @@ import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
 import SignupVolunteerSubForm from '../LoginSignup/SignupVolunteerSubForm';
-
+import Spinner from '../Spinner';
 
 export default function VolunteerProfile(props) {
     const {
@@ -167,7 +167,7 @@ export default function VolunteerProfile(props) {
     }
 
     if (loading) {
-        return <h1>Spinner Placeholder</h1>
+        return <Spinner/>
     }
     
     return (
