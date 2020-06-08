@@ -113,6 +113,8 @@ export default function Events(props) {
             <UIResultsModeToggle
                 isDisplayModeGrid={isEventSearchGrided}
                 setIsDisplayModeGrid={setIsEventSearchGrided}
+                type='events'
+                setFeedback={setFeedback}
             />
 
             {/* Search results */}

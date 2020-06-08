@@ -46,6 +46,8 @@ CREATE TABLE administration
     a_email VARCHAR (50) UNIQUE NOT NULL REFERENCES users_data(user_email) ON UPDATE CASCADE,
     a_picture VARCHAR,
     admin BOOLEAN NOT NULL DEFAULT FALSE,
+    e_grid BOOLEAN NOT NULL DEFAULT TRUE,
+    v_grid BOOLEAN NOT NULL DEFAULT TRUE,
     deleted DATE DEFAULT NULL
 );
 
@@ -77,6 +79,8 @@ CREATE TABLE volunteers
     signup_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
     public_profile BOOLEAN NOT NULL DEFAULT FALSE,
     inactive_date DATE,
+    e_grid BOOLEAN NOT NULL DEFAULT TRUE,
+    v_grid BOOLEAN NOT NULL DEFAULT TRUE,
     deleted DATE DEFAULT NULL
 );
 
@@ -95,6 +99,8 @@ CREATE TABLE fellows
     f_github VARCHAR (150) NOT NULL DEFAULT '',
     cohort_id INT NOT NULL REFERENCES cohorts(cohort_id),
     want_mentor BOOLEAN NOT NULL DEFAULT FALSE,
+    e_grid BOOLEAN NOT NULL DEFAULT TRUE,
+    v_grid BOOLEAN NOT NULL DEFAULT TRUE,
     deleted DATE DEFAULT NULL
 );
 

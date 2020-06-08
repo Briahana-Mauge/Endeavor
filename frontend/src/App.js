@@ -80,7 +80,9 @@ function App() {
     axios.get('/api/auth/is_logged')
       .then(res => {
         if (isMounted) {
-          settleUser(res.data.payload)
+          settleUser(res.data.payload);
+          setIsVolunteerSearchGrided(res.data.payload.v_grid);
+          setIsEventSearchGrided(res.data.payload.e_grid);
         }
       })
       .catch(err => {
@@ -102,6 +104,8 @@ function App() {
   /* HELPER FUNCTIONS */
   const settleUser = (user) => {
     setLoggedUser(user);
+    setIsVolunteerSearchGrided(user.v_grid);
+    setIsEventSearchGrided(user.e_grid);
     setIsUserStateReady(true);
     setWait(false);
   }
