@@ -525,7 +525,13 @@ div.card-text {
 }
 
 
-// ADMIN: NEW VOLUNTEERS CAROUSEL
+// ADMIN: NEW VOLUNTEERS DASH MODULE
+.g1NVDash {
+    .g1Module__Body {
+        min-height: 16rem;
+    }
+}
+
 .g1NewVolCarousel {
     .carousel-indicators::before {
         content: 'Initials';
@@ -699,83 +705,85 @@ div.card-text {
         }
     }
 
-    .g1Avatar {
-        width: 8rem;
-        object-fit: contain;
-        height: 8rem;
-        border-radius: var(--border-radii);
-        float: right;
-
-        @media (max-width: 429px) {
-            float: none;
-            width: 14rem;
+    .g1NewVolData {
+        &__Avatar {
+            width: 8rem;
             object-fit: contain;
-            height: auto;
+            height: 8rem;
+            filter: drop-shadow(0 0 1px #111);
             border-radius: var(--border-radii);
-            margin: 4rem 0 1rem 50% !important;
-            transform: translateX(-50%);
-        }
-    }
+            float: right;
 
-    .g1NVFaceDate {
-        @media (max-width: 429px) {
-            @include flex-straight(column, flex-start, center);
-        }
-
-        & > * {
-            width: max-content;
-        }
-    }
-
-    .g1NVFaceDate__EmailLink {
-        display: block;
-    }
-
-    .g1NVName {
-        margin-bottom: .4rem;
-
-        font-family: var(--ff-body);
-        font-size: 1.2rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        line-height: 1.4rem;
-        color: var(--color-white);
-    }
-
-    .g1NewVolSkills {
-        list-style: none;
-        text-align: left;
-
-        @media (max-width: 429px) {
-            text-align: center;
+            @media (max-width: 429px) {
+                float: none;
+                width: 14rem;
+                object-fit: contain;
+                height: auto;
+                border-radius: var(--border-radii);
+                margin: 4rem 0 1rem 50% !important;
+                transform: translateX(-50%);
+            }
         }
 
-        @media (min-width: 992px) {
-            padding-left: 0;
+        &__TopInfo {
+            @media (max-width: 429px) {
+                @include flex-straight(column, flex-start, center);
+            }
+
+            & > * {
+                width: max-content;
+            }
         }
 
-        &::before {
-            content: 'skills/interests';
-            display: block;
-            margin-top: 1rem;
+        &__Name {
+            margin-bottom: .4rem;
 
-            font-family: var(--ff-accent);
-            font-size: .9rem;
+            font-family: var(--ff-body);
+            font-size: 1.2rem;
             font-weight: bold;
-            text-transform: lowercase;
-            color: var(--color-yellow);
+            text-transform: uppercase;
+            line-height: 1.4rem;
+            color: var(--color-white);
         }
 
-        li {
-            font-size: .9rem;
-            line-height: 1rem;
+        &__Company {
+            // color: var(--color-yellow);
+            font-weight: bold;
         }
-    }
-}
 
-.g1NVDash {
-    .g1Module__Body {
-        min-height: 16rem;
+        &__EmailLink {
+            display: block;
+        }
+
+        &__SkillsInts {
+            list-style: none;
+            text-align: left;
+
+            @media (max-width: 429px) {
+                text-align: center;
+            }
+
+            @media (min-width: 992px) {
+                padding-left: 0;
+            }
+
+            &::before {
+                content: 'skills/interests';
+                display: block;
+                margin-top: 1rem;
+
+                font-family: var(--ff-accent);
+                font-size: .9rem;
+                font-weight: bold;
+                text-transform: lowercase;
+                color: #882f70;
+            }
+
+            li {
+                font-size: .9rem;
+                line-height: 1rem;
+            }
+        }
     }
 }
 

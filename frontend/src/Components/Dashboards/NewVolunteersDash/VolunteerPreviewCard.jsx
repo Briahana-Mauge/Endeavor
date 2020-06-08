@@ -28,15 +28,18 @@ export default function VolunteerPreviewCard(props) {
                 </div>
 
                 <div className='g1NewVolData col-12 col-lg-9'> 
-                        <img 
-                            className='g1Avatar ml-3 ml-md-0 mr-md-3 mb-3' 
-                            src={volunteer.v_picture || '/images/default_pic.png'} alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
-                            data-toggle='modal' data-target={`.volunteer_${volunteer.v_id + volunteer.v_first_name}`} 
-                        />
+                    <img
+                        className='g1NewVolData__Avatar ml-3 ml-md-0 mr-md-3 mb-3'
+                        src={volunteer.v_picture || '/images/default_pic.png'} alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+                        data-toggle='modal' data-target={`.volunteer_${volunteer.v_id + volunteer.v_first_name}`}
+                    />
                     
-                    <div className='g1NVFaceDate'>
+                    <div className='g1NewVolData__TopInfo'>
+                        <div className='g1NewVolData__Name'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</div>
+                        <div className='g1NewVolData__Company'>{volunteer.company}</div>
+                        <div className='g1NewVolData__Position'>{volunteer.title}</div>
                         <a
-                            className='g1NVFaceDate__EmailLink'
+                            className='g1NewVolData__EmailLink'
                             href={`mailto:${volunteer.v_email}`}
                             target='_blank'
                             rel='noopener noreferrer'
@@ -46,10 +49,7 @@ export default function VolunteerPreviewCard(props) {
                         >
                             {volunteer.v_email}
                         </a>
-                        <div className='g1NVName'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</div>
-                        <span className='d-block'>{volunteer.company}</span>
-                        <span className='d-block'>{volunteer.title}</span>
-                        <ul className='g1NewVolSkills'>
+                        <ul className='g1NewVolData__SkillsInts'>
                             { volunteer.skills.map(skill => <li key={skill}>{skill}</li>) }
                         </ul>
                     </div>
