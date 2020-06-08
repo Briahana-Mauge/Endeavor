@@ -50,7 +50,7 @@ export default function Events(props) {
         let isMounted = true;
 
         if (props.loggedUser && props.loggedUser.a_id) {
-            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
+            axios.get(`/api/events/admin/all/?${searchKey}=${searchVal}&${date}=true`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);
@@ -62,8 +62,8 @@ export default function Events(props) {
                     }
                 })
         } else {
-            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
-            // axios.get(`/api/events/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=${dateFilter}`)
+            axios.get(`/api/events/admin/all/?${searchKey}=${searchVal}&${date}=true`)
+            // axios.get(`/api/events/all/?${searchKey}=${searchVal}&${date}=${dateFilter}`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);
