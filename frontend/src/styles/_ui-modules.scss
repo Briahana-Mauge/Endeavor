@@ -11,21 +11,44 @@
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 100%;
-
         border-radius: var(--border-radii);
-        background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+
+        // border-radius: var(--border-radii);
+        // background-image: linear-gradient(90deg, rgba(37, 13, 68, 0.45) 0%, rgba(75, 50, 107, 0.41) 100%);
+        // background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
+        // background-image: linear-gradient(58deg, rgba(30, 9, 61, 1) 61%, rgba(75, 50, 107, 0.41) 100%); sangria
+        // filter: hue-rotate(17deg);
     }
 
-    &Inner {
+    &__Inner {
         position: relative;
     }
 
+    &.deepSangria, &.deepElysium {
+        border: solid 1px #3e3054;
 
-    &.currentEventsModule {
         &::before {
-            filter: hue-rotate(17deg);
+            background-image: linear-gradient(76deg, #2a0637 45%, #441e55 100%);
+        }
+
+        .g1HeaderColor {
+            color: #c37bb7;
         }
     }
+
+    &.dataModule {
+        &::before {
+            background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
+        }
+        .g1Module__Header span {
+            color: #5e5d90;
+        }
+        // .g1THead {
+        //     color: #af7394;
+        // }
+    }
+
+
     &.pastEventsModule::before, &.importantEventsModule::before {
         filter: hue-rotate(-33deg);
     }
@@ -33,11 +56,6 @@
     &.pastEventsModule .g1Table .g1TimeCol u, &.importantEventsModule .g1Table .g1TimeCol u {
         color: #415798;
     }
-    // &.importantEventsModule {
-    //     .g1Module__Header span {
-    //         color: #47b8ef;
-    //     }
-    // }
 
     &.goldModule {
         &::before {
@@ -51,35 +69,19 @@
         }
     }
 
-    &.dataModule {
-        &::before {
-            background-image: linear-gradient(90deg, #19162b 0%, #46386dd6 100%);
-            // background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
-        }
-        // .g1Module__Header span {
-        //     color: #717ca0;
-        // }
-        .g1THead {
-            color: #af7394;
-        }
-    }
+
 
     &__Header {
         background-color: #ffffff0f;
         border-radius: var(--border-radii) var(--border-radii) 0 0;
         padding: .75rem 1.25rem .1rem 1.25rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: .65rem;
         border-bottom: 1px solid rgba(0,0,0,.25);
     
         color: #e2e2e294;
         font-family: var(--ff-accent);
         font-size: var(--fs-h3);
         font-weight: 900;
-
-        // font-family: 'Cinzel', serif;
-        // font-family: 'Dosis', sans-serif;
-        // font-family: 'Lora', serif;
-        // font-family: 'Sorts Mill Goudy', serif;
     
         span {
             color: var(--color-primary);
