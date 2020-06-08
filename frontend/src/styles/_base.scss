@@ -18,10 +18,6 @@ html, body, #root, .g1App {
     height: 100%;
 }
 
-// font-family: 'Josefin Sans', sans-serif;
-// font-family: 'Cabin', sans-serif;
-// font-family: 'Catamaran', sans-serif;
-
 :root {
     font-size: 16px;
     --fs-body: 1rem;
@@ -420,27 +416,24 @@ div.card-text {
     .ongoing {
         color: #efefef;
 
-        .g1TopicCol {
-            color: #17ca1db8;
-            // background-color: #ff658229;
-        }
-    }
-    .important {
-        // color: #d4c358;
+        div[id^=event]::after {
+            content: 'now happening';
+            display: block;
+            padding-left: 1rem;
 
-        .g1TimeCol u {
-            text-decoration: none;
-            color: #f17f08eb;
+            font-family: var(--ff-accent);
+            font-weight: bold;
+            color: #17ca1db8;
         }
     }
-    .passed { color: #555; }
+
+    .passed { color: #bbb; }
 
     .g1THead {
         display: table-header-group;
         
         padding-bottom: calc(var(--table-inner-gaps) * .15);
 
-        color: #a54d8e;
         text-transform: uppercase;
         font-size: calc(var(--fs-body) * .75);
 
@@ -494,8 +487,15 @@ div.card-text {
 
         u {
             text-decoration: none;
-            color: #974785;
         }
+    }
+
+    // color of EventDash labels and time dashes
+    .g1THead, .g1TimeCol u {
+        font-family: var(--ff-accent);
+        font-size: .8rem;
+        color: #882f70;
+        text-transform: lowercase;
     }
 }
 
@@ -700,13 +700,6 @@ div.card-text {
             font-size: .8rem;
             color: #b5a31b;
         }
-    }
-}
-
-.g1EventsResults {
-    header {
-        cursor: pointer;
-        background-color: var(--color-primary);
     }
 }
 

@@ -12,14 +12,14 @@ const UIModule = ({children, className = '', titleColor = '', titleRegular = ''}
   const xPaddingForAllModules = "px-2";
 
   return(
-    <div className={`g1Module card mb-2 ${className}`}>
-      <div className="g1ModuleInner">
-        <h3 className={`g1Module__header card-header ${xPaddingForAllModules}`}>
+    <div className={`g1Module card mb-3 ${className}`}>
+      <div className="g1Module__Inner">
+        <h3 className={`g1Module__Header ${xPaddingForAllModules}`}>
 
-          <span>{titleColor}</span> {titleRegular}
+          <span className='g1HeaderColor'>{titleColor}</span> {titleRegular}
 
         </h3>
-        <div className={`g1Module__body card-body pt-0 pb-1 ${xPaddingForAllModules}`}>
+        <div className={`g1Module__Body ${xPaddingForAllModules}`}>
 
           {children}
 

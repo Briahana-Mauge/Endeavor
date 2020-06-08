@@ -2,9 +2,9 @@
     position: relative;
     border-radius: var(--border-radii);
     background-color: transparent; // negates bootstrap card style
-    // background-image: linear-gradient(90deg, rgba(75, 50, 107, 0.41) 0%, rgba(37, 13, 68, 0.45) 100%);
     line-height: 1.2rem;
     padding-bottom: .1rem;
+    box-shadow: 4px 1px 3px #0009;
 
     &::before {
         content: '';
@@ -34,7 +34,7 @@
         color: #415798;
     }
     // &.importantEventsModule {
-    //     .g1Module__header span {
+    //     .g1Module__Header span {
     //         color: #47b8ef;
     //     }
     // }
@@ -43,7 +43,7 @@
         &::before {
             background-image: linear-gradient(90deg, rgba(95, 84, 54, 0.88) 0%, rgba(109, 90, 0, 0.35) 100%);
         }
-        .g1Module__header span {
+        .g1Module__Header span {
             color: #b39d5d;
         }
         .g1THead {
@@ -53,9 +53,10 @@
 
     &.dataModule {
         &::before {
-            background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
+            background-image: linear-gradient(90deg, #19162b 0%, #46386dd6 100%);
+            // background-image: linear-gradient(90deg, #1d1d1d 0%, #151515 100%);
         }
-        // .g1Module__header span {
+        // .g1Module__Header span {
         //     color: #717ca0;
         // }
         .g1THead {
@@ -63,14 +64,22 @@
         }
     }
 
-    &__header {
-        background-color: transparent;
-        border-bottom: none;
+    &__Header {
+        background-color: #ffffff0f;
+        border-radius: var(--border-radii) var(--border-radii) 0 0;
+        padding: .75rem 1.25rem .1rem 1.25rem;
+        margin-bottom: 0.25rem;
+        border-bottom: 1px solid rgba(0,0,0,.25);
     
-        color: var(--color-white);
+        color: #e2e2e294;
         font-family: var(--ff-accent);
         font-size: var(--fs-h3);
         font-weight: 900;
+
+        // font-family: 'Cinzel', serif;
+        // font-family: 'Dosis', sans-serif;
+        // font-family: 'Lora', serif;
+        // font-family: 'Sorts Mill Goudy', serif;
     
         span {
             color: var(--color-primary);
@@ -78,7 +87,9 @@
         }
     }
     
-    &__body {
+    &__Body {
+        padding-top: 0;
+        padding-bottom: .2rem;
         color: var(--color-white);
     }
 }
