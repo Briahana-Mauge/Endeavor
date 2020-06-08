@@ -529,13 +529,15 @@ div.card-text {
 // ADMIN: NEW VOLUNTEERS CAROUSEL
 .g1NewVolCarousel {
     .carousel-indicators::before {
-        content: '(Initials)';
-        color: #974785;
-        padding: 0 .4rem 0 1.4rem;
-        text-transform: lowercase;
-        font-size: 14px;
+        content: 'Initials';
         position: relative;
         top: 4px;
+        padding: 0 .4rem 0 0;
+
+        font-family: var(--ff-accent);
+        font-size: 14px;
+        text-transform: lowercase;
+        color: #974785;
     }
 
     .g1CarouselArrows {
@@ -546,6 +548,7 @@ div.card-text {
 
         .g1CarouselArrowsInterior {
             width: 100%;
+            min-width: 8rem;
 
             & > div {
                 display: flex;
@@ -554,23 +557,53 @@ div.card-text {
 
                 width: 100%;
                 height: 2.7rem;
-                border: solid 1px #60366e;
                 border-radius: 4rem;
 
                 position: relative;
                 transform: translateX(0px); // used to bring buttons up to visual plane context above card data
                 z-index: var(--zi-carousel-arrows);
 
-                background-color: var(--color-primary);
+                background-color: #311243;
                 box-shadow: var(--bs-buttons);
 
                 & > a {
-                    height: 100%;
-                    width: 100%;
-
                     &:first-child {
-                        border-right: solid 1px var(--color-white);
+                        &:link, &:visited {
+                            height: 100%;
+                            width: 100%;
+                            border: solid 1px #999;
+                            border-radius: 4rem 0 0 4rem;
+                            transition: border-color .4s ease-out, background-color .2s ease-out, transform .1s ease-out;
+                        }
+                        &:hover {
+                            border-color: var(--color-white);
+                            border-right-color: #999;
+                            background-color: var(--color-highlight);
+                        }
+                        &:active {
+                            background-color: var(--color-white);
+                            transform: translate(1px, 1px);
+                        }
                     }
+                    &:last-child {
+                        &:link, &:visited {
+                            height: 100%;
+                            width: 100%;
+                            border: solid 1px #999;
+                            border-left: 0;
+                            border-radius: 0 4rem 4rem 0;
+                            transition: border-color .4s ease-out, background-color .2s ease-out;
+                        }
+                        &:hover {
+                            border-color: var(--color-white);
+                            background-color: var(--color-highlight);
+                        }
+                        &:active {
+                            background-color: var(--color-white);
+                            transform: translate(1px, 1px);
+                        }
+                    }
+
                 }
             }
         }
@@ -582,6 +615,11 @@ div.card-text {
             .g1CarouselArrowsInterior {
                 width: 29%;
             }
+        }
+
+        @media (max-width: 429px) {
+            @include flex-straight(row, center, center);
+            top: 6.3rem;
         }
     }
 
@@ -596,12 +634,14 @@ div.card-text {
 
     .carousel-indicators {
         position: relative;
-        justify-content: flex-start;
+        justify-content: center;
         margin-right: 0;
         margin-left: 0;
+        transform: translateX(-2%);
 
         li {
             position: relative;
+            top: .1rem;
             opacity: .2;
             height: 16px;
             border-top-width: 2px;
@@ -617,11 +657,12 @@ div.card-text {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100%;
+                height: 98%;
                 width: 100%;
 
                 color: var(--color-black);
-                font-family: var(--ff-accent);
+                font-family: var(--ff-body);
+                font-size: .8rem;
                 text-indent: 0;
                 text-transform: uppercase;
             }
@@ -632,14 +673,14 @@ div.card-text {
             background-color: var(--color-white);
 
             div {
-                color: var(--color-primary);
-                outline: solid 2px var(--color-yellow);
+                color: var(--color-highlight);
+                outline: solid 2px var(--color-highlight);
             }
         }
     }
 
     .g1NewVolBtns {
-        @media (max-width: 992px) {
+        @media (max-width: 991px) {
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
@@ -649,57 +690,93 @@ div.card-text {
                 white-space: nowrap;
             }
         }
+
+        @media (max-width: 429px) {
+            padding: 0 3rem;
+            max-width: initial;
+            margin: 0;
+            flex: 0 0 100%;
+            justify-content: center;
+        }
     }
 
     .g1Avatar {
         width: 8rem;
-        object-fit: cover;
+        object-fit: contain;
         height: 8rem;
         border-radius: var(--border-radii);
-        float: left;
+        float: right;
 
-        @media (max-width: 768px) {
-            float: right;
+        @media (max-width: 429px) {
+            float: none;
+            width: 14rem;
+            object-fit: contain;
+            height: auto;
+            border-radius: var(--border-radii);
+            margin: 4rem 0 1rem 50% !important;
+            transform: translateX(-50%);
         }
     }
 
     .g1NVFaceDate {
-        @media (max-width: 768px) {
-            text-align: right;
+        @media (max-width: 429px) {
+            @include flex-straight(column, flex-start, center);
+        }
+
+        & > * {
+            width: max-content;
         }
     }
 
+    .g1NVFaceDate__EmailLink {
+        display: block;
+    }
+
     .g1NVName {
+        margin-bottom: .4rem;
+
+        font-family: var(--ff-body);
+        font-size: 1.2rem;
         font-weight: bold;
         text-transform: uppercase;
         line-height: 1.4rem;
         color: var(--color-white);
-        font-family: var(--ff-top);
-        font-size: 1.2rem;
-        border-bottom: solid 1px var(--color-primary);
     }
 
     .g1NewVolSkills {
-        clear: both;
         list-style: none;
-        text-align: right;
+        text-align: left;
 
-        @media (min-width: 768px) {
-            text-align: left;
-            padding-left: 6rem;
+        @media (max-width: 429px) {
+            text-align: center;
         }
 
         @media (min-width: 992px) {
             padding-left: 0;
         }
 
-        strong {
+        &::before {
+            content: 'skills/interests';
             display: block;
+            margin-top: 1rem;
+
+            font-family: var(--ff-accent);
+            font-size: .9rem;
+            font-weight: bold;
             text-transform: lowercase;
-            font-family: var(--ff-top);
-            font-size: .8rem;
-            color: #b5a31b;
+            color: var(--color-yellow);
         }
+
+        li {
+            font-size: .9rem;
+            line-height: 1rem;
+        }
+    }
+}
+
+.g1NVDash {
+    .g1Module__Body {
+        min-height: 16rem;
     }
 }
 

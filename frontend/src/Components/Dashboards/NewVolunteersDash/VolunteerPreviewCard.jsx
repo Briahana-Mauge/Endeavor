@@ -10,13 +10,21 @@ import React from 'react';
 
 export default function VolunteerPreviewCard(props) {
     const { volunteer } = props;
+    let emailRef = '';
+
+    const handleEmailClick = (e) => {
+        e.preventDefault();
+        emailRef.click();
+        return false;
+    }
 
     return ( 
         <>
             <div className='g1NewVolCard row ml-lg-2'>
                 <div className='g1NewVolBtns col-6 offset-6 offset-lg-0 col-lg-3 mb-3 mb-lg-0'>
-                    <button className='btn btn-success mb-lg-2' onClick={e => props.acceptVolunteer(volunteer.v_id)}>Accept</button>
-                    <button className='btn btn-danger mx-2 mx-lg-0' onClick={e => e.preventDefault()}>Dismiss</button>
+                    <button className='btn btn-success mb-lg-1' onClick={e => props.acceptVolunteer(volunteer.v_id)}>Accept</button>
+                    <button className='btn btn-primary ml-2 ml-lg-0 mb-lg-1' onClick={handleEmailClick}>E-mail</button>
+                    <button className='btn btn-danger ml-2 mx-lg-0' onClick={e => e.preventDefault()}>Dismiss</button>
                 </div>
 
                 <div className='g1NewVolData col-12 col-lg-9'> 
@@ -27,17 +35,24 @@ export default function VolunteerPreviewCard(props) {
                         />
                     
                     <div className='g1NVFaceDate'>
-                        <div className='g1NVName'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</div>
-                        <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
+                        <a
+                            className='g1NVFaceDate__EmailLink'
+                            href={`mailto:${volunteer.v_email}`}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            ref={input => { // this ref is used to target this link when the handleEmailClick function is called
+                                emailRef = input;
+                            }}
+                        >
                             {volunteer.v_email}
                         </a>
+                        <div className='g1NVName'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</div>
                         <span className='d-block'>{volunteer.company}</span>
                         <span className='d-block'>{volunteer.title}</span>
+                        <ul className='g1NewVolSkills'>
+                            { volunteer.skills.map(skill => <li key={skill}>{skill}</li>) }
+                        </ul>
                     </div>
-                    <ul className='g1NewVolSkills'>
-                        <strong>Skills / Workshops</strong>
-                        { volunteer.skills.map(skill => <li key={skill}>{skill}</li>) }
-                    </ul>
                 </div>
 
             </div>
