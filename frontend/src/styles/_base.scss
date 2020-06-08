@@ -446,9 +446,11 @@ div.card-text {
 
         .g1EmptyRowMsg {
             margin-top: .6rem;
-            color: #a54d8e;
-            font-style: italic;
+            font-family: var(--ff-accent);
+            font-size: 1rem;
+            font-weight: bold;
             white-space: nowrap;
+            color: #a54b8c;
         }
     }
 

@@ -36,6 +36,22 @@
         }
     }
 
+    &.blueBerry {
+        border: solid 1px #303954;
+
+        &::before {
+            background-image: linear-gradient(76deg, #090e32 45%, #09142a 100%);
+        }
+
+        .g1HeaderColor {
+            color: #7ba1c3;
+        }
+
+        .g1THead, .g1TimeCol u {
+            color: #2a697d;
+        }
+    }
+
     &.dataModule {
         &::before {
             background-image: linear-gradient(76deg, #171717 60%, #1d1d1d 100%);
