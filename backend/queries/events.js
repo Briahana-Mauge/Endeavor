@@ -81,10 +81,8 @@ const getSingleEvent = async (eventId, volunteerId) => {
       event_start, 
       event_end, 
       description, 
-      staff_description,
       location, 
       instructor, 
-      number_of_volunteers, 
       cohort,
       cohort_id,
       materials_url,
@@ -238,17 +236,6 @@ const getSingleEventAdmin = async (eventId, volunteerId) => {
   `
 
   return await db.one(selectQuery, { eventId, volunteerId });
-}
-
-// Get count of all past events
-const getPastEvents = async () => {
-  const selectQuery = `
-  SELECT COUNT(*)
-  FROM events
-  WHERE events.event_end <= now() AND deleted IS NULL
-
-  `;
-  return await db.any(selectQuery);
 }
 
 // Get all events data for admin dashboards
@@ -523,29 +510,14 @@ const deleteEvent = async (id) => {
   return response[0];
 }
 
-// Get all past events by fellow Id
-const getPastEventsByFellowId = async (id) => {
-  const selectQuery = `
-    SELECT event_id, topic, event_start
-    FROM events 
-    INNER JOIN event_fellows ON event_id = ef_id
-    WHERE event_start < now() AND fellow_id = $1
-    ORDER BY event_start ASC
-  `;
-  return await db.any(selectQuery, id);
-}
-
-
 /* EXPORT */
 module.exports = {
   getAllEvents,
   getSingleEvent,
   getAllEventsAdmin,
   getSingleEventAdmin,
-  getPastEvents,
   getDashEventsForAdmin,
   getDashEventsForVolunteer,
-  getPastEventsByFellowId,
   postEvent,
   editEvent,
   deleteEvent

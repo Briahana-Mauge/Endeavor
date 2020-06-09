@@ -109,38 +109,6 @@ router.get('/dashboard/volunteer', async (req, res, next) => {
     }
 });
 
-
-
-// Get all past events by fellow id
-router.get('/past/fellow/:fellow_id', async (req, res, next) => {
-    try {
-        const fellowId = processInput(req.params.fellow_id, 'idNum', 'volunteer id');
-        const events = await eventsQueries.getPastEventsByFellowId(fellowId);
-        res.json({
-            payload: events,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
-
-// Get all past events by volunteer id
-router.get('/past/volunteer/:volunteer_id', async (req, res, next) => {
-    try {
-        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
-        const events = await eventsQueries.getPastEventsByVolunteerId(volunteerId);
-        res.json({
-            payload: events,
-            message: "Success",
-            err: false
-        });
-    } catch (err) {
-        handleError(err, req, res, next);
-    }
-});
-
 // Add new event
 router.post('/add', async (req, res, next) => {
     try {

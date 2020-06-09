@@ -75,8 +75,7 @@
 - **Volunteers**
   | Method | Endpoint                      | Description                           | Query Parameters                     | Body Data |
   | ------ | ----------------------------- | ------------------------------------- | ------------------------------------ | --------- |
-  | GET    | `/api/volunteers/id/:id`      | Get volunteer by id                   | n/a                                  | n/a       |
-  | GET    | `/api/volunteers/slug/:slug`  | Get volunteer by slug                 | n/a                                  | n/a       |
+  | GET    | `/api/volunteers/:type/:id`   | Get volunteer by id, slug or email    | type: id, slug, email                | n/a       |
   | GET    | `/api/volunteers/all`         | Get all volunteer (with filters)      | v_email, name, skill, company, title | n/a       |
   | GET    | `/api/volunteers/new`         | Get all unconfirmed volunteers        | n/a                                  | n/a       |
   | PATCH  | `/api/volunteers/confirm/:id` | Confirm a new (unconfirmed) volunteer | n/a                                  | n/a       |
@@ -108,12 +107,33 @@
 
 
 - **Events**
-  | Method | Endpoint                      | Description                           | Query Parameters                     | Body Data |
-  | ------ | ----------------------------- | ------------------------------------- | ------------------------------------ | --------- |
-  | GET    | `/api/events/all/:role`   | Get all events by user role (with filters) | n/a                                  | n/a       |
-  | GET    | `/api/events/event/:id`   | Get event by id                   | n/a                                  | n/a       |
-  | GET    | `/api/events/slug/:slug`  | Get event by slug                 | n/a                                  | n/a       |
-  | GET    | `/api/events/all`         | Get all event (with filters)      | v_email, name, skill, company, title | n/a       |
-  | GET    | `/api/events/new`         | Get all unconfirmed events        | n/a                                  | n/a       |
-  | PATCH  | `/api/events/confirm/:id` | Confirm a new (unconfirmed) event | n/a                                  | n/a       |
-  | DELETE | `/api/events/:id` | Delete event by id | n/a                                  | n/a       |
+  | Method | Endpoint                      | Description                   | Query Parameters | Body Data |
+  | ------ | ----------------------------- | ----------------------------- | ---------------- | --------- |
+  | GET    | `/api/events/all`             | Get all events (with filters) | v_name, topic, instructor, upcoming, past | n/a |
+  | GET    | `/api/events/event/:id`       | Get event by id               | n/a              | n/a                         |
+  | GET    | `/api/events/dashboard/:role` | Get dashboard events          | n/a              | n/a                         |
+  | POST   | `/api/events/add`             | Add a new event               | n/a              | Please refer to events data |
+  | PUT    | `/api/events/edit/:id`        | Update an event by id         | n/a              | Please refer to events data |
+  | DELETE | `/api/events/:id`             | Delete event by id            | n/a              | n/a                         |
+
+
+- **Mentor Pairs**
+  | Method | Endpoint            | Description                  | Query Parameters | Body Data             |
+  | ------ | ------------------- | ---------------------------- | ---------------- | --------------------- |
+  | POST   | `/api/mentor_pairs` | Pair a Mentor with a Mentee  | n/a              | volunteerId, fellowId |
+  | DELETE | `/api/mentor_pairs/volunteer/:volunteer_id/fellow/:fellowId` | Un-pair a Mentor to a Mentee | n/a | volunteerId, fellowId |
+
+
+  - **Event Attendees**
+  | Method | Endpoint                                                       | Description                           | Query Parameters | Body Data            |
+  | ------ | -------------------------------------------------------------- | ------------------------------------- | ---------------- | -------------------- |
+  | POST   | `/api/event_attendees/event/:event_id/add/:volunteer_id`       | Volunteer request to an event         | n/a              | n/a                  |
+  | PUT    | `/api/event_attendees/event/:event_id/volunteer/:volunteer_id` | Attribute hours to volunteer          | n/a              | volunteeredHours     |
+  | PATCH  | `/api/event_attendees/event/:event_id/volunteer/:volunteer_id` | Confirm/un-confirm volunteer to event | n/a              | confirmed true/false |
+  | DELETE | `/api/event_attendees//event/:event_id/delete/:volunteer_id`   | Delete volunteer request to an event  | n/a              | n/a                  |
+
+
+  - **View**
+  | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
+  | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
+  | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
