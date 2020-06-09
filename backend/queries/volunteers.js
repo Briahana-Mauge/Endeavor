@@ -47,7 +47,8 @@ const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfi
             'hosting_site_visit', volunteers.hosting_site_visit,
             'industry_speaker', volunteers.industry_speaker
           ) AS interests,
-        ( SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
+        ( SELECT 
+            JSON_BUILD_OBJECT('eventId', event_id, 'topic', topic)
             FROM  events
             INNER JOIN event_volunteers ON events.event_id = eventv_id
             WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()

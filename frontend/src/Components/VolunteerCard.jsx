@@ -60,14 +60,8 @@ const VolunteerCard = (props) => {
         <li key='is' className='g1Interest--Speaker' data-tooltip='INDUSTRY SPEAKER'>IS</li>);
 
 
-    /* next event is an string containing the event id and topic, separated by ' &$%& '
-        index0: event ID
-        index1: event title / topic
-    */
-    let nextEvent = null;
-    if (volunteer.next_event) {
-        nextEvent = volunteer.next_event.split(' &$%& ');
-    }
+    const nextEvent = volunteer.next_event;
+    console.log(volunteer.next_event)
 
     return (
         <div className='g1VolResultCard px-1'>
@@ -97,13 +91,13 @@ const VolunteerCard = (props) => {
                 <ul className='g1VolResultCard__Skills'>
                     {listSkills}
                 </ul>
-                {   volunteer.next_event
+                {   nextEvent
                     ?   <>
                             <hr />
                             <div className='g1VolResultCard__NextEvent'>
                                 <span>next event:<br /></span>
-                                <Link to={`/event/${nextEvent[0]}`}>
-                                    {nextEvent[1]}
+                                <Link to={`/event/${nextEvent.eventId}`}>
+                                    {nextEvent.topic} HERE
                                 </Link>
                             </div>
                         </>

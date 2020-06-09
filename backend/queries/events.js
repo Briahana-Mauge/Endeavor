@@ -256,14 +256,16 @@ const getDashEventsForAdmin = async () => {
         cohort_id,
         materials_url,
         important,
-        ARRAY_AGG(
-          CAST(v_id as CHAR(10)) || ' &$%& ' ||
-          v_first_name || ' ' || v_last_name || ' &$%& ' ||
-          v_email || ' &$%& ' ||
-          CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) || ' &$%& ' ||
-          CAST(ev_id as CHAR(10))|| ' &$%& ' ||
-          CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10)) || ' &$%& ' ||
-          CAST(volunteered_time as CHAR(2))
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'volunteerId', v_id,
+            'name', v_first_name || ' ' || v_last_name,
+            'email', v_email,
+            'volunteerDeleted', volunteers.deleted,
+            'eventVolunteerTableId', ev_id,
+            'confirmedForEvent', event_volunteers.confirmed,
+            'volunteeredTime', volunteered_time
+          )
         ) AS volunteers_list
 
     FROM events
@@ -357,15 +359,19 @@ const getDashEventsForVolunteer = async (volunteerId) => {
         ARRAY_AGG(
             (
                 SELECT
-                    CAST(v_id as CHAR(10)) || ' &$%& ' || v_first_name || ' ' ||
-                    v_last_name || ' &$%& ' || v_email || ' &$%& ' ||
-                    CAST(CASE WHEN volunteers.deleted IS NULL THEN 'false' ELSE 'true' END AS CHAR(10)) ||
-                    ' &$%& ' || CAST(ev_id as CHAR(10))|| ' &$%& ' ||
-                    CAST(CASE WHEN event_volunteers.confirmed THEN 'true' ELSE 'false' END AS CHAR(10))
-
+                  JSON_BUILD_OBJECT(
+                    'volunteerId', v_id,
+                    'name', v_first_name || ' ' || v_last_name,
+                    'email', v_email,
+                    'volunteerDeleted', volunteers.deleted,
+                    'eventVolunteerTableId', ev_id,
+                    'confirmedForEvent', event_volunteers.confirmed,
+                    'volunteeredTime', volunteered_time
+                  )
                 FROM  event_volunteers
                 LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-                WHERE eventv_id = event_id GROUP BY eventv_id, v_id, ev_id
+                WHERE eventv_id = event_id 
+                GROUP BY eventv_id, v_id, ev_id
             )
         ) AS volunteers_list
 
