@@ -38,7 +38,7 @@ export default function Volunteers (props) {
 
     useEffect(() => {
         let isMounted = true;
-        axios.get(`/api/fellows/?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`)
+        axios.get(`/api/fellows?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`)
             .then(response => {
                 if (isMounted) {
                     setFellowsList(response.data.payload);
@@ -53,7 +53,7 @@ export default function Volunteers (props) {
         // Cleanup
         return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload, targetCohort, requestedMentor]);
+    }, [reload, targetCohort, requestedMentor, search]);
 
 
     const handleSubmit = async (event) => {

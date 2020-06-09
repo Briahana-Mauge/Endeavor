@@ -49,33 +49,18 @@ export default function Events(props) {
 
         let isMounted = true;
 
-        if (props.loggedUser && props.loggedUser.a_id) {
-            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
-                .then(response => {
-                    if (isMounted) {
-                        setResults(response.data.payload);
-                    }
-                })
-                .catch(err => {
-                    if (isMounted) {
-                        setFeedback(err);
-                    }
-                })
-        } else {
-            axios.get(`/api/events/admin/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=true`)
-            // axios.get(`/api/events/all/?${searchKey || ''}=${searchVal || ''}&${date || 'upcoming'}=${dateFilter}`)
-                .then(response => {
-                    if (isMounted) {
-                        setResults(response.data.payload);
-                    }
-                })
-                .catch(err => {
-                    if (isMounted) {
-                        setFeedback(err);
-                    }
-                })
-        }
-
+        axios.get(`/api/events/all?${searchKey}=${searchVal}&${date}=true`)
+            .then(response => {
+                if (isMounted) {
+                    setResults(response.data.payload);
+                }
+            })
+            .catch(err => {
+                if (isMounted) {
+                    setFeedback(err);
+                }
+            });
+        
         //Cleanup
         return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps

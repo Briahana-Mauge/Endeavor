@@ -15,19 +15,6 @@ const EventCard = (props) => {
 
     const userIs = identifyUser(loggedUser);
     const history = useHistory();
-
-    /* 
-        props.event.volunteers_list is an array of STRING 
-        where reach element is all one volunteer information related to that event separated by ,
-        if split(', ') we will have:
-            index0: volunteer ID
-            index1: first and last name
-            index2: email
-            index3: volunteer profile deleted
-            index4: event_volunteers table id
-            index5: volunteer confirmed to event
-            index6: volunteered time on that event
-    */
     
     useEffect(() => {
         setWaitingForRender(false);
@@ -35,8 +22,8 @@ const EventCard = (props) => {
 
     useEffect(() => {
         const tracker = {};
-        for (let volunteerArr of event.volunteersList) {
-            tracker[volunteerArr[0]] = volunteerArr[6];
+        for (let volunteer of event.volunteersList) {
+            tracker[volunteer.volunteerId] = volunteer.volunteeredTime;
         }
         setVolunteerHours(tracker);
     }, [event.volunteersList]);
@@ -114,45 +101,37 @@ const EventCard = (props) => {
 
     let displayVolunteersList = null;
     if (userIs.admin) {
-        displayVolunteersList = event.volunteersList.map(([
-            volunteerId,
-            fullname,
-            email,
-            isProfileDeleted,
-            eventVolunteerId,
-            isConfirmedForEvent,
-            eventHoursAssigned
-        ]) =>
-            <div className='form-row' key={volunteerId + fullname + email}>
+        displayVolunteersList = event.volunteersList.map(({volunteerId, name, email, deletedProfile, confirmedToEvent, volunteeredTime}) =>
+            <div className='form-row' key={volunteerId + name + email}>
                 <div className='custom-control custom-switch'>
                     <input
                         type='checkbox'
                         className='custom-control-input'
-                        id={volunteerId + fullname}
-                        checked={isConfirmedForEvent === 'true' ? true : false}
+                        id={volunteerId + name}
+                        checked={confirmedToEvent}
                         onChange={e => manageVolunteersRequests(e, volunteerId)}
-                        disabled={isProfileDeleted === 'true' ? true : false || waitingForRender}
+                        disabled={deletedProfile || waitingForRender}
                     />
-                    <label className='custom-control-label mt-2' htmlFor={volunteerId + fullname}>
+                    <label className='custom-control-label mt-2' htmlFor={volunteerId + name}>
                         <span
-                            className={`g1VolConfirmedLabel d-none d-sm-block ${isConfirmedForEvent === 'true' ? 'g1VolConfirmedLabelOn' : ''}`}
+                            className={`g1VolConfirmedLabel d-none d-sm-block ${confirmedToEvent ? 'g1VolConfirmedLabelOn' : ''}`}
                         >
-                            {isConfirmedForEvent === 'true' ? 'CONFIRMED' : 'PENDING'}
+                            {confirmedToEvent? 'CONFIRMED' : 'PENDING'}
                         </span>
                     </label>
                 </div>
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
-                    className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
+                    className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${confirmedToEvent ? '' : 'g1VolNamePending'}`}
                     to={`/volunteer/${volunteerId}`}
                     // target="_blank" // because this is already a modal, best sense is to open profile in new tab to preserve location
                 >
-                    {fullname}
+                    {name}
                 </Link>
                 {
-                    isConfirmedForEvent === 'true'
+                    confirmedToEvent
                         ?   <form
                                 className='g1HoursForm form-inline d-inline-block align-self-center'
-                                onSubmit={e => attributeHoursForVolunteer(e, volunteerId, fullname)}
+                                onSubmit={e => attributeHoursForVolunteer(e, volunteerId, name)}
                             >
                                 <input 
                                     className='form-control mb-2 mr-sm-2' 
