@@ -38,7 +38,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfi
         volunteers.title,
         volunteers.active,
         ARRAY_AGG(DISTINCT skills.skill) AS skills,
-        JSONB_BUILD_OBJECT(
+        JSON_BUILD_OBJECT(
             'mentoring', volunteers.mentoring,
             'office_hours', volunteers.office_hours,
             'tech_mock_interview', volunteers.tech_mock_interview,
@@ -47,7 +47,8 @@ const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfi
             'hosting_site_visit', volunteers.hosting_site_visit,
             'industry_speaker', volunteers.industry_speaker
           ) AS interests,
-        ( SELECT CAST(event_id AS CHAR(10)) || ' &$%& ' || topic
+        ( SELECT 
+            JSON_BUILD_OBJECT('eventId', event_id, 'topic', topic)
             FROM  events
             INNER JOIN event_volunteers ON events.event_id = eventv_id
             WHERE event_volunteers.volunteer_id = v_id AND event_volunteers.confirmed = TRUE AND event_start > NOW()
@@ -76,7 +77,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfi
       condition += ' AND LOWER(skills.skill) = $/skill/ '
     }
     if (name) {
-      condition += ` AND LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
+      condition += ` AND LOWER(volunteers.v_first_name || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
     }
     if (title) {
       condition += ` AND LOWER(volunteers.title) LIKE '%' || $/title/ || '%' `
@@ -134,44 +135,90 @@ const getVolunteerByEmail = async (vEmail) => {
   return await db.one(selectQuery, { vEmail });
 }
 
-// Get volunteer by Id Or email
+// Get volunteer by Id, email or slug
 const getSpecificVolunteer = async (id, email, slug) => {
   const selectQuery = `
     SELECT 
-	    v_id, v_first_name, v_last_name, v_email, v_slug,
-      volunteers.confirmed, volunteers.active,
-      v_picture, company, title, v_bio, v_linkedin,
-      mentoring, office_hours, tech_mock_interview,
-      behavioral_mock_interview, professional_skills_coach,
-      hosting_site_visit, industry_speaker,
-      signup_date, inactive_date, volunteers.deleted, public_profile,
+      v_id, 
+      v_first_name, 
+      v_last_name, 
+      v_email, 
+      v_slug,
+      volunteers.confirmed, 
+      volunteers.active,
+      v_picture, 
+      company, 
+      title, 
+      v_bio, 
+      v_linkedin,
       ARRAY_AGG (DISTINCT skills.skill) AS skills,
+      mentoring, 
+      office_hours, 
+      tech_mock_interview,
+      behavioral_mock_interview, 
+      professional_skills_coach,
+      hosting_site_visit, 
+      industry_speaker,
+      signup_date, 
+      inactive_date, 
+      volunteers.deleted, 
+      public_profile,
       (SELECT
-        ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || 
-            event_start || ' &$%& ' || event_end || ' &$%& ' || CAST(volunteered_time AS CHAR(2)))
+        JSON_AGG(
+      		JSON_BUILD_OBJECT(
+        		'eventId', event_id,
+        		'topic', topic,
+            'eventStart', event_start,
+            'eventEnd', event_end,
+            'volunteeredTime', volunteered_time
+          )
+        )
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
           WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND event_volunteers.confirmed = TRUE AND event_end < NOW()
         ) AS past_events,
       (SELECT
-        ARRAY_AGG( CAST(event_id AS CHAR(10)) || ' &$%& ' || topic || ' &$%& ' || event_start || ' &$%& ' || event_end )
+        JSON_AGG(
+      		JSON_BUILD_OBJECT(
+        		'eventId', event_id,
+        		'topic', topic,
+          	'eventStart', event_start,
+          	'eventEnd', event_end,
+          	'volunteeredTime', volunteered_time
+          )
+        )
           FROM events 
           INNER JOIN event_volunteers ON event_id = eventv_id
           INNER JOIN volunteers ON volunteer_id = v_id
           WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND event_volunteers.confirmed = TRUE AND event_end >= NOW()
         ) AS future_events,
       (SELECT
-        ARRAY_AGG (
-          CAST(f_id AS CHAR(10)) || ' &$%& ' ||
-          f_first_name || ' ' || f_last_name || ' &$%& ' ||
-          CAST(starting_date AS CHAR(10)) || ' &$%& ' ||
-          CASE WHEN mentor_pairs.deleted IS NULL THEN 'false' ELSE CAST(mentor_pairs.deleted AS CHAR(20)) END
+        JSON_AGG (
+        	JSON_BUILD_OBJECT(
+          	'fellowId', f_id,
+          	'fellowName', f_first_name || ' ' || f_last_name,
+          	'startDate', starting_date::Date,
+          	'mentoringEnded', mentor_pairs.deleted
+          )
         )
         FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
         INNER JOIN volunteers ON mentor = v_id
-        WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/)
-      ) AS mentees,
+        WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND mentor_pairs.deleted IS NOT NULL
+      ) AS past_mentees,
+      (SELECT
+        JSON_AGG (
+        	JSON_BUILD_OBJECT(
+          	'fellowId', f_id,
+          	'fellowName', f_first_name || ' ' || f_last_name,
+          	'startDate', starting_date::Date,
+          	'mentoringEnded', mentor_pairs.deleted
+          )
+        )
+        FROM mentor_pairs INNER JOIN fellows ON mentee = f_id
+        INNER JOIN volunteers ON mentor = v_id
+        WHERE (v_id = $/id/ OR v_email = $/email/ OR v_slug = $/slug/) AND mentor_pairs.deleted IS NULL
+      ) AS current_mentees,
       (SELECT
         SUM(volunteered_time)
         FROM event_volunteers
@@ -363,4 +410,3 @@ module.exports = {
   deleteVolunteerByEmail,
   updateViewType
 }
-

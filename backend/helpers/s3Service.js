@@ -17,7 +17,7 @@ const storage = multerS3({
       cb(null, {fieldName: file.fieldname});
     },
     key: function (request, file, cb) {
-      cb(null, Date.now().toString() + '-' + (file.originalname).replace(/ /g, ''));
+      cb(null, Date.now().toString() + '-' + (file.originalname).replace(/[^a-zA-Z0-9]/g, ''));
     }
 })
 
@@ -35,12 +35,12 @@ const fileFilter = (request, file, cb) => {
 const upload = multer({
     storage, 
     fileFilter,
-    limits: { fileSize: 3000000 }, // In bytes: 3000000 bytes = 3 MB
+    limits: { fileSize: 1000000 }, // In bytes: 1000000 bytes = 1 MB
 })
 
 const deleteFile = (fileLink) => {
     // ####### REMINDER: CHANGE THE LENGTH IF BUCKET NAME CHANGES
-    const fileName = fileLink.slice(64); // https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/ BASE LINK LENGTH IS 54
+    const fileName = fileLink.slice(64); // https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/ BASE LINK LENGTH IS 64
     const params = {
         Bucket: 'pursuit-volunteer-management',
         Key: fileName

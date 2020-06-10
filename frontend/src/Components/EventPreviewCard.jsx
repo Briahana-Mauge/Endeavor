@@ -1,29 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function EventPreviewCard(props) {
-    const { event, loggedUser, isEventSearchGrided, targetEvent, setTargetEvent } = props;
-
-    /* 
-        props.event.volunteers_list is an array of STRING 
-        where reach element is all one volunteer information related to that event separated by ,
-        if split(' &$%& ') we will have:
-            index0: volunteer ID
-            index1: first and last name
-            index2: email
-            index3: volunteer profile deleted
-            index4: event_volunteers table id
-            index5: volunteer confirmed to event
-
-        ' &$%& ' was used to be as far as possible from common combinations entered by users
-        for instance if ', ' was selected, a user could have a middle name and entre name, middle name initial in the first name field
-        which will break the code since all next data will be shifted
-    */
+    const { event, loggedUser, isEventSearchGrided } = props;
 
     const [volunteersList, setVolunteersList] = useState([]);
+    const [acceptedVolunteers, setAcceptedVolunteers] = useState([]);
     const [loggedVolunteerPartOfEvent, setLoggedVolunteerPartOfEvent] = useState(false);
     const [loggedVolunteerRequestAccepted, setLoggedVolunteerRequestAccepted] = useState(false);
-    const [acceptedVolunteers, setAcceptedVolunteers] = useState([]);
 
 
     const mapVolunteersList = () => {
@@ -32,22 +16,21 @@ export default function EventPreviewCard(props) {
         const accVolunteers = [];
         const volList = [];
 
-        if (event.volunteers_list && event.volunteers_list[0]) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
-            for (let volunteer of event.volunteers_list) {
-                const volunteerInfo = volunteer.split(' &$%& ');
-                if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) {
+        for (let volunteer of event.volunteers_list) {
+            if (volunteer && volunteer.volunteerId) { // IN PSQL when there is no mach for an ARRAY_AGG, instead of having [], we get [null]
+                if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.volunteerId) {
                     found = true;
-                    if (volunteerInfo[5] === 'true') {
+                    if (volunteer.confirmedToEvent) {
                         accepted = true
                     }
                 }
-                if (volunteerInfo[5] === 'true') {
-                    accVolunteers.push(parseInt(volunteerInfo[0])); // push the id of the volunteer
+                if (volunteer.confirmedToEvent) {
+                    accVolunteers.push(volunteer.volunteerId); // push the id of the volunteer
                 }
-                volList.push(volunteerInfo);
+                volList.push(volunteer);
             }
         }
-        volList.sort((a, b) => a[0] - b[0]);
+        volList.sort((a, b) => a.volunteerId - b.volunteerId);
 
         setLoggedVolunteerPartOfEvent(found);
         setLoggedVolunteerRequestAccepted(accepted);
@@ -55,36 +38,7 @@ export default function EventPreviewCard(props) {
         setVolunteersList(volList);
     }
     useEffect(mapVolunteersList, [loggedUser, event]);
-
-
-    const setEventAsTarget = useCallback(() => {
-        const eventDataObj = Object.assign({}, event, {
-            volunteersList,
-            loggedVolunteerPartOfEvent,
-            loggedVolunteerRequestAccepted,
-            acceptedVolunteers
-        });
-        setTargetEvent(eventDataObj);
-    }, [
-        acceptedVolunteers,
-        event,
-        loggedVolunteerPartOfEvent,
-        loggedVolunteerRequestAccepted,
-        setTargetEvent,
-        volunteersList
-    ]);
-
-    useEffect(() => {
-        if (targetEvent.event_id && targetEvent.event_id === event.event_id) {
-            setEventAsTarget();
-        }
-    }, [event, volunteersList, targetEvent.event_id, setEventAsTarget]);
-
-
-    // const handleClickOnEvent = () => {
-    //     setEventAsTarget();
-    //     setShowEvent(true);
-    // }
+    
 
     
     const formatEventDate = date => {
@@ -181,8 +135,8 @@ export default function EventPreviewCard(props) {
                                             <i>{acceptedVolunteers.length} confirmed</i>
                                             <span>{' / ' + event.number_of_volunteers} requested</span>
                                         </div>
-                                        {event.volunteers_list.length - acceptedVolunteers.length > 0
-                                            ? <div className='g1EvResultCard__VolsPending'>{event.volunteers_list.length - acceptedVolunteers.length} pending</div>
+                                        {volunteersList.length - acceptedVolunteers.length > 0
+                                            ? <div className='g1EvResultCard__VolsPending'>{volunteersList.length - acceptedVolunteers.length} pending</div>
                                             : null
                                         }
                                     </>
@@ -190,8 +144,8 @@ export default function EventPreviewCard(props) {
                                         <div>
                                             <i>{acceptedVolunteers.length} confirmed</i>, <br />
                                             <span>{event.number_of_volunteers} requested</span><br />
-                                            {event.volunteers_list.length - acceptedVolunteers.length > 0
-                                                ? <span className='g1EvResultCard__VolsPending'>≫ {event.volunteers_list.length - acceptedVolunteers.length} pending</span>
+                                            {volunteersList.length - acceptedVolunteers.length > 0
+                                                ? <span className='g1EvResultCard__VolsPending'>≫ {volunteersList.length - acceptedVolunteers.length} pending</span>
                                                 : null
                                             }
                                         </div>

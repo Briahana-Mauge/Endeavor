@@ -46,19 +46,6 @@ const deleteAdmin = async (id) => {
     return await db.one(deleteQuery, id);
 }
 
-const deleteAdminByEmail = async (email, promise) => {
-    const deleteQuery = `
-        UPDATE administration 
-            SET deleted = NOW()
-            WHERE a_email = $1
-            RETURNING *
-    `  
-    if (promise) {
-        return db.one(deleteQuery, email);
-    }
-    return await db.one(deleteQuery, email);
-}
-
 const updateViewType = async (userId, targetView) => {
     let updateQuery = `
         UPDATE administration 
@@ -85,6 +72,5 @@ module.exports = {
     addAdmin,
     updateAdmin,
     deleteAdmin,
-    deleteAdminByEmail,
     updateViewType
 }

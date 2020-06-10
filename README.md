@@ -55,41 +55,94 @@
 ![Database Schema](/docs/DatabaseSchema.png)
 
 ### **Server Endpoints**
-- **Fellows**
+- **Auth**
+  | Method | Endpoint                 | Description                  | Query Parameters | Body Data |
+  | ------ | ------------------------ | ---------------------------- | ---------------- | --------- |
+  | GET    | `/api/auth/is_logged`    | Check if a user is logged in | n/a              | n/a       |
+  | POST   | `/api/auth/login`        | Login a user                 | n/a              | email, password       |
+  | POST   | `/api/auth/:role/signup` | Sign up new user             | n/a              | Please refer to user's profile, minus picture|
+  | PUT    | `/api/auth/:id`          | Update user information      | n/a              | Please refer to user's profile|
 
-  | Method | Endpoint                | Description                 | Query Parameters        | Body Data |
-  | ------ | ----------------------- | --------------------------- | ----------------------- | --------- |
-  | GET    | `/fellows/`             | Get all fellows             | want_mentor=true\|false | n/a       |
-  | GET    | `/fellows/id/:id`       | Get single fellow by id     | n/a                     | n/a       |
-  | GET    | `/fellows/email/:email` | Get single fellow by email  | n/a                     | n/a       |
+  - **Admin User Body Data**
+email, password, newPassword, firstName, lastName, picture
+
+  - **Fellow User Body Data**
+email, password, newPassword, firstName, lastName, cohortId, picture
+
+  - **Volunteer User Body Data**
+email, password, firstName, lastName, company, title, skills (array), slug, mentor, officeHours, techMockInterview, behavioralMockInterview, professionalSkillsCoach, hostSiteVisit, industrySpeaker, publicProfile, picture
+
+- **Users**
+  | Method | Endpoint               | Description                    | Query Parameters | Body Data |
+  | ------ | ---------------------- | ------------------------------ | ---------------- | --------- |
+  | POST   | `/api/users/:role/add` | Create new pre-registered user | n/a              | email, password, role |
+  | PATCH  | `/api/users/:id`       | Update user's password         | n/a              | password, newPassword, confirmPassword |
+  | DELETE | `/api/users/:id`       | Delete user                    | n/a              | n/a                                    |
+
+
+- **Volunteers**
+  | Method | Endpoint                      | Description                           | Query Parameters                     | Body Data |
+  | ------ | ----------------------------- | ------------------------------------- | ------------------------------------ | --------- |
+  | GET    | `/api/volunteers/:type/:id`   | Get volunteer by id, slug or email    | type: id, slug, email                | n/a       |
+  | GET    | `/api/volunteers/all`         | Get all volunteer (with filters)      | v_email, name, skill, company, title | n/a       |
+  | GET    | `/api/volunteers/new`         | Get all unconfirmed volunteers        | n/a                                  | n/a       |
+  | PATCH  | `/api/volunteers/confirm/:id` | Confirm a new (unconfirmed) volunteer | n/a                                  | n/a       |
+
+
+- **Fellows**
+  | Method | Endpoint              | Description                    | Query Parameters     | Body Data |
+  | ------ | --------------------- | ------------------------------ | -------------------- | --------- |
+  | GET    | `/api/fellows/`       | Get all fellows (with filters) | name, cohort, mentor | n/a       |
+  | GET    | `/api/fellows/id/:id` | Get single fellow by id        | n/a                  | n/a       |
+
 
 - **Skills**
+  | Method | Endpoint               | Description                | Query Parameters  | Body Data |
+  | ------ | ---------------------- | -------------------------- | ----------------- | --------- |
+  | GET    | `/api/skills/`         | Get all skills             | n/a               | n/a       |
+  | POST   | `/api/skills/add/`     | Add single skill           | n/a               | skill     |
+  | PUT    | `/api/skills/edit/:id` | Rename single skill by id  | n/a               | skill     |
+  | DELETE | `/api/skills/del/:id`  | Delete single skill by id  | n/a               | n/a       |
 
-  | Method | Endpoint                 | Description                | Query Parameters  | Body Data |
-  | ------ | ------------------------ | -------------------------- | ----------------- | --------- |
-  | GET    | `/skills/`               | Get all skills             | n/a               | n/a       |
-  | POST   | `/skills/add/`           | Add single skill           | n/a               | `skill`   |
-  | PUT    | `/skills/edit/:skill_id` | Rename single skill by id  | n/a               | `skill`   |
-  | DELETE | `/skills/del/:skill_id`  | Delete single skill by id  | n/a               | n/a       |
 
 - **Cohorts**
+  | Method | Endpoint                | Description                 | Query Parameters | Body Data |
+  | ------ | ----------------------- | --------------------------- | ---------------- | --------- |
+  | GET    | `/api/cohorts/`         | Get all cohorts             | n/a              | n/a       |
+  | POST   | `/api/cohorts/add/`     | Add single cohort           | n/a              | cohort    |
+  | PUT    | `/api/cohorts/edit/:id` | Rename single cohort by id  | n/a              | cohort    |
+  | DELETE | `/api/cohorts/del/:id`  | Delete single cohort by id  | n/a              | n/a       |
 
-  | Method | Endpoint                   | Description                 | Query Parameters | Body Data |
-  | ------ | -------------------------- | --------------------------- | ---------------- | --------- |
-  | GET    | `/cohorts/`                | Get all cohorts             | n/a              | n/a       |
-  | POST   | `/cohorts/add/`            | Add single cohort           | n/a              | `cohort`  |
-  | PUT    | `/cohorts/edit/:cohort_id` | Rename single cohort by id  | n/a              | `cohort`  |
-  | DELETE | `/cohorts/del/:cohort_id`  | Delete single cohort by id  | n/a              | n/a       |
+
+- **Events**
+  | Method | Endpoint                      | Description                   | Query Parameters | Body Data |
+  | ------ | ----------------------------- | ----------------------------- | ---------------- | --------- |
+  | GET    | `/api/events/all`             | Get all events (with filters) | v_name, topic, instructor, upcoming, past | n/a |
+  | GET    | `/api/events/event/:id`       | Get event by id               | n/a              | n/a                         |
+  | GET    | `/api/events/dashboard/:role` | Get dashboard events          | n/a              | n/a                         |
+  | POST   | `/api/events/add`             | Add a new event               | n/a              | Please refer to events data |
+  | PUT    | `/api/events/edit/:id`        | Update an event by id         | n/a              | Please refer to events data |
+  | DELETE | `/api/events/:id`             | Delete event by id            | n/a              | n/a                         |
+  - **Events Body Data**
+start, end, topic, description, staffDescription, attendees, location, instructor, numberOfVolunteers, materialsUrl, important
+
+- **Mentor Pairs**
+  | Method | Endpoint            | Description                  | Query Parameters | Body Data             |
+  | ------ | ------------------- | ---------------------------- | ---------------- | --------------------- |
+  | POST   | `/api/mentor_pairs` | Pair a Mentor with a Mentee  | n/a              | volunteerId, fellowId |
+  | DELETE | `/api/mentor_pairs/volunteer/:v_id/fellow/:f_id` | Un-pair a Mentor to a Mentee | n/a | volunteerId, fellowId |
 
 
-<!--
-- **Users**
+- **Event Attendees**
+  | Method | Endpoint                                                       | Description                           | Query Parameters | Body Data            |
+  | ------ | -------------------------------------------------------------- | ------------------------------------- | ---------------- | -------------------- |
+  | POST   | `/api/event_attendees/event/:e_id/add/:v_id`       | Volunteer request to an event         | n/a              | n/a                  |
+  | PUT    | `/api/event_attendees/event/:e_id/volunteer/:v_id` | Attribute hours to volunteer          | n/a              | volunteeredHours     |
+  | PATCH  | `/api/event_attendees/event/:e_id/volunteer/:v_id` | Confirm/un-confirm volunteer to event | n/a              | confirmed true/false |
+  | DELETE | `/api/event_attendees/event/:e_id/delete/:v_id`   | Delete volunteer request to an event  | n/a              | n/a                  |
 
-  | Method | Endpoint     | Description           | Body Data                |
-  | ------ | ------------ | --------------------- | ------------------------ |
-  | GET    | `/users`     | Get all users         | n/a                      |
-  | GET    | `/users/:id` | Get single user by id | n/a                      |
-  | POST   | `/users/`    | Add new user          | `username`, `avatarUrl`  |
-  | PUT    | `/fellows/update/:id`   | Edit a single fellow's data | n/a                    | `fFirstName`, `fLastName`, `fPicture`, `fBio`, `fLinkedIn`, `fGithub`, `wantMentor` |
-  | DELETE | `/fellows/delete/:id`   | Delete a single fellow      | n/a                    | n/a       |
-  -->
+
+- **View**
+  | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
+  | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
+  | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |

@@ -11,7 +11,7 @@ export default function EventRender(props) {
 
     const { loggedUser, setFeedback } = props;
     
-    const [ singleEvent, setSingleEvent ] = useState({ volunteers_list: []});
+    const [ singleEvent, setSingleEvent ] = useState({ volunteers_list: [] });
     const [ eventObj, setEventObj ] = useState({ volunteersList: [], acceptedVolunteers: []});
 
     const [ volunteersList, setVolunteersList ] = useState([]);
@@ -58,30 +58,21 @@ export default function EventRender(props) {
         const accVolunteers = [];
         const volList = [];
 
-        if (singleEvent.volunteers_list && singleEvent.volunteers_list[0]) {
-            for (let volunteer of singleEvent.volunteers_list) {
-                const volunteerInfo = volunteer.split(' &$%& ');
-                /* 
-                    index0: volunteer ID
-                    index1: first and last name
-                    index2: email
-                    index3: volunteer profile deleted
-                    index4: event_volunteers table id
-                    index5: volunteer confirmed to event
-                */
-                if (loggedUser && loggedUser.v_id && loggedUser.v_id === parseInt(volunteerInfo[0])) { 
+        for (let volunteer of singleEvent.volunteers_list) {
+            if (volunteer && volunteer.volunteerId) {
+                volList.push(volunteer);
+                if (loggedUser && loggedUser.v_id && loggedUser.v_id === volunteer.volunteerId) { 
                     found = true;
-                    if (volunteerInfo[5] === 'true') {
+                    if (volunteer.confirmedToEvent) {
                         accepted = true
                     }
                 }
-                if (volunteerInfo[5] === 'true') {
-                    accVolunteers.push(parseInt(volunteerInfo[0]));
+                if (volunteer.confirmedToEvent) {
+                    accVolunteers.push(volunteer.volunteerId);
                 }
-                volList.push(volunteerInfo);
             }
         }
-        volList.sort((a, b) => a[0]-b[0]);
+        volList.sort((a, b) => a.volunteerId - b.volunteerId);
 
         setLoggedVolunteerPartOfEvent(found);
         setLoggedVolunteerRequestAccepted(accepted);
@@ -123,7 +114,6 @@ export default function EventRender(props) {
                 setFeedback={setFeedback}
                 reloadParent={reload}
                 setReloadParent={SetReload}
-                parent='EventRender'
             />
         </div>
     )
