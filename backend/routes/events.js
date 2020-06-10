@@ -49,7 +49,6 @@ router.get('/event/:e_id', async (req, res, next) => {
         let event = null;
 
         if (req.user && req.user.a_id) {
-            console.log('ADMIN')
             event = await eventsQueries.getSingleEventAdmin(eventId);
         } else if (req.user && req.user.v_id) {
             event = await eventsQueries.getSingleEvent(eventId, req.user.v_id);

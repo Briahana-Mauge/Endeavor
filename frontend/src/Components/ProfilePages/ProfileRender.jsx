@@ -21,18 +21,10 @@ export default function ProfileRender(props) {
 
     return (
         <div className={`${pageForm}`}>
-            {/* {
-                pageForm === 'lightBox'
-                ?   <div className='text-right m-2 closeButton'>
-                        <button className='btn-sm btn-danger' onClick={e => props.setDisplayTargetUser(false)}>X</button>
-                    </div>
-                : null
-            } */}
-
             {
-                (originPath === 'volunteer' && volunteerId) || props.volunteerId
+                (originPath === 'volunteer' && volunteerId)
                 ?   <VolunteerProfilePage 
-                        volunteerId={volunteerId || props.volunteerId} 
+                        volunteerId={volunteerId} 
                         setFeedback={props.setFeedback}
                         loggedUser={props.loggedUser}
                     />
@@ -40,9 +32,9 @@ export default function ProfileRender(props) {
             }
 
             {
-                (originPath === 'fellow' && fellowId) || props.fellowId
+                (originPath === 'fellow' && fellowId)
                 ?   <FellowProfilePage 
-                        fellowId={fellowId || props.fellowId} 
+                        fellowId={fellowId} 
                         setFeedback={props.setFeedback}
                         loggedUser={props.loggedUser}
                     />

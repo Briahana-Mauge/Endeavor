@@ -5,9 +5,6 @@ import axios from 'axios';
 
 import UIResultsModeToggle from './UIResultsModeToggle';
 import EventPreviewCard from './EventPreviewCard';
-// import { PrimaryModalContainer } from './Modals/PrimaryModal';
-// import EventCard from './EventCard';
-// import EventRender from './EventRender';
 
 
 export default function Events(props) {
@@ -35,8 +32,6 @@ export default function Events(props) {
     const [urlPastOrUpcoming, setUrlPastOrUpcoming] = useState(strQueryPastOrUpcoming || 'upcoming');
 
     const [results, setResults] = useState([]);
-    const [targetEvent, setTargetEvent] = useState({});
-    const [showEvent, setShowEvent] = useState(false);
     const [reload, setReload] = useState(false); 
 
 
@@ -76,12 +71,6 @@ export default function Events(props) {
     const handleSearch = (e) => {
         e.preventDefault();
         setReload(!reload);
-    }
-
- 
-    const hideEvent = () => {
-        setShowEvent(false);
-        setTargetEvent({});
     }
 
 
@@ -134,39 +123,9 @@ export default function Events(props) {
                         key={event.event_id + event.event_end + event.event_start}
                         loggedUser={loggedUser}
                         event={event}
-                        setShowEvent={setShowEvent}
-                        targetEvent={targetEvent}
-                        setTargetEvent={setTargetEvent}
                     />)
                 }
             </div>
-            
-            {/* <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
-                {
-                    showEvent
-                        ?   <EventCard
-                                loggedUser={loggedUser}
-                                event={targetEvent}
-                                setFeedback={setFeedback}
-                                reloadParent={reload}
-                                setReloadParent={setReload}
-                                hideEvent={hideEvent}
-                            />
-                        :   null
-                }
-            </PrimaryModalContainer> */}
-            {/* {
-                showEvent 
-                ?   <EventRender 
-                        loggedUser={loggedUser} 
-                        event={targetEvent}
-                        setFeedback={setFeedback}
-                        reloadParent={reload}
-                        setReloadParent={setReload}
-                        hideEvent={hideEvent}
-                    />
-                :   null
-            } */}
         </>
     );
 }

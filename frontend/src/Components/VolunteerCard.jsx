@@ -7,11 +7,6 @@ import IconEmail from './IconEmail';
 const VolunteerCard = (props) => {
     const { volunteer } = props;
 
-    // const viewProfile = () => {
-    //     props.setDisplayTargetUser(true);
-    //     props.setTargetVolunteerId(volunteer.v_id);
-    // }
-
     const shownSkills = [];
     let skillsPool = [...volunteer.skills];
     let duration = volunteer.skills.length > 3

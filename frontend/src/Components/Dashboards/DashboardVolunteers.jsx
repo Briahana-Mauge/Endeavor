@@ -11,8 +11,6 @@ import axios from 'axios';
 
 import VolunteerEDash from './EventsDash/VolunteerEDash';
 import ChartsVolunteer from './ChartsVolunteer';
-// import { PrimaryModalContainer } from '../Modals/PrimaryModal';
-// import EventCard from '../EventCard';
 
 
 const DashboardVolunteers = (props) => {

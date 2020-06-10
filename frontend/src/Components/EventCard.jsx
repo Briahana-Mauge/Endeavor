@@ -83,12 +83,8 @@ const EventCard = (props) => {
         try {
             setWaitingForRender(true);
             await axios.delete(`/api/events/${event.event_id}`);
-            if (props.parent === 'EventRender') {
-                history.push('/events')
-            } else {
-                props.setReloadParent(!props.reloadParent);
-                props.hideEvent();
-            }
+            history.push('/events');
+            
         } catch (err) {
             setFeedback(err);
         }
@@ -123,27 +119,25 @@ const EventCard = (props) => {
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
                     className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${confirmedToEvent ? '' : 'g1VolNamePending'}`}
                     to={`/volunteer/${volunteerId}`}
-                    // target="_blank" // because this is already a modal, best sense is to open profile in new tab to preserve location
                 >
                     {name}
                 </Link>
                 {
                     confirmedToEvent
-                        ?   <form
-                                className='g1HoursForm form-inline d-inline-block align-self-center'
-                                onSubmit={e => attributeHoursForVolunteer(e, volunteerId, name)}
-                            >
-                                <input 
-                                    className='form-control mb-2 mr-sm-2' 
-                                    type='number' 
-                                    // placeholder='0'
-                                    value={volunteerHours[volunteerId] || 0}
-                                    onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
-                                    disabled={waitingForRender}
-                                />
-                                <button className='btn btn-primary mb-2' disabled={waitingForRender}>Set Hours</button>
-                            </form>
-                        :   null
+                    ?   <form
+                            className='g1HoursForm form-inline d-inline-block align-self-center'
+                            onSubmit={e => attributeHoursForVolunteer(e, volunteerId, name)}
+                        >
+                            <input 
+                                className='form-control mb-2 mr-sm-2' 
+                                type='number' 
+                                value={volunteerHours[volunteerId] || 0}
+                                onChange={e => manageVolunteerHours(e.target.value, volunteerId)}
+                                disabled={waitingForRender}
+                            />
+                            <button className='btn btn-primary mb-2' disabled={waitingForRender}>Set Hours</button>
+                        </form>
+                    :   null
                 }
             </div>
         );
@@ -172,10 +166,6 @@ const EventCard = (props) => {
         </a>
 
     return (
-        // <div className='lightBox'>
-        //     <div className='text-right closeButton'>
-        //         <button className='btn-sm btn-danger m-2' onClick={props.hideEvent}>X</button>
-        //     </div>
         <>
             <PMBody>
                 {

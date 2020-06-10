@@ -38,36 +38,7 @@ export default function EventPreviewCard(props) {
         setVolunteersList(volList);
     }
     useEffect(mapVolunteersList, [loggedUser, event]);
-
-
-    // const setEventAsTarget = useCallback(() => {
-    //     const eventDataObj = Object.assign({}, event, {
-    //         volunteersList,
-    //         loggedVolunteerPartOfEvent,
-    //         loggedVolunteerRequestAccepted,
-    //         acceptedVolunteers
-    //     });
-    //     setTargetEvent(eventDataObj);
-    // }, [
-    //     acceptedVolunteers,
-    //     event,
-    //     loggedVolunteerPartOfEvent,
-    //     loggedVolunteerRequestAccepted,
-    //     setTargetEvent,
-    //     volunteersList
-    // ]);
-
-    // useEffect(() => {
-    //     if (targetEvent.event_id && targetEvent.event_id === event.event_id) {
-    //         setEventAsTarget();
-    //     }
-    // }, [event, volunteersList, targetEvent.event_id, setEventAsTarget]);
-
-
-    // const handleClickOnEvent = () => {
-    //     setEventAsTarget();
-    //     setShowEvent(true);
-    // }
+    
 
     const formatEventDate = date => {
         const d = new Date(date).toLocaleDateString();
@@ -83,13 +54,9 @@ export default function EventPreviewCard(props) {
             <div className='border rounded-lg p-2'>
                 <header
                     className='text-center font-weight-bolder'
-                    // onClick={handleClickOnEvent}
-                    // data-toggle="modal"
-                    // data-target="#primaryModal"
                 >
                     <Link to={`/event/${event.event_id}`} className='plainLink'>{event.topic}</Link>
                 </header>
-                {/* <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div> */}
                 {
                     eventStart[0] === eventEnd[0]
                         ? eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
@@ -105,7 +72,6 @@ export default function EventPreviewCard(props) {
                 {
                     /* If location is a link for google meet or zoom, create a link for the location to open in a new tab
                     If not, leave the location as plan text */
-
                     event.location.slice(0, 7).toLowerCase() === 'zoom.us' || event.location.slice(0, 11).toLowerCase() === 'meet.google'
                         ? <p><strong>Location: </strong><a href={"http://" + event.location} target="_blank" rel="noopener noreferrer">{event.location}</a></p>
                         : event.location.slice(0, 4).toLowerCase() === 'http'

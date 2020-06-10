@@ -203,6 +203,7 @@ const getSingleEventAdmin = async (eventId, volunteerId) => {
       cohort,
       cohort_id,
       materials_url,
+      important,
       JSON_AGG(
         JSON_BUILD_OBJECT (
           'volunteerId', v_id,

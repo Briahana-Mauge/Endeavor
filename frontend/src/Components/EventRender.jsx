@@ -27,6 +27,7 @@ export default function EventRender(props) {
             .then(response => {
                 if (isMounted) {
                     setSingleEvent(response.data.payload);
+                    console.log(response.data.payload);
                     setLoading(false);
                 }
             })
@@ -114,7 +115,6 @@ export default function EventRender(props) {
                 setFeedback={setFeedback}
                 reloadParent={reload}
                 setReloadParent={SetReload}
-                parent='EventRender'
             />
         </div>
     )

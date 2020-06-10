@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../Spinner';
 
@@ -24,52 +24,21 @@ export default function FellowProfilePage(props) {
                     .then(response => {
                         if (isMounted) {
                             const fel = response.data.payload;
+                            console.log(fel)
                             setFellow(fel);
                             setLoading(false);
             
+                            if (fel.past_mentors_list) {
+                                setPastMentors(fel.past_mentors_list);
+                            }
+
                             if (fel.mentors_list) {
-                                const active = [];
-                                const past = [];
-                                fel.mentors_list.forEach(mentor => {
-                                    /* After splitting, for each mentee we will have:
-                                        index0: mentor id
-                                        index1: full name
-                                        index2: When the mentoring relation started
-                                        index3: text for relation deleted: date means relation ended, false it's still on
-                                    */
-                                    const mentorArr = mentor.split(' &$%& ');
-                                    if (mentorArr[3] === 'false') {
-                                        active.push(mentorArr);
-                                    } else {
-                                        past.push(mentorArr);
-                                    }
-                                });
-            
-                                SetActiveMentors(active);
-                                setPastMentors(past);
+                                SetActiveMentors(fel.mentors_list);
                             }
             
                             if (fel.events_list) {
-                                const eventsList = fel.events_list.map(event => event.split(' &$%& '));
-                                /* After splitting, for each mentee we will have:
-                                    index0: event id
-                                    index1: event topic/title
-                                    index2: event start
-                                    index3: event end
-                                */
-                                setEvents(eventsList);
+                                setEvents(fel.events_list);
                             }
-                
-                            // const promises = [];
-                            // promises.push(axios.get(`/api/mentor_pairs/fellow/${fellowId}`));
-                            // promises.push(axios.get(`/api/events/past/fellow/${fellowId}`));
-                            // promises.push(axios.get(`/api/cohorts/id/${fel.cohort_id}`));
-                            // const response = await Promise.all(promises);
-            
-                            // setMentors(response[0].fel);
-                            // setEvents(response[1].fel);
-                            // setCohort(response[2].fel.cohort);
-
                         }
                     })
                     .catch(err => {
@@ -115,25 +84,25 @@ export default function FellowProfilePage(props) {
                 </a>
                 <span className='d-block'><strong>Cohort: </strong>{fellow.cohort}</span>
                 <ul className='plainUl'> <strong>Active Mentor(s):</strong>
-                    { activeMentors.map(mentor => <li className='ml-3' key={mentor[0] + mentor[1]}>
-                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
-                            : {new Date(mentor[2]).toLocaleDateString()}
-                        </li>) }
+                    { activeMentors.map(mentor => <Link to={`/volunteer/${mentor.volunteerId}`} className='ml-3 plainLink d-block' key={mentor.volunteerId + mentor.name}>
+                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                            : {new Date(mentor.startDate).toLocaleDateString()}
+                        </Link>) }
                 </ul>
                 <ul className='plainUl'> <strong>Past Mentor(s):</strong>
-                    { pastMentors.map((mentor, index) => <li className='ml-3' key={mentor[0] + mentor[1] + index}>
-                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
-                            : {new Date(mentor[2]).toLocaleDateString()} - {new Date(mentor[3]).toLocaleDateString()}
-                        </li>) }
+                    { pastMentors.map((mentor, index) => <Link to={`/volunteer/${mentor.volunteerId}`} className='ml-3 plainLink d-block' key={mentor.volunteerId + mentor.name + index}>
+                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                            : {new Date(mentor.startDate).toLocaleDateString()} - {new Date(mentor.endDate).toLocaleDateString()}
+                        </Link>) }
                 </ul>
 
                 <ul className='plainUl'> <strong className='d-block mx-2'>Events: </strong>
                     {
                         events.map(event => 
-                            <li key={event[2] + event[1] + event[0]} className='ml-3'>
-                                <span>{event[1]}</span> 
-                                : ({new Date(event[2]).toLocaleDateString()})
-                            </li>
+                            <Link to={`/event/${event.eventId}`} key={event.eventStart + event.topic + event.eventId} className='ml-3 plainLink d-block'>
+                                <span>{event.topic}</span> 
+                                : ({new Date(event.eventStart).toLocaleDateString()})
+                            </Link>
                         )          
                     }  
                 </ul>

@@ -6,7 +6,6 @@ import Fellows from './Fellows';
 import Spinner from './Spinner';
 
 export default function Mentoring(props) {
-    const { loggedUser } = props;
     const { volunteerId } = useParams();
     const history = useHistory();
 
@@ -159,7 +158,6 @@ export default function Mentoring(props) {
                         reload={reload}
                         setReload={setReload}
                         setShowFellowsList={setShowFellowsList}
-                        loggedUser={loggedUser}
                     />
                     : null
             }

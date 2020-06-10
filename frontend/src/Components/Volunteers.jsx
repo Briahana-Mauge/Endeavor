@@ -5,8 +5,6 @@ import axios from 'axios';
 
 import UIResultsModeToggle from './UIResultsModeToggle';
 import VolunteerCard from './VolunteerCard';
-// import { PrimaryModalContainer } from './Modals/PrimaryModal';
-// import ProfileRender from './ProfilePages/ProfileRender';
 
 
 export default function Volunteers (props) {
@@ -35,8 +33,6 @@ export default function Volunteers (props) {
     
     const [results, setResults] = useState([]);
     const [skillsList, setSkillsList] = useState([]);
-    const [targetVolunteerId, setTargetVolunteerId] = useState(null);
-    const [displayTargetUser, setDisplayTargetUser] = useState(false);
     const [reload, setReload] = useState(false);
 
     
@@ -105,11 +101,6 @@ export default function Volunteers (props) {
         setReload(!reload);
     }
 
-    const hideVolunteer = () => {
-        setDisplayTargetUser(false);
-        setTargetVolunteerId(null);
-    }
-
 
     return (
         <>
@@ -161,24 +152,9 @@ export default function Volunteers (props) {
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
-                        setDisplayTargetUser={setDisplayTargetUser}
-                        setTargetVolunteerId={setTargetVolunteerId}
                     />
                 )}
             </div>
-
-            {/* <PrimaryModalContainer header={'Volunteer Profile'} className='g1VolunteerModal' runOnModalClose={hideVolunteer}>
-                {
-                    displayTargetUser
-                        ? <ProfileRender
-                            volunteerId={targetVolunteerId}
-                            setDisplayTargetUser={setDisplayTargetUser}
-                            setFeedback={props.setFeedback}
-                            loggedUser={props.loggedUser}
-                        />
-                        : null
-                }
-            </PrimaryModalContainer> */}
         </>
     );
 }

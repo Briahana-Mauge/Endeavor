@@ -37,12 +37,10 @@ export default function VolunteerProfilePage(props) {
             setWaitingForData(false);
 
             if (info.past_mentees) {
-                console.log('PM', info.past_mentees)
                 setPastMentees(info.past_mentees);
             }
 
             if (info.current_mentees) {
-                console.log('CM', info.current_mentees)
                 setCurrentMentees(info.current_mentees);
             }
 
