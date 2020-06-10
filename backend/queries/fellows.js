@@ -57,7 +57,7 @@ const getAllFellows = async (name, cohortId, askedForMentor) => {
   let condition = ' WHERE fellows.deleted IS NULL ';
   
   if (name) {
-    condition += ` AND LOWER(f_first_name || ' ' || f_last_name) LIKE '%' || $/name/ || '%' `;
+    condition += ` AND LOWER(f_first_name || f_last_name) LIKE '%' || $/name/ || '%' `;
   }
 
   if (cohortId) {

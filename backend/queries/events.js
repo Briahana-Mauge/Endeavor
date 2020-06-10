@@ -52,7 +52,7 @@ const getAllEvents = async (volunteerId, vName, topic, instructor, upcoming, pas
   let condition = ' WHERE events.deleted IS NULL ';
 
   if (vName) {
-    condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
+    condition += `AND lower(v_first_name || v_last_name) LIKE '%' || $/vName/ || '%' `
   }
 
   if (topic) {
@@ -166,7 +166,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   let condition = ' WHERE events.deleted IS NULL ';
 
   if (vName) {
-    condition += `AND lower(volunteers.v_first_name) = $/vName/ OR lower(volunteers.v_last_name) = $/vName/ OR lower(volunteers.v_first_name || ' ' || volunteers.v_last_name) = $/vName/ `
+    condition += `AND lower(v_first_name || v_last_name) LIKE '%' || $/vName/ || '%' `
   }
 
   if (topic) {
