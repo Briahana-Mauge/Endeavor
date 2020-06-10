@@ -146,7 +146,7 @@ export default function EventPreviewCard(props) {
                 {
                     statusOfTime !== ''
                         ?   statusOfTime === 'past'
-                                ?   <div className='g1EvResultCard__PastStatus'>Expired</div>
+                                ?   <div className='g1EvResultCard__PastStatus'>Past Event</div>
                                 :   <div className='g1EvResultCard__NowStatus'>Now Happening</div>
                         : null
                 }
@@ -205,8 +205,12 @@ export default function EventPreviewCard(props) {
                     loggedUser && loggedUser.v_id && loggedVolunteerPartOfEvent
                         ?   <>
                                 { loggedVolunteerRequestAccepted
-                                    ?   <div className='g1EvResultCard__VolStatus confirmed'>Participation CONFIRMED</div>
-                                    :   <div className='g1EvResultCard__VolStatus'>Participation Pending</div>
+                                    ?   statusOfTime === 'past'
+                                        ?   <div className='g1EvResultCard__VolStatus confirmed'>Participated</div>
+                                        :   <div className='g1EvResultCard__VolStatus confirmed'>Participation CONFIRMED</div>
+                                    :   statusOfTime === 'past'
+                                        ?   null
+                                        :   <div className='g1EvResultCard__VolStatus'>Participation Pending</div>
                                 }
                             </>
                         :   null
