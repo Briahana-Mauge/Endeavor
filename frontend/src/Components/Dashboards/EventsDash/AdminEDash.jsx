@@ -72,7 +72,7 @@ const AdminEDash = (props) => {
         </EDashTable>
       </UIModule> */}
 
-      <UIModule className='deepSangria' titleColor="Two Week" titleRegular='Glance'>
+      <UIModule className='blueBerry' titleColor="Two Week" titleRegular='Glance'>
         <EDashTable>
           {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">There are no upcoming events at the moment.</div>}
         </EDashTable>
