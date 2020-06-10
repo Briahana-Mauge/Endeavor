@@ -10,7 +10,7 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
 export default function ChartBar (props) {
-    const { xAxes, data, title, xText, color, yText } = props;
+    const { xAxes, data, xText, color, yText } = props;
 
     // SETTINGS FOR ALL BAR CHARTS
     const labelsFont = "'Cabin', sans-serif";
@@ -36,8 +36,7 @@ export default function ChartBar (props) {
             duration: 0 // general animation time
         },
         scales: {
-            yAxes: [
-                {
+            yAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: yText,
@@ -53,25 +52,24 @@ export default function ChartBar (props) {
                     gridLines:{
                         color: '#111'
                     }
-                }
-            ],
+            }],
             xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: xText,
-                    fontFamily: labelsFont,
-                    fontSize: labelsSize,
-                    fontColor: labelsColor
-                },
-                ticks: {
-                    fontFamily: ticksFont,
-                    fontSize: 10,
-                    fontColor: ticksColor,
-                    beginAtZero: true
-                },
-                gridLines:{
-                    color: '#111'
-                }
+                    scaleLabel: {
+                        display: true,
+                        labelString: xText,
+                        fontFamily: labelsFont,
+                        fontSize: labelsSize,
+                        fontColor: labelsColor
+                    },
+                    ticks: {
+                        fontFamily: ticksFont,
+                        fontSize: 10,
+                        fontColor: ticksColor,
+                        beginAtZero: true
+                    },
+                    gridLines:{
+                        color: '#111'
+                    }
             }]
         },
         // title: {

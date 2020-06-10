@@ -70,6 +70,7 @@
 
     &.dataModule {
         border: solid 2px #690e80;
+        margin-bottom: .3rem !important;
 
         &::before {
             background-image: linear-gradient(76deg, #080808 60%, #171717 100%);

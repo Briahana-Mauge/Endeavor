@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 
 import UIModule from '../UIModule';
 import ChartBar from '../ChartBar';
+import ChartLine from '../ChartLine';
 import yearRange from '../../yearRangeFormatting';
 
 
@@ -63,43 +64,60 @@ export default function ChartsAdmin(props) {
 
 
   return (
-    <div className="row px-3">
-      <div className="col-12 col-md-6 px-0">
-        <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
-          <ChartBar
-            xAxes={chartInterval}
-            data={chartTotalVolunteerSignup}
-            title={''}
-            xText={'Months'}
-            yText={'New Volunteers'}
-            color={'rgba(52, 5, 191, 1)'}
-          />
-        </UIModule>
+    <>
+      <div className="row px-3">
+        <div className="col-12 col-md-6 pl-0 pr-1">
+          <UIModule className='dataModule' titleColor='New Confirmed Volunteers' titleRegular='By Month'>
+            <ChartBar
+              xAxes={chartInterval}
+              data={chartTotalVolunteerSignup}
+              title={''}
+              xText={'12-Month History'}
+              yText={'Volunteers'}
+              color={'#3c5684'}
+            />
+          </UIModule>
+        </div>
+        <div className="col-12 col-md-6 pl-1 pr-0">
+          <UIModule className='dataModule' titleColor='Volunteer Hours Served' titleRegular='By Month'>
+            <ChartBar
+              xAxes={chartInterval}
+              data={chartTotalVolunteerHours}
+              title={''}
+              xText={'12-Month History'}
+              yText={'Hours'}
+              color={'#b7af7d'}
+            />
+          </UIModule>
+        </div>
       </div>
-      <div className="col-12 col-md-6 px-0">
-        <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
-          <ChartBar
-            xAxes={chartInterval}
-            data={chartTotalVolunteerHours}
-            title={''}
-            xText={'Months'}
-            yText={'Hours Earned'}
-            color={'rgba(255, 99, 132, 1)'}
-          />
-        </UIModule>
+
+      <div className="row px-3">
+        <div className="col-12 col-md-6 pl-0 pr-1">
+          <UIModule className='dataModule' titleColor='Events Held' titleRegular='By Month'>
+            <ChartBar
+              xAxes={chartInterval}
+              data={chartTotalEvents}
+              title={''}
+              xText={'12-Month History'}
+              yText={'Events'}
+              color={'#ab69a2'}
+            />
+          </UIModule>
+        </div>
+        <div className="col-12 col-md-6 pl-1 pr-0">
+          <UIModule className='dataModule' titleColor='Volunteered Hours & Events Held' titleRegular='Overlay'>
+            <ChartLine
+              xAxes={chartInterval}
+              data={[ chartTotalVolunteerHours, chartTotalEvents ]}
+              title={''}
+              xText={'12-Month History'}
+              yText={'Volunteers / Events'}
+              color={'rgba(155, 49, 117, 1)'}
+            />
+          </UIModule>
+        </div>
       </div>
-      <div className="col-12 col-md-6 px-0">
-        <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
-          <ChartBar
-            xAxes={chartInterval}
-            data={chartTotalEvents}
-            title={''}
-            xText={'Months'}
-            yText={'Events'}
-            color={'rgba(155, 49, 117, 1)'}
-          />
-        </UIModule>
-      </div>
-    </div>
+    </>
   );
 }
