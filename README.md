@@ -14,10 +14,10 @@
 <!-- ![screencap]() -->
 
 ## Instructional Team
-+ **LEAD Instructor:** [Alejandro Franco -- ( @alejo4373 )](https://github.com/alejo4373)
-+ **IA:** [Jung Rae Jang -- ( @jungraejang )](https://github.com/jungraejang)
-+ **IA:** [Wynter Reid -- ( @wynterreid )](https://github.com/wynterreid)
-+ **Program Manager:** [Dessa Shepherd](https://www.linkedin.com/in/dessa-shepherd-7a55b374/)
++ **LEAD Instructor:** [Alejandro Franco -- ( @alejo4373 )](https:github.com/alejo4373)
++ **IA:** [Jung Rae Jang -- ( @jungraejang )](https:github.com/jungraejang)
++ **IA:** [Wynter Reid -- ( @wynterreid )](https:github.com/wynterreid)
++ **Program Manager:** [Dessa Shepherd](https:www.linkedin.com/in/dessa-shepherd-7a55b374/)
 
 ## Technologies Implemented
 + PostgreSQL 12.1
@@ -45,7 +45,7 @@
   $ cd ../frontend
   $ npm run quick_install
   ```
-+ The app site will be found at: http://localhost:3008/
++ The app site will be found at: http:localhost:3008/
 
 ---
 
@@ -130,16 +130,16 @@ start, end, topic, description, staffDescription, attendees, location, instructo
   | Method | Endpoint            | Description                  | Query Parameters | Body Data             |
   | ------ | ------------------- | ---------------------------- | ---------------- | --------------------- |
   | POST   | `/api/mentor_pairs` | Pair a Mentor with a Mentee  | n/a              | volunteerId, fellowId |
-  | DELETE | `/api/mentor_pairs/volunteer/:volunteer_id/fellow/:fellowId` | Un-pair a Mentor to a Mentee | n/a | volunteerId, fellowId |
+  | DELETE | `/api/mentor_pairs/volunteer/:v_id/fellow/:f_id` | Un-pair a Mentor to a Mentee | n/a | volunteerId, fellowId |
 
 
 - **Event Attendees**
   | Method | Endpoint                                                       | Description                           | Query Parameters | Body Data            |
   | ------ | -------------------------------------------------------------- | ------------------------------------- | ---------------- | -------------------- |
-  | POST   | `/api/event_attendees/event/:event_id/add/:volunteer_id`       | Volunteer request to an event         | n/a              | n/a                  |
-  | PUT    | `/api/event_attendees/event/:event_id/volunteer/:volunteer_id` | Attribute hours to volunteer          | n/a              | volunteeredHours     |
-  | PATCH  | `/api/event_attendees/event/:event_id/volunteer/:volunteer_id` | Confirm/un-confirm volunteer to event | n/a              | confirmed true/false |
-  | DELETE | `/api/event_attendees//event/:event_id/delete/:volunteer_id`   | Delete volunteer request to an event  | n/a              | n/a                  |
+  | POST   | `/api/event_attendees/event/:e_id/add/:v_id`       | Volunteer request to an event         | n/a              | n/a                  |
+  | PUT    | `/api/event_attendees/event/:e_id/volunteer/:v_id` | Attribute hours to volunteer          | n/a              | volunteeredHours     |
+  | PATCH  | `/api/event_attendees/event/:e_id/volunteer/:v_id` | Confirm/un-confirm volunteer to event | n/a              | confirmed true/false |
+  | DELETE | `/api/event_attendees/event/:e_id/delete/:v_id`   | Delete volunteer request to an event  | n/a              | n/a                  |
 
 
 - **View**
