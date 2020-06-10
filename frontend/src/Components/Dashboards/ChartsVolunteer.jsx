@@ -52,9 +52,9 @@ export default function ChartsVolunteer (props) {
                 xAxes={chartInterval}
                 data={chartVolunteerHours}
                 title={''}
-                xText={'Months'}
+                xText={'12 Month History'}
                 yText = {'Hours Earned'}
-                color={'#2631bd'}
+                color={'#8b8557'}
               />
             </UIModule>
           </div>
@@ -64,9 +64,9 @@ export default function ChartsVolunteer (props) {
                 xAxes={chartInterval}
                 data={chartVolunteerEvents}
                 title={''}
-                xText={'Months'}
+                xText={'12 Month History'}
                 yText={'Events Volunteered'}
-                color={'rgba(155, 49, 117, 1)'}
+                color={'#a54a8b'}
               />
             </UIModule>
           </div>
