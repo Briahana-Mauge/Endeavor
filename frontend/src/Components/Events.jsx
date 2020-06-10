@@ -44,7 +44,7 @@ export default function Events(props) {
 
         let isMounted = true;
 
-        axios.get(`/api/events/all?${searchKey}=${searchVal}&${date}=true`)
+        axios.get(`/api/events/all?${date}=true&${searchKey}=${searchVal}`)
             .then(response => {
                 if (isMounted) {
                     setResults(response.data.payload);
@@ -63,10 +63,10 @@ export default function Events(props) {
 
 
     useEffect(() => {
-        let tempUrlSearchValue =  urlSearchValue + ''; // force a copy of the state
-        tempUrlSearchValue = tempUrlSearchValue.replace(/ /g, '%20'); // replace any blank character by %20
-        tempUrlSearchValue = tempUrlSearchValue.replace(/%20%20/g, '%20'); // replace any double blank character or more by one blank character
-        history.push(`/events?date=${urlPastOrUpcoming}&${urlFilter}=${tempUrlSearchValue}`);
+        let urlSearchValueCopy =  urlSearchValue + ''; // force a copy of the state
+        urlSearchValueCopy = urlSearchValueCopy.replace(/ /g, '%20'); // replace any blank character by %20
+        urlSearchValueCopy = urlSearchValueCopy.replace(/%20%20/g, '%20'); // replace any double blank character or more by one blank character
+        history.push(`/events?date=${urlPastOrUpcoming}&${urlFilter}=${urlSearchValueCopy}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, urlPastOrUpcoming, urlFilter, urlSearchValue]);
 
