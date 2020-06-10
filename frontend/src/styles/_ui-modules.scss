@@ -52,16 +52,36 @@
         }
     }
 
-    &.dataModule {
+    &.emBassy {
+        border: solid 1px #3c3425;
+
         &::before {
-            background-image: linear-gradient(76deg, #171717 60%, #1d1d1d 100%);
+            background-image: linear-gradient(76deg, #2b1f04 45%, #332607 100%);
         }
-        .g1Module__Header span {
-            color: #5e5d90;
+
+        .g1HeaderColor {
+            color: #bda264;
         }
-        // .g1THead {
-        //     color: #af7394;
-        // }
+
+        .g1THead, .g1TimeCol u {
+            color: #8a652e;
+        }
+    }
+
+    &.dataModule {
+        border: solid 2px #690e80;
+
+        &::before {
+            background-image: linear-gradient(76deg, #080808 60%, #171717 100%);
+        }
+
+        .g1HeaderColor {
+            color: #616161;
+        }
+
+        .g1THead, .g1TimeCol u {
+            color: #444;
+        }
     }
 
 
