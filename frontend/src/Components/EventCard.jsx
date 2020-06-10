@@ -144,7 +144,7 @@ const EventCard = (props) => {
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
                     className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${isConfirmedForEvent === 'false' ? 'g1VolNamePending' : ''}`}
                     to={`/volunteer/${volunteerId}`}
-                    target="_blank" // because this is already a modal, best sense is to open profile in new tab to preserve location
+                    // target="_blank" // because this is already a modal, best sense is to open profile in new tab to preserve location
                 >
                     {fullname}
                 </Link>
@@ -232,10 +232,10 @@ const EventCard = (props) => {
                                 </p>
                                 <p className='card-text'>
                                 <strong>Volunteers: </strong>
-                                    <em className='g1VolNumConfirmed'>{event.acceptedVolunteers.length} confirmed</em>,
+                                    <em className='g1VolNumConfirmed'>{event.acceptedVolunteers.length} confirmed</em><span>, </span>
                                     <em className='g1VolNumPending'>
                                         {event.volunteersList.filter(volunteer => volunteer[5] === 'false').length} pending</em>
-                                    <em className='g1VolNumRequested'>({event.number_of_volunteers} initally requested)</em>
+                                    <em className='g1VolNumRequested'> ({event.number_of_volunteers} initially requested)</em>
                                 </p>
                                 {displayVolunteersList}
                             </PMBody>
@@ -272,7 +272,7 @@ const EventCard = (props) => {
                             ?   <>
                                     {calendarLink}
                                     <PMFooterSpace />
-                                    <div className="g1Request g1Confirmed">Confirmed! See you there!</div>
+                                    <div className="g1Request g1Confirmed mr-2 pt-2">Confirmed! See you there!</div>
                                     {
                                         new Date(event.event_start).getTime() > Date.now()
                                         ?   <button
@@ -288,7 +288,7 @@ const EventCard = (props) => {
                                 </>
                             :   <>
                                     <PMFooterSpace />
-                                    <div className="g1Request g1Pending">Request pending</div>
+                                    <div className="g1Request g1Pending mr-2 pt-2">Request pending!</div>
                                     <button
                                         className='btn btn-warning g1MinimizeFooterButton'
                                         onClick={deleteVolunteerForEvent}

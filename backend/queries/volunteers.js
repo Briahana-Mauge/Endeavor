@@ -18,7 +18,7 @@ const { formatStr } = require('../helpers/helpers');
 /* QUERIES */
 
 // Get all volunteers with filter cases
-const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly, volunteerId) => {
+const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfilesOnly, volunteerId) => {
   return await db.task(async (t) => {
     let parsedCompany = '';
     if (company) {
@@ -78,16 +78,19 @@ const getAllVolunteers = async (vEmail, company, skill, name, publicProfilesOnly
     if (name) {
       condition += ` AND LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
     }
+    if (title) {
+      condition += ` AND LOWER(volunteers.title) LIKE '%' || $/title/ || '%' `
+    }
 
     let volunteersList = null;
     if (publicProfilesOnly) {
-      volunteersList = await t.any(selectQuery + condition + ' AND public_profile = TRUE ' + endOfQuery, {vEmail, parsedCompany, skill, name});
+      volunteersList = await t.any(selectQuery + condition + ' AND public_profile = TRUE ' + endOfQuery, {vEmail, parsedCompany, skill, name, title});
     } else {
-      volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, skill, name});
+      volunteersList = await t.any(selectQuery + condition + endOfQuery, {vEmail, parsedCompany, skill, name, title});
     }
 
     if (volunteerId) {
-      const userProfile = await t.oneOrNone(selectQuery + condition + ` AND volunteers.v_id = $/volunteerId/ ` + endOfQuery, {vEmail, parsedCompany, skill, name, volunteerId})
+      const userProfile = await t.oneOrNone(selectQuery + condition + ` AND volunteers.v_id = $/volunteerId/ ` + endOfQuery, {vEmail, parsedCompany, skill, name, title, volunteerId})
       if (userProfile && !userProfile.public_profile && Array.isArray(volunteersList)) {
         volunteersList.push(userProfile);
       }
@@ -326,6 +329,26 @@ const confirmVolunteer = async (id) => {
   return await db.one(confirmQuery, {id});
 }
 
+const updateViewType = async (userId, targetView) => {
+  let updateQuery = `
+      UPDATE volunteers 
+      SET v_grid = NOT v_grid
+      WHERE a_id = $/userId/
+      RETURNING v_grid
+  `
+
+  if (targetView === 'events') {
+      updateQuery = `
+          UPDATE volunteers 
+          SET e_grid = NOT e_grid
+          WHERE a_id = $/userId/
+          RETURNING e_grid
+      `
+  }
+
+  return await db.one(updateQuery, {userId});
+}
+
 
 /* EXPORT */
 module.exports = {
@@ -337,6 +360,7 @@ module.exports = {
   updateVolunteer,
   confirmVolunteer,
   deleteVolunteer,
-  deleteVolunteerByEmail
+  deleteVolunteerByEmail,
+  updateViewType
 }
 

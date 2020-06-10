@@ -152,7 +152,7 @@ export default function Mentoring(props) {
 
                 {
                     props.loggedUser && props.loggedUser.a_id
-                        ? <button className='btn btn-primary d-block'
+                        ? <button className='btn btn-primary d-block mb-2'
                             onClick={e => setShowFellowsList(true)}>
                             Add
                                     </button>

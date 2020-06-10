@@ -59,11 +59,32 @@ const deleteAdminByEmail = async (email, promise) => {
     return await db.one(deleteQuery, email);
 }
 
+const updateViewType = async (userId, targetView) => {
+    let updateQuery = `
+        UPDATE administration 
+        SET v_grid = NOT v_grid
+        WHERE a_id = $/userId/
+        RETURNING v_grid
+    `
+
+    if (targetView === 'events') {
+        updateQuery = `
+            UPDATE administration 
+            SET e_grid = NOT e_grid
+            WHERE a_id = $/userId/
+            RETURNING e_grid
+        `
+    }
+
+    return await db.one(updateQuery, {userId});
+}
+
 
 module.exports = {
     getAdminByEmail,
     addAdmin,
     updateAdmin,
     deleteAdmin,
-    deleteAdminByEmail
+    deleteAdminByEmail,
+    updateViewType
 }

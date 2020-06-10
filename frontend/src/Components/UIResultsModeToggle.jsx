@@ -6,9 +6,19 @@ UIResultsModeToggle Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
+import axios from 'axios';
 
 
-const UIResultsModeToggle = ({ isDisplayModeGrid, setIsDisplayModeGrid }) => {
+const UIResultsModeToggle = ({ type, isDisplayModeGrid, setIsDisplayModeGrid, setFeedback }) => {
+  const handleViewChange = async () => {
+    try {
+      const { data } = await axios.patch(`/api/view/`, {targetView: type});
+      setIsDisplayModeGrid(data.payload.e_grid || data.payload.v_grid || false);
+    } catch(err) {
+      setFeedback(err);
+    }
+  }
+
   return(
     <div className='g1ToggleListOrGrid'>
       <span>View Mode:</span>
@@ -17,7 +27,7 @@ const UIResultsModeToggle = ({ isDisplayModeGrid, setIsDisplayModeGrid }) => {
         <input
           type="checkbox"
           checked={isDisplayModeGrid}
-          onChange={() => setIsDisplayModeGrid(!isDisplayModeGrid)}
+          onChange={handleViewChange}
           className="custom-control-input"
           id="customSwitch1" />
         <label className="custom-control-label" htmlFor="customSwitch1">Grid</label>
