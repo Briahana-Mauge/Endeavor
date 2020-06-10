@@ -8,7 +8,7 @@ ChartsAdmin Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 
 import UIModule from '../UIModule';
-import Chart from '../Chart';
+import ChartBar from '../ChartBar';
 import yearRange from '../../yearRangeFormatting';
 
 
@@ -66,7 +66,7 @@ export default function ChartsAdmin(props) {
     <div className="row px-3">
       <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='New Volunteers' titleRegular='By Month'>
-          <Chart
+          <ChartBar
             xAxes={chartInterval}
             data={chartTotalVolunteerSignup}
             title={''}
@@ -78,7 +78,7 @@ export default function ChartsAdmin(props) {
       </div>
       <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='Earned Volunteering Hours' titleRegular='By Month'>
-          <Chart
+          <ChartBar
             xAxes={chartInterval}
             data={chartTotalVolunteerHours}
             title={''}
@@ -90,7 +90,7 @@ export default function ChartsAdmin(props) {
       </div>
       <div className="col-12 col-md-6 px-0">
         <UIModule className='dataModule' titleColor='Number of Events' titleRegular='By Month'>
-          <Chart
+          <ChartBar
             xAxes={chartInterval}
             data={chartTotalEvents}
             title={''}
