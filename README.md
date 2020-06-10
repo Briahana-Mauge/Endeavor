@@ -63,11 +63,19 @@
   | POST   | `/api/auth/:role/signup` | Sign up new user             | n/a              | Please refer to user's profile, minus picture|
   | PUT    | `/api/auth/:id`          | Update user information      | n/a              | Please refer to user's profile|
 
+  - **Admin User Body Data**
+email, password, newPassword, firstName, lastName, picture
+
+  - **Fellow User Body Data**
+email, password, newPassword, firstName, lastName, cohortId, picture
+
+  - **Volunteer User Body Data**
+email, password, firstName, lastName, company, title, skills (array), slug, mentor, officeHours, techMockInterview, behavioralMockInterview, professionalSkillsCoach, hostSiteVisit, industrySpeaker, publicProfile, picture
 
 - **Users**
   | Method | Endpoint               | Description                    | Query Parameters | Body Data |
   | ------ | ---------------------- | ------------------------------ | ---------------- | --------- |
-  | POST   | `/api/users/:role/add` | Create new pre-registered user | n/a              | email, password                        |
+  | POST   | `/api/users/:role/add` | Create new pre-registered user | n/a              | email, password, role |
   | PATCH  | `/api/users/:id`       | Update user's password         | n/a              | password, newPassword, confirmPassword |
   | DELETE | `/api/users/:id`       | Delete user                    | n/a              | n/a                                    |
 
@@ -115,7 +123,8 @@
   | POST   | `/api/events/add`             | Add a new event               | n/a              | Please refer to events data |
   | PUT    | `/api/events/edit/:id`        | Update an event by id         | n/a              | Please refer to events data |
   | DELETE | `/api/events/:id`             | Delete event by id            | n/a              | n/a                         |
-
+  - **Events Body Data**
+start, end, topic, description, staffDescription, attendees, location, instructor, numberOfVolunteers, materialsUrl, important
 
 - **Mentor Pairs**
   | Method | Endpoint            | Description                  | Query Parameters | Body Data             |
@@ -124,7 +133,7 @@
   | DELETE | `/api/mentor_pairs/volunteer/:volunteer_id/fellow/:fellowId` | Un-pair a Mentor to a Mentee | n/a | volunteerId, fellowId |
 
 
-  - **Event Attendees**
+- **Event Attendees**
   | Method | Endpoint                                                       | Description                           | Query Parameters | Body Data            |
   | ------ | -------------------------------------------------------------- | ------------------------------------- | ---------------- | -------------------- |
   | POST   | `/api/event_attendees/event/:event_id/add/:volunteer_id`       | Volunteer request to an event         | n/a              | n/a                  |
@@ -133,7 +142,7 @@
   | DELETE | `/api/event_attendees//event/:event_id/delete/:volunteer_id`   | Delete volunteer request to an event  | n/a              | n/a                  |
 
 
-  - **View**
+- **View**
   | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
   | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
   | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
