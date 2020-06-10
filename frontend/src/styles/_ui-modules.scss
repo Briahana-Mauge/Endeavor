@@ -52,7 +52,7 @@
         }
     }
 
-    &.emBassy {
+    &.darkChampagne {
         border: solid 1px #3c3425;
 
         &::before {
@@ -68,7 +68,7 @@
         }
     }
 
-    &.elySium {
+    &.champagneCanvas {
         border: solid 1px #906007;
 
         &::before {
@@ -86,6 +86,36 @@
         .g1THead, .g1TimeCol u {
             color: #8a652e;
         }
+    }
+
+    &.nurseryCanvas {
+        border: solid 1px #547bb5;
+        padding-bottom: 0;
+
+        .g1Module__Body { color: var(--color-black); }
+        .modal-header { border-radius: 0; }
+        .modal-header h4 {
+            font-family: var(--ff-top);
+            color: #111;
+        }
+        .custom-switch { padding-left: 2.5rem; }
+        .custom-control { width: 9rem; }
+
+        &::before {
+            background-image: linear-gradient(76deg, #d0d0d0 45%, #f5f5f5 100%);
+        }
+
+        .g1Module__Header {
+            background-color: #8ca8cc;
+        }
+
+        // .g1HeaderColor {
+        //     color: #bda264;
+        // }
+
+        // .g1THead, .g1TimeCol u {
+        //     color: #8a652e;
+        // }
     }
 
     &.dataModule {

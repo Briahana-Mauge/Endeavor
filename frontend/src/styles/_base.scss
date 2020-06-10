@@ -570,7 +570,7 @@ div.card-text {
     transform: translate(-50%, -50%);
 }
 
-.g1ModalDialog {
+.g1ModalDialog, .g1EventProfile {
     color: var(--color-black);
     // margin-top: var(--navbar-height);
 
@@ -664,7 +664,7 @@ div.card-text {
             color: #8c8557;
 
             &.g1VolContact {
-                // width: 2.11rem;
+                font-family: var(--ff-accent);
                 margin-left: 1rem;
             }
 
@@ -674,11 +674,13 @@ div.card-text {
 
             .g1ReactIconsSvg {
                 position: relative;
+                color: var(--color-primary);
+                margin-right: 1rem;
+                margin-left: 1rem;
             }
         }
 
         &[data-type='hours'] {
-            margin-left: 1rem;
 
             @media (max-width: 576px) {
                 margin-left: 0;
@@ -695,7 +697,7 @@ div.card-text {
             // display: flex;
             // margin-left: 1rem;
             display: grid;
-            grid-template-columns: 7rem auto;
+            grid-template-columns: 7.8rem auto;
 
             @media (max-width: 576px) {
                 display: block;
@@ -955,6 +957,22 @@ div.card-text {
         border-top-color: var(--modal-body-border);
         border-bottom-left-radius: calc(.3rem - 1px);
         border-bottom-right-radius: calc(.3rem - 1px);
+    }
+}
+
+.g1EventProfile {
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+        max-width: 742px;
+    }
+
+    .g1Module__Header {
+        margin-bottom: 0;
+    }
+
+    .g1Module__Body {
+        padding: 0 !important;
     }
 }
 
