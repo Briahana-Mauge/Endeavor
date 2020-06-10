@@ -113,6 +113,17 @@ export default function EventPreviewCard(props) {
         }
     }
 
+    const evalEventStatusOfTime = () => {
+        const now = Date.now();
+        const start = Date.parse(event.event_start);
+        const end = Date.parse(event.event_end);
+        if (end < now) return 'past';
+        if (start < now) return 'current';
+        return '';
+    }
+    const statusOfTime = evalEventStatusOfTime();
+
+
     return (
         <div className='g1EvResultCard px-1'>
             <div className='g1EvResultCard__Inner'>
@@ -132,6 +143,13 @@ export default function EventPreviewCard(props) {
                         }
                     </div>
                 </Link>
+                {
+                    statusOfTime !== ''
+                        ?   statusOfTime === 'past'
+                                ?   <div className='g1EvResultCard__PastStatus'>Expired</div>
+                                :   <div className='g1EvResultCard__NowStatus'>Now Happening</div>
+                        : null
+                }
                 <div className='g1EvResultCard__Hosts'>
                     <b>Host</b>
                     {event.instructor}
