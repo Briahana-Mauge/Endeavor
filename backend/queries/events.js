@@ -188,7 +188,7 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
 }
 
 //Get Single Event for Admin
-const getSingleEventAdmin = async (eventId, volunteerId) => {
+const getSingleEventAdmin = async (eventId) => {
   const selectQuery = `
     SELECT
       event_id, 
@@ -236,7 +236,7 @@ const getSingleEventAdmin = async (eventId, volunteerId) => {
       important
   `
 
-  return await db.one(selectQuery, { eventId, volunteerId });
+  return await db.one(selectQuery, { eventId });
 }
 
 // Get all events data for admin dashboards
