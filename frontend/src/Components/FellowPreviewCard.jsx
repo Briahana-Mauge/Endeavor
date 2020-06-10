@@ -12,32 +12,14 @@ export default function FellowPreviewCard(props) {
 
     useEffect(() => {
         if (fellow.mentors_list) {
-            const active = [];
-            const pastTracker = {};
-            fellow.mentors_list.forEach(mentor => {
-                /* After splitting, for each mentor we will have:
-                    index0: mentor id
-                    index1: full name
-                    index2: when the mentoring relation started
-                    index3: text for relation deleted: date means relation ended, false it's still on
-                */
-                const mentorArr = mentor.split(' &$%& ');
-                if (mentorArr[3] === 'false') {
-                    active.push([mentorArr[0], mentorArr[1]]);
-                } else {
-                    pastTracker[mentorArr[1]] = [mentorArr[0], mentorArr[1]];
-                }
-            });
-
-            setActiveMentors(active);
-            setPastMentors(Object.values(pastTracker));
+            setActiveMentors(fellow.mentors_list);
         }
-    }, [fellow])
 
-    const viewProfile = () => {
-        props.setDisplayTargetUser(true);
-        props.setTargetFellowId(fellow.f_id);
-    }
+        if (fellow.past_mentors_list) {
+            setPastMentors(fellow.past_mentors_list);
+        }
+
+    }, [fellow])
 
 
     return (
@@ -60,13 +42,13 @@ export default function FellowPreviewCard(props) {
 
             <div className='col-sm-6'>
                 <ul className='plainUl'> <strong>Active Mentor(s):</strong>
-                    { activeMentors.map(mentor => <li key={mentor[0] + mentor[1]}>
-                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
+                    { activeMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
+                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
                         </li>) }
                 </ul>
                 <ul className='plainUl'> <strong>Past Mentor(s):</strong>
-                    { pastMentors.map(mentor => <li key={mentor[0] + mentor[1]}>
-                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
+                    { pastMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
+                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
                         </li>) }
                 </ul>
 

@@ -13,17 +13,7 @@ import EDashTableRow from './subcomponents/EDashTableRow';
 
 
 const AdminEDash = (props) => {
-  const {
-    events, //  used by this component
-    loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
-  } = props;
-  const operationProps = {
-    loggedUser,
-    setShowEvent,
-    targetEvent,
-    setTargetEvent
-  }
-
+  const { events } = props;
 
   const rowsTodays = events.todays.map(event => {
       return(
@@ -31,7 +21,6 @@ const AdminEDash = (props) => {
           key={'today' + event.event_id}
           tableType={"today"}
           event={event}
-          {...operationProps}
         />
       );
   });
@@ -41,7 +30,6 @@ const AdminEDash = (props) => {
   //         key={'important' + event.event_id}
   //         tableType={"important"}
   //         event={event}
-  //         {...operationProps}
   //       />
   //     );
   // });
@@ -51,7 +39,6 @@ const AdminEDash = (props) => {
           key={'upcoming' + event.event_id}
           tableType={"upcoming"}
           event={event}
-          {...operationProps}
         />
       );
   });

@@ -96,7 +96,7 @@ const deleteAccount = async(request, response, next) => {
         const loggedUserEmail = request.user.a_email || request.user.v_email || request.user.f_email;
 
         if (targetId === loggedUserId) {
-            if (request.user && request.user.a_id) {
+            if (request.user.a_id) {
                 await adminQueries.deleteAdmin(loggedUserId);
             } 
             else if (request.user.v_id) {
@@ -134,31 +134,31 @@ router.delete('/:user_id', deleteAccount, (request, response) => {
     })
 })
 
-const deleteUser = async(request, response, next) => {
-    try {
-        const targetEmail = processInput(request.params.email, 'hardVC', 'email', 50);
+// const deleteUser = async(request, response, next) => {
+//     try {
+//         const targetEmail = processInput(request.params.email, 'hardVC', 'email', 50);
 
-        if (request.user && request.user.a_id) {
-            await usersQueries.deleteUser(targetEmail);
-            next();
-        } 
-        else {
-            throw new Error("403__Not authorized to delete");
-        }
+//         if (request.user && request.user.a_id) {
+//             await usersQueries.deleteUser(targetEmail);
+//             next();
+//         } 
+//         else {
+//             throw new Error("403__Not authorized to delete");
+//         }
 
-    } catch (err) {
-        handleError(err, request, response, next);
-    }
-}
+//     } catch (err) {
+//         handleError(err, request, response, next);
+//     }
+// }
 
-router.delete('/user/:email', deleteUser, (request, response) => {
-    request.logOut();
-    response.json({
-        error: false,
-        message: 'Successfully deleted user',
-        payload: null
-    })
-})
+// router.delete('/user/:email', deleteUser, (request, response) => {
+//     request.logOut();
+//     response.json({
+//         error: false,
+//         message: 'Successfully deleted user',
+//         payload: null
+//     })
+// })
 
 
 module.exports = router;

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Fellows from './Fellows';
 import Spinner from './Spinner';
 
 export default function Mentoring(props) {
-    const { loggedUser } = props;
     const { volunteerId } = useParams();
     const history = useHistory();
 
@@ -40,26 +39,12 @@ export default function Mentoring(props) {
                             history.push('/404');
                         }
 
-                        if (vol.mentees) {
-                            const active = [];
-                            const past = [];
-                            vol.mentees.forEach(mentee => {
-                                /* After splitting, for each mentee we will have:
-                                    index0: mentee id
-                                    index1: full name
-                                    index2: When the mentoring relation started
-                                    index3: text for relation deleted: date means relation ended, false it's still on
-                                */
-                                const menteeArr = mentee.split(' &$%& ');
-                                if (menteeArr[3] === 'false') {
-                                    active.push(menteeArr);
-                                } else {
-                                    past.push(menteeArr);
-                                }
-                            });
+                        if (vol.past_mentees) {
+                            setPastMentees(vol.past_mentees);
+                        }
 
-                            setCurrentMentees(active);
-                            setPastMentees(past);
+                        if (vol.current_mentees) {
+                            setCurrentMentees(vol.current_mentees);
                         }
                     }
                 })
@@ -128,35 +113,35 @@ export default function Mentoring(props) {
                 <strong className='d-block mx-2'>Mentoring: </strong>
                 <ul className='plainUl'>
                     Active:
-                                {
-                        currentMentees.map(mentee =>
-                            <li key={mentee[0] + mentee[1] + mentee[2]} className='ml-3'>
-                                <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee[0])}>End Pairing</button>
-                                <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                    {mentee[1]}
-                                </span>: {new Date(mentee[2]).toLocaleDateString()}
-                            </li>
-                        )
-                    }
-                                Ended:
-                                {
-                        pastMentees.map((mentee, index) =>
-                            <li key={index + mentee[0] + mentee[1] + mentee[3]} className='ml-3'>
-                                <span onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                    {mentee[1]}
-                                </span>: {new Date(mentee[2]).toLocaleDateString()} - {new Date(mentee[3]).toLocaleDateString()}
-                            </li>
-                        )
+                        {   
+                            currentMentees.map(mentee =>
+                                <li key={mentee.fellowId + mentee.fellowName + mentee.startDate} className='ml-3'>
+                                    <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee.fellowId)}>End Pairing</button>
+                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
+                                        {mentee.fellowName}
+                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()}
+                                </li>
+                            )
+                        }
+                    Ended:
+                        {
+                            pastMentees.map((mentee, index) =>
+                                <li key={index + mentee.fellowId + mentee.fellowName + mentee.mentoringEnded} className='ml-3'>
+                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
+                                        {mentee.fellowName}
+                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()} - {new Date(mentee.mentoringEnded).toLocaleDateString()}
+                                </li>
+                            )
                     }
                 </ul>
 
                 {
                     props.loggedUser && props.loggedUser.a_id
-                        ? <button className='btn btn-primary d-block mb-2'
-                            onClick={e => setShowFellowsList(true)}>
-                            Add
-                                    </button>
-                        : null
+                        ?   <button className='btn btn-primary d-block mb-2'
+                                onClick={e => setShowFellowsList(true)}>
+                                Add
+                            </button>
+                        :   null
                 }
             </div>
             {
@@ -167,7 +152,6 @@ export default function Mentoring(props) {
                         reload={reload}
                         setReload={setReload}
                         setShowFellowsList={setShowFellowsList}
-                        loggedUser={loggedUser}
                     />
                     : null
             }

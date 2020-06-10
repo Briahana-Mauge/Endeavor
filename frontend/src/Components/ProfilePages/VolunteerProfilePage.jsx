@@ -13,7 +13,8 @@ export default function VolunteerProfilePage(props) {
     const [ volunteer, setVolunteer ] = useState({});
     const [ pastEvents, setPastEvents ] = useState([]);
     const [ events, setEvents ] = useState([]);
-    const [ mentees, setMentees ] = useState([]);
+    const [ pastMentees, setPastMentees ] = useState([]);
+    const [ currentMentees, setCurrentMentees ] = useState([]);
     const [ interests, setInterests ] = useState([]);
     const [ openToMentor, setOpenToMentor ] = useState(false);
     const [ profilePublic, setProfilePublic ] = useState(true);
@@ -32,51 +33,25 @@ export default function VolunteerProfilePage(props) {
 
         const manageVolunteerInfo = info => {
             setVolunteer(info);
-            setProfilePublic(!!info.v_id);
+            setProfilePublic(!!info.v_id); 
             setWaitingForData(false);
 
-            if (info.mentees) {
-                const tracker = {}
-                info.mentees.forEach(mentee => {
-                    /* After splitting, for each mentee we will have:
-                        index0: mentee id
-                        index1: full name
-                        index2: When the mentoring relation started
-                        index3: text for relation deleted: true relation ended, false it's still on
-                    */
-                    const menteeArr = mentee.split(' &$%& ');
-                    if (menteeArr[3] === 'false') {
-                        tracker[menteeArr[0]] = menteeArr;
-                    } else if (!tracker[menteeArr[0]]) {
-                        tracker[menteeArr[0]] = menteeArr;
-                    }
-                });
-                setMentees(Object.values(tracker));
+            if (info.past_mentees) {
+                setPastMentees(info.past_mentees);
+            }
+
+            if (info.current_mentees) {
+                setCurrentMentees(info.current_mentees);
             }
 
             if (info.past_events) {
-                const parsedEvents = info.past_events.map(event => event.split(' &$%& '));
-                /* After splitting, for each event we will have:
-                    index0: event id
-                    index1: event topic
-                    index2: event start date
-                    index3: event end date
-                    index4: volunteered time for tht event
-                */
-                const a = parsedEvents.sort((a, b) => b[3] - a[3]); // Sorting with end date 
-                setPastEvents(a);
+                const orderedEvents = info.past_events.sort((a, b) => new Date(b.eventStart).getTime() - new Date(a.eventStart).getTime());
+                setPastEvents(orderedEvents);
             }
 
             if (info.future_events) {
-                const parsedEvents = info.future_events.map(event => event.split(' &$%& '));
-                /* After splitting, for each event we will have:
-                    index0: event id
-                    index1: event topic
-                    index2: event start date
-                    index3: event end date
-                */
-                const a = parsedEvents.sort((a, b) => a[3] - b[3]); // Sorting with end date 
-                setEvents(a);
+                const orderedEvents = info.future_events.sort((a, b) => new Date(a.eventStart).getTime() - new Date(b.eventStart).getTime());
+                setEvents(orderedEvents);
             }
 
             setInterests([
@@ -239,7 +214,6 @@ export default function VolunteerProfilePage(props) {
                                 openToMentor
                                     ? <>
                                         <hr />
-
                                         <div className='g1MentoringFlex card-text mb-4'>
                                             <div>
                                                 <i className='g1MentorActiveLabel'>Active Mentor</i>
@@ -255,27 +229,21 @@ export default function VolunteerProfilePage(props) {
                                                 }
                                             </div>
                                             {
-                                                mentees.length
+                                                currentMentees.length
                                                     ? <>
                                                         <div className='g1ModalField' data-type='mentoring'>
                                                             <i>Current Mentees ▸ </i>
                                                         </div>
                                                         <span>
                                                             {
-                                                                mentees.map(mentee =>
+                                                                currentMentees.map(mentee =>
                                                                     <Link
-                                                                        key={mentee[0] + mentee[1] + mentee[2]}
-                                                                        className='g1VolMentees'
-                                                                        to={`/fellow/${mentee[0]}`}
-                                                                        // target="_blank"
+                                                                        key={mentee.fellowId + mentee.fellowName + mentee.startDate}
+                                                                        className='g1VolMentees '
+                                                                        to={`/fellow/${mentee.fellowId}`}
                                                                     >
-                                                                        {mentee[1]}
+                                                                        {mentee.fellowName}
                                                                     </Link>
-                                                                    // <span key={mentee[0] + mentee[1] + mentee[2]} className='d-block mx-2'
-                                                                    //     data-dismiss='modal'
-                                                                    //     onClick={e => history.push(`/fellow/${mentee[0]}`)}>
-                                                                    //     {mentee[1]}
-                                                                    // </span>
                                                                 )
                                                             }
                                                         </span>
@@ -284,7 +252,7 @@ export default function VolunteerProfilePage(props) {
                                             }
                                         </div>
                                     </>
-                                    : mentees.length
+                                    : pastMentees.length || currentMentees.length
                                         ? <><i>Past Mentor</i><br /></>
                                         : null
                             }
@@ -296,28 +264,23 @@ export default function VolunteerProfilePage(props) {
                                 <i>Past Events </i>
                                 {
                                     pastEvents.length
-                                        ? <ul className='plainUl'>
+                                    ?   <ul className='plainUl'>
                                             {pastEvents.map(event => {
                                                 return (
-                                                    <li className='mx-4' key={event[0] + event[1] + event[2]}>
+                                                    <li className='mx-4' key={event.eventId + event.topic + event.eventStart}>
                                                         <Link
-                                                            to={`/event/${event[0]}`}
-                                                            // target="_blank"
+                                                            to={`/event/${event.eventId}`}
+                                                            className=''
                                                         >
-                                                            {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
+                                                            {`${event.topic} - ${new Date(event.eventStart).toLocaleDateString()} `}
                                                         </Link>
-                                        : { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span>}
-                                                        {/* <li key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                            onClick={e => history.push(`event/${event[0]}`)}>
-                                            {event[1]} ({new Date(event[2]).toLocaleDateString()}) -
-                                            { event[4] ? <span> {event[4]} hours</span> : <span>Hours not assigned yet</span> }
-                                        </li> */}
+                                                        : { event.volunteeredTime ? <span> {event.volunteeredTime} hours</span> : <span>Hours not assigned yet</span>}
                                                     </li>
                                                 );
 
                                             })}
                                         </ul>
-                                        : <em className='g1EmptyMsg mx-4'>No past volunteered events</em>
+                                    :   <em className='g1EmptyMsg mx-4'>No past volunteered events</em>
                                 }
 
                             </div>
@@ -326,25 +289,21 @@ export default function VolunteerProfilePage(props) {
                                 <i>Current / Upcoming Events </i>
                                 {
                                     events.length
-                                        ? <ul className='plainUl'>
+                                    ?   <ul className='plainUl'>
                                             {events.map(event => {
                                                 return (
-                                                    <li className='mx-4' key={event[0] + event[1] + event[2]}>
+                                                    <li className='mx-4' key={event.eventId + event.topic + event.eventStart}>
                                                         <Link
-                                                            to={`/event/${event[0]}`}
-                                                            // target="_blank"
+                                                            to={`/event/${event.eventId}`}
+                                                            className=''
                                                         >
-                                                            {`${event[1]} - ${new Date(event[2]).toLocaleDateString()} `}
+                                                            {`${event.topic} - ${new Date(event.eventStart).toLocaleDateString()} `}
                                                         </Link>
-                                                        {/* <span key={event[0] + event[1] + event[2]} className='d-block mx-2'
-                                            onClick={e => history.push(`event/${event[0]}`)}>
-                                            {event[1]} ({new Date(event[2]).toLocaleDateString()})
-                                        </span> */}
                                                     </li>
                                                 );
                                             })}
                                         </ul>
-                                        : <em className='g1EmptyMsg mx-4'>No upcoming volunteered events</em>
+                                    :   <em className='g1EmptyMsg mx-4'>No upcoming volunteered events</em>
                                 }
                             </div>
                         </div>

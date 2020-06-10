@@ -18,6 +18,20 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const emailText = require('../emailBody/emailBody');
 
+// SendGrid function to send an email
+const sendEmail = async (messageData) => {
+    try {
+        await sgMail.send(messageData);
+    } catch (err) {
+        if (err.response) {
+            console.log(err.response.body)
+        } else {
+            console.log(err);
+        }
+        throw new Error('500__The request was not completed.');
+    }
+}
+
 
 // Get all volunteers attending an event by its Id
 router.get('/volunteers/:event_id', async (request, response, next) => {
@@ -53,31 +67,20 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
                 event: event.topic
             }
 
-            const msg = {
+            const messageData = {
                 to: volunteerInfo.email,
                 from: 'endeavorapp2020@gmail.com',
                 subject: 'Event Request Status',
             };
 
             if (updateData.confirmed) {
-                msg.html = emailText.accepted(volunteerInfo.name, volunteerInfo.event, event.event_id);
+                messageData.html = emailText.accepted(volunteerInfo.name, volunteerInfo.event, event.event_id);
                 
             } else { //message sent when admin changes the request from approval to not approved.
-                msg.html = emailText.removed(volunteerInfo.name, volunteerInfo.event, event.event_id);
+                messageData.html = emailText.removed(volunteerInfo.name, volunteerInfo.event, event.event_id);
             }
-            
-            (async () => {
-                try {
-                    await sgMail.send(msg);
-                } catch (err) {
-                    if (err.response) {
-                        console.log(err.response.body)
-                    } else {
-                        console.log(err);
-                    }
-                    throw new Error('500__The request was not completed.');
-                }
-            })();
+
+            await sendEmail(messageData);
             
             const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
             response.json({
@@ -108,7 +111,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             const adminEmailsList = admin.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
            
-            const msg = {
+            const messageData = {
                 personalizations: [{
                     to: adminEmailsList
                 }],
@@ -117,18 +120,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 html: emailText.request(name, volunteerId, event.topic, event.event_id),
             };
 
-            (async () => {
-                try {
-                    await sgMail.send(msg);
-                } catch (err) {
-                    if (err.response) {
-                        console.log(err.response.body)
-                    } else {
-                        console.log(err);
-                    }
-                    throw new Error('500__The request was not completed.');
-                }
-            })();
+            await sendEmail(messageData);
 
             const volunteerRequest = await eventAttendeesQueries.signupVolunteerForEvent(postData);
 
@@ -160,7 +152,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
             const adminEmailsList = admins.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
            
-            const msg = {
+            const messageData = {
                 personalizations: [{
                     to: adminEmailsList
                 }],
@@ -169,18 +161,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
                 html: emailText.cancelled(name, volunteerId, event.topic, event.event_id),
             };
 
-            (async () => {
-                try {
-                    await sgMail.send(msg);
-                } catch (err) {
-                    if (err.response) {
-                        console.log(err.response.body)
-                    } else {
-                        console.log(err);
-                    }
-                    throw new Error('500__The request was not completed.');
-                }
-            })();
+            await sendEmail(messageData);
             
             const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent({volunteerId, eventId});
             response.json({

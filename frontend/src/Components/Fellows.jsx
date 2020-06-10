@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import FellowPreviewCard from './FellowPreviewCard';
-import ProfileRender from './ProfilePages/ProfileRender';
 
 
 export default function Volunteers (props) {
-    const { setFeedback, volunteer, loggedUser } = props;
+    const { setFeedback, volunteer } = props;
+    
     const [ search, setSearch ] = useState('');
     const [ fellowsList, setFellowsList ] = useState([]);
     const [ cohortsList, setCohortsList ] = useState([]);
     const [ targetCohort, setTargetCohort ] = useState('');
     const [ requestedMentor, setRequestedMentor ] = useState('');
-    const [ targetFellowId, setTargetFellowId ] = useState(0);
-    const [ displayTargetUser, setDisplayTargetUser ] = useState(false)
     const [ reload, setReload ] = useState(false);
 
     useEffect(() => {
@@ -38,7 +36,7 @@ export default function Volunteers (props) {
 
     useEffect(() => {
         let isMounted = true;
-        axios.get(`/api/fellows/?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`)
+        axios.get(`/api/fellows?name=${search}&cohort=${targetCohort}&mentor=${requestedMentor}`)
             .then(response => {
                 if (isMounted) {
                     setFellowsList(response.data.payload);
@@ -53,7 +51,7 @@ export default function Volunteers (props) {
         // Cleanup
         return () => isMounted = false;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload, targetCohort, requestedMentor]);
+    }, [reload, targetCohort, requestedMentor, search]);
 
 
     const handleSubmit = async (event) => {
@@ -104,23 +102,10 @@ export default function Volunteers (props) {
                         <FellowPreviewCard
                             fellow={fellow}
                             pairFellow={pairFellow}
-                            setTargetFellowId={setTargetFellowId}
-                            setDisplayTargetUser={setDisplayTargetUser}
                         />
                     </div>
                 )}
             </div>
-
-            {/* {
-                displayTargetUser
-                    ? <ProfileRender
-                        fellowId={targetFellowId}
-                        setDisplayTargetUser={setDisplayTargetUser}
-                        setFeedback={setFeedback}
-                        loggedUser={loggedUser}
-                    />
-                    : null
-            } */}
         </>
     );
 }
