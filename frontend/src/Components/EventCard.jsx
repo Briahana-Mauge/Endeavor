@@ -112,7 +112,7 @@ const EventCard = (props) => {
                         <span
                             className={`g1VolConfirmedLabel d-none d-sm-block ${confirmedToEvent ? 'g1VolConfirmedLabelOn' : ''}`}
                         >
-                            {confirmedToEvent? 'CONFIRMED' : 'PENDING'}
+                            {confirmedToEvent ? 'CONFIRMED' : 'PENDING'}
                         </span>
                     </label>
                 </div>
@@ -281,8 +281,6 @@ const EventCard = (props) => {
                 }
             </PMFooter>
         </>
-            // </div>
-        // </div>
     );
 }
 
