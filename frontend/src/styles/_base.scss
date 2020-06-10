@@ -888,6 +888,29 @@ div.card-text {
     }
 }
 
+.g1VolProfile {
+    &__BlackLabel {
+        font-family: var(--ff-top);
+        font-size: .8rem;
+        text-transform: lowercase;
+        font-weight: bold;
+        margin-left: 2.1rem;
+        width: 5rem;
+        text-align: left !important;
+        white-space: nowrap;
+        color: var(--color-black);
+
+        &.g1Black {
+            color: var(--color-black) !important;
+        }
+    }
+
+    &__Company {
+        color: var(--color-yellow);
+    }
+}
+
+
 .g1SecondaryModal {
     position: absolute;
     top: 39%;

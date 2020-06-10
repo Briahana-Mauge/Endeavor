@@ -10,7 +10,7 @@ export default function ProfileRender(props) {
     const originPath = useLocation().pathname.split('/')[1];
 
     return (
-        <UIModule className='elySium' titleColor='' titleRegular=''>
+        <UIModule className='champagneCanvas' titleColor='' titleRegular=''>
             <div className='g1ModalDialog g1TempProfilePatch'>
                 {
                     (originPath === 'volunteer' && volunteerId)
