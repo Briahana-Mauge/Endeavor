@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 
 export default function FellowPreviewCard(props) {
@@ -41,7 +41,7 @@ export default function FellowPreviewCard(props) {
 
 
     return (
-        <div className='row mb-1 border rounded-lg'>
+        <div className='row mb-1 border rounded-lg' style={{minHeight: '320px'}}>
             {
                 fellow.want_mentor
                 ?   <button className='btn btn-primary btn-block my-1 mx-3' onClick={e => props.pairFellow(fellow.f_id)}>Pair</button>
@@ -51,7 +51,8 @@ export default function FellowPreviewCard(props) {
             <div className='col-sm-6'>
                 <img className='d-block rounded-circle imageIcon' src={fellow.f_picture || '/images/default_pic.png'} alt={`${fellow.f_first_name} ${fellow.f_last_name}`}/>
                 <strong className='d-block'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</strong>
-                <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
+                <a className='d-block' href={`mailto:${fellow.f_email}`}>
+                {/* <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'> */}
                     {fellow.f_email} 
                 </a>
                 <p>Cohort: {fellow.cohort}</p>
@@ -70,7 +71,7 @@ export default function FellowPreviewCard(props) {
                 </ul>
 
                 <div className='text-right'>
-                    <button className='btn btn-primary' onClick={viewProfile}>See Profile</button>
+                    <Link className='btn btn-primary' to={`/fellow/${fellow.f_id}`}>See Profile</Link>
                 </div>
             </div>
         </div>

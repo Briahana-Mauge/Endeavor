@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function EventPreviewCard(props) {
     const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
@@ -99,13 +100,13 @@ export default function EventPreviewCard(props) {
             <div className='border rounded-lg p-2'>
                 <header
                     className='text-center font-weight-bolder'
-                    onClick={handleClickOnEvent}
-                    data-toggle="modal"
-                    data-target="#primaryModal"
+                    // onClick={handleClickOnEvent}
+                    // data-toggle="modal"
+                    // data-target="#primaryModal"
                 >
-                    {event.topic}
+                    <Link to={`/event/${event.event_id}`} className='plainLink'>{event.topic}</Link>
                 </header>
-                <div className='text-right' style={{ color: '#666' }}>{`id# ${event.event_id}`}</div>
+                {/* <div className='text-right' style={{ color: '#666'}}>{`id# ${event.event_id}`}</div> */}
                 {
                     eventStart[0] === eventEnd[0]
                         ? eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'

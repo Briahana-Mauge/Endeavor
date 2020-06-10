@@ -10,7 +10,7 @@ import axios from 'axios';
 
 
 const UIResultsModeToggle = ({ type, isDisplayModeGrid, setIsDisplayModeGrid, setFeedback }) => {
-  const handleVieChange = async () => {
+  const handleViewChange = async () => {
     try {
       const { data } = await axios.patch(`/api/view/`, {targetView: type});
       setIsDisplayModeGrid(data.payload.e_grid || data.payload.v_grid || false);
@@ -27,7 +27,7 @@ const UIResultsModeToggle = ({ type, isDisplayModeGrid, setIsDisplayModeGrid, se
         <input
           type="checkbox"
           checked={isDisplayModeGrid}
-          onChange={handleVieChange}
+          onChange={handleViewChange}
           className="custom-control-input"
           id="customSwitch1" />
         <label className="custom-control-label" htmlFor="customSwitch1">Grid</label>

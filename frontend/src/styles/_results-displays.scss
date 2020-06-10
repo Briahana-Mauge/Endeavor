@@ -459,6 +459,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    overflow: hidden;
 
     .g1VolResultCard {
         position: relative;

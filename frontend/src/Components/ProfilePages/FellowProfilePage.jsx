@@ -93,66 +93,64 @@ export default function FellowProfilePage(props) {
     }
 
     return (
-        <>
-            <div className='row'>
-                {
-                    fellow.fellow_deleted
-                    ? <div className='col-12 bg-warning text-white text-center'>This fellow has left the platform</div>
-                    : null
-                }
+        <div className='row' style={{color: '#e2e2e2'}}>
+            {
+                fellow.fellow_deleted
+                ? <div className='col-12 bg-warning text-white text-center'>This fellow has left the platform</div>
+                : null
+            }
 
-                <div className='col-sm-6'>
-                    <img 
-                        className='d-block w-100'
-                        src={fellow.f_picture || '/images/default_pic.png'} 
-                        alt={`${fellow.f_first_name} ${fellow.f_last_name}`}
-                    />
-                </div>
-
-                <div className='col-sm-6'>
-                    <span className='d-block h3'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</span>
-                    <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
-                        {fellow.f_email} 
-                    </a>
-                    <span className='d-block'><strong>Cohort: </strong>{fellow.cohort}</span>
-                    <ul className='plainUl'> <strong>Active Mentor(s):</strong>
-                        { activeMentors.map(mentor => <li className='ml-3' key={mentor[0] + mentor[1]}>
-                                <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
-                                : {new Date(mentor[2]).toLocaleDateString()}
-                            </li>) }
-                    </ul>
-                    <ul className='plainUl'> <strong>Past Mentor(s):</strong>
-                        { pastMentors.map((mentor, index) => <li className='ml-3' key={mentor[0] + mentor[1] + index}>
-                                <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
-                                : {new Date(mentor[2]).toLocaleDateString()} - {new Date(mentor[3]).toLocaleDateString()}
-                            </li>) }
-                    </ul>
-
-                    <ul className='plainUl'> <strong className='d-block mx-2'>Events: </strong>
-                        {
-                            events.map(event => 
-                                <li key={event[2] + event[1] + event[0]} className='ml-3'>
-                                    <span>{event[1]}</span> 
-                                    : ({new Date(event[2]).toLocaleDateString()})
-                                </li>
-                            )          
-                        }  
-                    </ul>
-
-                    {/* {
-                        props.loggedUser && props.loggedUser.a_id
-                        ? <button className='btn btn-primary'>Manage Mentoring</button>
-                        : null
-                    } */}
-                </div>
-
-                <div className='col-sm-12'>
-                    <span className='d-block'><strong>LinkedIn: </strong>{fellow.f_linkedin}</span>
-                    <span className='d-block'><strong>Github: </strong>{fellow.f_github}</span>
-                    <span className='d-block'><strong>Bio: </strong>{fellow.f_bio}</span>
-                </div>
-
+            <div className='col-sm-6'>
+                <img 
+                    className='d-block w-100'
+                    src={fellow.f_picture || '/images/default_pic.png'} 
+                    alt={`${fellow.f_first_name} ${fellow.f_last_name}`}
+                />
             </div>
-        </>
+
+            <div className='col-sm-6'>
+                <span className='d-block h3'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</span>
+                <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'>
+                    {fellow.f_email} 
+                </a>
+                <span className='d-block'><strong>Cohort: </strong>{fellow.cohort}</span>
+                <ul className='plainUl'> <strong>Active Mentor(s):</strong>
+                    { activeMentors.map(mentor => <li className='ml-3' key={mentor[0] + mentor[1]}>
+                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
+                            : {new Date(mentor[2]).toLocaleDateString()}
+                        </li>) }
+                </ul>
+                <ul className='plainUl'> <strong>Past Mentor(s):</strong>
+                    { pastMentors.map((mentor, index) => <li className='ml-3' key={mentor[0] + mentor[1] + index}>
+                            <span onClick={e => history.push(`/volunteer/${mentor[0]}`)}>{mentor[1]}</span>
+                            : {new Date(mentor[2]).toLocaleDateString()} - {new Date(mentor[3]).toLocaleDateString()}
+                        </li>) }
+                </ul>
+
+                <ul className='plainUl'> <strong className='d-block mx-2'>Events: </strong>
+                    {
+                        events.map(event => 
+                            <li key={event[2] + event[1] + event[0]} className='ml-3'>
+                                <span>{event[1]}</span> 
+                                : ({new Date(event[2]).toLocaleDateString()})
+                            </li>
+                        )          
+                    }  
+                </ul>
+
+                {/* {
+                    props.loggedUser && props.loggedUser.a_id
+                    ? <button className='btn btn-primary'>Manage Mentoring</button>
+                    : null
+                } */}
+            </div>
+
+            <div className='col-sm-12'>
+                <span className='d-block'><strong>LinkedIn: </strong>{fellow.f_linkedin}</span>
+                <span className='d-block'><strong>Github: </strong>{fellow.f_github}</span>
+                <span className='d-block'><strong>Bio: </strong>{fellow.f_bio}</span>
+            </div>
+
+        </div>
     )
 }

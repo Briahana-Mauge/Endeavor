@@ -111,7 +111,7 @@ export default function Volunteers (props) {
                 )}
             </div>
 
-            {
+            {/* {
                 displayTargetUser
                     ? <ProfileRender
                         fellowId={targetFellowId}
@@ -120,7 +120,7 @@ export default function Volunteers (props) {
                         loggedUser={loggedUser}
                     />
                     : null
-            }
+            } */}
         </>
     );
 }
