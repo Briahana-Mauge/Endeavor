@@ -14,10 +14,10 @@
 <!-- ![screencap]() -->
 
 ## Instructional Team
-+ **LEAD Instructor:** [Alejandro Franco -- ( @alejo4373 )](https:github.com/alejo4373)
-+ **IA:** [Jung Rae Jang -- ( @jungraejang )](https:github.com/jungraejang)
-+ **IA:** [Wynter Reid -- ( @wynterreid )](https:github.com/wynterreid)
-+ **Program Manager:** [Dessa Shepherd](https:www.linkedin.com/in/dessa-shepherd-7a55b374/)
++ **LEAD Instructor:** [Alejandro Franco -- ( @alejo4373 )](https://github.com/alejo4373)
++ **IA:** [Jung Rae Jang -- ( @jungraejang )](https://github.com/jungraejang)
++ **IA:** [Wynter Reid -- ( @wynterreid )](https://github.com/wynterreid)
++ **Program Manager:** [Dessa Shepherd](https://www.linkedin.com/in/dessa-shepherd-7a55b374/)
 
 ## Technologies Implemented
 + PostgreSQL 12.1
@@ -45,7 +45,7 @@
   $ cd ../frontend
   $ npm run quick_install
   ```
-+ The app site will be found at: http:localhost:3008/
++ The app site will be found at: http://localhost:3008/
 
 ---
 
