@@ -326,6 +326,26 @@ const confirmVolunteer = async (id) => {
   return await db.one(confirmQuery, {id});
 }
 
+const updateViewType = async (userId, targetView) => {
+  let updateQuery = `
+      UPDATE volunteers 
+      SET v_grid = NOT v_grid
+      WHERE a_id = $/userId/
+      RETURNING v_grid
+  `
+
+  if (targetView === 'events') {
+      updateQuery = `
+          UPDATE volunteers 
+          SET e_grid = NOT e_grid
+          WHERE a_id = $/userId/
+          RETURNING e_grid
+      `
+  }
+
+  return await db.one(updateQuery, {userId});
+}
+
 
 /* EXPORT */
 module.exports = {
@@ -337,6 +357,7 @@ module.exports = {
   updateVolunteer,
   confirmVolunteer,
   deleteVolunteer,
-  deleteVolunteerByEmail
+  deleteVolunteerByEmail,
+  updateViewType
 }
 

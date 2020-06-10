@@ -137,6 +137,8 @@ export default function Volunteers (props) {
             <UIResultsModeToggle
                 isDisplayModeGrid={isVolunteerSearchGrided}
                 setIsDisplayModeGrid={setIsVolunteerSearchGrided}
+                type='volunteers'
+                setFeedback={setFeedback}
             />
 
             {/* Search results */}
