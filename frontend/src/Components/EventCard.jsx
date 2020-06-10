@@ -143,6 +143,7 @@ const EventCard = (props) => {
         );
     }
 
+
     const newStart = moment.utc(event.event_start).format('YYYYMMDD[T]HHmmss[Z]');
     const newEnd = moment.utc(event.event_end).format('YYYYMMDD[T]HHmmss[Z]');
 
@@ -154,6 +155,23 @@ const EventCard = (props) => {
 
     const eventStart = formatEventDate(event.event_start);
     const eventEnd = formatEventDate(event.event_end);
+
+    // temporary visual functions to keep consistency with dashboard dates. eventually convert all dates to one handling system
+    const simplifyDate = (dateString) => {
+        if (dateString.slice(-5, -4) === '/') {
+            return dateString.slice(0, -5);
+        } else {
+            return dateString;
+        }
+    }
+
+    const simplifyHours = (timeString) => {
+        if (timeString.slice(-2) === 'AM' || timeString.slice(-2) === 'PM') {
+            return timeString.slice(0, -3) + timeString.slice(-2, -1).toLowerCase();
+        } else {
+            return timeString;
+        }
+    }
 
     const calendarLink = <a
             href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${event.topic}&dates=${
@@ -168,15 +186,17 @@ const EventCard = (props) => {
     return (
         <>
             <PMBody>
-                {
-                    eventStart[0] === eventEnd[0]
-                    ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[1]}</p>
-                    :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
-                        ?   <p>{eventStart[0]} to {eventEnd[0]}</p>
-                        :   <p>{eventStart[0]} {eventStart[1]} to {eventEnd[0]} {eventEnd[1]}</p>
-                }
+                <p className='card-text'>
+                    {
+                        eventStart[0] === eventEnd[0]
+                        ?   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                            ?   <>{simplifyDate(eventStart[0])}</>
+                            :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>-</span> {simplifyHours(eventEnd[1])}</>
+                        :   eventStart[1] === '12:00 AM' && eventEnd[1] === '11:59 PM'
+                            ?   <>{simplifyDate(eventStart[0])} <span>—</span> {simplifyDate(eventEnd[0])}</>
+                            :   <>{simplifyDate(eventStart[0])}, {simplifyHours(eventStart[1])} <span>—</span> {simplifyDate(eventEnd[0])}, {simplifyHours(eventEnd[1])}</>
+                    }
+                </p>
                 <p className='card-text'>
                     <strong>Associated Cohorts:</strong> {event.cohort}
                     <br />
