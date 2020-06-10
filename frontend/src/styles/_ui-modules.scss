@@ -24,7 +24,7 @@
         position: relative;
     }
 
-    &.deepSangria, &.deepElysium {
+    &.deepSangria {
         border: solid 1px #3e3054;
 
         &::before {
@@ -57,6 +57,26 @@
 
         &::before {
             background-image: linear-gradient(76deg, #2b1f04 45%, #332607 100%);
+        }
+
+        .g1HeaderColor {
+            color: #bda264;
+        }
+
+        .g1THead, .g1TimeCol u {
+            color: #8a652e;
+        }
+    }
+
+    &.elySium {
+        border: solid 1px #906007;
+
+        &::before {
+            background-image: linear-gradient(76deg, #d0d0d0 45%, #f5f5f5 100%);
+        }
+
+        .g1Module__Header {
+            background-color: #ad983163;
         }
 
         .g1HeaderColor {

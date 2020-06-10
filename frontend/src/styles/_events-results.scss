@@ -57,7 +57,7 @@
         color: maroon;
     }
     &__NowStatus {
-        color: green;
+        color: var(--color-highlight);
     }
 
     &__Location {

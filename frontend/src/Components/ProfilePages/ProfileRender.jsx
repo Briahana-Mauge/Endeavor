@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 
+import UIModule from '../UIModule';
 import VolunteerProfilePage from './VolunteerProfilePage';
 import FellowProfilePage from './FellowProfilePage';
 
@@ -20,7 +21,8 @@ export default function ProfileRender(props) {
     }, [originPath, volunteerId, fellowId]);
 
     return (
-        <div className={`${pageForm}`}>
+        <UIModule className='elySium' titleColor='' titleRegular=''>
+            <div className={`${pageForm}`}>
             {/* {
                 pageForm === 'lightBox'
                 ?   <div className='text-right m-2 closeButton'>
@@ -49,5 +51,6 @@ export default function ProfileRender(props) {
                 : null
             }
         </div>
+        </UIModule>
     )
 }

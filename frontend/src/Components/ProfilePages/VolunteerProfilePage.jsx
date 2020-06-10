@@ -137,7 +137,7 @@ export default function VolunteerProfilePage(props) {
                 ? <h3 className='text-center'>Sorry, nothing to show</h3>
                 : <>
                     {/* : <div className='row p-3'> */}
-                    <PMBody>
+                    {/* <PMBody> */}
                         <div className='col-12 p-0'>
                             {/* WARNINGS */}
                             {
@@ -348,8 +348,8 @@ export default function VolunteerProfilePage(props) {
                                 }
                             </div>
                         </div>
-                    </PMBody>
-                    <PMFooter className='g1NonAdminFooter' />
+                    {/* </PMBody> */}
+                    {/* <PMFooter className='g1NonAdminFooter' /> */}
                 </>
             }
         </>
