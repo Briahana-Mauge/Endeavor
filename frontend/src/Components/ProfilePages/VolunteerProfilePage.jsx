@@ -239,9 +239,8 @@ export default function VolunteerProfilePage(props) {
                                                                 currentMentees.map(mentee =>
                                                                     <Link
                                                                         key={mentee.fellowId + mentee.fellowName + mentee.startDate}
-                                                                        className='g1VolMentees'
+                                                                        className='g1VolMentees '
                                                                         to={`/fellow/${mentee.fellowId}`}
-                                                                        // target="_blank"
                                                                     >
                                                                         {mentee.fellowName}
                                                                     </Link>
@@ -271,7 +270,7 @@ export default function VolunteerProfilePage(props) {
                                                     <li className='mx-4' key={event.eventId + event.topic + event.eventStart}>
                                                         <Link
                                                             to={`/event/${event.eventId}`}
-                                                            // target="_blank"
+                                                            className=''
                                                         >
                                                             {`${event.topic} - ${new Date(event.eventStart).toLocaleDateString()} `}
                                                         </Link>
@@ -296,7 +295,7 @@ export default function VolunteerProfilePage(props) {
                                                     <li className='mx-4' key={event.eventId + event.topic + event.eventStart}>
                                                         <Link
                                                             to={`/event/${event.eventId}`}
-                                                            // target="_blank"
+                                                            className=''
                                                         >
                                                             {`${event.topic} - ${new Date(event.eventStart).toLocaleDateString()} `}
                                                         </Link>

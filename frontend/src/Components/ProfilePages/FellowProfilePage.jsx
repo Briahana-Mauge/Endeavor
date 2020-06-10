@@ -24,7 +24,6 @@ export default function FellowProfilePage(props) {
                     .then(response => {
                         if (isMounted) {
                             const fel = response.data.payload;
-                            console.log(fel)
                             setFellow(fel);
                             setLoading(false);
             
@@ -84,25 +83,25 @@ export default function FellowProfilePage(props) {
                 </a>
                 <span className='d-block'><strong>Cohort: </strong>{fellow.cohort}</span>
                 <ul className='plainUl'> <strong>Active Mentor(s):</strong>
-                    { activeMentors.map(mentor => <Link to={`/volunteer/${mentor.volunteerId}`} className='ml-3 plainLink d-block' key={mentor.volunteerId + mentor.name}>
-                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                    { activeMentors.map(mentor => <li className='ml-3' key={mentor.volunteerId + mentor.name}>
+                            <Link to={`/volunteer/${mentor.volunteerId}`} className='plainLink'>{mentor.name}</Link>
                             : {new Date(mentor.startDate).toLocaleDateString()}
-                        </Link>) }
+                        </li>) }
                 </ul>
                 <ul className='plainUl'> <strong>Past Mentor(s):</strong>
-                    { pastMentors.map((mentor, index) => <Link to={`/volunteer/${mentor.volunteerId}`} className='ml-3 plainLink d-block' key={mentor.volunteerId + mentor.name + index}>
-                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                    { pastMentors.map((mentor, index) => <li className='ml-3' key={mentor.volunteerId + mentor.name + index}>
+                            <Link to={`/volunteer/${mentor.volunteerId}`} className='plainLink'>{mentor.name}</Link>
                             : {new Date(mentor.startDate).toLocaleDateString()} - {new Date(mentor.endDate).toLocaleDateString()}
-                        </Link>) }
+                        </li>) }
                 </ul>
 
                 <ul className='plainUl'> <strong className='d-block mx-2'>Events: </strong>
                     {
                         events.map(event => 
-                            <Link to={`/event/${event.eventId}`} key={event.eventStart + event.topic + event.eventId} className='ml-3 plainLink d-block'>
-                                <span>{event.topic}</span> 
+                            <li to={`/event/${event.eventId}`} key={event.eventStart + event.topic + event.eventId} className='ml-3'>
+                                <Link to={`/event/${event.eventId}`} className='plainLink'>{event.topic}</Link> 
                                 : ({new Date(event.eventStart).toLocaleDateString()})
-                            </Link>
+                            </li>
                         )          
                     }  
                 </ul>

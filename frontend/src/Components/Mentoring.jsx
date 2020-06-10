@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Fellows from './Fellows';
@@ -113,19 +113,13 @@ export default function Mentoring(props) {
                 <strong className='d-block mx-2'>Mentoring: </strong>
                 <ul className='plainUl'>
                     Active:
-                        {
-                            //   JSON_BUILD_OBJECT(
-                            //     'fellowId', f_id,
-                            //     'fellowName', f_first_name || ' ' || f_last_name,
-                            //     'startDate', starting_date::Date,
-                            //     'mentoringEnded', mentor_pairs.deleted
-                            // )      
+                        {   
                             currentMentees.map(mentee =>
                                 <li key={mentee.fellowId + mentee.fellowName + mentee.startDate} className='ml-3'>
                                     <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee.fellowId)}>End Pairing</button>
-                                    <span onClick={e => history.push(`/fellow/${mentee.fellowId}`)}>
+                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
                                         {mentee.fellowName}
-                                    </span>: {new Date(mentee.startDate).toLocaleDateString()}
+                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()}
                                 </li>
                             )
                         }
@@ -133,9 +127,9 @@ export default function Mentoring(props) {
                         {
                             pastMentees.map((mentee, index) =>
                                 <li key={index + mentee.fellowId + mentee.fellowName + mentee.mentoringEnded} className='ml-3'>
-                                    <span onClick={e => history.push(`/fellow/${mentee.fellowId}`)}>
+                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
                                         {mentee.fellowName}
-                                    </span>: {new Date(mentee.startDate).toLocaleDateString()} - {new Date(mentee.mentoringEnded).toLocaleDateString()}
+                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()} - {new Date(mentee.mentoringEnded).toLocaleDateString()}
                                 </li>
                             )
                     }
