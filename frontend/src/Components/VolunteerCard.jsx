@@ -56,7 +56,6 @@ const VolunteerCard = (props) => {
 
 
     const nextEvent = volunteer.next_event;
-    console.log(volunteer.next_event)
 
     return (
         <div className='g1VolResultCard px-1'>

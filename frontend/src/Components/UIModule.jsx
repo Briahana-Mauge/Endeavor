@@ -19,7 +19,7 @@ const UIModule = ({children, className = '', titleColor = '', titleRegular = ''}
           <span>{titleColor}</span> {titleRegular}
 
         </h3>
-        <div className={`g1Module__body card-body pt-0 pb-1 ${xPaddingForAllModules}`}>
+        <div className={`g1Module__body pt-0 pb-1 ${xPaddingForAllModules}`}>
 
           {children}
 
