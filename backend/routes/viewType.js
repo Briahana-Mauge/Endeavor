@@ -9,7 +9,7 @@ const processInput = require('../helpers/processInput');
 const handleError = require('../helpers/handleError');
 
 
-router.patch('/',  async (request, response) => {
+router.patch('/',  async (request, response, next) => {
     try {
         const targetView = processInput(request.body.targetView, 'hardVC', 'target view');
 

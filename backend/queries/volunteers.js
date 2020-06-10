@@ -333,7 +333,7 @@ const updateViewType = async (userId, targetView) => {
   let updateQuery = `
       UPDATE volunteers 
       SET v_grid = NOT v_grid
-      WHERE a_id = $/userId/
+      WHERE v_id = $/userId/
       RETURNING v_grid
   `
 
@@ -341,7 +341,7 @@ const updateViewType = async (userId, targetView) => {
       updateQuery = `
           UPDATE volunteers 
           SET e_grid = NOT e_grid
-          WHERE a_id = $/userId/
+          WHERE v_id = $/userId/
           RETURNING e_grid
       `
   }
