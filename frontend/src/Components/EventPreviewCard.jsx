@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function EventPreviewCard(props) {
-    const { event, loggedUser, setShowEvent, targetEvent, setTargetEvent } = props;
+    const { event, loggedUser } = props;
 
     const [volunteersList, setVolunteersList] = useState([]);
     const [acceptedVolunteers, setAcceptedVolunteers] = useState([]);

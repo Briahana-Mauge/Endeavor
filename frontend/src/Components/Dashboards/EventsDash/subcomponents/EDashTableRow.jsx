@@ -8,24 +8,12 @@ Events Dash Table Row Component | Capstone App (Pursuit Volunteer Mgr)
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import EDashTableItem from './EDashTableItem';
 const moment = require('moment');
 
 
 const EDashTableRow = (props) => {
-  const { event_id, event_start, event_end, topic, important } = props.event;
-
-  const {
-    event, loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
-  } = props;
-  const operationProps = {
-    event,
-    loggedUser,
-    setShowEvent,
-    targetEvent,
-    setTargetEvent
-  }
-
+  const { event } = props;
+  const { event_id, event_start, event_end, topic, important } = event;
 
   /*
   ASSERTING:
@@ -99,9 +87,9 @@ const EDashTableRow = (props) => {
       <div role="gridcell" className="g1TD g1TopicCol">
 
         <div id={'event' + event_id} className="g1EventItem">
-          <EDashTableItem {...operationProps} className="g1EventLink">
+          <span className="g1EventLink">
             <Link to={`/event/${event_id}`} className='plainLink'>{topic}</Link>
-          </EDashTableItem>
+          </span>
         </div>
 
       </div>

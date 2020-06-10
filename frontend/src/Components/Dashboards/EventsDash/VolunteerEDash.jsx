@@ -13,17 +13,7 @@ import EDashTableRow from './subcomponents/EDashTableRow';
 
 
 const VolunteerEDash = (props) => {
-  const {
-    events, //  used by this component
-    loggedUser, setShowEvent, targetEvent, setTargetEvent // drilled props needed for operations
-  } = props;
-  const operationProps = {
-    loggedUser,
-    setShowEvent,
-    targetEvent,
-    setTargetEvent
-  }
-
+  const { events } = props;
 
   const rowsUpcomings = events.upcomings.map(event => {
       return(
@@ -31,7 +21,6 @@ const VolunteerEDash = (props) => {
           key={'upcoming' + event.event_id}
           tableType={"upcoming"}
           event={event}
-          {...operationProps}
         />
       );
   });
@@ -41,7 +30,6 @@ const VolunteerEDash = (props) => {
           key={'past' + event.event_id}
           tableType={"past"}
           event={event}
-          {...operationProps}
         />
       );
   });
@@ -51,7 +39,6 @@ const VolunteerEDash = (props) => {
           key={'important' + event.event_id}
           tableType={"important"}
           event={event}
-          {...operationProps}
         />
       );
   });

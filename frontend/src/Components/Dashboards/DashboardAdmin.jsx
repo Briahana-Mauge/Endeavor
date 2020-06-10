@@ -10,8 +10,6 @@ import axios from 'axios';
 
 import AdminEDash from './EventsDash/AdminEDash';
 import NewVolunteersDash from './NewVolunteersDash/NewVolunteersDash';
-// import { PrimaryModalContainer } from '../Modals/PrimaryModal';
-// import EventCard from '../EventCard';
 import ChartsAdmin from './ChartsAdmin';
 
 const DashboardAdmin = (props) => {
@@ -19,8 +17,8 @@ const DashboardAdmin = (props) => {
 
   const [newVolunteers, setNewVolunteers] = useState([]);
   const [eventsObj, setEventsObj] = useState({ todays: [], upcomings: [], hours: [], events: [], volunteers: [] });
-  const [showEvent, setShowEvent] = useState(false);
-  const [targetEvent, setTargetEvent] = useState({});
+  // const [showEvent, setShowEvent] = useState(false);
+  // const [targetEvent, setTargetEvent] = useState({});
   const [reloadDashboard, setReloadDashboard] = useState(false);
 
   useEffect(() => {
@@ -60,19 +58,8 @@ const DashboardAdmin = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadDashboard]);
 
-  const hideEvent = () => {
-    setShowEvent(false);
-    setTargetEvent({});
-  };
-
 
   // PRE-RETURN (package drilled props)
-  const eventsDashProps = {
-    loggedUser,
-    setShowEvent,
-    targetEvent,
-    setTargetEvent
-  };
   const newVolunteersProps = {
     reloadDashboard,
     setReloadDashboard,
@@ -83,7 +70,7 @@ const DashboardAdmin = (props) => {
     <>
       <div className="row">
         <div className="col-12 col-md-5 pr-md-2">
-          <AdminEDash events={eventsObj} {...eventsDashProps} />
+          <AdminEDash events={eventsObj} loggedUser={loggedUser}/>
         </div>
 
         <div className="col-12 col-md-7 pl-md-2">
@@ -92,21 +79,6 @@ const DashboardAdmin = (props) => {
       </div>
 
       <ChartsAdmin chartData={[eventsObj]} />
-
-      {/* <PrimaryModalContainer header={targetEvent.topic} runOnModalClose={hideEvent}>
-        {
-          showEvent
-            ? <EventCard
-                loggedUser={loggedUser}
-                event={targetEvent}
-                setFeedback={setFeedback}
-                reloadParent={reloadDashboard}
-                setReloadParent={setReloadDashboard}
-                hideEvent={hideEvent}
-              />
-            : null
-        }
-      </PrimaryModalContainer> */}
     </>
   )
 }

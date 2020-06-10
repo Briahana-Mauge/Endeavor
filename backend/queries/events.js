@@ -255,18 +255,7 @@ const getDashEventsForAdmin = async () => {
         cohort,
         cohort_id,
         materials_url,
-        important,
-        JSON_AGG(
-          JSON_BUILD_OBJECT(
-            'volunteerId', v_id,
-            'name', v_first_name || ' ' || v_last_name,
-            'email', v_email,
-            'volunteerDeleted', volunteers.deleted,
-            'eventVolunteerTableId', ev_id,
-            'confirmedForEvent', event_volunteers.confirmed,
-            'volunteeredTime', volunteered_time
-          )
-        ) AS volunteers_list
+        important
 
     FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -355,25 +344,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
   `;
   const importantsQuery = `
     SELECT
-        ${selectColumns},
-        ARRAY_AGG(
-            (
-                SELECT
-                  JSON_BUILD_OBJECT(
-                    'volunteerId', v_id,
-                    'name', v_first_name || ' ' || v_last_name,
-                    'email', v_email,
-                    'volunteerDeleted', volunteers.deleted,
-                    'eventVolunteerTableId', ev_id,
-                    'confirmedForEvent', event_volunteers.confirmed,
-                    'volunteeredTime', volunteered_time
-                  )
-                FROM  event_volunteers
-                LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
-                WHERE eventv_id = event_id 
-                GROUP BY eventv_id, v_id, ev_id
-            )
-        ) AS volunteers_list
+        ${selectColumns}
 
     FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -386,10 +357,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
   `;
   const upcomingsQuery = `
     SELECT
-        ${selectColumns},
-        ARRAY_AGG(
-            CASE WHEN event_volunteers.confirmed THEN NULL ELSE NULL END
-        ) AS volunteers_list
+        ${selectColumns}
 
     FROM events
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
@@ -405,8 +373,6 @@ const getDashEventsForVolunteer = async (volunteerId) => {
   `;
   const pastsQuery = `
     SELECT
-        volunteers.v_id,
-        volunteers.v_first_name || ' ' || volunteers.v_last_name AS volunteer,
         ${selectColumns}
 
     FROM volunteers
