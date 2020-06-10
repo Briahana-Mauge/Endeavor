@@ -27,7 +27,6 @@ export default function EventRender(props) {
             .then(response => {
                 if (isMounted) {
                     setSingleEvent(response.data.payload);
-                    console.log(response.data.payload);
                     setLoading(false);
                 }
             })
