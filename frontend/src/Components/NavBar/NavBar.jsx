@@ -139,7 +139,7 @@ const NavBar = ({ h1, loggedUser, logout }) => {
           {showEndeavorSheetLink}
 
           <SingleNavLink to='/profile' isBurgerOn={isBurgerOn}>
-            {loggedUser.a_first_name || loggedUser.v_first_name}
+            {loggedUser.a_first_name || loggedUser.v_first_name || loggedUser.f_first_name}
           </SingleNavLink>
 
           <Logout logout={logout} />
