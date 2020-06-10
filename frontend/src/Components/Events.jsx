@@ -63,7 +63,10 @@ export default function Events(props) {
 
 
     useEffect(() => {
-        history.push(`/events?date=${urlPastOrUpcoming}&${urlFilter}=${urlSearchValue}`);
+        let tempUrlSearchValue =  urlSearchValue + ''; // force a copy of the state
+        tempUrlSearchValue = tempUrlSearchValue.replace(/ /g, '%20'); // replace any blank character by %20
+        tempUrlSearchValue = tempUrlSearchValue.replace(/%20%20/g, '%20'); // replace any double blank character or more by one blank character
+        history.push(`/events?date=${urlPastOrUpcoming}&${urlFilter}=${tempUrlSearchValue}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, urlPastOrUpcoming, urlFilter, urlSearchValue]);
 
