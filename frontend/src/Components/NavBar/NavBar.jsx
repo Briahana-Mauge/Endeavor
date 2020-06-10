@@ -67,27 +67,19 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
   /* DEFINE LIMITED ACCESS NAVS */
   const
-    volunteersLink = <NAV_LINK to="/volunteers" text="Volunteers" isBurgerOn={isBurgerOn} />,
-    // adminDropdown = (
-    //   <NavDropdown topText="Admin">
-    //     <NAV_DD_LINK to='/tools/users' text="Edit App Users" isBurgerOn={isBurgerOn} />
-    //     <NAV_DD_LINK to='/tools/cohorts' text="Edit Cohorts" isBurgerOn={isBurgerOn} />
-    //     <NAV_DD_LINK to='/tools/skills' text="Edit Volunteer Skills" isBurgerOn={isBurgerOn} />
-    //   </NavDropdown>
-    // ),
-    adminLink = <NAV_LINK to="/tools" text="Admin Tools" isBurgerOn={isBurgerOn} />,
-    toMenteesLink = <NAV_LINK to="/my_mentees" text="My Mentees" isBurgerOn={isBurgerOn} />,
-    toMentorLink = <NAV_LINK to="/my_mentor" text="My Mentor" isBurgerOn={isBurgerOn} />,
-    endeavorSheetLink = <NAV_LINK to={`/volunteer/${loggedUser.v_slug}`} text="My Endeavor" isBurgerOn={isBurgerOn} />,
-    myFellowsLink = <NAV_LINK to='/my_fellows' text="My Fellows" />
-    // fellowsLink = <NAV_LINK to='/fellows' text="Fellows" />, // for general search of fellows
+    volunteersLink = <SingleNavLink to="/volunteers" isBurgerOn={isBurgerOn}>Volunteers</SingleNavLink>,
+    adminLink = <SingleNavLink to="/tools" isBurgerOn={isBurgerOn}>Admin Tools</SingleNavLink>,
+    toMenteesLink = <SingleNavLink to="/my_mentees" isBurgerOn={isBurgerOn}>My Mentees</SingleNavLink>,
+    toMentorLink = <SingleNavLink to="/my_mentor" isBurgerOn={isBurgerOn}>My Mentor</SingleNavLink>,
+    endeavorSheetLink = <SingleNavLink to={`/volunteer/${loggedUser.v_slug}`} isBurgerOn={isBurgerOn}>My Endeavor</SingleNavLink>,
+    myFellowsLink = <SingleNavLink to='/my_fellows'>My Fellows</SingleNavLink>
+    // fellowsLink = <SingleNavLink to='/fellows'>Fellows</SingleNavLink>, // for general search of fellows
   ;
 
 
   /* TOGGLES NULL/SHOW */
   let
     showAdminLink = null,
-    // showAdminDropdown = null,
     showVolunteersLink = null,
     showMentoringLink = null,
     showMyFellowsLink = null,
@@ -96,7 +88,6 @@ const NavBar = ({ h1, loggedUser, logout }) => {
 
   if (navUser.admin) {
     showAdminLink = adminLink;
-    // showAdminDropdown = adminDropdown;
   }
   if (navUser.admin || navUser.staff) {
     showVolunteersLink = volunteersLink;
@@ -127,11 +118,15 @@ const NavBar = ({ h1, loggedUser, logout }) => {
         <ul className="container-lg navbar-nav align-items-start pr-0">
           <div className='flex-fill'></div>
 
-          <NAV_LINK to="/" exact text={navUser.admin ? 'Dashboard' : 'Home'} isBurgerOn={isBurgerOn} />
+          <SingleNavLink to="/" exact isBurgerOn={isBurgerOn}>
+            {navUser.admin ? 'Dashboard' : 'Home'}
+          </SingleNavLink>
 
           {showVolunteersLink}
 
-          <NAV_LINK to='/events' text="Events" isBurgerOn={isBurgerOn} />
+          <SingleNavLink to='/events' isBurgerOn={isBurgerOn}>
+            Events
+          </SingleNavLink>
 
           {showMentoringLink}
 
@@ -140,11 +135,12 @@ const NavBar = ({ h1, loggedUser, logout }) => {
           {showMyFellowsLink}
 
           {showAdminLink}
-          {/* {showAdminDropdown} */}
 
           {showEndeavorSheetLink}
 
-          <NAV_LINK to='/profile' text="My Profile" isBurgerOn={isBurgerOn} />
+          <SingleNavLink to='/profile' isBurgerOn={isBurgerOn}>
+            {loggedUser.a_first_name || loggedUser.v_first_name}
+          </SingleNavLink>
 
           <Logout logout={logout} />
 
@@ -180,11 +176,13 @@ const Burger = () => {
   );
 }
 
-const NAV_LINK = ({ to, exact, text, liClassName = "", isBurgerOn }) => {
+const SingleNavLink = ({ to, exact, children, liClassName = "", isBurgerOn }) => {
   return(
     <li className={`nav-item g1MobileTextAlign ${liClassName}`}>
       <span className="g1MobileToggle" data-toggle={isBurgerOn ? "collapse" : ""} data-target="#navbarSupportedContent">
-        <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>{text}</NavLink>
+        <NavLink className={`nav-link ${liPadding}`} exact={exact} to={to}>
+          {children}
+        </NavLink>
       </span>
     </li>
   );

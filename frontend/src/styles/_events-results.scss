@@ -1,0 +1,451 @@
+// COMMON STYLINGS between events LIST & GRID
+.g1EvResultCard {
+    position: relative;
+    font-family: var(--ff-body);
+    color: var(--color-black);
+    line-height: 1rem;
+
+    &__Inner--Header {
+        line-height: .8rem;
+    }
+
+    &__TitleLink,
+    &__Hosts,
+    &__Cohorts,
+    &__Location,
+    &__VolsCounts,
+    &__VolStatus {
+        z-index: 2100;
+    }
+
+    &__TitleLink {
+        height: min-content;
+
+        h5 {
+            display: block;
+            margin: 0;
+            line-height: 1rem;
+        }
+
+        @include link-states();
+
+        &:link,  &:visited {
+            color: #2621b3;
+        }
+        &:hover, &:active {
+            color: #eee;
+        }
+    }
+
+    &__DateTime {
+        span {
+            // color: #777;
+            font-size: .8rem;
+            font-style: italic;
+        }
+    }
+
+    &__VolsCounts {
+        b {
+            color: var(--color-primary);
+        }
+        i {
+            font-style: normal;
+            color: green;
+        }
+    }
+
+    &__VolsPending {
+        color: #ce7b00;
+    }
+
+    &__VolStatus {
+        color: #ce7b00;
+
+        &.confirmed {
+            color: green;
+        }
+    }
+
+    &__BackgroundShift {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color .4s linear, border 1s linear;
+        z-index: 2000;
+    }
+
+    &__TitleLink:hover ~ .g1EvResultCard__BackgroundShift {
+        outline: solid 2px var(--color-highlight);
+        background-color: #b8ebff;
+    }
+}
+
+
+
+
+// LIST VIEW STYLING
+.g1ListResults {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    .g1EvResultCard {
+
+        &:last-of-type .g1EvResultCard__Inner {
+            border-bottom: solid 1px #fff;
+        }
+
+        b { display: none; }
+
+        &__Inner {
+            position: relative;
+
+            display: grid;
+            grid-template-columns: 29rem 9rem 5.5rem 15.5rem auto;
+            @media (max-width: 1200px) {
+                grid-template-columns: 26rem 8rem 4.5rem 12.5rem auto;
+            }
+
+            width: 100%;
+            height: 100%;
+            padding: .4rem 0 1rem 0;
+
+            font-size: .9rem;
+            background-color: var(--color-white);
+            border: solid 1px #fff;
+            border-bottom: 0;
+            line-height: 1rem;
+
+            --margin-right: .6rem;
+
+            &--Header {
+                padding: .4rem 0;
+                font-size: .8rem;
+                line-height: .8rem;
+                font-weight: bold;
+                background-color: #aeabe2;
+            }
+        }
+
+        &__TitleLink,
+        .g1EvResultCard__Inner--Header > div {  // only display:grid-related properties here, for styling go below
+            display: grid;
+            grid-template-columns: 16rem 13rem;
+            @media (max-width: 1200px) {
+                grid-template-columns: 15rem 11rem;
+            }
+
+        }
+
+        // LIST GRID PLACEMENT
+        &__TitleLink { grid-area: 1 / 1; }
+            h5 { grid-area: 1 / 1; }
+            &__DateTime { grid-area: 1 / 2; }
+        &__Hosts { grid-area: 1 / 2; }
+        &__Cohorts { grid-area: 1 / 3; }
+        &__Location { grid-area: 1 / 4; }
+        &__VolsCounts, &__VolStatus { grid-area: 1 / 5; }
+
+
+        // STYLING
+        &__TitleLink,
+        &__DateTime,
+        &__Hosts,
+        &__Cohorts,
+        &__Location,
+        &__VolsCounts,
+        &__VolStatus {
+            margin: 0 var(--margin-right);
+        }
+
+
+        &__TitleLink {
+            margin-left: var(--margin-right);
+
+            h5 {
+                font-size: .9rem;
+                font-weight: bold;
+            }
+
+            &:link,  &:visited {
+                transition: none;
+            }
+            &:hover, &:active {
+                color: var(--color-highlight);
+            }
+        }
+
+        .g1ERHeader {
+                &--event { grid-area: 1 / 1; margin-left: var(--margin-right); }
+                &--dateTime { grid-area: 1 / 2; margin-left: var(--margin-right); }
+            &--host { grid-area: 1 / 2; }
+            &--cohorts { grid-area: 1 / 3; }
+            &--location { grid-area: 1 / 4; }
+            &--volunteers { grid-area: 1 / 5; }
+        }
+
+        .g1ERHeader {
+            &--event,
+            &--host,
+            &--cohorts,
+            &--location,
+            &--volunteers {
+                margin: 0 var(--margin-right);
+            }
+
+            &--dateTime {
+                margin: 0 calc(var(--margin-right) * 2);
+            }
+        }
+
+
+        // MEDIA QUERIES FOR SIZES
+        @media (min-width: 768px) and (max-width: 991px) {
+            &__Inner {
+                grid-template-rows: 1.2rem auto;
+                grid-template-columns: 14rem 9rem 12rem auto;
+            }
+            &__TitleLink {
+                @include flex-straight(column);
+                display: flex !important;
+            }
+
+            &__TitleLink { grid-area: 1 / 1 / -1 / 1; }
+            &__Hosts { grid-area: 1 / 2; }
+            &__Cohorts { grid-area: 2 / 2; }
+            &__Location { grid-area: 1 / 3 / -1 / 3; }
+            &__VolsCounts, &__VolStatus { grid-area: 1 / 4 / -1 / 4; }
+
+            &__Inner--Header {
+                grid-template-rows: repeat(2, .8rem);
+            }
+
+            .g1ERHeader {
+                    &--event { grid-area: 1 / 1; margin-left: var(--margin-right); }
+                    &--dateTime { grid-area: 2 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--host { grid-area: 1 / 2; }
+                &--cohorts { grid-area: 2 / 2; }
+                &--location { grid-area: 1 / 3; }
+                &--volunteers { grid-area: 1 / 4; }
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            &__Inner {
+                grid-template-rows: 1rem 1.4rem auto;
+                grid-template-columns: 11.5rem 13rem auto;
+            }
+            &__TitleLink,
+            &__Inner--Header > div {
+                @include flex-straight(column);
+                display: flex !important;
+            }
+
+            &__TitleLink { grid-area: 1 / 1 / -1 / 1; }
+            &__Hosts { grid-area: 1 / 2; }
+            &__Cohorts { grid-area: 2 / 2; }
+            &__Location { grid-area: 3 / 2 / -1 / 2; }
+            &__VolsCounts, &__VolStatus { grid-area: 1 / 3 / -1 / 3; }
+
+            &__Inner--Header {
+                grid-template-rows: repeat(3, .8rem);
+            }
+
+            &__Inner--Header > div { grid-area: 1 / 1; }
+
+            .g1ERHeader {
+                    &--event { grid-area: 1 / 1; margin-left: var(--margin-right); }
+                    &--dateTime { grid-area: 2 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--host { grid-area: 1 / 2; }
+                &--cohorts { grid-area: 2 / 2; }
+                &--location { grid-area: 3 / 2; }
+                &--volunteers { grid-area: 1 / 3; }
+            }
+        }
+
+        @media (max-width: 575px) {
+            &__Inner {
+                grid-template-rows: min-content 1.5rem auto;
+                grid-template-columns: minmax(10.5rem, auto) minmax(6.5rem, 9rem);
+                border-width: 2px;
+            }
+            &__TitleLink,
+            &__Inner--Header > div {
+                @include flex-straight(column);
+                display: flex !important;
+            }
+
+            &__TitleLink { grid-area: 1 / 1 / 3 / 1; }
+            &__Hosts { grid-area: 1 / 2; }
+            &__Cohorts { grid-area: 2 / 2; }
+            &__Location { grid-area: 3 / 1 / -1 / 1; margin: 0 0 0 calc(var(--margin-right) * 2); }
+            &__VolsCounts, &__VolStatus { grid-area: 3 / 2 / -1 / 2; }
+
+            &__Inner--Header {
+                grid-template-rows: repeat(3, .8rem);
+            }
+
+            &__Inner--Header > div { grid-area: 1 / 1; }
+
+            .g1ERHeader {
+                    &--event { grid-area: 1 / 1; margin-left: var(--margin-right); }
+                    &--dateTime { grid-area: 2 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--host { grid-area: 1 / 2; }
+                &--cohorts { grid-area: 2 / 2; }
+                &--location { grid-area: 3 / 1; margin-left: calc(var(--margin-right) * 2); }
+                &--volunteers { grid-area: 3 / 2; }
+            }
+        }
+    }
+}
+
+
+
+
+// GRID VIEW STYLING
+.g1GridResults {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .g1EvResultCard {
+        position: relative;
+        width: 100%;
+        padding-top: .5rem;
+        padding-bottom: 1rem;
+
+        --margin-x: .5rem;
+
+        b { // labels
+            display: block;
+            color: #000;
+            font-size: .8rem;
+            text-transform: lowercase;
+        }
+
+        &__Inner {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            height: 100%;
+            padding-bottom: 1.5rem;
+
+            background-color: var(--color-white);
+            border: solid 1px var(--color-white);
+            border-radius: var(--border-radii);
+        }
+
+        // col-12
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+
+        @media (min-width: 500px) { // col-sm-6 (altered down to 500px from 576px)
+            -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        @media (min-width: 768px) { // col-md-4
+            -ms-flex: 0 0 33.333333%;
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        @media (min-width: 992px) { // col-lg-3
+            -ms-flex: 0 0 25%;
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
+
+        &__TitleLink {
+            margin-bottom: 1rem;
+            padding: .2rem var(--margin-x) .2rem var(--margin-x);
+            border-bottom: solid 1px #aeabe2;
+
+            h5 {
+                margin-bottom: 0px;
+                border-radius: var(--border-radii) var(--border-radii) 0 0;
+
+                font-size: 1.2rem;
+            }
+
+            &:link,  &:visited {
+                background-color: #cecce6;
+                transition: color .4s ease-out, background-color .2s ease-out;
+
+                .g1EvResultCard__DateTime {
+                    margin-top: .2rem;
+                    color: var(--color-black);
+                    transition: color .4s ease-out;
+
+                    span { color: var(--color-primary); transition: color .4s ease-out; }
+                }
+            }
+            &:hover, &:active {
+                color: var(--color-white);
+                background-color: var(--color-highlight);
+
+                .g1EvResultCard__DateTime {
+                    span { color: var(--color-white); }
+                }
+            }
+        }
+
+        &__DateTime {
+            font-size: .9rem;
+        }
+
+        &__Hosts,
+        &__Cohorts,
+        &__Location,
+        &__VolsCounts,
+        &__VolStatus {
+            padding: 0 var(--margin-x);
+        }
+
+        &__Location {
+            margin: 1rem 0;
+        }
+
+        &__Hosts,
+        &__Cohorts {
+            b {
+                display: inline-block;
+                margin-right: .4rem;
+            }
+        }
+
+        &__TitleLink::after {
+            content: 'Open Event';
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1.2;
+            background-color: var(--color-highlight);
+            position: absolute;
+            bottom: 1rem;
+            right: .25rem;
+            text-align: center;
+            padding: 0.25rem 0.7rem;
+            border: solid 1px #fff;
+            border-width: 1px 0 0 1px;
+            border-radius: var(--border-radii) 0 var(--border-radii) 0;
+            opacity: 0;
+            z-index: -3000;
+            transform: scale(0);
+            transition: opacity .2s ease-out;
+        }
+
+        &__TitleLink:hover::after {
+            opacity: 1;
+            z-index: 3000;
+            transform: scale(1);
+        }
+
+        &__BackgroundShift {
+            display: none;
+        }
+    }
+}

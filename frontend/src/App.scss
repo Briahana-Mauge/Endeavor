@@ -1,6 +1,8 @@
 @import './styles/base';
 @import './styles/ui-modules';
-@import './styles/results-displays';
+@import './styles/volunteers-results';
+@import './styles/events-results';
+@import './styles/navbar';
 
 
 .appLogo {
@@ -15,17 +17,16 @@
     color: #e2e2e2;
 }
 
-// .lightBox, .feedbackContainer {
-.feedbackContainer {
-    position: fixed;
-    width: 80vw;
-    top: 10vh;
-    max-height: 88vh;
-    overflow: scroll;
-    left: 10vw;
-    background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
-    z-index: 5;
-}
+// .lightBox {
+//     position: fixed;
+//     width: 80vw;
+//     top: 10vh;
+//     max-height: 88vh;
+//     overflow: scroll;
+//     left: 10vw;
+//     background-image: linear-gradient(180deg, #1a1635 5%, #696a81 50%, #908fa1 89%);
+//     z-index: 5;
+// }
 
 .closeButton {
     position: sticky;
@@ -41,6 +42,15 @@
 
 .plainUl {
     list-style: none;
+}
+
+.plainLink {
+    text-decoration: inherit;
+    color: inherit;
+}
+.plainLink:hover {
+    text-decoration: inherit;
+    color: inherit;
 }
 .spinner{
 position: fixed;

@@ -6,6 +6,7 @@ Events Dash Table Row Component | Capstone App (Pursuit Volunteer Mgr)
 
 /* IMPORTS */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import EDashTableItem from './EDashTableItem';
 const moment = require('moment');
@@ -66,7 +67,7 @@ const EDashTableRow = (props) => {
   }
 
   if (startedBeforeToday) {
-    showStart = simplifyHours(moment(event_start).format('M/D, h:mm')); // start hour becomes irrelevant in past
+    showStart = simplifyHours(moment(event_start).format('M/D, h:mma'));
   } else if (startsToday && isOneDay) {
     showStart += isMidnightToMidnight
       ? 'All-Day'
@@ -99,7 +100,7 @@ const EDashTableRow = (props) => {
 
         <div id={'event' + event_id} className="g1EventItem">
           <EDashTableItem {...operationProps} className="g1EventLink">
-            {topic}
+            <Link to={`/event/${event_id}`} className='plainLink'>{topic}</Link>
           </EDashTableItem>
         </div>
 

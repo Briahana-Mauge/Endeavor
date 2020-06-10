@@ -28,9 +28,9 @@ export default function ChartsAdmin(props) {
       const volunteersArr = [];
 
       for (let date of datesArr) {
-        let h = null;
-        let e = null;
-        let v = null;
+        let h = 0;
+        let e = 0;
+        let v = 0;
 
           for (let data of chartData[0].hours) {
             if (data.date === date) {

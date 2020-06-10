@@ -5,17 +5,18 @@ import IconEmail from './IconEmail';
 
 
 const VolunteerCard = (props) => {
+    const { volunteer } = props;
 
     // const viewProfile = () => {
     //     props.setDisplayTargetUser(true);
-    //     props.setTargetVolunteerId(props.volunteer.v_id);
+    //     props.setTargetVolunteerId(volunteer.v_id);
     // }
 
     const shownSkills = [];
-    let skillsPool = [...props.volunteer.skills];
-    let duration = props.volunteer.skills.length > 3
+    let skillsPool = [...volunteer.skills];
+    let duration = volunteer.skills.length > 3
         ? 3
-        : props.volunteer.skills.length;
+        : volunteer.skills.length;
     for (let i = 0; i < duration; i++) {
         // eventually we'd rather have the volunteers rank their skills and display here the top 3 instead of random
         let selectedSkill = skillsPool.splice(Math.floor(Math.random() * skillsPool.length), 1)[0];
@@ -37,12 +38,12 @@ const VolunteerCard = (props) => {
         }
     }
     const listSkills = shownSkills.map((skill, index) => <li key={index+skill}>{skill}</li>);
-    if (props.volunteer.skills.length > 3) {
-        listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'>+{props.volunteer.skills.length - 3} more skills . . .</li>)
+    if (volunteer.skills.length > 3) {
+        listSkills.push(<li key='3msgOfMore' className='g1MoreItemsMsg'>+{volunteer.skills.length - 3} more skills . . .</li>)
     }
 
     const listInterests = [];
-    const interest = props.volunteer.interests;
+    const interest = volunteer.interests;
     if (interest.mentoring) listInterests.push(
         <li key='m' className='g1Interest--Mentor' data-tooltip='MENTORING'>M</li>);
     if (interest.office_hours) listInterests.push(
@@ -64,31 +65,31 @@ const VolunteerCard = (props) => {
         index1: event title / topic
     */
     let nextEvent = null;
-    if (props.volunteer.next_event) {
-        nextEvent = props.volunteer.next_event.split(' &$%& ');
+    if (volunteer.next_event) {
+        nextEvent = volunteer.next_event.split(' &$%& ');
     }
 
     return (
         <div className='g1VolResultCard px-1'>
             <div className='g1InnerVolResultCard'>
-                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__AvatarLink'>
+                <Link to={`/volunteer/${volunteer.v_id}`} className='g1VolResultCard__AvatarLink'>
                     <img
                         className='g1VolResultCard__Avatar'
-                        src={props.volunteer.v_picture || '/images/default_pic.png'}
-                        alt={`${props.volunteer.v_first_name} ${props.volunteer.v_last_name}'s pic`}
+                        src={volunteer.v_picture || '/images/default_pic.png'}
+                        alt={`${volunteer.v_first_name} ${volunteer.v_last_name}'s pic`}
                     />
                 </Link>
-                <Link to={`/volunteer/${props.volunteer.v_id}`} className='g1VolResultCard__NameLink'>
+                <Link to={`/volunteer/${volunteer.v_id}`} className='g1VolResultCard__NameLink'>
                     <h4>
-                        {props.volunteer.v_first_name} {props.volunteer.v_last_name}
+                        {volunteer.v_first_name} {volunteer.v_last_name}
                     </h4>
                 </Link>
                 <div className='g1VolResultCard__IconsBar'>
-                    <IconEmail email={props.volunteer.v_email} className='g1VolResultCard__IconEmail' />
+                    <IconEmail email={volunteer.v_email} className='g1VolResultCard__IconEmail' />
                 </div>
                 <div className='g1VolResultCard__JobBox'>
-                    <div className='g1VolResultCard__Company'>{props.volunteer.company}</div>
-                    <div className='g1VolResultCard__Title'>{props.volunteer.title}</div>
+                    <div className='g1VolResultCard__Company'>{volunteer.company}</div>
+                    <div className='g1VolResultCard__Title'>{volunteer.title}</div>
                 </div>
                 <ul className='g1VolResultCard__Interests'>
                     {listInterests}
@@ -96,7 +97,7 @@ const VolunteerCard = (props) => {
                 <ul className='g1VolResultCard__Skills'>
                     {listSkills}
                 </ul>
-                {   props.volunteer.next_event
+                {   volunteer.next_event
                     ?   <>
                             <hr />
                             <div className='g1VolResultCard__NextEvent'>

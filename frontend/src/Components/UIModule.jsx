@@ -20,6 +20,7 @@ const UIModule = ({children, className = '', titleColor = '', titleRegular = ''}
 
         </h3>
         <div className={`g1Module__Body ${xPaddingForAllModules}`}>
+        {/* <div className={`g1Module__body pt-0 pb-1 ${xPaddingForAllModules}`}> */}
 
           {children}
 

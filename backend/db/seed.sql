@@ -1,9 +1,8 @@
--- DROP DATABASE IF EXISTS capstone_project_db;
--- CREATE DATABASE capstone_project_db;
+-- DROP DATABASE IF EXISTS endeavor_db;
+-- CREATE DATABASE endeavor_db;
 
--- \c capstone_project_db
+-- \c endeavor_db
 
-DROP TABLE IF EXISTS volunteers_hours;
 DROP TABLE IF EXISTS event_fellows;
 DROP TABLE IF EXISTS event_volunteers;
 DROP TABLE IF EXISTS events;
@@ -33,7 +32,7 @@ CREATE TABLE cohorts
 CREATE TABLE users_data
 (
     user_email VARCHAR (50) PRIMARY KEY,
-    password VARCHAR,
+    password VARCHAR NOT NULL,
     role VARCHAR (10) NOT NULL,
     deleted DATE DEFAULT NULL
 );
@@ -120,7 +119,6 @@ CREATE TABLE mentor_pairs
     m_id SERIAL PRIMARY KEY,
     mentor INT NOT NULL REFERENCES volunteers(v_id),
     mentee INT NOT NULL REFERENCES fellows(f_id),
-    -- m_active BOOLEAN NOT NULL DEFAULT TRUE,
     starting_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_DATE,
     deleted DATE DEFAULT NULL
 );
@@ -163,14 +161,6 @@ CREATE TABLE event_fellows
     UNIQUE (eventf_id, fellow_id)
 );
 
-CREATE TABLE volunteers_hours
-(
-    vh_id SERIAL PRIMARY KEY,
-    volunteer_id INT NOT NULL REFERENCES volunteers(v_id),
-    banked_time INT NOT NULL DEFAULT 0,
-    planned_time INT NOT NULL DEFAULT 0,
-    deleted DATE DEFAULT NULL
-);
 
 
 -- SEEDING DATABASE
@@ -285,8 +275,7 @@ VALUES
     -- 35
     ('suzetteislam@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('vonielbrown@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
-    ('aminebensalem@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
-    ('karenmorisset@pursuit.org', NULL, 'fellow');
+    ('aminebensalem@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow');
 
 
 INSERT INTO administration
@@ -300,25 +289,25 @@ VALUES
 
 INSERT INTO volunteers
     (
-    v_first_name,
-    v_last_name,
-    v_slug,
-    v_email,
-    v_picture,
-    company,
-    parsed_company,
-    title,
-    mentoring,
-    office_hours,
-    tech_mock_interview,
-    behavioral_mock_interview,
-    professional_skills_coach,
-    hosting_site_visit,
-    industry_speaker,
-    public_profile,
-    confirmed,
-    v_linkedin, 
-    signup_date
+        v_first_name,
+        v_last_name,
+        v_slug,
+        v_email,
+        v_picture,
+        company,
+        parsed_company,
+        title,
+        mentoring,
+        office_hours,
+        tech_mock_interview,
+        behavioral_mock_interview,
+        professional_skills_coach,
+        hosting_site_visit,
+        industry_speaker,
+        public_profile,
+        confirmed,
+        v_linkedin, 
+        signup_date
     )
 VALUES
     ('Daniel', 'Lopez', 'dlopez', 'dlopez@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/DanielLopez.jpg', 'Capital One', 'capitalone', 'Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, 'https://www.linkedin.com/in/daniellopez/','2019-09-01'),
@@ -337,14 +326,14 @@ VALUES
 
 INSERT INTO fellows
     (
-    f_first_name,
-    f_last_name,
-    f_email,
-    f_picture,
-    f_linkedin,
-    f_github,
-    cohort_id,
-    want_mentor
+        f_first_name,
+        f_last_name,
+        f_email,
+        f_picture,
+        f_linkedin,
+        f_github,
+        cohort_id,
+        want_mentor
     )
 VALUES
     ('Aransa', 'Garcia', 'aransagarcia@pursuit.org', 'https://images.squarespace-cdn.com/content/v1/5b50ebb7e749401857e16f2f/1560974610981-PJP90DAZNR3C1DZE0EBO/ke17ZwdGBToddI8pDm48kLleLmcV7dS-MhzRju3uYcAUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8GRo6ASst2s6pLvNAu_PZdJpTNKK-J6l-465-clrtIQN2C738sdo7R0r9ae59x0EXbF9tpEDMWAdAbtkx_bKx38/IMG_1941+%281%29+-+Aransa+G.JPG?format=500w', 'https://www.linkedin.com/', 'https://github.com/', 15, FALSE),
@@ -456,15 +445,15 @@ VALUES
 
 INSERT INTO events
     (
-    event_start,
-    event_end,
-    topic,
-    description,
-    attendees,
-    location,
-    instructor,
-    number_of_volunteers,
-    important
+        event_start,
+        event_end,
+        topic,
+        description,
+        attendees,
+        location,
+        instructor,
+        number_of_volunteers,
+        important
     )
 VALUES
     ('2020-03-22 10:00-04', '2020-06-29 20:00-04', '6.2 CAPSTONE',
@@ -619,17 +608,3 @@ VALUES
     (8, 3),
     (9, 4),
     (9, 5);
-
-INSERT INTO volunteers_hours
-    (volunteer_id, banked_time, planned_time)
-VALUES
-    (1, 20, 4),
-    (2, 45, 2),
-    (3, 23, 3),
-    (4, 7, 5),
-    (5, 65, 0),     -- 5
-    (6, 78, 0),
-    (7, 3, 5),
-    (8, 44, 7),
-    (9, 34, 1),
-    (10, 88, 0);    -- 10
