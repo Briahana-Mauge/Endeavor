@@ -7,6 +7,14 @@
 + [Briahana Maugé (@Briahana-Mauge)](https://github.com/Briahana-Mauge) [[LI]](https://www.linkedin.com/in/bmauge/)
 + [Joseph P. Pasaoa (@joseph-p-pasaoa)](https://github.com/joseph-p-pasaoa) [[LI]](https://www.linkedin.com/in/josephpasaoa/)
 
+## Instructional Team
++ **Lead Instructor:** [Alejandro Franco (@alejo4373)](https://github.com/alejo4373)
++ **Instructor Asst:** [Jung Rae Jang (@jungraejang)](https://github.com/jungraejang)
++ **Instructor Asst:** [Wynter Reid (@wynterreid)](https://github.com/wynterreid)
++ **Program Manager:** [Dessa Shepherd](https://www.linkedin.com/in/dessa-shepherd-7a55b374/)
++ **Advisor:** [Dion Ridley (@dionridley)](https://www.linkedin.com/in/dionridley/)
++ **Advisor:** [Ben Sussman (@bensussman)](https://www.linkedin.com/in/bensussman/)
+
 ![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
 
 
@@ -17,14 +25,6 @@
 + IV. [Server Endpoints](#iv-server-endpoints)
 + V. [Future Implementations](#v-future-implementations)
 
-
-## Instructional Team
-+ **Lead Instructor:** [Alejandro Franco (@alejo4373)](https://github.com/alejo4373)
-+ **Instructor Asst:** [Jung Rae Jang (@jungraejang)](https://github.com/jungraejang)
-+ **Instructor Asst:** [Wynter Reid (@wynterreid)](https://github.com/wynterreid)
-+ **Program Manager:** [Dessa Shepherd](https://www.linkedin.com/in/dessa-shepherd-7a55b374/)
-+ **Advisor:** [Dion Ridley (@dionridley)](https://www.linkedin.com/in/dionridley/)
-+ **Advisor:** [Ben Sussman (@bensussman)](https://www.linkedin.com/in/bensussman/)
 
 ---
 
@@ -37,7 +37,6 @@
 + React 16.13.1
 + Node.js 12.5.0
 + Express.js 4.16.1
-+ Node-Sass (SCSS) 4.14.1
 + AWS-SDK 2.647.0
 + Multer 1.4.2
 + Multer-S3 2.9.0
@@ -48,6 +47,7 @@
 + Chart.js 2.9.3
 + Moment 2.24.0
 + Query-String 6.12.1
++ Node-Sass (SCSS) 4.14.1
 + React Epic Spinners 0.4.1
 + React Icons 3.10.0
 + Pg-promise 10.4.4
