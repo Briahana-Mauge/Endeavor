@@ -8,7 +8,7 @@ ChartsVolunteer Component | Capstone App (Pursuit Volunteer Mgr)
 import React, { useState, useEffect } from 'react';
 
 import UIModule from '../UIModule';
-import Chart from '../Chart';
+import ChartBar from '../ChartBar';
 import yearRange from '../../yearRangeFormatting';
 
 
@@ -46,26 +46,30 @@ export default function ChartsVolunteer (props) {
 
     return (
         <>
-          <UIModule className='dataModule' titleColor='My Volunteering Hours' titleRegular='This Year'>
-            <Chart
-              xAxes={chartInterval}
-              data={chartVolunteerHours} 
-              title={''}
-              xText={'Months'}
-              yText = {'Hours Earned'}
-              color={'#2631bd'}
-            />
-          </UIModule>
-          <UIModule className='dataModule' titleColor='My Events' titleRegular='This Year'>
-            <Chart
-              xAxes={chartInterval}
-              data={chartVolunteerEvents} 
-              title={''}
-              xText={'Months'}
-              yText={'Events Volunteered'}
-              color={'rgba(155, 49, 117, 1)'}
-            />
-          </UIModule>
+          <div className="col-12 col-md-6">
+            <UIModule className='dataModule' titleColor='My Volunteering Hours' titleRegular='This Year'>
+              <ChartBar
+                xAxes={chartInterval}
+                data={chartVolunteerHours}
+                title={''}
+                xText={'12-Month History'}
+                yText = {'Hours Earned'}
+                color={'#8b8557'}
+              />
+            </UIModule>
+          </div>
+          <div className="col-12 col-md-6">
+            <UIModule className='dataModule' titleColor='My Events' titleRegular='This Year'>
+              <ChartBar
+                xAxes={chartInterval}
+                data={chartVolunteerEvents}
+                title={''}
+                xText={'12-Month History'}
+                yText={'Events Volunteered'}
+                color={'#a54a8b'}
+              />
+            </UIModule>
+          </div>
         </>
     )
 }

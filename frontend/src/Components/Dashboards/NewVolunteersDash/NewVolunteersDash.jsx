@@ -59,8 +59,7 @@ const NewVolunteersDash = (props) => {
 
 
   return (
-    <UIModule className='currentEventsModule' titleColor="New Volunteer" titleRegular='Signups'>
-
+    <UIModule className='deepSangria g1NVDash' titleColor="New Volunteer" titleRegular='Signups'>
         {newVolunteers.length <= 0
           ? (
               <div>There are no new volunteers awaiting confirmation.</div>

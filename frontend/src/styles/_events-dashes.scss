@@ -1,0 +1,121 @@
+// ALL: EVENTS DASH
+.g1Table {
+    display: table;
+
+    width: 100%;
+    border: 0;
+    color: var(--color-white);
+
+    .ongoing {
+        color: #efefef;
+
+        div[id^=event]::after {
+            content: 'now happening';
+            display: block;
+            padding-left: 1rem;
+
+            font-family: var(--ff-accent);
+            font-weight: bold;
+            color: #17ca1db8;
+        }
+    }
+
+    .passed { color: #bbb; }
+
+    .g1THead {
+        display: table-header-group;
+        
+        padding-bottom: calc(var(--table-inner-gaps) * .15);
+
+        text-transform: uppercase;
+        font-size: calc(var(--fs-body) * .75);
+
+        .g1TD {
+            border-bottom: 1px dashed #696969;
+        }
+    }
+
+    .g1TBody {
+        display: table-row-group;
+
+        .g1EmptyRowMsg {
+            margin-top: .6rem;
+            font-family: var(--ff-accent);
+            font-size: 1rem;
+            font-weight: bold;
+            white-space: nowrap;
+            color: #a54b8c;
+        }
+    }
+
+    .g1TR {
+        display: table-row;
+    }
+
+    .g1TD {
+        display: table-cell;
+
+        padding: 0;
+        border-top: 0;
+    }
+
+    .g1TBody .g1TD {
+        padding-top: .1rem;
+        padding-bottom: .2rem;
+    }
+
+    .g1TopicCol, .g1TimeCol {
+        line-height: 1.2rem;
+    }
+    
+    .g1TopicCol {
+        text-align: left;
+        padding-right: var(--table-inner-gaps);
+        padding-left: var(--table-outer-gaps);
+        width: 57%;
+    }
+
+    .g1TimeCol {
+        padding-right: var(--table-outer-gaps);
+        padding-left: var(--table-inner-gaps);
+        // border-left: 1px dashed #696969;
+
+        u {
+            text-decoration: none;
+        }
+    }
+
+    // color of EventDash labels and time dashes
+    .g1THead, .g1TimeCol u {
+        font-family: var(--ff-accent);
+        font-size: .8rem;
+        color: #882f70;
+        text-transform: lowercase;
+    }
+}
+
+.pastEventsModule .g1TBody .g1EmptyRowMsg,
+.importantEventsModule .g1TBody .g1EmptyRowMsg {
+    color: #415798;
+}
+
+.g1TBody .g1TR:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.11);
+}
+.g1TBody .g1TR:nth-of-type(even) {
+    background-color: rgba(173, 156, 156, 0.03);
+}
+
+.g1BufferRow.g1TBody .g1TR {
+    background-color: #2d2d48fa;
+    height: .3rem;
+}
+
+.g1BufferRow + .g1TBody .g1TR .g1TD {
+    padding-top: 4px;
+}
+
+.g1EventLink {
+    cursor: pointer;
+    @include link-states();
+}

@@ -10,6 +10,7 @@ import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-d
 import axios from 'axios';
 
 import './App.scss';
+import Spinner from './Components/Spinner';
 import LoginSignupGate from './Components/LoginSignupGate';
 import PrivateGate from './Components/PrivateGate';
 import DashboardAdmin from './Components/Dashboards/DashboardAdmin';
@@ -27,7 +28,7 @@ import Mentoring from './Components/Mentoring';
 import EventRender from './Components/EventRender';
 import Feedback from './Components/Feedback';
 import PageNotFound from './Components/PageNotFound';
-import Spinner from './Components/Spinner';
+
 
 const identifyUser = require('./helpers/identifyUser');
 
@@ -320,7 +321,6 @@ function App() {
       </Switch>
 
       <Feedback feedback={feedback} resetFeedback={resetFeedback} />
-
     </div>
   );
 }

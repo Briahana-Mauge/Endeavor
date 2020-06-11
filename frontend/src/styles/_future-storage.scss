@@ -1,0 +1,125 @@
+/*
+What's Here
+1. blog ui module styling
+2. popover styling
+
+*/
+
+
+
+
+// save for future text module
+// .g1BlogFill {
+//     &__Headline {
+//         margin-top: 0;
+//         margin-bottom: .5rem;
+
+//         font-family: var(--ff-top);
+//         font-size: 2.5rem;
+//         font-weight: 500;
+//         line-height: 1.2;
+//     }
+
+//     &__Paragraph {
+//         font-family: var(--ff-body);
+//         font-size: .9rem;
+//         color: var(--color-white);
+//         line-height: 1.7rem;
+//     }
+// }
+
+// .g1PopoverBtn {
+//     &, &:hover, &:active, &:focus {
+//         --event-indent: 1.5rem;
+
+//         all: unset;
+//         cursor: pointer;
+//         text-indent: calc(var(--event-indent) * -1);
+//         position: relative;
+//         left: (var(--event-indent));
+//     }
+
+//     &:hover, &:active {
+//         color: var(--color-yellow) !important;
+//     }
+
+//     &.btn-secondary:not(:disabled):not(.disabled):active {
+//         color: inherit;
+//         background-color: inherit;
+//         border: none;
+//         box-shadow: none;
+//     }
+
+//     @include link-states();
+// }
+
+// .topicCol .g1PopoverBtn::before {
+//     content: "▪︎ ";
+//     // color: red;▪︎
+// }
+
+// .g1PopoverParent {
+//     .popover {
+//         border-radius: var(--border-radii);
+//         box-shadow: var(--box-shadow);
+//     }
+
+//     .popover-header {
+//         font-family: var(--ff-top);
+//         border-top-left-radius: var(--border-radii);
+//         border-top-right-radius: var(--border-radii);
+
+//         .times {
+//             font-size: .9rem;
+//             font-weight: 900;
+//             font-style: italic;
+//             color: var(--color-primary);
+//         }
+//     }
+
+//     .g1PopoverGoLink {
+//         display: block;
+//         font-size: .8rem;
+//         text-transform: lowercase;
+//         text-align: right;
+
+//         @include link-states();
+//     }
+
+//     .bs-popover-auto[x-placement^=right] .g1PopoverGoLink {
+//         text-align: left;
+//     }
+// }
+
+// Popover Arrows
+// .g1PopoverParent {
+//     --parrow-top: 3px;
+//     --parrow-y-squeeze: .4rem;
+//     --parrow-x-nudge: 1.2rem;
+//     --parrow-color: #476cef;
+
+//     .bs-popover-auto[x-placement^=right] {
+//         left: 11px !important;
+//     }
+
+//     .bs-popover-auto[x-placement^=left]>.arrow::after,
+//     .bs-popover-left>.arrow::after {
+//         top: var(--parrow-top);
+//         right: .3rem;
+//         border-width: var(--parrow-y-squeeze) 0 var(--parrow-y-squeeze) var(--parrow-x-nudge);
+//         border-left-color: var(--parrow-color);
+//     }
+
+//     .bs-popover-auto[x-placement^=right]>.arrow::after,
+//     .bs-popover-right>.arrow::after {
+//         top: var(--parrow-top);
+//         left: -.4rem;
+//         border-width: var(--parrow-y-squeeze) var(--parrow-x-nudge) var(--parrow-y-squeeze) 0;
+//         border-right-color: var(--parrow-color);
+//     }
+// }
+
+// .popover-header {
+//     background-color: var(--color-yellow);
+//     filter: grayscale(.4) brightness(1.4);
+// }

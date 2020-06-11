@@ -92,7 +92,7 @@
         list-style: none;
 
         li {
-            font-family: var(--ff-accent);
+            font-family: var(--ff-body);
             font-weight: bold;
             color: #8327bb;
 
@@ -129,8 +129,10 @@
         li.g1MoreItemsMsg {
             margin-left: .5rem;
 
-            color: var(--color-yellow);
+            font-family: var(--ff-accent);
+            font-weight: bold;
             font-style: italic;
+            color: #64268a;
         }
 
         li.g1MoreItemsMsg::before {

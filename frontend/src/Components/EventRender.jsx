@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-import EventCard from './EventCard';
 import Spinner from './Spinner';
+import UIModule from './UIModule';
+import EventCard from './EventCard';
 
 export default function EventRender(props) {
     const { eventId } = useParams();
@@ -98,23 +99,26 @@ export default function EventRender(props) {
         volunteersList
     ]);
 
-     if (loading) {
+
+    if (loading) {
         return <Spinner/>
     }
 
     return (
-        <div className='container'>
-            <div className='modal-header'>
-                <h4 className='font-weight-bold'>{eventObj.topic}</h4>
-            </div>
-            
-            <EventCard 
-                loggedUser={loggedUser} 
-                event={eventObj}
-                setFeedback={setFeedback}
-                reloadParent={reload}
-                setReloadParent={SetReload}
-            />
-        </div>
+        <>
+            <UIModule className='g1EventProfile nurseryCanvas' titleColor="" titleRegular=''>
+                <div className='modal-header'>
+                    <h4 className='font-weight-bold'>{eventObj.topic}</h4>
+                </div>
+
+                <EventCard
+                    loggedUser={loggedUser}
+                    event={eventObj}
+                    setFeedback={setFeedback}
+                    reloadParent={reload}
+                    setReloadParent={SetReload}
+                />
+            </UIModule>
+        </>
     )
 }

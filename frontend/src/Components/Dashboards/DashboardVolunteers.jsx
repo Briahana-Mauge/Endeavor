@@ -5,11 +5,11 @@ DashboardVolunteers Component | Capstone App (Pursuit Volunteer Mgr)
 
 
 /* IMPORTS */
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import VolunteerEDash from './EventsDash/VolunteerEDash';
+import ImageFill from '../ImageFill';
 import ChartsVolunteer from './ChartsVolunteer';
 
 
@@ -43,15 +43,27 @@ const DashboardVolunteers = (props) => {
 
 
   return (
-    <div className="row">
-        <div className="col-12 col-md-5">
+    <>
+
+      <div className="row">
+        <div className="col-12 col-md-7">
           <VolunteerEDash events={eventsObj} />
         </div>
-
-        <div className="col-12 col-md-7">
-          <ChartsVolunteer chartData={eventsObj.pastData} />
+        <div className="d-none d-md-block col-md-5">
+          <ImageFill />
         </div>
-    </div>
+      </div>
+
+      <div className="row">
+        <ChartsVolunteer chartData={eventsObj.pastData} />
+      </div>
+      <div className="row">
+        <div className="col-12 d-md-none">
+          <ImageFill />
+        </div>
+      </div>
+
+    </>
   )
 }
 

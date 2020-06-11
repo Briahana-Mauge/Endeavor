@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { GrMail, GrLinkedinOption } from 'react-icons/gr';
 import axios from 'axios';
 
-import { PMBody, PMFooter } from '../Modals/PrimaryModal';
+// import { PMBody, PMFooter } from '../Modals/PrimaryModal';
 import Spinner from '../Spinner';
 
 export default function VolunteerProfilePage(props) {
@@ -112,8 +112,8 @@ export default function VolunteerProfilePage(props) {
                 ? <h3 className='text-center'>Sorry, nothing to show</h3>
                 : <>
                     {/* : <div className='row p-3'> */}
-                    <PMBody>
-                        <div className='col-12 p-0'>
+                    {/* <PMBody> */}
+                        <div className='g1VolProfile col-12 p-0'>
                             {/* WARNINGS */}
                             {
                                 volunteer.deleted
@@ -132,7 +132,7 @@ export default function VolunteerProfilePage(props) {
                             {/* CONTACT INFO, COMPANY, POSITION */}
                             <div className='card-text' data-type='contactinfo'>
                                 <div className='g1ModalField'>
-                                    <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-.75px', left: '1px' }} /></i>
+                                    <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-1.5px', left: '1px' }} /></i>
                                     <a href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
                                         {volunteer.v_email}
                                     </a>
@@ -140,15 +140,15 @@ export default function VolunteerProfilePage(props) {
                                 {
                                     volunteer.v_linkedin
                                         ? <div className='g1ModalField'>
-                                            <i className='g1VolContact'><GrLinkedinOption className="g1ReactIconsSvg" style={{ top: '-2px', left: '1px' }} /></i>
+                                            <i className='g1VolContact'><GrLinkedinOption className="g1ReactIconsSvg" style={{ top: '-3px', left: '1px' }} /></i>
                                             <a href={volunteer.v_linkedin} target='_blank' rel='noopener noreferrer'>
                                                 {volunteer.v_linkedin}
                                             </a>
                                         </div>
                                         : null
                                 }
-                                <div className='g1ModalField'><i className='g1VolContact'>Company </i><span>{volunteer.company}</span></div>
-                                <div className='g1ModalField'><i className='g1VolContact'>Position </i><span>{volunteer.title}</span></div>
+                                <div className='g1ModalField'><i className='g1VolProfile__BlackLabel g1Black'>Company </i><span className='g1VolProfile__Company'>{volunteer.company}</span></div>
+                                <div className='g1ModalField'><i className='g1VolProfile__BlackLabel g1Black'>Position </i><span>{volunteer.title}</span></div>
                             </div>
 
                             {/* SKILLS AND INTERESTS */}
@@ -157,7 +157,7 @@ export default function VolunteerProfilePage(props) {
                                     volunteer.skills && volunteer.skills.length
                                         // ?   <div className='row'>
                                         ? <div className='g1ModalField mb-4 mb-sm-0' data-type='skills'>
-                                            <i>Skills </i>
+                                            <i className='g1VolProfile__BlackLabel'>Skills </i>
                                             <div>
                                                 {volunteer.skills.map((skill, index) =>
                                                     <span key={index + skill} className='g1VolSkill'>
@@ -177,7 +177,7 @@ export default function VolunteerProfilePage(props) {
                                 {
                                     interests.length
                                         ? <div className='g1ModalField' data-type='interests'>
-                                            <i>Interested In </i>
+                                            <i className='g1VolProfile__BlackLabel'>Interested In </i>
                                             <div>
                                                 {interests.map((interest, index) =>
                                                     <span key={index + interest[0]}>
@@ -206,7 +206,7 @@ export default function VolunteerProfilePage(props) {
 
                             {/* VOLUNTEER HOURS */}
                             <div className='card-text mb-4'>
-                                <div className='g1ModalField' data-type='hours'><i>{volunteer.total_hours || 0} </i><span>Volunteer Hours</span></div>
+                                <div className='g1ModalField' data-type='hours'><i className='g1VolProfile__BlackLabel'>Volunteer<br />Hours </i><span>{volunteer.total_hours || 0}</span></div>
                             </div>
 
                             {/* MENTORING SECTION */}
@@ -215,8 +215,8 @@ export default function VolunteerProfilePage(props) {
                                     ? <>
                                         <hr />
                                         <div className='g1MentoringFlex card-text mb-4'>
-                                            <div>
-                                                <i className='g1MentorActiveLabel'>Active Mentor</i>
+                                            <i className='g1MentorActiveLabel'>Active Mentor</i>
+                                            {/* <div> */}
                                                 {
                                                     props.loggedUser && props.loggedUser.a_id
                                                         ? <button className='g1ManageMentorBtn btn btn-info'
@@ -227,14 +227,14 @@ export default function VolunteerProfilePage(props) {
                                                 </button>
                                                         : null
                                                 }
-                                            </div>
+                                            {/* </div> */}
                                             {
                                                 currentMentees.length
                                                     ? <>
                                                         <div className='g1ModalField' data-type='mentoring'>
                                                             <i>Current Mentees ▸ </i>
                                                         </div>
-                                                        <span>
+                                                        <div className='g1MenteesList'>
                                                             {
                                                                 currentMentees.map(mentee =>
                                                                     <Link
@@ -246,7 +246,7 @@ export default function VolunteerProfilePage(props) {
                                                                     </Link>
                                                                 )
                                                             }
-                                                        </span>
+                                                        </div>
                                                     </>
                                                     : null
                                             }
@@ -307,8 +307,8 @@ export default function VolunteerProfilePage(props) {
                                 }
                             </div>
                         </div>
-                    </PMBody>
-                    <PMFooter className='g1NonAdminFooter' />
+                    {/* </PMBody> */}
+                    {/* <PMFooter className='g1NonAdminFooter' /> */}
                 </>
             }
         </>

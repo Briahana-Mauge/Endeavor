@@ -47,19 +47,19 @@ const AdminEDash = (props) => {
   return(
     <>
 
-      <UIModule className='currentEventsModule' titleColor="Today's" titleRegular='Events'>
+      <UIModule className='deepSangria' titleColor="Today" titleRegular=''>
         <EDashTable>
           {rowsTodays.length ? rowsTodays : <div className="g1EmptyRowMsg">There are no events today.</div>}
         </EDashTable>
       </UIModule>
 
-      {/* <UIModule className='currentEventsModule' titleColor="Upcoming" titleRegular='Major Events'>
+      {/* <UIModule className='deepSangria' titleColor="Upcoming" titleRegular='Major Events'>
         <EDashTable>
           {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no upcoming important dates at the moment.</div>}
         </EDashTable>
       </UIModule> */}
 
-      <UIModule className='currentEventsModule' titleColor="The Two Weeks" titleRegular='Ahead'>
+      <UIModule className='blueBerry' titleColor="Two Week" titleRegular='Glance'>
         <EDashTable>
           {rowsUpcomings.length ? rowsUpcomings : <div className="g1EmptyRowMsg">There are no upcoming events at the moment.</div>}
         </EDashTable>
