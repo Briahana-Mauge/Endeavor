@@ -178,3 +178,14 @@ start, end, topic, description, staffDescription, attendees, location, instructo
   | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
   | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
   | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
+
+
+## V. Future Implementations
++ Google Calendar Embedment
++ Event Templating
++ Bulk Email Selecting
++ Advanced Search Sorting
++ Fellow Users Build
++ Non-Admin Staff Build
++ Admininstrative Externalities Settings (SendGrid ID, Google Calendar Account Target, etc.)
++ Theming & Branding Customization
