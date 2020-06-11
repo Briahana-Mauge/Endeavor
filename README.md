@@ -7,6 +7,7 @@
 + [Briahana Maugé (@Briahana-Mauge)](https://github.com/Briahana-Mauge) [[LI]](https://www.linkedin.com/in/bmauge/)
 + [Joseph P. Pasaoa (@joseph-p-pasaoa)](https://github.com/joseph-p-pasaoa) [[LI]](https://www.linkedin.com/in/josephpasaoa/)
 
+![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
 
 
 ### _Table of Contents_
@@ -14,9 +15,8 @@
 + II. [Setup](#ii-setup)
 + III. [Database Schema](#iii-database-schema)
 + IV. [Server Endpoints](#iv-server-endpoints)
++ V. [Future Implementations](#v-future-implementations)
 
-
-<!-- ![screencap]() -->
 
 ## Instructional Team
 + **Lead Instructor:** [Alejandro Franco (@alejo4373)](https://github.com/alejo4373)
