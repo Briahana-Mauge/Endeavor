@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
-import Fellows from './Fellows';
 import Spinner from './Spinner';
+import UIModule from './UIModule';
+import Fellows from './Fellows';
 
 export default function Mentoring(props) {
     const { volunteerId } = useParams();
@@ -74,32 +75,31 @@ export default function Mentoring(props) {
         }
     }
     const volunteerInfo =
-        <div className='row p-3'>
+        <div className='g1MentoringMgr p-3'>
             {
                 volunteer.deleted
-                    ? <div className='col-12 bg-warning text-white text-center'>This volunteer has left the platform</div>
+                    ? <div className='bg-warning text-white text-center'>This volunteer has left the platform</div>
                     : null
             }
 
-            <div className='col-sm-6'>
-                <img
-                    className='d-block imageIcon rounded-circle'
-                    src={volunteer.v_picture || '/images/default_pic.png'}
-                    alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
-                />
-                <span className='d-block'><strong>Volunteered Hours: </strong>{volunteer.total_hours}</span>
-            </div>
+            <img
+                className='g1MentoringMgr__Avatar'
+                src={volunteer.v_picture || '/images/default_pic.png'}
+                alt={`${volunteer.v_first_name} ${volunteer.v_last_name}`}
+            />
+            <div><b>Volunteered Hours </b>{volunteer.total_hours}</div>
 
-            <div className='col-sm-6'>
-                <span className='d-block h3'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</span>
-                <a className='d-block' href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
-                    {volunteer.v_email}
-                </a>
-                <span className='d-block'><strong>Company: </strong>{volunteer.company}</span>
-                <span className='d-block'><strong>Title: </strong>{volunteer.title}</span>
-                <ul className='plainUl'> Skills:
-                                    {volunteer.skills
-                        ? volunteer.skills.map((skill, index) => <li className='ml-2' key={skill + index}>{skill}</li>)
+            <div className='d-block h3'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</div>
+            <a href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
+                {volunteer.v_email}
+            </a>
+            <div><b>Company </b>{volunteer.company}</div>
+            <div><b>Position </b>{volunteer.title}</div>
+            <div className='g1MentoringMgr__Skills'>
+                <b>Skills</b>
+                <ul>
+                    {volunteer.skills
+                        ? volunteer.skills.map((skill, index) => <li className='' key={skill + index}>{skill}</li>)
                         : null
                     }
                 </ul>
@@ -108,42 +108,60 @@ export default function Mentoring(props) {
 
 
     const mentoringInfo =
-        <>
-            <div className='col-sm-12'>
-                <strong className='d-block mx-2'>Mentoring: </strong>
-                <ul className='plainUl'>
-                    Active:
-                        {   
-                            currentMentees.map(mentee =>
-                                <li key={mentee.fellowId + mentee.fellowName + mentee.startDate} className='ml-3'>
-                                    <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee.fellowId)}>End Pairing</button>
-                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
-                                        {mentee.fellowName}
-                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()}
-                                </li>
-                            )
-                        }
-                    Ended:
-                        {
-                            pastMentees.map((mentee, index) =>
-                                <li key={index + mentee.fellowId + mentee.fellowName + mentee.mentoringEnded} className='ml-3'>
-                                    <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
-                                        {mentee.fellowName}
-                                    </Link>: {new Date(mentee.startDate).toLocaleDateString()} - {new Date(mentee.mentoringEnded).toLocaleDateString()}
-                                </li>
-                            )
-                    }
-                </ul>
+    <>
+        <div className='g1MentoringMgr'>
+            <div><b>Mentoring</b></div>
+            {   
+                currentMentees.length
+                    ?   <>
+                            <div className='g1MentoringMgr__TypeLabel'>Active</div>
+                            <ul>
+                                {currentMentees.map(mentee =>
+                                    <li key={mentee.fellowId + mentee.fellowName + mentee.startDate} className='ml-3'>
+                                        <button className='btn btn-danger btn-sm mr-2 mb-2' onClick={e => deleteMentee(mentee.fellowId)}>End Pairing</button>
+                                        <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
+                                            {mentee.fellowName}
+                                        </Link>: {new Date(mentee.startDate).toLocaleDateString()}
+                                    </li>
+                                )}
+                            </ul>
+                        </>
+                    :   <div className='g1MentoringMgr__TypeLabel'>No active mentorings</div>
+            }
+            {
+                pastMentees.length
+                    ?   <>
+                            <div className='g1MentoringMgr__TypeLabel'>Past</div>
+                            <ul>
+                                {pastMentees.map((mentee, index) =>
+                                    <li key={index + mentee.fellowId + mentee.fellowName + mentee.mentoringEnded} className='ml-3'>
+                                        <Link to={`/fellow/${mentee.fellowId}`} className='plainLink'>
+                                            {mentee.fellowName}
+                                        </Link>: {new Date(mentee.startDate).toLocaleDateString()} - {new Date(mentee.mentoringEnded).toLocaleDateString()}
+                                    </li>
+                                )}
+                            </ul>
+                        </>
+                    :   null
+            }
+
 
                 {
                     props.loggedUser && props.loggedUser.a_id
-                        ?   <button className='btn btn-primary d-block mb-2'
-                                onClick={e => setShowFellowsList(true)}>
-                                Add
-                            </button>
+                        ?   showFellowsList
+                                ?   <button className='btn btn-danger mb-2'
+                                        onClick={e => setShowFellowsList(false)}
+                                    >
+                                        Close
+                                    </button> 
+                                :   <button className='btn btn-success mb-2'
+                                        onClick={e => setShowFellowsList(true)}
+                                    >
+                                        Assign Mentees
+                                    </button>
                         :   null
                 }
-            </div>
+                </div>
             {
                 showFellowsList
                     ? <Fellows
@@ -160,7 +178,7 @@ export default function Mentoring(props) {
 
 
     return (
-        <>
+        <UIModule className='lodeStone' titleColor="" titleRegular=''>
             {volunteerInfo}
             {
                 waitingForData
@@ -168,6 +186,6 @@ export default function Mentoring(props) {
                     : <>{mentoringInfo}</>
 
             }
-        </>
+        </UIModule>
     )
 }

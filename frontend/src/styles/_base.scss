@@ -293,3 +293,77 @@ nav button {
         padding: 0 !important;
     }
 }
+
+
+.g1MentoringMgr {
+    @include flex-straight(column, flex-start, center);
+
+    &__Avatar {
+        width: 200px;
+        border-radius: var(--border-radii);
+    }
+
+    & > div {
+        margin: .3rem 10%;
+    }
+
+    div b {
+        display: inline-block;
+        margin-right: .3rem;
+        font-family: var(--ff-top);
+        font-size: .8rem;
+        font-weight: bold;
+        color: #000;
+        text-transform: lowercase;
+    }
+
+    &__Skills {
+        @include flex-straight(column, flex-start, center);
+
+        b { display: block; }
+
+        ul {
+            list-style: none;
+            text-align: center;
+        }
+    }
+
+    &__TypeLabel {
+        font-family: var(--ff-accent);
+        color: var(--color-yellow);
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 1rem;
+    }
+}
+
+.g1MenteesForm {
+    margin-top: 1.8rem;
+}
+
+.g1MenteesCards {
+    padding: 0 1rem;
+
+    .deepSangria {
+        margin: 0 .1rem;
+        min-height: 30rem;
+
+        .g1MentorAssignBtn {
+            margin: .5rem 0 .8rem 0;
+            width: 14rem;
+        }
+    }
+
+    .g1Module__Header {
+        display: none;
+    }
+
+    .g1MenteeAvatar {
+        object-fit: cover;
+        object-position: top;
+        height: 200px;
+        width: 200px;
+        margin-bottom: .6rem;
+        border-radius: var(--border-radii);
+    }
+}

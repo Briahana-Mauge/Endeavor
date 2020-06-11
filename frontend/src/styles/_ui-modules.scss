@@ -52,11 +52,15 @@
         }
     }
 
-    &.darkChampagne {
-        border: solid 1px #3c3425;
+    &.lodeStone {
+        border: solid 1px #4a3206;
 
         &::before {
-            background-image: linear-gradient(76deg, #2b1f04 45%, #332607 100%);
+            background-image: linear-gradient(76deg, #444444 45%, #545454 100%);
+        }
+
+        .g1Module__Header {
+            background-color: #2b2a27;
         }
 
         .g1HeaderColor {

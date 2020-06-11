@@ -61,7 +61,7 @@ export default function FellowProfilePage(props) {
     }
 
     return (
-        <div className='row' style={{color: '#e2e2e2'}}>
+        <div className='row' style={{color: 'var(--color-black)'}}>
             {
                 fellow.fellow_deleted
                 ? <div className='col-12 bg-warning text-white text-center'>This fellow has left the platform</div>
