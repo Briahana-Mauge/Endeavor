@@ -68,7 +68,7 @@
 
 
 ## III. Database Schema
-![Database Schema](/docs/DatabaseSchema.png)
+![Database Schema](/docs/readme/DatabaseSchema.png)
 
 
 ## IV. Server Endpoints
