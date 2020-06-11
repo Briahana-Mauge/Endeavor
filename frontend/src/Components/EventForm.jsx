@@ -186,8 +186,8 @@ export default function EventForm(props) {
         setStartTime('10:00');
         setEndDate('2020-06-30');
         setEndTime('18:00');
-        setTopic('Graduation');
-        setDescription("Let's celebrate 6.2 ending of Core and transition into Advance");
+        setTopic('Demo Day');
+        setDescription("Let's celebrate 6.2 Capstone project end and having our exceptional fellows demonstrate their work which they've been working on for 2 months");
         setStaffDescription('');
         setAttendees('15');
         setEventLocation('zoom.us/my/alejos');
@@ -328,7 +328,7 @@ export default function EventForm(props) {
                     </div>
 
                     <button className='btn btn-primary'>Submit</button>
-                    <div className='btn btn-primary pre-fill' onClick = {prefill}>PreFill</div>
+                    <div className='btn btn-primary pre-fill' onClick = {prefill}></div>
                 </span>
             </div>
         </form>

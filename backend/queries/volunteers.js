@@ -77,7 +77,7 @@ const getAllVolunteers = async (vEmail, company, skill, name, title, publicProfi
       condition += ' AND LOWER(skills.skill) = $/skill/ '
     }
     if (name) {
-      condition += ` AND LOWER(volunteers.v_first_name || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
+      condition += ` AND LOWER(volunteers.v_first_name || ' ' || volunteers.v_last_name) LIKE '%' || $/name/ || '%' `
     }
     if (title) {
       condition += ` AND LOWER(volunteers.title) LIKE '%' || $/title/ || '%' `
