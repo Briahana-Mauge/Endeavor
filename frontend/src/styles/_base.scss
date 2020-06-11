@@ -187,6 +187,10 @@ nav button {
 }
 
 .g1VolProfile {
+    a {
+        @include link-states();
+    }
+
     &__BlackLabel {
         font-family: var(--ff-top);
         font-size: .8rem;
@@ -205,6 +209,68 @@ nav button {
 
     &__Company {
         color: var(--color-yellow);
+    }
+
+    .g1ModalField {
+        &[data-type='skills'] {
+            margin-bottom: .5rem !important;
+        }
+
+        &[data-type='mentoring'] {
+            grid-area: 2 / 2;
+
+            i {
+                display: inline-block;
+                margin-right: 0.7rem;
+                font-style: normal;
+                font-family: var(--ff-top);
+                font-size: .9rem;
+                text-align: left;
+                text-transform: lowercase;
+                font-weight: bold;
+                white-space: nowrap;
+
+                @media (max-width: 767px) {
+                    white-space: normal;
+                }
+            }
+        }
+    }
+
+
+    .g1MentoringFlex {
+        margin-left: 2.1rem;
+        grid-template-rows: 1.2rem auto;
+
+        @media (max-width: 767px) {
+            grid-template-columns: 12rem 6rem auto;
+        }
+
+        button {
+            grid-area: 2 / 1;
+            width: 11rem;
+            margin-top: .2rem;
+        }
+    }
+
+    .g1MentorActiveLabel {
+        grid-area: 1 / 1;
+        margin-bottom: .5rem;
+
+        font-family: var(--ff-accent);
+        font-weight: bold;
+    }
+
+    .g1MenteesList {
+        grid-area: 2 / 3;
+    }
+
+    .g1VolModalEvents {
+        margin-left: 2.1rem;
+
+        li a::before {
+            content: '▸ ';
+        }
     }
 }
 

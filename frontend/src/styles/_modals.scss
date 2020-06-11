@@ -79,15 +79,20 @@
             width: 300px;
             max-width: 300px;
         }
+        @media (max-width: 767px) {
+            width: 40% !important;
+            height: auto;
+            float: right;
+        }
     }
 
     div[data-type='contactinfo'] {
         @media (max-width: 400px) {
             font-size: .85rem;
         }
-        @media (max-width: 768px) {
-            clear: both;
-        }
+        // @media (max-width: 768px) {
+        //     clear: both;
+        // }
     }
 
     .g1ModalField {
@@ -176,7 +181,18 @@
 
         &[data-type='hours'] {
             i {
-                color: green;
+                color: var(--color-black);
+            }
+            span {
+                position: relative;
+                top: -7.5px;
+                padding: .3rem .9rem;
+                border: solid 2px var(--color-yellow);
+                border-radius: var(--border-radii);
+
+                font-family: var(--ff-top);
+                font-weight: bold;
+                background-color: var(--color-white);
             }
         }
 
@@ -213,7 +229,11 @@
     .g1VolModalEvents {
         i {
             display: block;
-            color: var(--color-primary);
+
+            font-family: var(--ff-top);
+            font-size: .8rem;
+            color: #8b1798;
+            text-transform: lowercase;
             font-weight: bold;
             font-style: normal;
         }

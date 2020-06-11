@@ -113,7 +113,7 @@ export default function VolunteerProfilePage(props) {
                 : <>
                     {/* : <div className='row p-3'> */}
                     {/* <PMBody> */}
-                        <div className='col-12 p-0'>
+                        <div className='g1VolProfile col-12 p-0'>
                             {/* WARNINGS */}
                             {
                                 volunteer.deleted
@@ -130,7 +130,7 @@ export default function VolunteerProfilePage(props) {
                             <h3 className='h3 mb-0'>{`${volunteer.v_first_name} ${volunteer.v_last_name}`}</h3>
 
                             {/* CONTACT INFO, COMPANY, POSITION */}
-                            <div className='g1VolProfile card-text' data-type='contactinfo'>
+                            <div className='card-text' data-type='contactinfo'>
                                 <div className='g1ModalField'>
                                     <i className='g1VolContact'><GrMail className="g1ReactIconsSvg" style={{ top: '-1.5px', left: '1px' }} /></i>
                                     <a href={`mailto:${volunteer.v_email}`} target='_blank' rel='noopener noreferrer'>
@@ -215,8 +215,8 @@ export default function VolunteerProfilePage(props) {
                                     ? <>
                                         <hr />
                                         <div className='g1MentoringFlex card-text mb-4'>
-                                            <div>
-                                                <i className='g1MentorActiveLabel'>Active Mentor</i>
+                                            <i className='g1MentorActiveLabel'>Active Mentor</i>
+                                            {/* <div> */}
                                                 {
                                                     props.loggedUser && props.loggedUser.a_id
                                                         ? <button className='g1ManageMentorBtn btn btn-info'
@@ -227,14 +227,14 @@ export default function VolunteerProfilePage(props) {
                                                 </button>
                                                         : null
                                                 }
-                                            </div>
+                                            {/* </div> */}
                                             {
                                                 currentMentees.length
                                                     ? <>
                                                         <div className='g1ModalField' data-type='mentoring'>
                                                             <i>Current Mentees ▸ </i>
                                                         </div>
-                                                        <span>
+                                                        <div className='g1MenteesList'>
                                                             {
                                                                 currentMentees.map(mentee =>
                                                                     <Link
@@ -246,7 +246,7 @@ export default function VolunteerProfilePage(props) {
                                                                     </Link>
                                                                 )
                                                             }
-                                                        </span>
+                                                        </div>
                                                     </>
                                                     : null
                                             }
