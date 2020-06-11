@@ -87,8 +87,10 @@
     }
 
     div[data-type='contactinfo'] {
-        @media (max-width: 400px) {
+        @media (max-width: 575px) {
             font-size: .85rem;
+            clear: both;
+            width: 100%;
         }
         // @media (max-width: 768px) {
         //     clear: both;
@@ -126,7 +128,7 @@
 
         &[data-type='hours'] {
 
-            @media (max-width: 576px) {
+            @media (max-width: 575px) {
                 margin-left: 0;
 
                 span {
@@ -143,14 +145,13 @@
             display: grid;
             grid-template-columns: 7.8rem auto;
 
-            @media (max-width: 576px) {
+            @media (max-width: 575px) {
                 display: block;
 
                 i {
                     display: block;
                     text-align: left;
                     font-weight: bold;
-                    text-transform: uppercase;
                 }
             }
         }
@@ -205,12 +206,13 @@
         display: grid;
         grid-template-columns: 13.5rem 9rem auto;
 
-        @media (max-width: 576px) {
+        @media (max-width: 575px) {
             display: flex;
             flex-direction: column;
+            align-items: center;
 
             .g1ModalField {
-                margin: 1rem 0 0 3rem;
+                margin: .5rem 0 .5rem .5rem;
             }
 
             span {
@@ -285,7 +287,7 @@
     .g1VolName {
         transition: color .4s ease-out;
 
-        @media (max-width: 576px) {
+        @media (max-width: 575px) {
             text-align: left;
             position: relative;
             top: 1px;
@@ -301,7 +303,7 @@
             vertical-align: middle;
             margin-right: .5rem!important;
 
-            @media (max-width: 576px) {
+            @media (max-width: 575px) {
                 margin-left: 2.6rem;
             }
     }
@@ -345,8 +347,18 @@
             color: var(--color-yellow);
         }
     }
-}
 
+    @media (max-width: 575px) {
+        .g1ModalField i.g1VolContact,
+        .g1ModalField i .g1ReactIconsSvg,
+        .g1VolProfile__BlackLabel,
+        .g1VolProfile .g1MentoringFlex,
+        .g1VolProfile .g1VolModalEvents
+        {
+            margin-left: 0;
+        }
+    }
+}
 
 
 

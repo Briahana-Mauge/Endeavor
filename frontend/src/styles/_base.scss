@@ -233,6 +233,10 @@ nav button {
                 @media (max-width: 767px) {
                     white-space: normal;
                 }
+
+                @media (max-width: 575px) {
+                    text-align: center;
+                }
             }
         }
     }
