@@ -222,7 +222,7 @@ function App() {
       </PrivateGate>
     ),
     mentorManagement = (
-      <PrivateGate path='/mentoring/volunteer/:volunteerId' {...gateProps}>
+      <PrivateGate path='/mentoring/volunteer/:volunteerId' h1='Mentoring' {...gateProps}>
         <Mentoring {...userProps} />
       </PrivateGate>
     )

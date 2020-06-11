@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
+import UIModule from './UIModule';
+
 
 export default function FellowPreviewCard(props) {
     const history = useHistory();
@@ -23,15 +25,16 @@ export default function FellowPreviewCard(props) {
 
 
     return (
-        <div className='row mb-1 border rounded-lg' style={{minHeight: '320px'}}>
+        <UIModule className='deepSangria' titleColor="" titleRegular=''>
+        {/* <div className='row border rounded-lg' style={{minHeight: '320px'}}> */}
             {
                 fellow.want_mentor
-                ?   <button className='btn btn-primary btn-block my-1 mx-3' onClick={e => props.pairFellow(fellow.f_id)}>Pair</button>
-                :   <button className='btn btn-warning btn-block my-1 mx-3' onClick={e => props.pairFellow(fellow.f_id)}>Pair</button>
+                ?   <button className='g1MentorAssignBtn btn btn-success' onClick={e => props.pairFellow(fellow.f_id)}>Pair</button>
+                :   <button className='g1MentorAssignBtn btn btn-warning' onClick={e => props.pairFellow(fellow.f_id)}>Has Not Opted For Mentor</button>
             }
             
-            <div className='col-sm-6'>
-                <img className='d-block rounded-circle imageIcon' src={fellow.f_picture || '/images/default_pic.png'} alt={`${fellow.f_first_name} ${fellow.f_last_name}`}/>
+            <div className='col-12'>
+                <img className='g1MenteeAvatar' src={fellow.f_picture || '/images/default_pic.png'} alt={`${fellow.f_first_name} ${fellow.f_last_name}`}/>
                 <strong className='d-block'>{`${fellow.f_first_name} ${fellow.f_last_name}`}</strong>
                 <a className='d-block' href={`mailto:${fellow.f_email}`}>
                 {/* <a className='d-block' href={`mailto:${fellow.f_email}`} target='_blank' rel='noopener noreferrer'> */}
@@ -40,22 +43,29 @@ export default function FellowPreviewCard(props) {
                 <p>Cohort: {fellow.cohort}</p>
             </div>
 
-            <div className='col-sm-6'>
+            <div className='col-12'>
                 <ul className='plainUl'> <strong>Active Mentor(s):</strong>
-                    { activeMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
-                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
-                        </li>) }
+                    {activeMentors.length
+                        ?   activeMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
+                                <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                            </li>)
+                        :   <> none</>
+                    }
                 </ul>
                 <ul className='plainUl'> <strong>Past Mentor(s):</strong>
-                    { pastMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
-                            <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
-                        </li>) }
+                    {pastMentors.length
+                        ?   pastMentors.map(mentor => <li key={mentor.volunteerId + mentor.name}>
+                                <span onClick={e => history.push(`/volunteer/${mentor.volunteerId}`)}>{mentor.name}</span>
+                            </li>)
+                        :   <> none</>
+                    }
                 </ul>
 
-                <div className='text-right'>
+                <div className='g1MenteeProfileBtn text-right'>
                     <Link className='btn btn-primary' to={`/fellow/${fellow.f_id}`}>See Profile</Link>
                 </div>
             </div>
-        </div>
+        {/* </div> */}
+        </UIModule>
     )
 }

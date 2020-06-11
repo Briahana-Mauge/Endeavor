@@ -76,7 +76,7 @@ export default function Volunteers (props) {
 
     return (
         <>
-            <form className='form-inline' onSubmit={handleSubmit}>
+            <form className='g1MenteesForm form-inline' onSubmit={handleSubmit}>
                 <input className='form-control mb-2 mr-sm-2 min-w-25' type='text' 
                     placeholder='Fellow name' value={search} onChange={e => { setSearch(e.target.value) }} />
 
@@ -92,13 +92,14 @@ export default function Volunteers (props) {
                 </select>
 
                 <button className='btn btn-primary mb-2'>Search</button>
-                <span className='btn btn-danger mb-2 float-right ml-auto' onClick={e => props.setShowFellowsList(false)} >Close</span> 
             </form>
 
-            <div className='row m-1'>
+            <div className='g1MenteesCards row'>
                 {fellowsList.map(fellow => 
-                    <div className='col col-sm-6 col-lg-4 col-xl-3' 
-                        key={fellow.f_id + fellow.f_first_name + fellow.f_last_name}>
+                    <div
+                        className='col-12 col-sm-6 col-lg-4 col-xl-3 p-0' 
+                        key={fellow.f_id + fellow.f_first_name + fellow.f_last_name}
+                    >
                         <FellowPreviewCard
                             fellow={fellow}
                             pairFellow={pairFellow}
