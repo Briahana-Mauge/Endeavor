@@ -63,7 +63,7 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
             const event = await eventQueries.getSingleEvent(updateData.eventId)
             let volunteerInfo = {
                 name: `${info.v_first_name} ${info.v_last_name}`,
-                email: `endeavorapp2020+${info.v_email.replace('@', '-')}@gmail.com`,
+                email: `endeavor.volunteer+${info.v_email.replace('@', '-')}@gmail.com`,
                 event: event.topic
             }
 
@@ -108,7 +108,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
 
             const event = await eventQueries.getSingleEvent(postData.eventId)
             const admin = await userQueries.getAllAdmin();
-            const adminEmailsList = admin.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
+            const adminEmailsList = admin.map(admin => `endeavor.mng+${admin.a_email.replace('@', '-')}@gmail.com`);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
            
             const messageData = {
@@ -150,7 +150,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
             promises.push(eventQueries.getSingleEvent(eventId));
             const [admins, event] = await Promise.all(promises);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
-            const adminEmailsList = admins.map(admin => `endeavorapp2020+${admin.a_email.replace('@', '-')}@gmail.com`);
+            const adminEmailsList = admins.map(admin => `endeavor.mng+${admin.a_email.replace('@', '-')}@gmail.com`);
            
             const messageData = {
                 personalizations: [{

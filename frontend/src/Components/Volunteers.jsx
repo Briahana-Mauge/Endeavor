@@ -61,16 +61,16 @@ export default function Volunteers (props) {
     }, []);
     
     useEffect(() => {
-        const [valueKey, valueValue, skill] = getQueryStrings();
+        const [searchKey, searchVal, skill] = getQueryStrings();
 
-        setSearchValue(valueValue || '');
-        setFilter(valueKey || '');
+        setSearchValue(searchVal || '');
+        setFilter(searchKey || '');
         setTargetSkill(skill || '');
 
         let isMounted = true;
 
         const getAllVolunteers = () => {
-            axios.get(`/api/volunteers/all${search}`)
+            axios.get(`/api/volunteers/all?$skill=${skill}&${searchKey}=${searchVal}`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);
@@ -92,7 +92,10 @@ export default function Volunteers (props) {
 
 
     useEffect(() => {
-        history.push(`/volunteers?skill=${urlTargetSkill}&${urlFilter}=${urlSearchValue}`);
+        let urlSearchValueCopy =  urlSearchValue + ''; // force a copy of the state
+        urlSearchValueCopy = urlSearchValueCopy.replace(/ /g, '%20'); // replace any blank character by %20
+        urlSearchValueCopy = urlSearchValueCopy.replace(/%20%20/g, '%20'); // replace any double blank character or more by one blank character
+        history.push(`/volunteers?skill=${urlTargetSkill}&${urlFilter}=${urlSearchValueCopy}`);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [reload, urlFilter, urlTargetSkill, urlSearchValue]);
 
