@@ -8,6 +8,7 @@ const router = express.Router();
 const handleError = require('../helpers/handleError');
 const processInput = require('../helpers/processInput');
 const volunteerQueries = require('../queries/volunteers');
+const volunteerSkillsQueries = require('../queries/volunteerSkills');
 
 
 router.get('/all', async (req, res, next) => {
@@ -73,6 +74,21 @@ router.patch('/confirm/:volunteer_id', async (req, res, next) => {
         } else {
             throw new Error('403_You are not authorized to perform this operation');
         }
+    } catch (err) {
+        handleError(err, req, res, next);
+    }
+})
+
+// Get volunteer's skills
+router.get('/skills/:volunteer_id', async (req, res, next) => {
+    try {
+        const volunteerId = processInput(req.params.volunteer_id, 'idNum', 'volunteer id');
+        const allVolunteerSkills = await volunteerSkillsQueries.getVolunteerSkills(volunteerId);
+        res.json({
+            error: false,
+            message: `All volunteer with id ${volunteerId} skills retrieved`,
+            payload: allVolunteerSkills || {skills_list: []} // if volunteer didn't select any skill from the list of skills
+        });
     } catch (err) {
         handleError(err, req, res, next);
     }

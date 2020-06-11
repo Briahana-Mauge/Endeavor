@@ -18,6 +18,8 @@
 + **IA:** [Jung Rae Jang -- ( @jungraejang )](https://github.com/jungraejang)
 + **IA:** [Wynter Reid -- ( @wynterreid )](https://github.com/wynterreid)
 + **Program Manager:** [Dessa Shepherd](https://www.linkedin.com/in/dessa-shepherd-7a55b374/)
++ **Advisor:** [Dion Ridley -- ( @dionridley )](https://www.linkedin.com/in/dionridley/)
++ **Advisor:** [Ben Sussman -- ( @bensussman )](https://www.linkedin.com/in/bensussman/)
 
 ## Technologies Implemented
 + PostgreSQL 12.1
@@ -84,10 +86,10 @@ email, password, firstName, lastName, company, title, skills (array), slug, ment
   | Method | Endpoint                      | Description                           | Query Parameters                     | Body Data |
   | ------ | ----------------------------- | ------------------------------------- | ------------------------------------ | --------- |
   | GET    | `/api/volunteers/:type/:id`   | Get volunteer by id, slug or email    | type: id, slug, email                | n/a       |
+  | GET    | `/api/volunteers/skills/:id`  | Get volunteer skills user id          | type: id, slug, email                | n/a       |
   | GET    | `/api/volunteers/all`         | Get all volunteer (with filters)      | v_email, name, skill, company, title | n/a       |
   | GET    | `/api/volunteers/new`         | Get all unconfirmed volunteers        | n/a                                  | n/a       |
   | PATCH  | `/api/volunteers/confirm/:id` | Confirm a new (unconfirmed) volunteer | n/a                                  | n/a       |
-
 
 - **Fellows**
   | Method | Endpoint              | Description                    | Query Parameters     | Body Data |
