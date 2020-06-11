@@ -14,7 +14,7 @@ const UIModule = ({children, className = '', titleColor = '', titleRegular = ''}
   return(
     <div className={`g1Module card mb-3 ${className}`}>
       <div className="g1Module__Inner">
-        <h3 className={`g1Module__Header ${xPaddingForAllModules}`}>
+        <h3 className={`g1Module__Header ${xPaddingForAllModules}`} style={{fontSize: '1.2rem'}}>
 
           <span className='g1HeaderColor'>{titleColor}</span> {titleRegular}
 
