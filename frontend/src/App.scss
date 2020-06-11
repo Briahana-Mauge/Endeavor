@@ -1,10 +1,11 @@
-@import './styles/modals'; // needs archiving, keep at top until then
 @import './styles/base';
+@import './styles/modals'; // needs archiving, keep at top after base until then
 @import './styles/ui-modules';
 @import './styles/events-dashes.scss';
 @import './styles/new-volunteers-dash.scss';
 @import './styles/volunteers-results';
 @import './styles/events-results';
+@import './styles/volunteer-profile';
 @import './styles/navbar';
 
 
