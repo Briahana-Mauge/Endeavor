@@ -12,6 +12,7 @@ const EventCard = (props) => {
 
     const [ volunteerHours, setVolunteerHours ] = useState({});
     const [ waitingForRender, setWaitingForRender ] = useState(false);
+    const [ waitForRequest, setWaitForRequest ] = useState(0);
 
     const userIs = identifyUser(loggedUser);
     const history = useHistory();
@@ -37,8 +38,10 @@ const EventCard = (props) => {
     const manageVolunteersRequests = async (e, volunteerId) => {
         try {
             setWaitingForRender(true);
+            setWaitForRequest(volunteerId);
             await axios.patch(`/api/event_attendees/event/${event.event_id}/volunteer/${volunteerId}`, {confirmed: e.target.checked});
             props.setReloadParent(!props.reloadParent);
+            setWaitForRequest(0);
         } catch (err) {
             setFeedback(err);
         }
@@ -112,15 +115,14 @@ const EventCard = (props) => {
                         <span
                             className={`g1VolConfirmedLabel d-none d-sm-block ${confirmedToEvent ? 'g1VolConfirmedLabelOn' : ''}`}
                         >
-                            {confirmedToEvent ? 'CONFIRMED' : 'PENDING'}
+                            {   waitingForRender && waitForRequest === volunteerId
+                                ?   <div className='spinner-grow text-info' role='status'>
+                                        <span className='sr-only'>Loading...</span>
+                                    </div>
+                                :   confirmedToEvent ? 'CONFIRMED' : <span className='mr-3'>PENDING</span>
+                            }
                         </span>
                     </label>
-                    {   waitingForRender
-                        ?   <div className='m-2 spinner-border text-info' role='status'>
-                                <span className='sr-only'>Loading...</span>
-                            </div>
-                        :   null
-                    }
                 </div>
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
                     className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${confirmedToEvent ? '' : 'g1VolNamePending'}`}
