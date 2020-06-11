@@ -30,19 +30,31 @@
 
 
 ## I. Technologies Implemented
+- SendGrid API v3
+- Google Calendar
+
 + PostgreSQL 12.1
-+ Express.js 4.16.1
 + React 16.13.1
-+ React Bootstrap 1.0.0
++ Node.js 12.5.0
++ Express.js 4.16.1
++ Node-Sass (SCSS) 4.14.1
++ AWS-SDK 2.647.0
++ Multer 1.4.2
++ Multer-S3 2.9.0
++ Passport 0.3.1
++ Passport-Local 1.0.0
++ BCrypt 4.0.1
++ SendGrid/Mail 7.0.1
++ Chart.js 2.9.3
++ Moment 2.24.0
++ Query-String 6.12.1
++ React Epic Spinners 0.4.1
++ React Icons 3.10.0
 + Pg-promise 10.4.4
 + Axios 0.19.2
-+ Multer 1.4.2
-+ Multer-s3 2.9.0
-+ Node.js 12.5.0
-+ JavaScript ES6+
-+ HTML5
-+ Node-Sass (SCSS) 4.13.1
++ JavaScript ES5+
 + CSS3
++ HTML5
 
 
 ## II. Setup
