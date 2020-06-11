@@ -1,0 +1,403 @@
+/* FLOATING COMPONENTS */
+.g1Lightbox {
+    position: fixed;
+    max-height: 77vh;
+    width: clamp(60vw, 54rem, 56rem);
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    transform: translate(-50%, -50%);
+}
+
+.g1ModalDialog, .g1EventProfile {
+    color: var(--color-black);
+    // margin-top: var(--navbar-height);
+
+    @media (min-width: 768px) {
+        max-width: 642px;
+    }
+
+    .modal-header,
+    .modal-footer {
+        background-color: #a3a9bf;
+    }
+
+        .modal-header {
+            border-bottom-color: var(--modal-body-border);
+        }
+        .modal-footer {
+            border-top-color: var(--modal-body-border);
+        }
+
+    .g1CloseContainer {
+        position: absolute;
+        top: 0;
+        right: 1rem;
+        bottom: 0;
+        left: 0;
+
+        .close {
+            color: red;
+            outline: none;
+        }
+    }
+
+    h5.modal-title {
+        color: var(--color-primary);
+        font-family: var(--ff-top);
+        font-size: 1.35rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .modal-body {
+        background-color: #c5c5c5;
+    }
+    .modal-footer { // necessary to place above Close button plane
+        z-index: var(--zi-popup-footer);
+    }
+
+    .g1ModalWarning {
+        background-color: #e69b9b;
+        padding: 1rem;
+        border: solid 1px red;
+        border-radius: var(--border-radii);
+    }
+
+    .g1ProfilePic {
+        object-fit: cover;
+        height: auto;
+        max-width: 270px;
+        border: solid 2px var(--color-black);
+        border-radius: var(--border-radii);
+
+        @media (min-width: 576px) {
+            float: right;
+        }
+        @media (min-width: 768px) {
+            height: 300px;
+            width: 300px;
+            max-width: 300px;
+        }
+    }
+
+    div[data-type='contactinfo'] {
+        @media (max-width: 400px) {
+            font-size: .85rem;
+        }
+        @media (max-width: 768px) {
+            clear: both;
+        }
+    }
+
+    .g1ModalField {
+        display: block;
+
+        i { // for labels
+            display: inline-block;
+            // width: 6.3rem;
+            margin-right: .7rem;
+
+            text-align: right;
+            font-style: normal;
+            color: #8c8557;
+
+            &.g1VolContact {
+                font-family: var(--ff-accent);
+                margin-left: 1rem;
+            }
+
+            &.break {
+                display: block;
+            }
+
+            .g1ReactIconsSvg {
+                position: relative;
+                color: var(--color-primary);
+                margin-right: 1rem;
+                margin-left: 1rem;
+            }
+        }
+
+        &[data-type='hours'] {
+
+            @media (max-width: 576px) {
+                margin-left: 0;
+
+                span {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+        }
+
+        &[data-type='skills'],
+        &[data-type='interests'] {
+            // display: flex;
+            // margin-left: 1rem;
+            display: grid;
+            grid-template-columns: 7.8rem auto;
+
+            @media (max-width: 576px) {
+                display: block;
+
+                i {
+                    display: block;
+                    text-align: left;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+        }
+
+        &[data-type='interests'] span {
+            display: block;
+
+            &::before {
+                content: '● ';
+                // color: #888;
+            }
+        }
+
+        .g1VolSkill {
+            margin-right: .5rem;
+        }
+
+        &[data-type='skills'] {
+            i {
+                color: var(--color-primary);
+            }
+        }
+        &[data-type='interests'] {
+            i {
+                color: maroon;
+            }
+        }
+
+        &[data-type='hours'] {
+            i {
+                color: green;
+            }
+        }
+
+        &[data-type='mentoring'] i {
+            color: var(--color-black);
+        }
+    }
+
+    .g1MentoringFlex {
+        display: grid;
+        grid-template-columns: 13.5rem 9rem auto;
+
+        @media (max-width: 576px) {
+            display: flex;
+            flex-direction: column;
+
+            .g1ModalField {
+                margin: 1rem 0 0 3rem;
+            }
+
+            span {
+                margin-left: 5rem;
+            }
+        }
+    }
+
+    .g1MentorActiveLabel {
+        display: block;
+        color: green;
+        font-style: normal;
+        text-transform: uppercase;
+    }
+
+    .g1VolModalEvents {
+        i {
+            display: block;
+            color: var(--color-primary);
+            font-weight: bold;
+            font-style: normal;
+        }
+    }
+
+    .g1VolMentees {
+        display: block;
+        width: max-content;
+    }
+    .g1ManageVols {
+        padding-top: .5rem;
+        background-image: linear-gradient(174deg, #efefef, #bfbfbf);
+
+        label {
+            cursor: pointer;
+        }
+    }
+
+    .g1EmptyMsg {
+        color: #999;
+        font-style: italic;
+    }
+
+    .g1VolNumConfirmed {
+        color: green;
+        font-style: italic;
+    }
+    .g1VolNumPending {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #da9905;
+        font-style: italic;
+    }
+    .g1VolNumRequested {
+        display: inline-block;
+        margin-left: .3rem;
+        color: #999;
+        font-style: italic;
+    }
+
+    .g1VolConfirmedLabel {
+        color: #bbb;
+        transition: color .4s ease-out;
+    }
+    .g1VolConfirmedLabelOn {
+        color: green;
+    }
+
+    .g1VolName {
+        transition: color .4s ease-out;
+
+        @media (max-width: 576px) {
+            text-align: left;
+            position: relative;
+            top: 1px;
+        }
+    }
+    .g1VolNamePending {
+        color: #da9905;
+    }
+
+    .g1HoursForm .form-control {
+            width: 5.5rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: .5rem!important;
+
+            @media (max-width: 576px) {
+                margin-left: 2.6rem;
+            }
+    }
+
+    .g1NonAdminFooter {
+        flex-direction: column;
+    }
+
+    .g1Request {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 2rem;
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+
+        &.g1Pending {
+            color: #ffe14e;
+        }
+        &.g1Confirmed {
+            color: green;
+        }
+
+    }
+
+    .g1MinimizeFooterButton {
+        margin-right: auto;
+    }
+
+    &.g1VolunteerModal {
+        @media (min-width: 768px) {
+            max-width: 760px;
+        }
+
+        .modal-header,
+        .modal-footer {
+            background-color: #a7a078;
+        }
+
+        h5.modal-title {
+            color: var(--color-yellow);
+        }
+    }
+}
+
+
+
+
+.g1SecondaryModal {
+    position: absolute;
+    top: 39%;
+    left: -50%;
+    transform: translate(-50%, -77%);
+    max-width: 39rem;
+    border: solid 1px rgba(0,0,0,.4);
+    border-radius: .3rem;
+    box-shadow: var(--box-shadow);
+    outline: 0;
+
+    background-color: #f3f3f3;
+    color: var(--color-black);
+    text-align: center;
+    font-family: var(--ff-top);
+    font-size: .95rem;
+    z-index: -3000;
+    opacity: 0;
+    transition: none;
+
+    --modal-body-border: #5a5073;
+
+    strong {
+        font-weight: 900;
+    }
+
+    &.g1FeedbackOn {
+        left: 50%;
+        opacity: 1;
+        z-index: 3000;
+        transition: opacity .1s linear;
+    }
+
+    .g1SecondaryModalClose {
+        outline: none;
+
+        font-family: var(--ff-body);
+        color: red;
+        text-shadow: 0 1px 0 #000;
+    }
+
+    .g1SModalHeader, .g1SModalFooter {
+        background-color: #6a5e6d;
+    }
+
+    .g1SModalHeader {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-pack: justify;
+        justify-content: flex-end;
+        padding: .5rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-bottom-color: var(--modal-body-border);
+        border-top-left-radius: calc(.3rem - 1px);
+        border-top-right-radius: calc(.3rem - 1px);
+    }
+
+    .g1SModalBody {
+        padding: .5rem 3.5rem;
+    }
+
+    .g1SModalFooter {
+        padding: .5rem;
+        border-top: 1px solid #dee2e6;
+        border-top-color: var(--modal-body-border);
+        border-bottom-left-radius: calc(.3rem - 1px);
+        border-bottom-right-radius: calc(.3rem - 1px);
+    }
+}
