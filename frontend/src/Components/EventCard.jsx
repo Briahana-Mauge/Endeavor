@@ -115,6 +115,12 @@ const EventCard = (props) => {
                             {confirmedToEvent ? 'CONFIRMED' : 'PENDING'}
                         </span>
                     </label>
+                    {   waitingForRender
+                        ?   <div className='m-2 spinner-border text-info' role='status'>
+                                <span className='sr-only'>Loading...</span>
+                            </div>
+                        :   null
+                    }
                 </div>
                 <Link   // Link was substituted here to allow user to right-click link and have option to open in new tabs
                     className={`g1VolName btn btn-link mb-2 col-9 col-sm-4 ${confirmedToEvent ? '' : 'g1VolNamePending'}`}
