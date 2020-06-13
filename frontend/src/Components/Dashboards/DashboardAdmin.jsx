@@ -68,6 +68,7 @@ const DashboardAdmin = (props) => {
 
   return (
     <>
+      <div className='userName text-center'>Welcome back, {loggedUser.a_first_name}!</div>
       <div className="row">
         <div className="col-12 col-md-5 pr-md-2">
           <AdminEDash events={eventsObj} loggedUser={loggedUser}/>

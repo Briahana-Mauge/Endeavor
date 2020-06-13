@@ -70,7 +70,7 @@ export default function Volunteers (props) {
         let isMounted = true;
 
         const getAllVolunteers = () => {
-            axios.get(`/api/volunteers/all?$skill=${skill}&${searchKey}=${searchVal}`)
+            axios.get(`/api/volunteers/all?skill=${skill}&${searchKey}=${searchVal}`)
                 .then(response => {
                     if (isMounted) {
                         setResults(response.data.payload);

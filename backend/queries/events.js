@@ -42,25 +42,24 @@ const getAllEvents = async (volunteerId, vName, topic, instructor, upcoming, pas
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
 
-  const endOfQuery = `
+  let endOfQuery = `
     GROUP BY
       event_id,
       cohort_id
-    ORDER BY event_start ASC
   `;
 
   let condition = ' WHERE events.deleted IS NULL ';
 
   if (vName) {
-    condition += `AND lower(v_first_name || ' ' || v_last_name) LIKE '%' || $/vName/ || '%' `
+    condition += `AND lower(v_first_name || ' ' || v_last_name) LIKE '%' || $/vName/ || '%' `;
   }
 
   if (topic) {
-    condition += `AND lower(events.topic) LIKE '%' || $/topic/ || '%' `
+    condition += `AND lower(events.topic) LIKE '%' || $/topic/ || '%' `;
   }
 
   if (instructor) {
-    condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `
+    condition += `AND lower(events.instructor) LIKE '%' || $/instructor/ || '%' `;
   }
 
   if (upcoming) {
@@ -68,6 +67,9 @@ const getAllEvents = async (volunteerId, vName, topic, instructor, upcoming, pas
   }
   if (past) {
     condition += `AND event_end < now() `
+    endOfQuery += ` ORDER BY event_start DESC `;
+  } else {
+    endOfQuery += ` ORDER BY event_start ASC `;
   }
 
   return await db.any(selectQuery + condition + endOfQuery, { volunteerId, vName, topic, instructor });
@@ -156,11 +158,10 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   LEFT JOIN volunteers ON event_volunteers.volunteer_id = volunteers.v_id
   `
 
-  const endOfQuery = `
+  let endOfQuery = `
     GROUP BY
       event_id,
       cohort_id
-    ORDER BY event_start ASC
   `;
 
   let condition = ' WHERE events.deleted IS NULL ';
@@ -182,6 +183,9 @@ const getAllEventsAdmin = async (vName, topic, instructor, upcoming, past) => {
   }
   if (past) {
     condition += `AND event_end < now() `
+    endOfQuery += ` ORDER BY event_start DESC `;
+  } else {
+    endOfQuery += ` ORDER BY event_start ASC `;
   }
 
   return await db.any(selectQuery + condition + endOfQuery, { vName, topic, instructor });
