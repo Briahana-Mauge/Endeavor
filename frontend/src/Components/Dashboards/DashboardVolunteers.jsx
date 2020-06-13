@@ -44,7 +44,7 @@ const DashboardVolunteers = (props) => {
 
   return (
     <>
-
+      <div className='userName text-center'>Welcome back, {loggedUser.v_first_name}!</div>
       <div className="row">
         <div className="col-12 col-md-7">
           <VolunteerEDash events={eventsObj} />

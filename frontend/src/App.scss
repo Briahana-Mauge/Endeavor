@@ -74,3 +74,14 @@
     background-color:rgba(108, 117, 125, .2);
     border-color: rgba(108, 117, 125, .2);
 }
+
+.userName {
+    color: var(--color-white);
+    background-color: #1b2061c7;
+    font-family: var(--ff-accent);
+    font-size: 1.3rem;
+    border-radius: var(--border-radii);
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding: .75rem 1rem .4rem 1rem;
+}

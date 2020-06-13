@@ -100,7 +100,7 @@ router.get('/:type/:volunteer_id', async (req, res, next) => {
     try {
         const type = req.params.type;
         if (type !== 'email' && type !== 'id' && type !== 'slug') {
-            throw new Error('404_wrong route');
+            throw new Error('404__wrong route');
         }
         let id = email = slug = null;
 
