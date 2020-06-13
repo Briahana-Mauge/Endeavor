@@ -24,7 +24,7 @@ export default function VolunteerPreviewCard(props) {
                 <div className='g1NewVolBtns col-6 offset-6 offset-lg-0 col-lg-3 mb-3 mb-lg-0'>
                     <button className='btn btn-success mb-lg-1' onClick={e => props.acceptVolunteer(volunteer.v_id)}>Accept</button>
                     <button className='btn btn-primary ml-2 ml-lg-0 mb-lg-1' onClick={handleEmailClick}>E-mail</button>
-                    <button className='btn btn-danger ml-2 mx-lg-0' onClick={e => e.preventDefault()}>Dismiss</button>
+                    <button className='btn btn-danger ml-2 mx-lg-0' onClick={e => props.testButton(e)}>Dismiss</button>
                 </div>
 
                 <div className='g1NewVolData col-12 col-lg-9'> 
