@@ -5,6 +5,19 @@
     }
 }
 
+.g1EmptyNewVolsMsg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: inherit;
+
+    font-family: var(--ff-accent);
+    color: #882f70;
+    font-size: 1.2rem;
+    transform: translateY(-4%);
+}
+
 .g1NewVolCarousel {
     .carousel-indicators::before {
         content: 'Initials';
