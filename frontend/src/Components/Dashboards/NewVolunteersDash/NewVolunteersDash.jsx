@@ -52,7 +52,7 @@ const NewVolunteersDash = (props) => {
           className={index === 0 ? "carousel-item active" : "carousel-item"}
           key={v_first_name + v_last_name + v_id}
         >
-          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer}/>
+          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer} />
         </div>
       );
   });
@@ -62,7 +62,7 @@ const NewVolunteersDash = (props) => {
     <UIModule className='deepSangria g1NVDash' titleColor="New Volunteer" titleRegular='Signups'>
         {newVolunteers.length <= 0
           ? (
-              <div>There are no new volunteers awaiting confirmation.</div>
+              <div className='g1EmptyNewVolsMsg'>There are no new volunteers pending deliberation.</div>
             )
           : (
               <div id="newVolunteersSlideshow" className="g1NewVolCarousel carousel slide" data-ride="carousel" data-interval="false" data-touch="true">
