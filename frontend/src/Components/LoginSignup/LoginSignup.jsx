@@ -47,6 +47,7 @@ export default function LoginSignup(props) {
             if (formType === 'login' && email && password) { // LOGIN
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
                 props.settleUser(data.payload);
+                props.setPassword('');
                 history.replace(from);
             }
             else {
@@ -54,6 +55,7 @@ export default function LoginSignup(props) {
                     const userData = {email, password, firstName, lastName, newPassword};
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.settleUser(data.payload);
+                    props.setPassword('');
                     history.replace(from);
                 } 
                 else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
@@ -83,6 +85,7 @@ export default function LoginSignup(props) {
 
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
                     props.settleUser(data.payload);
+                    props.setPassword('');
                     history.replace(from);
                 }
             }
