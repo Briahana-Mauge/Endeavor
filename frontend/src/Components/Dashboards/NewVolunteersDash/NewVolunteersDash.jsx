@@ -14,22 +14,15 @@ import VolunteerPreviewCard from './VolunteerPreviewCard';
 
 const NewVolunteersDash = (props) => {
   const { newVolunteers, reloadDashboard, setReloadDashboard, setFeedback } = props;
-  let slideNextRef = '';
 
 
   const acceptVolunteer = async (id) => {
     try {
         await axios.patch(`/api/volunteers/confirm/${id}`);
-        slideNextRef.click();
         setReloadDashboard(!reloadDashboard);
     } catch (err) {
         setFeedback(err)
     }
-  }
-
-  const testButton = (e) => { // convert this to delete function in future
-    e.preventDefault();
-    slideNextRef.click();
   }
 
   const slideIndicators = [];
@@ -59,7 +52,7 @@ const NewVolunteersDash = (props) => {
           className={index === 0 ? "carousel-item active" : "carousel-item"}
           key={v_first_name + v_last_name + v_id}
         >
-          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer} testButton={testButton} />
+          <VolunteerPreviewCard volunteer={volunteer} acceptVolunteer={acceptVolunteer} />
         </div>
       );
   });
@@ -92,15 +85,6 @@ const NewVolunteersDash = (props) => {
                       </a>
                     </div>
                   </div>
-                  <a
-                    className='g1CarouselHidden'
-                    href="#newVolunteersSlideshow"
-                    role='button'
-                    data-slide='next'
-                    ref={input => { // this ref is used to target this link when slideNextRef.click() is called
-                        slideNextRef = input;
-                    }}
-                  >{' '}</a>
                 </div>
               </div>
             )
