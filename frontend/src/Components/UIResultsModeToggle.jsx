@@ -13,7 +13,9 @@ const UIResultsModeToggle = ({ type, isDisplayModeGrid, setIsDisplayModeGrid, se
   const handleViewChange = async () => {
     try {
       const { data } = await axios.patch(`/api/view/`, {targetView: type});
-      setIsDisplayModeGrid(data.payload.e_grid || data.payload.v_grid || false);
+      type === 'events' 
+        ? setIsDisplayModeGrid(data.payload.e_grid)
+        : setIsDisplayModeGrid(data.payload.v_grid)
     } catch(err) {
       setFeedback(err);
     }

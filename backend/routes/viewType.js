@@ -31,6 +31,10 @@ router.patch('/',  async (request, response, next) => {
             updated = await fellowsQueries.updateViewType(request.user.f_id, targetView);
         }
 
+        // Update the user stored into the session
+        request.user.e_grid = updated.e_grid;
+        request.user.v_grid = updated.v_grid;
+
         response.json({
             error: false,
             message: 'Successfully updated view setting',
