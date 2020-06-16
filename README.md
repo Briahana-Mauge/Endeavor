@@ -10,9 +10,11 @@
 ## **Demos**
 + **Live:** *Coming Soon*
 + **Presentation:** [EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube](https://youtu.be/OCiUcRd6P40)
-+ **Admin Dashboard screencap:**
+- **Admin Dashboard screencap:**
+
   ![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
-+ **New Volunteers Module videocap:**
+- **New Volunteers Module videocap:**
+
   ![animated gif](/docs/readme/newVolunteersDashExample.gif)
 
 ## **Instructional Team**
