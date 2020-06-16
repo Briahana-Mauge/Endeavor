@@ -9,7 +9,8 @@
 
 ## **Demos**
 + **Live:** *Coming Soon*
-+ **Presentation:** [EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube](https://youtu.be/OCiUcRd6P40)
++ **Presentation:** *Coming Soon*
+<!-- [EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube]() -->
 - **Admin Dashboard screencap:**
 
   ![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
