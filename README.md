@@ -8,9 +8,11 @@
 + [Joseph P. Pasaoa (@joseph-p-pasaoa)](https://github.com/joseph-p-pasaoa) [[LI]](https://www.linkedin.com/in/josephpasaoa/)
 
 ## **Demos**
-+ **Live:** *Coming Soon*
-+ **Presentation:** *Coming Soon*
-<!-- [EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube]() -->
++ **Live:** [Demo](https://endeavor-app.herokuapp.com/)
+- **Presentation Video (Youtube):**
+
+  [![EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube](/docs/readme/presentationThumbnail.png)](https://youtu.be/oaP1JNZTj6Q)
+
 - **Admin Dashboard screencap:**
 
   ![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
