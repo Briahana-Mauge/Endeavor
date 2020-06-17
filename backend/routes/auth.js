@@ -168,7 +168,7 @@ router.post('/:userType/signup', signupUser, passport.authenticate('local'), (re
 const updateAdminUser = async (userId, request, response, next) => { 
     try {
         const actualEmail = request.user.a_email;
-        const email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
+        let email = processInput(request.body.email, 'hardVC', 'user email', 50).toLowerCase();
         const password = processInput(request.body.password, 'hardVC', 'user password');
         const firstName = processInput(request.body.firstName, 'hardVC', 'user first name', 30);
         const lastName = processInput(request.body.lastName, 'hardVC', 'user last name', 30);
@@ -176,7 +176,7 @@ const updateAdminUser = async (userId, request, response, next) => {
         const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-            if (actualEmail !== email) {
+            if (actualEmail !== email && actualEmail !== 'demo@pursuit.org') { // Preventing demo user from changing the email address
                 await usersQueries.updateEmail(actualEmail, email)
             }
             
@@ -184,7 +184,22 @@ const updateAdminUser = async (userId, request, response, next) => {
             if (request.file) {
                 picture = request.file.location;
             }
+
+            // Preventing demo user from changing the email address and updating the profile picture
+            if (actualEmail === 'demo@pursuit.org') { 
+                email = 'demo@pursuit.org';
+                picture = request.user.a_picture;
+                if (request.file) { // if demo user updated a file to the cloud, it gets deleted
+                    storage.deleteFile(request.file.location);
+                }
+            }
+
             await adminQueries.updateAdmin(userId, firstName, lastName, picture);
+            // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
+            if (request.file && request.user.a_picture && actualEmail !== 'demo@pursuit.org' && request.user.a_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+                storage.deleteFile(request.user.a_picture);
+            }
+
             request.body.email = email;
             request.body.password = password;
             next();
@@ -241,17 +256,26 @@ const updateVolunteerUser = async (userId, request, response, next) => {
         const user = await usersQueries.getUserByEmail(actualEmail);
         const passMatch = await comparePasswords(request.body.password, user.password);
         if (passMatch) { // BEFORE ALLOWING UPDATE USER HAS TO CONFIRM THEIR PASSWORD
-            if (actualEmail !== formattedRequestBody.email) {
+            if (actualEmail !== formattedRequestBody.email && actualEmail !== 'demo@gmail.com') { // Prevent demo user from updating the email address
                 await usersQueries.updateEmail(actualEmail, formattedRequestBody.email)
             }
 
             if (request.file) { 
                 formattedRequestBody.picture = request.file.location;
             }
+
+            // Preventing demo user from changing the email address and updating the profile picture
+            if (actualEmail === 'demo@gmail.com') { 
+                formattedRequestBody.email = 'demo@gmail.com';
+                formattedRequestBody.picture = request.user.v_picture;
+                if (request.file) { // if demo user updated a file to the cloud, it gets deleted
+                    storage.deleteFile(request.file.location);
+                }
+            }
             
             await volunteersQueries.updateVolunteer(formattedRequestBody);
             // If user uploaded a picture and has a previous picture stored in the cloud => delete old picture form the cloud
-            if (request.file && request.user.v_picture && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
+            if (request.file && request.user.v_picture && actualEmail !== 'demo@gmail.com' && request.user.v_picture.includes('https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/')) {
                 storage.deleteFile(request.user.v_picture);
             }
             request.body.email = formattedRequestBody.email;
@@ -356,9 +380,14 @@ const updateUser = (request, response, next) => {
 }
 
 router.put('/:user_id', checkUserLogged, storage.upload.single('picture'), updateUser, passport.authenticate('local'), (request, response) => {
+    let message = 'Successfully updated user info';
+    if (request.user.a_email === 'demo@pursuit.org' || request.user.v_email === 'demo@gmail.com') {
+        message = 'Successfully updated user info. \nNote: \nAs a demo user changing the email and/or updating the user profile picture gets disregarded'
+    }
+
     response.json({
         error: false,
-        message: 'Successfully updated user info',
+        message,
         payload: request.user
     })
 })

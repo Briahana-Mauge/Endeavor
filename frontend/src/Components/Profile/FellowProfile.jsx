@@ -104,7 +104,7 @@ export default function FellowProfile(props) {
                 props.settleUser(data.payload);
                 setLoading(false);
                 props.setPassword('');
-                setFeedback({message: 'Profile updated successfully'});
+                setFeedback({message: data.message});
 
             } else {
                 setFeedback({message: 'email, password, cohort, first and last name fields are required'});

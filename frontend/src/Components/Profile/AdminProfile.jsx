@@ -65,7 +65,7 @@ export default function AdminProfile(props) {
                 props.settleUser(data.payload);
                 setLoading(false);
                 props.setPassword('');
-                props.setFeedback({message: 'Profile updated successfully'});
+                props.setFeedback({message: data.message});
             } else {
                 setLoading(false);
                 props.setFeedback({message: 'All fields are required'});

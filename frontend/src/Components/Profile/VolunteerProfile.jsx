@@ -155,7 +155,7 @@ export default function VolunteerProfile(props) {
                 props.settleUser(data.payload);
                 setLoading(false);
                 props.setPassword('');
-                setFeedback({message: 'Profile updated successfully'});
+                setFeedback({message: data.message});
             } else {
                 setFeedback({message: 'email, password, first and last name, company, and title fields are required'});
             }
