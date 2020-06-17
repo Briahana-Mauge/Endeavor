@@ -228,6 +228,7 @@ INSERT INTO users_data
 VALUES
     ('admin@gmail.com', '$2b$12$BnlkuACZiHUs8h0TLWejv.NaSyBXQGNWnczdYt8KrdDEDV9VHQ4/O', 'admin'),
     ('alexis@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'admin'),
+    ('demo@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'admin'),
 
     ('alejo@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'staff'),
     ('dessa@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'staff'),
@@ -244,6 +245,7 @@ VALUES
     -- 10
     ('kwood@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
     ('tpotter@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
+    ('demo@gmail.com', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'volunteer'),
 
     ('aransagarcia@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
     ('briahanamauge@pursuit.org', '$2b$12$raSIhSMs84t9i75CsFdE5.L66Cqt5Ew.cbwuPW1M5VXM2rR.Xwh0W', 'fellow'),
@@ -284,7 +286,8 @@ VALUES
     ('Admin', 'Admin', 'admin@gmail.com', TRUE, 'https://www.beeandsee.com/6034-thickbox_default/coin-bank-dragon-ball-son-goku.jpg'),
     ('Alexis', 'Medina', 'alexis@pursuit.org', TRUE, 'https://images.squarespace-cdn.com/content/v1/5b50ebb7e749401857e16f2f/1574704243786-BX80S9268MJHH1YNVEDR/ke17ZwdGBToddI8pDm48kLla4wX38-v8Fis1wk5Jefh7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QHyNOqBUUEtDDsRWrJLTmUK_IB3X7lRAWenxoBFomxbtsK0y7i603aSBwQBKdcbXoIq09V76Z6QF1Qqm1TVoI/Alexis+New+Headshot.jpg'),
     ('Alejo', 'Franco', 'alejo@pursuit.org', FALSE, 'https://images.squarespace-cdn.com/content/v1/5b50ebb7e749401857e16f2f/1583293665303-RQTXY201ZQ9KZ2NE7I0X/ke17ZwdGBToddI8pDm48kHlUt2zFvP_bq9q3yP49zuN7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UY6XFlJzv2BC2rQ_JMq2ONe5g1u_diTB3iF1ZqEFR6yZu8fsP79Qd-PI-QaBGoYB5Q/_MG_9133.jpg'),
-    ('Dessa', 'Shepherd', 'dessa@pursuit.org', FALSE, 'https://images.squarespace-cdn.com/content/v1/5b50ebb7e749401857e16f2f/1561575416265-YWVOY1RMUS4FQXSA4I6U/ke17ZwdGBToddI8pDm48kFO8_1WaoBAZQNaKyVGaij57gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UW31wJTzbfHbkbJt9z-Z2T4abBcTdn8_pDvVLOVd-9dj4AE22lpcLzlaiGAl25fo5g/Dessa+Shepherd.jpg');
+    ('Dessa', 'Shepherd', 'dessa@pursuit.org', FALSE, 'https://images.squarespace-cdn.com/content/v1/5b50ebb7e749401857e16f2f/1561575416265-YWVOY1RMUS4FQXSA4I6U/ke17ZwdGBToddI8pDm48kFO8_1WaoBAZQNaKyVGaij57gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UW31wJTzbfHbkbJt9z-Z2T4abBcTdn8_pDvVLOVd-9dj4AE22lpcLzlaiGAl25fo5g/Dessa+Shepherd.jpg'),
+    ('Demo', 'User', 'demo@pursuit.org', TRUE, '');
 
 
 INSERT INTO volunteers
@@ -320,8 +323,9 @@ VALUES
     ('Bonnie', 'Simpson', 'bsimpson', 'bsimpson@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/BonnieSimpson.jpg', 'The New York Times', 'thenewyorktimes', 'CEO', FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, 'https://www.linkedin.com/in/','2019-09-01'),
     ('Joseph', 'Parker', 'jparker', 'jparker@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/JosephParker.jpg', 'Spotify', 'spotify', 'Web Designer', TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, 'https://www.linkedin.com/in/', CURRENT_DATE),
     ('Kenneth', 'Wood', 'kwood', 'kwood@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/KennethWood.jpg', 'Google', 'google', 'HR', FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, FALSE, 'https://www.linkedin.com/in/', CURRENT_DATE),
-    ('Thomas', 'Potter', 'tpotter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/ThomasPotter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, 'https://www.linkedin.com/in/','2019-09-01');
+    ('Thomas', 'Potter', 'tpotter', 'tpotter@gmail.com', 'https://pursuit-volunteer-management.s3.us-east-2.amazonaws.com/ThomasPotter.jpg', 'Google', 'google', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, 'https://www.linkedin.com/in/','2019-09-01'),
 -- 10
+    ('Demo', 'User', 'demo', 'demo@gmail.com', '', 'Pursuit', 'prsuit', 'Senior Software Engineer', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, 'https://www.linkedin.com/in/','2019-09-01');
 
 
 INSERT INTO fellows
@@ -421,7 +425,15 @@ VALUES
     (10, 10),
     -- 40
     (10, 20),
-    (10, 24);
+    (10, 24),
+    -- Demo User
+    (11, 1),
+    (11, 2),
+    (11, 4),
+    (11, 8),
+    (11, 10),
+    (11, 20),
+    (11, 24);
 
 
 INSERT INTO mentor_pairs
@@ -440,7 +452,10 @@ VALUES
     (8, 19, '2019-11-10'),
     -- 10
     (8, 21, '2019-11-20'),
-    (10, 23, '2019-11-30');
+    (10, 23, '2019-11-30'),
+    -- Demo User
+    (6, 6, '2019-09-20'),
+    (6, 18, '2019-11-01');
 
 
 INSERT INTO events
@@ -585,7 +600,20 @@ VALUES
     (19, 6, TRUE, 8),
     (20, 6, TRUE, 1.5),
     (21, 6, TRUE, 2.25),
-    (22, 6, TRUE, 3);
+    (22, 6, TRUE, 3),
+    -- Demo User
+    (1, 11, TRUE, 1),
+    (5, 11, TRUE, 1),
+    (7, 11, TRUE, 0),
+    (8, 11, TRUE, 2),
+    (9, 11, TRUE, 1),
+    (10, 11, TRUE, 2),
+    (12, 11, FALSE, 0),
+    (18, 11, FALSE, 0),
+    (19, 11, TRUE, 8),
+    (20, 11, TRUE, 1.5),
+    (21, 11, TRUE, 2.25),
+    (22, 11, TRUE, 3);
 
 INSERT INTO event_fellows
     (eventf_id, fellow_id)
