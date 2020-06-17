@@ -7,7 +7,20 @@
 + [Briahana Maugé (@Briahana-Mauge)](https://github.com/Briahana-Mauge) [[LI]](https://www.linkedin.com/in/bmauge/)
 + [Joseph P. Pasaoa (@joseph-p-pasaoa)](https://github.com/joseph-p-pasaoa) [[LI]](https://www.linkedin.com/in/josephpasaoa/)
 
-## Instructional Team
+## **Demos**
++ **Live:** [Demo](https://endeavor-app.herokuapp.com/)
+- **Presentation Video (Youtube):**
+
+  [![EndeaVor - Pursuit Tech Demo Day (2020 June 13) | YouTube](/docs/readme/presentationThumbnail.png)](https://youtu.be/oaP1JNZTj6Q)
+
+- **Admin Dashboard screencap:**
+
+  ![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
+- **New Volunteers Module videocap:**
+
+  ![animated gif](/docs/readme/newVolunteersDashExample.gif)
+
+## **Instructional Team**
 + **Lead Instructor:** [Alejandro Franco (@alejo4373)](https://github.com/alejo4373)
 + **Instructor Asst:** [Jung Rae Jang (@jungraejang)](https://github.com/jungraejang)
 + **Instructor Asst:** [Wynter Reid (@wynterreid)](https://github.com/wynterreid)
@@ -15,10 +28,9 @@
 + **Advisor:** [Dion Ridley (@dionridley)](https://www.linkedin.com/in/dionridley/)
 + **Advisor:** [Ben Sussman (@bensussman)](https://www.linkedin.com/in/bensussman/)
 
-![screencap of admin dashboard](./docs/readme/screenAdminDashboard.jpg)
+---
 
-
-### _Table of Contents_
+## **_Table of Contents_**
 + I. [Technologies Implemented](#i-technologies-implemented)
 + II. [Setup](#ii-setup)
 + III. [Database Schema](#iii-database-schema)
