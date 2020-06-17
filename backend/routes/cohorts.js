@@ -45,7 +45,7 @@ const getCohortById = async (req, res, next) => {
 
 const postCohort = async (req, res, next) => {
   try {
-    if (req.user && req.user.a_id) {
+    if (req.user && req.user.a_id && req.user.a_email !== 'demo@pursuit.org') {
       const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
   
       const response = await queries.insertCohort(cohort);
@@ -55,7 +55,9 @@ const postCohort = async (req, res, next) => {
           message: `new cohort '${cohort}' added`,
           payload: response
       });
-    } else {
+    } else if (req.user && req.user.a_id && req.user.a_email === 'demo@pursuit.org') {
+      throw new Error('403__Sorry as a demo user your privileges are limited compared to a real admin user, you can not add a cohort');
+    } else{
       throw new Error('403__Not allowed to perform this operation');
     }
   } catch (err) {
@@ -65,7 +67,7 @@ const postCohort = async (req, res, next) => {
 
 const putCohort = async (req, res, next) => {
   try {
-    if (req.user && req.user.a_id) {
+    if (req.user && req.user.a_id && req.user.a_email !== 'demo@pursuit.org') {
       const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
       const cohort = processInput(req.body.cohort, "hardVC", "cohort name", 100);
   
@@ -76,6 +78,8 @@ const putCohort = async (req, res, next) => {
           message: `cohort.${cohortId} has been renamed to '${cohort}'`,
           payload: response
       });
+    } else if (req.user && req.user.a_id && req.user.a_email === 'demo@pursuit.org') {
+      throw new Error('403__Sorry as a demo user your privileges are limited compared to a real admin user, you can not edit a cohort');
     } else {
       throw new Error('403__Not allowed to perform this operation');
     }
@@ -86,7 +90,7 @@ const putCohort = async (req, res, next) => {
 
 const delCohort = async (req, res, next) => {
   try {
-    if (req.user && req.user.a_id) {
+    if (req.user && req.user.a_id && req.user.a_email !== 'demo@pursuit.org') {
       const cohortId = processInput(req.params.cohort_id, "idNum", "cohort id");
       const response = await queries.deleteCohort(cohortId);
       res.status(200);
@@ -95,6 +99,8 @@ const delCohort = async (req, res, next) => {
           message: `cohort.${cohortId} has been deleted`,
           payload: response
       });
+    } else if (req.user && req.user.a_id && req.user.a_email === 'demo@pursuit.org') {
+      throw new Error('403__Sorry as a demo user your privileges are limited compared to a real admin user, you can not delete a cohort');
     } else {
       throw new Error('403__Not allowed to perform this operation');
     }
