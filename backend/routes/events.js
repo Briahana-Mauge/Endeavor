@@ -126,6 +126,12 @@ router.post('/add', async (req, res, next) => {
                 important: processInput(req.body.important, 'hardBool', 'event importance')
             }
 
+            if (req.user.a_email === 'demo@pursuit.org') {
+                eventData.topic = 'Demo - ' + eventData.topic;
+                eventData.description = 'DEMO EVENT - This event was created while demoing the app ' + eventData.description;
+                eventData.staffDescription = 'DEMO EVENT - This event was created while demoing the app ' + eventData.staffDescription;
+            }
+
             const events = await eventsQueries.postEvent(eventData);
             res.status(201).json({
                 payload: events,
@@ -159,6 +165,24 @@ router.put('/edit/:event_id', async (req, res, next) => {
                 materialsUrl: processInput(req.body.materialsUrl, 'softVC', 'materials url'),
                 important: processInput(req.body.important, 'hardBool', 'event importance')
             }
+
+            if (req.user.a_email === 'demo@pursuit.org') {
+                const originalEvent = await eventsQueries.getSingleEvent(eventData.eventId);
+                console.log(originalEvent)
+                if (originalEvent.topic.includes('Demo - ') && originalEvent.description.includes('DEMO EVENT - This event was created while demoing the app ')) {
+                    if (!eventData.topic.includes('Demo - ')) {
+                        eventData.topic = 'Demo - ' + eventData.topic;
+                    }
+                    if (!eventData.description.includes('DEMO EVENT - This event was created while demoing the app ')) {
+                        eventData.description = 'DEMO EVENT - This event was created while demoing the app ' + eventData.description;
+                    }
+                    if (!eventData.staffDescription.includes('DEMO EVENT - This event was created while demoing the app ')) {
+                        eventData.staffDescription = 'Demo - DEMO EVENT - This event was created while demoing the app ' + eventData.staffDescription;
+                    }
+                } else {
+                    throw new Error('403__Sorry as a demo user your privileges are limited compared to a real admin user, you can not edit events that you did not create');
+                }
+            }
             
             const events = await eventsQueries.editEvent(eventData);
             res.json({
@@ -181,6 +205,14 @@ router.delete('/:event_id', async (req, res, next) => {
     try {
         const eventId = processInput(req.params.event_id, 'idNum');
         if (req.user && req.user.a_id) {
+            if (req.user.a_email === 'demo@pursuit.org') {
+                const originalEvent = await eventsQueries.getSingleEvent(eventId);
+
+                if (!originalEvent.topic.includes('Demo - ') || !originalEvent.description.includes('DEMO EVENT - This event was created while demoing the app ')) {
+                    throw new Error('403__Sorry as a demo user your privileges are limited compared to a real admin user, you can not delete events that you did not create');
+                }
+            }
+
             const deletedEvent = await eventsQueries.deleteEvent(eventId);
             res.json({
                 payload: deletedEvent,
