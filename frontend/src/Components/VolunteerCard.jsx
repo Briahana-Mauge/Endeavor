@@ -8,10 +8,9 @@ const VolunteerCard = (props) => {
     const { volunteer } = props;
 
     const shownSkills = [];
-    let skillsPool = [...volunteer.skills];
-    let duration = volunteer.skills.length > 3
-        ? 3
-        : volunteer.skills.length;
+    const skillsPool = [...volunteer.skills];
+    const duration = Math.min(volunteer.skills.length, 3);
+
     for (let i = 0; i < duration; i++) {
         // eventually we'd rather have the volunteers rank their skills and display here the top 3 instead of random
         let selectedSkill = skillsPool.splice(Math.floor(Math.random() * skillsPool.length), 1)[0];
@@ -74,6 +73,13 @@ const VolunteerCard = (props) => {
                 </Link>
                 <div className='g1VolResultCard__IconsBar'>
                     <IconEmail email={volunteer.v_email} className='g1VolResultCard__IconEmail' />
+                    <input 
+                        className='form-check-input' 
+                        type='checkbox' 
+                        value={volunteer.v_email}
+                        checked={props.volunteersList[volunteer.v_email] || false}
+                        onChange={e => props.manageVolunteersList(volunteer.v_email, volunteer.v_first_name, volunteer.v_last_name)}
+                    />
                 </div>
                 <div className='g1VolResultCard__JobBox'>
                     <div className='g1VolResultCard__Company'>{volunteer.company}</div>

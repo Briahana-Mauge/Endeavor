@@ -34,6 +34,7 @@ export default function Volunteers (props) {
     const [results, setResults] = useState([]);
     const [skillsList, setSkillsList] = useState([]);
     const [reload, setReload] = useState(false);
+    const [volunteersList, setVolunteersList] = useState({});
 
     
     useEffect(() => {
@@ -104,6 +105,12 @@ export default function Volunteers (props) {
         setReload(!reload);
     }
 
+    const manageVolunteersList = (email, firstName, lastName) => {
+        const tracker = {...volunteersList};
+        tracker[email] ? delete tracker[email] : tracker[email] = firstName + ' ' + lastName;
+        setVolunteersList(tracker);
+    }
+
 
     return (
         <>
@@ -136,6 +143,16 @@ export default function Volunteers (props) {
                 setFeedback={setFeedback}
             />
 
+            {   // Email multiple volunteers
+                Object.values(volunteersList).length
+                ?   <div>
+                        <button className='btn btn-primary mr-2'>Contact</button>
+                        <b>Selected Volunteers: </b>
+                        <span>{Object.values(volunteersList).join(', ')}</span>
+                    </div>
+                :   null
+            }
+
             {/* Search results */}
             <div className={`g1VolunteerResults ${isVolunteerSearchGrided ? 'g1GridResults' : 'g1ListResults'}`}>
                 {isVolunteerSearchGrided
@@ -155,6 +172,8 @@ export default function Volunteers (props) {
                 {results.map(volunteer => <VolunteerCard
                         key={volunteer.v_id + volunteer.v_first_name + volunteer.v_last_name}
                         volunteer={volunteer}
+                        volunteersList={volunteersList}
+                        manageVolunteersList={manageVolunteersList}
                     />
                 )}
             </div>
