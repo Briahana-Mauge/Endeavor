@@ -35,6 +35,7 @@ export default function Volunteers (props) {
     const [skillsList, setSkillsList] = useState([]);
     const [reload, setReload] = useState(false);
     const [volunteersList, setVolunteersList] = useState({});
+    const [emailsList, setEmailsList] = useState('');
 
     
     useEffect(() => {
@@ -108,7 +109,18 @@ export default function Volunteers (props) {
     const manageVolunteersList = (email, firstName, lastName) => {
         const tracker = {...volunteersList};
         tracker[email] ? delete tracker[email] : tracker[email] = firstName + ' ' + lastName;
+
+        let mailtoText = '';
+        const volunteersEmails = Object.keys(tracker)
+        if (volunteersEmails.length) {
+            mailtoText = `mailto:${volunteersEmails[volunteersEmails.length - 1]}?bcc=`;
+            volunteersEmails.pop();
+            mailtoText += volunteersEmails.join(',');
+        }
+        console.log(mailtoText)
+
         setVolunteersList(tracker);
+        setEmailsList(mailtoText);
     }
 
 
@@ -146,7 +158,12 @@ export default function Volunteers (props) {
             {   // Email multiple volunteers
                 Object.values(volunteersList).length
                 ?   <div>
-                        <button className='btn btn-primary mr-2'>Contact</button>
+                        <a className='btn btn-primary mr-2' 
+                            href={emailsList}
+                            target='blank'
+                            rel='noopener noreferrer'
+                        >   Contact
+                        </a>
                         <b>Selected Volunteers: </b>
                         <span>{Object.values(volunteersList).join(', ')}</span>
                     </div>
