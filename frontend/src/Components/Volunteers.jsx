@@ -117,7 +117,6 @@ export default function Volunteers (props) {
             volunteersEmails.pop();
             mailtoText += volunteersEmails.join(',');
         }
-        console.log(mailtoText)
 
         setVolunteersList(tracker);
         setEmailsList(mailtoText);
