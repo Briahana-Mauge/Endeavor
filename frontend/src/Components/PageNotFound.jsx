@@ -12,13 +12,11 @@ export default function PageNotFound() {
     const history = useHistory();
 
     return(
-        <>
+        <div className='notFoundPage'>
             <div className='d-flex justify-content-around'>
-                <button className='btn btn-link' onClick={e => {history.goBack(); history.goBack()}}>Back</button>
-                <button className='btn btn-link' onClick={e => history.replace('/')}>Home</button>
+                <button className='btn btn-link plainLink' onClick={e => {history.goBack(); history.goBack()}}>Back</button>
+                <button className='btn btn-link plainLink' onClick={e => history.replace('/')}>Home</button>
             </div>
-
-            <h1 className='text-center'>We can have a message here or a 404 page</h1>
-        </>
+        </div>
     )
 }

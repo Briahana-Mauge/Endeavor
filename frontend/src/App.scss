@@ -86,3 +86,11 @@
     border: solid 1px #0c326b;
     padding: .75rem 1rem .4rem 1rem;
 }
+
+.notFoundPage {
+    background: url('/images/404-error.png') no-repeat center center fixed;
+    height: 85vh;
+    -Webkit-background-size: 'cover';
+    -Moz-background-size: 'cover';
+    background-size: cover;
+}
