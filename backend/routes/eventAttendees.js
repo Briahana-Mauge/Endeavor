@@ -100,13 +100,20 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
 router.post('/event/:event_id/add/:volunteer_id', async (request, response, next) => {
     try {
         const volunteerId = processInput(request.params.volunteer_id, 'idNum', 'volunteer id');
+        const eventId = processInput(request.params.event_id, 'idNum', 'event id');
         if (request.user && request.user.v_id && request.user.v_id === volunteerId) {
             const postData = {
-                eventId: processInput(request.params.event_id, 'idNum', 'event id'),
+                eventId,
                 volunteerId
             }
 
-            const event = await eventQueries.getSingleEvent(postData.eventId)
+            // get updated data about the logged volunteer
+            const volunteer = volunteerQueries.getVolunteerByEmail(request.user.v_email);
+            if (!volunteer.confirmed) { // if volunteer not confirmed to the platform they get notified 
+                throw new Error('403__Sorry,\nyou can not request to volunteer for an event right now as your profile is being reviewed by an volunteer manager.\nPlease try again later');
+            }
+
+            const event = await eventQueries.getSingleEvent(eventId);
             const admin = await userQueries.getAllAdmin();
             const adminEmailsList = admin.map(admin => `endeavor.mng+${admin.a_email.replace('@', '-')}@gmail.com`);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
@@ -117,7 +124,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
                 }],
                 from: 'endeavorapp2020@gmail.com',
                 subject: 'Volunteer Event Request',
-                html: emailText.request(name, volunteerId, event.topic, event.event_id),
+                html: emailText.request(name, volunteerId, event.topic, eventId),
             };
 
             await sendEmail(messageData);

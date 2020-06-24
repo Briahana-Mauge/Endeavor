@@ -224,9 +224,8 @@
 
         // LIST POSITIONAL STYLING
         &__IconsBar {
-            @include flex-straight(column);
-
-            padding: 0 .4rem;
+            @include flex-straight(row, space-between, unset);
+            // padding: 0 .4rem;
         }
 
         &__IconEmail {
@@ -386,7 +385,7 @@
                 grid-template-columns: 5rem 11rem auto;
             }
 
-            &__IconsBar { grid-area: 1 / 1; justify-self: end; margin-right: .5rem; }
+            &__IconsBar { grid-area: 1 / 1; margin-right: .5rem; margin-left: .5rem; }
             &__NameLink { grid-area: 1 / 2; }
             &__JobBox { grid-area: 2 / 2 / 3 / 2; }
             &__AvatarLink { grid-area: 2 / 1 / -1 / 1; }
@@ -415,7 +414,7 @@
                 grid-template-columns: 2fr 3fr;
             }
 
-            &__IconsBar { grid-area: 4 / 1; justify-self: end; position: relative; top: -2px; padding-right: 1rem; }
+            &__IconsBar { grid-area: 4 / 1; position: relative; top: -2px; padding-right: .7rem; padding-left: 1rem;}
             &__NameLink {
                 grid-area: 3 / 1;
                 padding-right: 1rem;
@@ -560,6 +559,8 @@
         &__IconsBar {
             order: -1;
             margin: .1rem .3rem .5rem 0;
+            display: flex;
+            justify-content: space-between;
         }
 
         &__IconEmail {
