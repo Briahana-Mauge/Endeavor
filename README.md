@@ -88,7 +88,6 @@
 
 
 ## IV. Server Endpoints
-## IV. Server Endpoints
 <details>
   <summary>Click to expand all of the endpoints!</summary>
   
