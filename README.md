@@ -30,14 +30,11 @@
 
 
 ## I. Technologies Implemented
-- SendGrid API v3
-- Google Calendar
-
-+ PostgreSQL 12.1
-+ React 16.13.1
-+ Node.js 12.5.0
-+ Express.js 4.16.1
-+ AWS-SDK 2.647.0
+<details>
+  
+  <summary>Click to see more!</summary>
+  
+  + AWS-SDK 2.647.0
 + Multer 1.4.2
 + Multer-S3 2.9.0
 + Passport 0.3.1
@@ -55,6 +52,7 @@
 + JavaScript ES5+
 + CSS3
 + HTML5
+</details>
 
 
 ## II. Setup
@@ -84,7 +82,10 @@
 
 
 ## IV. Server Endpoints
-- **Auth**
+<details>
+  <summary>Click to expand all of the endpoints!</summary>
+  
+  - **Auth**
   | Method | Endpoint                 | Description                  | Query Parameters | Body Data |
   | ------ | ------------------------ | ---------------------------- | ---------------- | --------- |
   | GET    | `/api/auth/is_logged`    | Check if a user is logged in | n/a              | n/a       |
@@ -178,6 +179,8 @@ start, end, topic, description, staffDescription, attendees, location, instructo
   | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
   | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
   | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
+</details>
+
 
 
 ## V. Future Implementations
