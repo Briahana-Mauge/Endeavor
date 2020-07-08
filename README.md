@@ -88,10 +88,11 @@
 
 
 ## IV. Server Endpoints
+## IV. Server Endpoints
 <details>
   <summary>Click to expand all of the endpoints!</summary>
   
-  - **Auth**
+- **Auth**
   | Method | Endpoint                 | Description                  | Query Parameters | Body Data |
   | ------ | ------------------------ | ---------------------------- | ---------------- | --------- |
   | GET    | `/api/auth/is_logged`    | Check if a user is logged in | n/a              | n/a       |
@@ -185,7 +186,8 @@ start, end, topic, description, staffDescription, attendees, location, instructo
   | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
   | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
   | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
-</details>
+
+</details> 
 
 
 
