@@ -30,8 +30,9 @@
 
 
 ## I. Technologies Implemented
-+ SendGrid API v3
-+ Google Calendar
+- SendGrid API v3
+- Google Calendar
+
 + PostgreSQL 12.1
 + React 16.13.1
 + Node.js 12.5.0
