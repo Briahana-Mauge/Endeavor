@@ -31,10 +31,15 @@
 
 ## I. Technologies Implemented
 <details>
-  
++ SendGrid API v3
++ Google Calendar
++ PostgreSQL 12.1
++ React 16.13.1
++ Node.js 12.5.0
++ Express.js 4.16.1
   <summary>Click to see more!</summary>
   
-  + AWS-SDK 2.647.0
++ AWS-SDK 2.647.0
 + Multer 1.4.2
 + Multer-S3 2.9.0
 + Passport 0.3.1
