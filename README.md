@@ -49,6 +49,10 @@
 + React 16.13.1
 + Node.js 12.5.0
 + Express.js 4.16.1
+<details>
+
+  <summary>Click to see more  technologies!</summary>
+  
 + AWS-SDK 2.647.0
 + Multer 1.4.2
 + Multer-S3 2.9.0
@@ -67,6 +71,7 @@
 + JavaScript ES5+
 + CSS3
 + HTML5
+</details>
 
 
 ## II. Setup
@@ -96,6 +101,9 @@
 
 
 ## IV. Server Endpoints
+<details>
+  <summary>Click to expand all of the endpoints!</summary>
+  
 - **Auth**
   | Method | Endpoint                 | Description                  | Query Parameters | Body Data |
   | ------ | ------------------------ | ---------------------------- | ---------------- | --------- |
@@ -190,6 +198,9 @@ start, end, topic, description, staffDescription, attendees, location, instructo
   | Method | Endpoint    | Description                                                 | Query Parameters | Body Data  |
   | ------ | ----------- | ----------------------------------------------------------- | ---------------- | ---------- |
   | PATCH  | `/api/view` | Manage the view type for events and volunteers (grid/list)  | n/a              | targetView |
+
+</details> 
+
 
 
 ## V. Future Implementations
