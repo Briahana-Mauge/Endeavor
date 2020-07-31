@@ -1,0 +1,20 @@
+.landing {
+    &__header .appLogo {
+        height: 3.3rem;
+        margin: 1% 0 8vh 0;
+    }
+
+    &__hero {
+        text-align: center;
+
+        h1.tagline {
+            font-family: var(--ff-top);
+            font-size: 3.1rem;
+            // letter-spacing: .1rem;
+        }
+
+        p {
+
+        }
+    }
+}
