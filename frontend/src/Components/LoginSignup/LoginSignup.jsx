@@ -96,9 +96,16 @@ export default function LoginSignup(props) {
     }
     
     return (
-        <div> 
-            <img className='d-block mx-auto appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
-            
+        <>
+            <header className="landing__header">
+                <img className='appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
+            </header>
+
+            <section className="landing__hero">
+                <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
+                <p>With Endeavor, empower your organization, empower your volunteers.</p>
+            </section>
+
             <form className='form-row' onSubmit={handleFormSubmit}>
                 <EmailPassword 
                     email={email}
@@ -148,6 +155,6 @@ export default function LoginSignup(props) {
                 />
 
             </form>
-        </div>
+        </>
     )
 }
