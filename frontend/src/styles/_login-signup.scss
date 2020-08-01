@@ -1,20 +1,76 @@
-.landing {
+.g1-landing {
     &__header .appLogo {
         height: 3.3rem;
-        margin: 1% 0 8vh 0;
+        margin-top: 1%;
+
+        @media (max-width: 575px) {
+            height: 2.3rem;
+        }
     }
 
     &__hero {
+        width: 90%;
+        margin-bottom: 3vh;
+        margin-top: 8vh;
         text-align: center;
 
         h1.tagline {
             font-family: var(--ff-top);
             font-size: 3.1rem;
-            // letter-spacing: .1rem;
+            line-height: 1.1;
+
+            @media (max-width: 575px) {
+                font-size: 2.1rem;
+            }
         }
 
         p {
+            margin-top: .7rem;
+            line-height: 1.5;
+            color: #999;
+        }
 
+    }
+
+    &__form {
+        .g1-landing-mode--login,
+        .g1-landing-mode--signup {
+            max-width: fit-content;
+            margin: 0 auto;
+
+            font-family: var(--ff-body);
+            font-size: 1.3rem;
+        }
+
+        .g1-auth__inputs {
+            max-width: 22rem;
+            margin: 0 auto;
+        }
+
+        .g1-auth__inputs label {
+            margin-bottom: 0;
+            position: relative;
+            top: 3px;
+            font-family: var(--ff-body);
+            font-size: .8rem;
+            color: #e5e5e5;
+        }
+
+        .g1-btn--submit {
+            width: 100%;
+            margin: 1rem auto 0;
+        }
+
+        .g1-btn--toggle-signup {
+            display: block; // overrides d: inline-block from .btn
+            max-width: fit-content;
+            margin: 2rem auto 0;
+
+            color: var(--color-highlight);
+
+            &:hover {
+                color: var(--color-white);
+            }
         }
     }
 }
