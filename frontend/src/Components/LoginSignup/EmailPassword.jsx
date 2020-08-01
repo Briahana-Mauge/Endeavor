@@ -2,30 +2,37 @@ import React from 'react';
 
 export default function EmailPassword(props) {
     return (
-        <>
-            <div className='col-sm-6'>
+        <div className='g1-landing__auth container col-11'>
+            {props.formType === 'login'
+                ? <h2 className="g1-landing-mode--login">Log In</h2>
+                : <h2 className="g1-landing-mode--signup">Sign Up</h2>
+            }
+            <div className="g1-auth__inputs">
+                <label htmlFor="emailTxt">Email address</label>
                 <input 
-                    className='form-control mb-2' 
-                    type='email' 
-                    placeholder='Enter email' 
+                    className='form-control'
+                    type='email'
+                    id='emailTxt'
+                    placeholder=''
                     value={props.email}
                     onChange={e => props.setEmail(e.target.value)}
                 />
-            </div>
-
-            <div className='col-sm-6'>
+                <label htmlFor="passwordTxt">Password</label>
                 <input 
-                    type='password' 
-                    className='form-control mb-2' 
+                    type='password'
+                    id='passwordTxt'
+                    className='form-control mb-2'
                     placeholder={
                         props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow') 
                         ? 'Enter default password proved by your Admin' 
-                        : 'Enter password'
+                        : ''
                     } 
                     value={props.password}
                     onChange={e => props.setPassword(e.target.value)}
                 />
+                <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
             </div>
-        </>
+            <div className='btn btn-link g1-btn--toggle-signup' onClick={() => props.setFormType('signup')}>New to Endeavor? Sign Up</div>
+        </div>
     )
 }

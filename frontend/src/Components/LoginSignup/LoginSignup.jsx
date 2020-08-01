@@ -97,26 +97,31 @@ export default function LoginSignup(props) {
     
     return (
         <>
-            <header className="landing__header">
+            <header className="g1-landing__header container">
                 <img className='appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
             </header>
 
-            <section className="landing__hero">
+            <section className="g1-landing__hero container">
                 <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
-                <p>With Endeavor, empower your organization, empower your volunteers.</p>
+                <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
+                {/* { formType === 'login'
+                    ?
+                    : <span className='btn btn-link' onClick={() => props.setFormType('login')}>Have an Account Already?</span>
+                } */}
             </section>
 
-            <form className='form-row' onSubmit={handleFormSubmit}>
+            <form className='g1-landing__form form-row' onSubmit={handleFormSubmit}>
                 <EmailPassword 
                     email={email}
                         setEmail={props.setEmail}
                     password={password}
                         setPassword={props.setPassword}
                     formType={formType}
+                        setFormType={props.setFormType}
                     userType={userType}
                 />
 
-                <CommonSubForm 
+                {/* <CommonSubForm
                     setFeedback={props.setFeedback}
                     formType={formType} 
                         setFormType={props.setFormType} 
@@ -152,7 +157,7 @@ export default function LoginSignup(props) {
                         setIndustrySpeaker={props.setIndustrySpeaker}
                     publicProfile={publicProfile}
                         setPublicProfile={props.setPublicProfile}
-                />
+                /> */}
 
             </form>
         </>

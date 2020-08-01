@@ -14,12 +14,12 @@ export default function CommonSubForm(props) {
             {
                 props.formType === 'login'
                 ? 
-                    <span className='col-12 d-flex flex-wrap justify-content-between'>
-                        <button type='submit' className='btn btn-primary'>Sign In</button>
-                        <span className='mb-2 mx-2 mr-sm-2'>New to this app?
-                            <span className='btn btn-link' onClick={() => props.setFormType('signup')}>Sign up</span>
-                        </span>
-                    </span>
+                    // <span className='col-12 d-flex flex-wrap justify-content-center'>
+                    <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
+                    //     <span className='mb-2 mx-2 mr-sm-2'>New to this app?
+                    //         <span className='btn btn-link' onClick={() => props.setFormType('signup')}>Sign up</span>
+                    //     </span>
+                    // </span>
                     
                 :
                     <>
@@ -89,9 +89,9 @@ export default function CommonSubForm(props) {
 
                         <span className='col-12 d-flex flex-wrap justify-content-between'>
                             <button type='submit' className='btn btn-primary'>Sign Up</button>
-                            <span className='mb-2 mx-2 mr-sm-2'>Already a user?
+                            {/* <span className='mb-2 mx-2 mr-sm-2'>Already a user?
                                 <span className='btn btn-link' onClick={() => props.setFormType('login')}>Sign In</span>
-                            </span>
+                            </span> */}
                         </span>
                     </>
             }
