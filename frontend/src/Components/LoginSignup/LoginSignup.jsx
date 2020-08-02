@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-import CommonSubForm from './CommonSubForm';
-import EmailPassword from './EmailPassword';
+import LoginInputs from './LoginInputs';
+import SignupForm from './SignupForm';
 
 
 export default function LoginSignup(props) {
@@ -106,60 +106,69 @@ export default function LoginSignup(props) {
                 <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
             </section>
 
-            <form className='g1Landing__g1LandingForm g1LandingForm form-row' onSubmit={handleFormSubmit}>
+            <form className='g1Landing__g1LandingForm g1LandingForm container' onSubmit={handleFormSubmit}>
                 {props.formType === 'login'
-                    ? <div className='btn btn-link g1LandingForm__btn-to-signup' onClick={() => props.setFormType('signup')}>New to Endeavor? Sign Up</div>
-                    : <div className='btn btn-link g1LandingForm__btn-to-login' onClick={() => props.setFormType('login')}>Already a User? Log In</div>
+
+                    ? // LOGIN MODE
+                        <>
+                            <h2 className="g1LandingForm__header--login">Log In</h2>
+                            <div className="g1LandingForm__col">
+                                <LoginInputs
+                                    email={email}
+                                        setEmail={props.setEmail}
+                                    password={password}
+                                        setPassword={props.setPassword}
+                                    formType={formType}
+                                    userType={userType}
+                                />
+                                <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
+                            </div>
+                            <div className='btn btn-link g1LandingForm__btn-to-signup' onClick={() => props.setFormType('signup')}>New to Endeavor? Sign Up</div>
+                        </>
+
+                    : // SIGNUP MODE
+                        <>
+                            <div className='btn btn-link g1LandingForm__btn-to-login' onClick={() => props.setFormType('login')}>Already a User? Log In</div>
+                            <h2 className="g1LandingForm__header--signup">Sign Up</h2>
+                            <SignupForm
+                                setFeedback={props.setFeedback}
+                                formType={formType}
+                                    setFormType={props.setFormType}
+                                userType={userType}
+                                    setUserType={props.setUserType}
+                                firstName={firstName}
+                                    setFirstName={props.setFirstName}
+                                lastName={lastName}
+                                    setLastName={props.setLastName}
+                                newPassword={newPassword}
+                                    setNewPassword={props.setNewPassword}
+                                cohortId={cohortId}
+                                    setCohortId={props.setCohortId}
+                                company={company}
+                                    setCompany={props.setCompany}
+                                title={title}
+                                    setTitle={props.setTitle}
+                                volunteerSkills={volunteerSkills}
+                                    setVolunteerSkills={props.setVolunteerSkills}
+                                mentor={mentor}
+                                    setMentor={props.setMentor}
+                                officeHours={officeHours}
+                                    setOfficeHours={props.setOfficeHours}
+                                techMockInterview={techMockInterview}
+                                    setTechMockInterview={props.setTechMockInterview}
+                                behavioralMockInterview={behavioralMockInterview}
+                                    setBehavioralMockInterview={props.setBehavioralMockInterview}
+                                professionalSkillsCoach={professionalSkillsCoach}
+                                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                                hostSiteVisit={hostSiteVisit}
+                                    setHostSiteVisit={props.setHostSiteVisit}
+                                industrySpeaker={industrySpeaker}
+                                    setIndustrySpeaker={props.setIndustrySpeaker}
+                                publicProfile={publicProfile}
+                                    setPublicProfile={props.setPublicProfile}
+                            />
+                        </>
                 }
-
-                <EmailPassword 
-                    email={email}
-                        setEmail={props.setEmail}
-                    password={password}
-                        setPassword={props.setPassword}
-                    formType={formType}
-                        setFormType={props.setFormType}
-                    userType={userType}
-                />
-
-                <CommonSubForm
-                    setFeedback={props.setFeedback}
-                    formType={formType} 
-                        setFormType={props.setFormType} 
-                    userType={userType}
-                        setUserType={props.setUserType}
-                    firstName={firstName}
-                        setFirstName={props.setFirstName}
-                    lastName={lastName}
-                        setLastName={props.setLastName}
-                    newPassword={newPassword}
-                        setNewPassword={props.setNewPassword}
-                    cohortId={cohortId}
-                        setCohortId={props.setCohortId}
-                    company={company}
-                        setCompany={props.setCompany}
-                    title={title}
-                        setTitle={props.setTitle}
-                    volunteerSkills={volunteerSkills}
-                        setVolunteerSkills={props.setVolunteerSkills}
-                    mentor={mentor}
-                        setMentor={props.setMentor}
-                    officeHours={officeHours}
-                        setOfficeHours={props.setOfficeHours}
-                    techMockInterview={techMockInterview}
-                        setTechMockInterview={props.setTechMockInterview}
-                    behavioralMockInterview={behavioralMockInterview}
-                        setBehavioralMockInterview={props.setBehavioralMockInterview}
-                    professionalSkillsCoach={professionalSkillsCoach}
-                        setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
-                    hostSiteVisit={hostSiteVisit}
-                        setHostSiteVisit={props.setHostSiteVisit}
-                    industrySpeaker={industrySpeaker}
-                        setIndustrySpeaker={props.setIndustrySpeaker}
-                    publicProfile={publicProfile}
-                        setPublicProfile={props.setPublicProfile}
-                />
-
             </form>
         </div>
     )
