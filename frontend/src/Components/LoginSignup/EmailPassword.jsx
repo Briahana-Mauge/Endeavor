@@ -3,10 +3,7 @@ import React from 'react';
 export default function EmailPassword(props) {
     return (
         <div className='g1-landing__auth container col-11'>
-            {props.formType === 'login'
-                ? <h2 className="g1-landing-mode--login">Log In</h2>
-                : <h2 className="g1-landing-mode--signup">Sign Up</h2>
-            }
+            <h2 className="g1-landing-mode--login">Log In</h2>
             <div className="g1-auth__inputs">
                 <label htmlFor="emailTxt">Email address</label>
                 <input 
@@ -32,7 +29,6 @@ export default function EmailPassword(props) {
                 />
                 <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
             </div>
-            <div className='btn btn-link g1-btn--toggle-signup' onClick={() => props.setFormType('signup')}>New to Endeavor? Sign Up</div>
         </div>
     )
 }

@@ -96,21 +96,22 @@ export default function LoginSignup(props) {
     }
     
     return (
-        <>
-            <header className="g1-landing__header container">
+        <div className="g1Landing">
+            <header className="g1Landing__header container">
                 <img className='appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
             </header>
 
-            <section className="g1-landing__hero container">
+            <section className="g1Landing__hero container">
                 <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
                 <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
-                {/* { formType === 'login'
-                    ?
-                    : <span className='btn btn-link' onClick={() => props.setFormType('login')}>Have an Account Already?</span>
-                } */}
             </section>
 
-            <form className='g1-landing__form form-row' onSubmit={handleFormSubmit}>
+            <form className='g1Landing__g1LandingForm g1LandingForm form-row' onSubmit={handleFormSubmit}>
+                {props.formType === 'login'
+                    ? <div className='btn btn-link g1LandingForm__btn-to-signup' onClick={() => props.setFormType('signup')}>New to Endeavor? Sign Up</div>
+                    : <div className='btn btn-link g1LandingForm__btn-to-login' onClick={() => props.setFormType('login')}>Already a User? Log In</div>
+                }
+
                 <EmailPassword 
                     email={email}
                         setEmail={props.setEmail}
@@ -121,7 +122,7 @@ export default function LoginSignup(props) {
                     userType={userType}
                 />
 
-                {/* <CommonSubForm
+                <CommonSubForm
                     setFeedback={props.setFeedback}
                     formType={formType} 
                         setFormType={props.setFormType} 
@@ -157,9 +158,9 @@ export default function LoginSignup(props) {
                         setIndustrySpeaker={props.setIndustrySpeaker}
                     publicProfile={publicProfile}
                         setPublicProfile={props.setPublicProfile}
-                /> */}
+                />
 
             </form>
-        </>
+        </div>
     )
 }

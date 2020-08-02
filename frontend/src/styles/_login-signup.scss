@@ -1,4 +1,4 @@
-.g1-landing {
+.g1Landing {
     &__header .appLogo {
         height: 3.3rem;
         margin-top: 1%;
@@ -32,9 +32,26 @@
 
     }
 
-    &__form {
-        .g1-landing-mode--login,
-        .g1-landing-mode--signup {
+    .g1LandingForm {
+        &__btn-to-signup,
+        &__btn-to-login {
+            display: block; // overrides d: inline-block from .btn
+            max-width: fit-content;
+
+            color: var(--color-highlight);
+
+            &:hover {
+                color: var(--color-white);
+            }
+        }
+
+        &__btn-to-signup {
+            order: 1;
+            margin: 2rem auto 0;
+        }
+
+        h2.g1-landing-mode--login,
+        h2.g1-landing-mode--signup {
             max-width: fit-content;
             margin: 0 auto;
 
@@ -59,18 +76,6 @@
         .g1-btn--submit {
             width: 100%;
             margin: 1rem auto 0;
-        }
-
-        .g1-btn--toggle-signup {
-            display: block; // overrides d: inline-block from .btn
-            max-width: fit-content;
-            margin: 2rem auto 0;
-
-            color: var(--color-highlight);
-
-            &:hover {
-                color: var(--color-white);
-            }
         }
     }
 }

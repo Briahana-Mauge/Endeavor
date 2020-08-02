@@ -13,9 +13,9 @@ export default function CommonSubForm(props) {
         <>
             {
                 props.formType === 'login'
-                ? 
+                ? <div></div>
                     // <span className='col-12 d-flex flex-wrap justify-content-center'>
-                    <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
+                    // <button type='submit' className='btn btn-primary g1-btn--submit'>Log In</button>
                     //     <span className='mb-2 mx-2 mr-sm-2'>New to this app?
                     //         <span className='btn btn-link' onClick={() => props.setFormType('signup')}>Sign up</span>
                     //     </span>
