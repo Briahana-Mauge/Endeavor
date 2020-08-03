@@ -101,10 +101,13 @@ export default function LoginSignup(props) {
                 <img className='appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
             </header>
 
-            <section className="g1Landing__hero container">
-                <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
-                <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
-            </section>
+            {props.formType === 'login'
+                ?   <section className="g1Landing__hero container">
+                        <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
+                        <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
+                    </section>
+                :   null
+            }
 
             <form className='g1Landing__g1LandingForm g1LandingForm container' onSubmit={handleFormSubmit}>
                 {props.formType === 'login'
@@ -129,7 +132,7 @@ export default function LoginSignup(props) {
                     : // SIGNUP MODE
                         <>
                             <div className='btn btn-link g1LandingForm__btn-to-login' onClick={() => props.setFormType('login')}>Already a User? Log In</div>
-                            <h2 className="g1LandingForm__header--signup">Sign Up</h2>
+                            <h1 className="tagline">Sign Up</h1>
                             <SignupForm
                                 setFeedback={props.setFeedback}
                                 formType={formType}
