@@ -101,13 +101,10 @@ export default function LoginSignup(props) {
                 <img className='appLogo' src='/images/Endeavor_Logo.png' alt='app logo'/>
             </header>
 
-            {props.formType === 'login'
-                ?   <section className="g1Landing__hero container">
-                        <h1 className="tagline">Mobilize. Engage. ACHIEVE.</h1>
-                        <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
-                    </section>
-                :   null
-            }
+            <section className="g1Landing__hero container">
+                <h1 className={props.formType === 'login' ? "g1Tagline" : "g1Tagline g1Tagline--small"}>Mobilize. Engage. ACHIEVE.</h1>
+                <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
+            </section>
 
             <form className='g1Landing__g1LandingForm g1LandingForm container' onSubmit={handleFormSubmit}>
                 {props.formType === 'login'

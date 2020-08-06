@@ -11,16 +11,23 @@
     &__hero {
         width: 90%;
         margin-bottom: 3vh;
-        margin-top: 8vh;
         text-align: center;
 
-        h1.tagline {
+        h1.g1Tagline {
+            margin-top: 8vh;
             font-family: var(--ff-top);
             font-size: 3.1rem;
             line-height: 1.1;
+            transition: color .7s linear, font-size .7s linear,  margin .7s ease-out;
 
             @media (max-width: 575px) {
                 font-size: 2.1rem;
+            }
+
+            &--small {
+                margin-top: 2vh;
+                font-size: 1.2rem;
+                color: #aaa;
             }
         }
 
@@ -28,6 +35,13 @@
             margin-top: .7rem;
             line-height: 1.5;
             color: #999;
+            transition: transform .7s linear, color 1.6s ease-out, font-size .7s linear;
+        }
+
+        h1.g1Tagline--small + p {
+            font-size: .9rem;
+            color: #555;
+            transform: translateY(-.3rem);
         }
 
     }
