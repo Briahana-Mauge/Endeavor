@@ -1,52 +1,65 @@
 import React from 'react';
 
-import SignupAdminSubForm from './SignupAdminSubForm';
+import FirstAndLastNameInputs from './FirstAndLastNameInputs';
+import LoginInputs from './LoginInputs';
+import UserTypeSelection from './UserTypeSelection';
+import ChangePasswordInputs from './ChangePasswordInputs';
 import SignupFellowSubForm from './SignupFellowSubForm';
 import SignupVolunteerSubForm from './SignupVolunteerSubForm';
-import UserTypeSelection from './UserTypeSelection';
-import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 
 
 export default function SignupForm(props) {
     
     return (
         <>
-            <UserTypeSelection 
-                userType={props.userType}
-                setUserType={props.setUserType}
-            />
+            <div className="row col-12">
 
-            <FirstAndLastNameInputs 
-                firstName={props.firstName}
-                setFirstName={props.setFirstName}
-                lastName={props.lastName}
-                setLastName={props.setLastName}
-            />
+                <div className="g1LandingForm__col col-12 col-sm-6">
+                    <FirstAndLastNameInputs
+                        firstName={props.firstName}
+                        setFirstName={props.setFirstName}
+                        lastName={props.lastName}
+                        setLastName={props.setLastName}
+                    />
+                    <LoginInputs
+                        email={props.email}
+                            setEmail={props.setEmail}
+                        password={props.password}
+                            setPassword={props.setPassword}
+                        formType={props.formType}
+                        userType={props.userType}
+                    />
+                    {
+                        props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow')
+                        ? <ChangePasswordInputs newPassword={props.newPassword} setNewPassword={props.setNewPassword} />
+                        : null
+                    }
+                </div>
 
+                <div className="g1LandingForm__col col-12 col-sm-6">
+                    <UserTypeSelection
+                        userType={props.userType}
+                        setUserType={props.setUserType}
+                    />
+                    {
+                        props.formType === 'signup' && props.userType === 'fellow'
+                            ? <>
+                                <SignupFellowSubForm
+                                    setFeedback={props.setFeedback}
+                                    cohortId={props.cohortId}
+                                    setCohortId={props.setCohortId}
+                                    />
+                                </>
+                            : null
+                    }
+                </div>
 
-            {
-                props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow')
-                ? <SignupAdminSubForm newPassword={props.newPassword} setNewPassword={props.setNewPassword}/>
-                : null
-                
-            }
+            </div>
 
-            {
-                props.formType === 'signup' && props.userType === 'fellow'
-                ? <>
-                    <SignupFellowSubForm 
-                        setFeedback={props.setFeedback}
-                        cohortId={props.cohortId}
-                        setCohortId={props.setCohortId}
-                        />
-                    </>
-                : null
-            }
-            
             {
                 props.formType === 'signup' && props.userType === 'volunteer'
                 ? <SignupVolunteerSubForm 
-                    setFeedback={props.setFeedback} 
+                    setFeedback={props.setFeedback}
                     company={props.company}
                     setCompany={props.setCompany}
                     title={props.title}
@@ -73,13 +86,12 @@ export default function SignupForm(props) {
                 : null
             }
 
+            {
+                props.userType === ''
+                    ? null
+                    : <button type='submit' className='btn btn-primary g1-btn--submit'>Sign Up</button>
+            }
 
-            <span className='col-12 d-flex flex-wrap justify-content-between'>
-                <button type='submit' className='btn btn-primary'>Sign Up</button>
-                {/* <span className='mb-2 mx-2 mr-sm-2'>Already a user?
-                    <span className='btn btn-link' onClick={() => props.setFormType('login')}>Sign In</span>
-                </span> */}
-            </span>
         </>
     )
 }

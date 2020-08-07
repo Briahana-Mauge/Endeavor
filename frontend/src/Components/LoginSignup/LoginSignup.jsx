@@ -129,7 +129,7 @@ export default function LoginSignup(props) {
                     : // SIGNUP MODE
                         <>
                             <div className='btn btn-link g1LandingForm__btn-to-login' onClick={() => props.setFormType('login')}>Already a User? Log In</div>
-                            <h1 className="tagline">Sign Up</h1>
+                            <h1 className="g1LandingForm__header--signup">Sign Up</h1>
                             <SignupForm
                                 setFeedback={props.setFeedback}
                                 formType={formType}

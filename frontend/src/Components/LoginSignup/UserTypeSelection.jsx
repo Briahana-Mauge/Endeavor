@@ -3,32 +3,10 @@ import React from 'react';
 export default function UserTypeSelection(props) {
     return (
         <>
-            <div className='col-12 d-flex flex-wrap justify-content-between'>
-                <div className='form-group form-check'>
-                    <label className='form-check-label'>
-                        <input 
-                            className='form-check-input' 
-                            type='radio' 
-                            name='userType'
-                            value={props.userType}
-                            onChange={() => props.setUserType('admin')}
-                        /> Admin
-                    </label>
-                </div>
-                
-                <div className='form-group form-check'>
-                    <label className='form-check-label'>
-                        <input 
-                            className='form-check-input' 
-                            type='radio' 
-                            name='userType'
-                            value={props.userType}
-                            onChange={() => props.setUserType('volunteer')}
-                        /> Volunteer
-                    </label>
-                </div>
+            <div className='g1UsertypeSelect'>
+                Are you a Pursuit Fellow or Staff member?
 
-                <div className='form-group form-check'>
+                <div className='form-check'>
                     <label className='form-check-label'>
                         <input 
                             className='form-check-input' 
@@ -36,9 +14,37 @@ export default function UserTypeSelection(props) {
                             name='userType'
                             value={props.userType}
                             onChange={() => props.setUserType('fellow')}
-                        /> Fellow
+                        />
+                        Yes, Fellow!
                     </label>
                 </div>
+
+                <div className='form-check'>
+                    <label className='form-check-label'>
+                        <input 
+                            className='form-check-input' 
+                            type='radio' 
+                            name='userType'
+                            value={props.userType}
+                            onChange={() => props.setUserType('admin')}
+                        />
+                        Yes, Staff!
+                    </label>
+                </div>
+
+                <div className='form-check'>
+                    <label className='form-check-label'>
+                        <input 
+                            className='form-check-input' 
+                            type='radio' 
+                            name='userType'
+                            value={props.userType}
+                            onChange={() => props.setUserType('volunteer')}
+                        />
+                        No, I want to become a Volunteer!
+                    </label>
+                </div>
+
             </div>
         </>
     )
