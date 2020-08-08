@@ -56,7 +56,7 @@ export default function SignupVolunteerSubForm(props) {
     
     return (
         <>
-            <div className='col-sm-6'>
+            {/* <div className='col-sm-6'>
                 <input 
                     type='text' 
                     className='form-control mb-2' 
@@ -74,7 +74,7 @@ export default function SignupVolunteerSubForm(props) {
                     value={props.title}
                     onChange={e => props.setTitle(e.target.value)}
                     />
-            </div>
+            </div> */}
 
             <div className='col-12 col-md-6'>
                 <span>Please select all the skills you're interested in helping our fellows with</span> <br />
