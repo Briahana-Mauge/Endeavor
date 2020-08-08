@@ -14,7 +14,7 @@ export default function SignupForm(props) {
         <>
             <div className="row col-12">
 
-                <div className="g1LandingForm__col col-12 col-sm-6">
+                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
                     <FirstAndLastNameInputs
                         firstName={props.firstName}
                         setFirstName={props.setFirstName}
@@ -43,53 +43,76 @@ export default function SignupForm(props) {
                     />
                     {
                         props.formType === 'signup' && props.userType === 'fellow'
-                            ? <>
-                                <FellowCohortInput
-                                    setFeedback={props.setFeedback}
-                                    cohortId={props.cohortId}
-                                    setCohortId={props.setCohortId}
+                            ?   <>
+                                    <FellowCohortInput
+                                        setFeedback={props.setFeedback}
+                                        cohortId={props.cohortId}
+                                        setCohortId={props.setCohortId}
                                     />
                                 </>
                             : null
                     }
+                    {
+                        props.formType === 'signup' && props.userType === 'volunteer'
+                            ?   <>
+                                    <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer</label>
+                                    <input
+                                        type='text'
+                                        id='companyTxt'
+                                        className='form-control'
+                                        placeholder=''
+                                        value={props.company}
+                                        onChange={e => props.setCompany(e.target.value)}
+                                    />
+                                    <label htmlFor="titleTxt" className="g1TxtLabel">Position</label>
+                                    <input
+                                        type='text'
+                                        id='titleTxt'
+                                        className='form-control'
+                                        placeholder=''
+                                        value={props.title}
+                                        onChange={e => props.setTitle(e.target.value)}
+                                    />
+                                </>
+                            :   null
+                    }
                 </div>
-
             </div>
 
             {
                 props.formType === 'signup' && props.userType === 'volunteer'
-                ? <SignupVolunteerSubForm 
-                    setFeedback={props.setFeedback}
-                    company={props.company}
-                    setCompany={props.setCompany}
-                    title={props.title}
-                    setTitle={props.setTitle}
-                    volunteerSkills={props.volunteerSkills}
-                    setVolunteerSkills={props.setVolunteerSkills}
-                    mentor={props.mentor}
-                    setMentor={props.setMentor}
-                    officeHours={props.officeHours}
-                    setOfficeHours={props.setOfficeHours}
-                    techMockInterview={props.techMockInterview}
-                    setTechMockInterview={props.setTechMockInterview}
-                    behavioralMockInterview={props.behavioralMockInterview}
-                    setBehavioralMockInterview={props.setBehavioralMockInterview}
-                    professionalSkillsCoach={props.professionalSkillsCoach}
-                    setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
-                    hostSiteVisit={props.hostSiteVisit}
-                    setHostSiteVisit={props.setHostSiteVisit}
-                    industrySpeaker={props.industrySpeaker}
-                    setIndustrySpeaker={props.setIndustrySpeaker}
-                    publicProfile={props.publicProfile}
-                    setPublicProfile={props.setPublicProfile}
-                    />
-                : null
+                    ?   <SignupVolunteerSubForm
+                            setFeedback={props.setFeedback}
+                            company={props.company}
+                            setCompany={props.setCompany}
+                            title={props.title}
+                            setTitle={props.setTitle}
+                            volunteerSkills={props.volunteerSkills}
+                            setVolunteerSkills={props.setVolunteerSkills}
+                            mentor={props.mentor}
+                            setMentor={props.setMentor}
+                            officeHours={props.officeHours}
+                            setOfficeHours={props.setOfficeHours}
+                            techMockInterview={props.techMockInterview}
+                            setTechMockInterview={props.setTechMockInterview}
+                            behavioralMockInterview={props.behavioralMockInterview}
+                            setBehavioralMockInterview={props.setBehavioralMockInterview}
+                            professionalSkillsCoach={props.professionalSkillsCoach}
+                            setProfessionalSkillsCoach={props.setProfessionalSkillsCoach}
+                            hostSiteVisit={props.hostSiteVisit}
+                            setHostSiteVisit={props.setHostSiteVisit}
+                            industrySpeaker={props.industrySpeaker}
+                            setIndustrySpeaker={props.setIndustrySpeaker}
+                            publicProfile={props.publicProfile}
+                            setPublicProfile={props.setPublicProfile}
+                        />
+                    :   null
             }
 
             {
-                props.userType === ''
-                    ? null
-                    : <button type='submit' className='btn btn-primary g1-btn--submit'>Sign Up</button>
+                props.userType !== '' // displays submit button after userType selection
+                    ? <button type='submit' className='btn btn-primary g1-btn--submit'>Sign Up</button>
+                    : null
             }
 
         </>
