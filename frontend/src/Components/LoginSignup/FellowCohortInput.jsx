@@ -32,9 +32,27 @@ export default function FellowCohortInput (props) {
 
     return (
         <>
-            <select className='form-control mt-auto' onChange={e => props.setCohortId(e.target.value)} value={props.cohortId}>
-                <option value={0}> -- Cohort --</option>
-                {cohortsList.map(cohort => <option key={cohort.cohort_id+cohort.cohort} value={cohort.cohort_id}>{cohort.cohort}</option>)}
+            <label htmlFor="cohortSel" className="g1TxtLabel mt-auto">Cohort</label>
+            <select
+                className='form-control'
+                id='cohortSel'
+                onChange={e => props.setCohortId(e.target.value)}
+                value={props.cohortId}
+            >
+                <option value={0}>-- Select your cohort --</option>
+                {cohortsList
+                    .filter(cohortObj => !isNaN(parseInt(cohortObj.cohort)))
+                    .map(cohortObj => {
+                        return (
+                            <option
+                                key={cohortObj.cohort_id + cohortObj.cohort}
+                                value={cohortObj.cohort_id}
+                            >
+                                {cohortObj.cohort}
+                            </option>
+                        )
+                    })
+                }
             </select>
         </>
     )
