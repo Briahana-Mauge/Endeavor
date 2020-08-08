@@ -4,7 +4,7 @@ import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 import LoginInputs from './LoginInputs';
 import UserTypeSelection from './UserTypeSelection';
 import ChangePasswordInputs from './ChangePasswordInputs';
-import SignupFellowSubForm from './SignupFellowSubForm';
+import FellowCohortInput from './FellowCohortInput';
 import SignupVolunteerSubForm from './SignupVolunteerSubForm';
 
 
@@ -36,7 +36,7 @@ export default function SignupForm(props) {
                     }
                 </div>
 
-                <div className="g1LandingForm__col col-12 col-sm-6">
+                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
                     <UserTypeSelection
                         userType={props.userType}
                         setUserType={props.setUserType}
@@ -44,7 +44,7 @@ export default function SignupForm(props) {
                     {
                         props.formType === 'signup' && props.userType === 'fellow'
                             ? <>
-                                <SignupFellowSubForm
+                                <FellowCohortInput
                                     setFeedback={props.setFeedback}
                                     cohortId={props.cohortId}
                                     setCohortId={props.setCohortId}
