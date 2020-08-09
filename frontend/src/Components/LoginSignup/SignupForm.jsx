@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FirstAndLastNameInputs from './FirstAndLastNameInputs';
 import LoginInputs from './LoginInputs';
 import UserTypeSelection from './UserTypeSelection';
-import ChangePasswordInputs from './ChangePasswordInputs';
+import GetNewPasswordInputs from './GetNewPasswordInputs';
 import FellowCohortInput from './FellowCohortInput';
 import SignupVolunteerSubForm from './SignupVolunteerSubForm';
 
 
 export default function SignupForm(props) {
-    
+    const [ confirmPassword, setConfirmPassword ] = useState('');
+
+    const isSignupDisabled = (
+        props.userType === '' ||
+        confirmPassword === '' ||
+        confirmPassword !== props.newPassword
+    );
+
+
     return (
         <>
             <div className="row col-12">
@@ -110,10 +118,21 @@ export default function SignupForm(props) {
                     :   null
             }
 
-            {
-                props.userType !== '' // displays submit button after userType selection
-                    ? <button type='submit' className='btn btn-primary g1-btn--submit'>Sign Up</button>
-                    : null
+            {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
+                isSignupDisabled
+                    ?   <button
+                            type='submit'
+                            className='btn btn-primary g1-btn--submit disabled'
+                            disabled
+                        >
+                            Sign Up
+                        </button>
+                    :   <button
+                            type='submit'
+                            className='btn btn-primary g1-btn--submit'
+                        >
+                            Sign Up
+                        </button>
             }
 
         </>
