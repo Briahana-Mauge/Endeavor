@@ -29,11 +29,12 @@ export default function SignupForm(props) {
                         formType={props.formType}
                         userType={props.userType}
                     />
-                    {
-                        props.formType === 'signup' && (props.userType === 'admin' || props.userType === 'fellow')
-                        ? <ChangePasswordInputs newPassword={props.newPassword} setNewPassword={props.setNewPassword} />
-                        : null
-                    }
+                    <GetNewPasswordInputs
+                        newPassword={props.newPassword}
+                        setNewPassword={props.setNewPassword}
+                        confirmPassword={confirmPassword}
+                        setConfirmPassword={setConfirmPassword}
+                    />
                 </div>
 
                 <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">

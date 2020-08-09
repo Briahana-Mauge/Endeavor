@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ChangePasswordInputs (props) {
+export default function GetNewPasswordInputs(props) {
     return (
         <>
             <label htmlFor="newPasswordTxt" className="g1TxtLabel">New Password</label>
