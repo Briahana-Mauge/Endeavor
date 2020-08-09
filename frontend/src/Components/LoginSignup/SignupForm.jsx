@@ -42,7 +42,7 @@ export default function SignupForm(props) {
                         userType={props.userType}
                         setUserType={props.setUserType}
                     />
-                    {
+                    {   // Fellow Cohort Select
                         props.formType === 'signup' && props.userType === 'fellow'
                             ?   <>
                                     <FellowCohortInput
@@ -53,7 +53,7 @@ export default function SignupForm(props) {
                                 </>
                             : null
                     }
-                    {
+                    {   // Volunteer Company and Title Inputs
                         props.formType === 'signup' && props.userType === 'volunteer'
                             ?   <>
                                     <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer</label>
@@ -80,7 +80,7 @@ export default function SignupForm(props) {
                 </div>
             </div>
 
-            {
+            {   // Volunteer-Specific Form
                 props.formType === 'signup' && props.userType === 'volunteer'
                     ?   <SignupVolunteerSubForm
                             setFeedback={props.setFeedback}
