@@ -132,6 +132,10 @@ export default function LoginSignup(props) {
                             <h1 className="g1LandingForm__header--signup">Sign Up</h1>
                             <SignupForm
                                 setFeedback={props.setFeedback}
+                                email={email}
+                                    setEmail={props.setEmail}
+                                password={password}
+                                    setPassword={props.setPassword}
                                 formType={formType}
                                     setFormType={props.setFormType}
                                 userType={userType}
