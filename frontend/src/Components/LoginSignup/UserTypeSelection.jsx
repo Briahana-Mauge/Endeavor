@@ -41,7 +41,7 @@ export default function UserTypeSelection(props) {
                             value={props.userType}
                             onChange={() => props.setUserType('volunteer')}
                         />
-                        No, I'm want to become an industry Volunteer!
+                        No, I want to register as an industry Volunteer!
                     </label>
                 </div>
 
