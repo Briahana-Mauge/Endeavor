@@ -64,10 +64,10 @@ export default function LoginSignup(props) {
                     props.settleUser(data.payload);
                     history.replace(from);
                 } 
-                else if (props.userType === 'volunteer' && email && password && firstName && lastName && company && title) {
+                else if (props.userType === 'volunteer' && email && newPassword && firstName && lastName && company && title) {
                     const userData = {
                         email, 
-                        password, 
+                        password: newPassword,
                         firstName, 
                         lastName, 
                         company,
