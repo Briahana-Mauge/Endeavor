@@ -15,7 +15,7 @@ export default function LoginInputs(props) {
                 value={props.email}
                 onChange={e => props.setEmail(e.target.value)}
             />
-            {   // No password input for new volunteer
+            {   // Neither Given Password or Password input for new volunteer, hides
                 isLogin || (isPursuitSignup && props.userType !== '') // hidden initially when no usertype selected yet
                     ?   <>
                             <label htmlFor="passwordTxt" className="g1TxtLabel">
