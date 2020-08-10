@@ -106,7 +106,7 @@ export default function LoginSignup(props) {
                 <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
             </section>
 
-            <form className='g1Landing__g1LandingForm g1LandingForm container' onSubmit={handleFormSubmit}>
+            <form className='g1Landing__g1LandingForm g1LandingForm container pb-4' onSubmit={handleFormSubmit}>
                 {props.formType === 'login'
 
                     ? // LOGIN MODE

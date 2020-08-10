@@ -118,22 +118,24 @@ export default function SignupForm(props) {
                     :   null
             }
 
-            {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
-                isSignupDisabled
-                    ?   <button
-                            type='submit'
-                            className='btn btn-primary g1-btn--submit disabled'
-                            disabled
-                        >
-                            Sign Up
-                        </button>
-                    :   <button
-                            type='submit'
-                            className='btn btn-primary g1-btn--submit'
-                        >
-                            Sign Up
-                        </button>
-            }
+            <div className="g1LandingForm__col mt-4">
+                {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
+                    isSignupDisabled
+                        ?   <button
+                                type='submit'
+                                className='btn btn-primary g1-btn--submit disabled'
+                                disabled
+                            >
+                                Sign Up
+                            </button>
+                        :   <button
+                                type='submit'
+                                className='btn btn-primary g1-btn--submit'
+                            >
+                                Sign Up
+                            </button>
+                }
+            </div>
 
         </>
     )
