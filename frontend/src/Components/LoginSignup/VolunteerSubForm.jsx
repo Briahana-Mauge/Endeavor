@@ -120,7 +120,7 @@ export default function VolunteerSubForm(props) {
 
 
     return (
-        <div className="g1VolunteerSubForm row col-12 mt-4">
+        <div className="g1VolunteerSubForm row col-12 my-4">
 
             <div className="col-12"> {/* nested Bootstrap col for consistent padding */}
                 <hr className="mb-4" />
@@ -128,15 +128,15 @@ export default function VolunteerSubForm(props) {
             </div>
 
             <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
-                <div className="g1LandingForm__SkillsHeader">Languages</div>
+                <div className="g1SkillsHeader">Languages</div>
                 {listLanguages}
             </div>
             <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
-                <div className="g1LandingForm__SkillsHeader">Frameworks</div>
+                <div className="g1SkillsHeader">Frameworks</div>
                 {listFrameworks}
             </div>
             <div className="col-12 col-lg-6 mt-sm-2 mt-lg-0 d-flex flex-column">
-                <div className="g1LandingForm__SkillsHeader">Other Skills</div>
+                <div className="g1SkillsHeader">Other Skills</div>
                 {listOtherSkills}
             </div>
 

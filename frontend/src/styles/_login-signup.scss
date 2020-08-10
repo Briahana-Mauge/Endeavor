@@ -100,15 +100,6 @@
 
         .g1VolunteerSubForm {
             max-width: 52rem;
-
-            hr {
-                border-top: 3px outset var(--color-white);
-            }
-        }
-
-        &__SkillsHeader {
-            margin: 1.2em 0 .6em;
-            font-style: italic;
         }
 
         .g1-btn--submit {
@@ -121,4 +112,10 @@
             }
         }
     }
+}
+
+// placed out in base layer for component use in different places
+.g1SkillsHeader {
+    margin: 1.2em 0 .6em;
+    font-style: italic;
 }

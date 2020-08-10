@@ -118,7 +118,7 @@ export default function SignupForm(props) {
                     :   null
             }
 
-            <div className="g1LandingForm__col mt-4">
+            <div className="g1LandingForm__col">
                 {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
                     isSignupDisabled
                         ?   <button
