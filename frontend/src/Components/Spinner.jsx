@@ -3,7 +3,7 @@ import { AtomSpinner } from 'react-epic-spinners';
 
 const Spinner = (props) => {
     return (
-        <AtomSpinner className = {`spinner ${props.className}`} color = "#8d8558" size = {props.size || 300}/>
+        <AtomSpinner className = {`spinner ${props.className}`} color = "#aba26e" size = {props.size || 300}/>
     );
 }
 
