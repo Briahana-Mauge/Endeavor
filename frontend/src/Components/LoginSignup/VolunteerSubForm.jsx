@@ -128,18 +128,17 @@ export default function VolunteerSubForm(props) {
                     Please select all the skills you're interested and capable of helping our fellows with:
                 </div>
 
-                <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
-                    <div className="g1LandingForm__SkillsHeader">Languages</div>
-                    {listLanguages}
-                </div>
-                <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
-                    <div className="g1LandingForm__SkillsHeader">Frameworks</div>
-                    {listFrameworks}
-                </div>
-                <div className="col-12 col-lg-6 mt-sm-2 mt-lg-0 d-flex flex-column">
-                    <div className="g1LandingForm__SkillsHeader">Other Skills</div>
-                    {listOtherSkills}
-                </div>
+            <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
+                <div className="g1LandingForm__SkillsHeader">Languages</div>
+                {listLanguages}
+            </div>
+            <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
+                <div className="g1LandingForm__SkillsHeader">Frameworks</div>
+                {listFrameworks}
+            </div>
+            <div className="col-12 col-lg-6 mt-sm-2 mt-lg-0 d-flex flex-column">
+                <div className="g1LandingForm__SkillsHeader">Other Skills</div>
+                {listOtherSkills}
             </div>
 
             <div className='col-12 col-md-6'>
