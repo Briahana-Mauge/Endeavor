@@ -98,6 +98,19 @@
             margin-top: .3rem;
         }
 
+        .g1VolunteerSubForm {
+            max-width: 52rem;
+
+            hr {
+                border-top: 3px outset var(--color-white);
+            }
+        }
+
+        &__SkillsHeader {
+            margin: 1.2em 0 .6em;
+            font-style: italic;
+        }
+
         .g1-btn--submit {
             width: 100%;
             margin-top: 1.4rem;
