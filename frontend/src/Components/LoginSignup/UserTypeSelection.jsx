@@ -3,7 +3,7 @@ import React from 'react';
 export default function UserTypeSelection(props) {
     return (
         <>
-            <div className='g1UsertypeSelect'>
+            <div className='g1UsertypeSelect my-2 my-sm-0'>
                 Are you a Pursuit Fellow or Staff member?
 
                 <div className='form-check'>
