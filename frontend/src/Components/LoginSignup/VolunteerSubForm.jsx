@@ -145,12 +145,13 @@ export default function VolunteerSubForm(props) {
                 Which of the following are you interested in assisting with?
             </div>
 
+            <div className='col-12'>
                 <div className='custom-control custom-switch mb-2'>
                     <input 
                         type='checkbox' className='custom-control-input' id='mentoring'
                         checked={props.mentor} onChange={e => props.setMentor(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='mentoring'>Interested in mentoring a Pursuit Fellow?</label>
+                    <label className='custom-control-label' htmlFor='mentoring'>Mentoring a Pursuit Fellow?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -158,7 +159,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='officeHours'
                         checked={props.officeHours} onChange={e => props.setOfficeHours(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='officeHours'>Interested in being an Office Hours mentor?</label>
+                    <label className='custom-control-label' htmlFor='officeHours'>Being an Office Hours mentor?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -166,7 +167,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='mockTechInterview'
                         checked={props.techMockInterview} onChange={e => props.setTechMockInterview(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='mockTechInterview'>Interested in administering mock technical interviews?</label>
+                    <label className='custom-control-label' htmlFor='mockTechInterview'>Administering mock technical interviews?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -174,7 +175,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='behavioralInterview'
                         checked={props.behavioralMockInterview} onChange={e => props.setBehavioralMockInterview(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='behavioralInterview'>Interested in behavioral interviewing?</label>
+                    <label className='custom-control-label' htmlFor='behavioralInterview'>Behavioral interviewing?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -182,7 +183,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='professionalSkills'
                         checked={props.professionalSkillsCoach} onChange={e => props.setProfessionalSkillsCoach(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='professionalSkills'>Interested in being a professional skills coach?</label>
+                    <label className='custom-control-label' htmlFor='professionalSkills'>Being a professional skills coach?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -190,7 +191,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='siteVisit'
                         checked={props.hostSiteVisit} onChange={e => props.setHostSiteVisit(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='siteVisit'>Interested in hosting a Site Visit at your office?</label>
+                    <label className='custom-control-label' htmlFor='siteVisit'>Hosting a Site Visit at your office?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
@@ -198,7 +199,7 @@ export default function VolunteerSubForm(props) {
                         type='checkbox' className='custom-control-input' id='industrySpeaker'
                         checked={props.industrySpeaker} onChange={e => props.setIndustrySpeaker(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='industrySpeaker'>Interested in being an Industry Speaker?</label>
+                    <label className='custom-control-label' htmlFor='industrySpeaker'>Being an Industry Speaker?</label>
                 </div>
 
                 <div className='custom-control custom-switch mb-2'>
