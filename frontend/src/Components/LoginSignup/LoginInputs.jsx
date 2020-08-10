@@ -1,8 +1,8 @@
 import React from 'react';
 
 export default function LoginInputs(props) {
-    const isSignup = (props.formType === 'signup');
-    const isVolunteerSignup = (props.formType === 'signup') && (props.userType === 'volunteer');
+    const isLogin = (props.formType === 'login');
+    const isPursuitSignup = (props.formType === 'signup') && (props.userType !== 'volunteer');
 
     return (
         <>
@@ -16,14 +16,13 @@ export default function LoginInputs(props) {
                 onChange={e => props.setEmail(e.target.value)}
             />
             {   // No password input for new volunteer
-                isVolunteerSignup || props.userType === ''
-                    ?   null
-                    :   <>
+                isLogin || (isPursuitSignup && props.userType !== '') // hidden initially when no usertype selected yet
+                    ?   <>
                             <label htmlFor="passwordTxt" className="g1TxtLabel">
                                 {
-                                    isSignup
-                                        ? 'Given Password'
-                                        : 'Password'
+                                    isLogin
+                                        ? 'Password'
+                                        : 'Given Password'
                                 }
                             </label>
                             <input
@@ -31,14 +30,15 @@ export default function LoginInputs(props) {
                                 id='passwordTxt'
                                 className='form-control'
                                 placeholder={
-                                    isSignup
-                                        ? 'Enter one-time password'
-                                        : ''
+                                    isLogin
+                                        ? ''
+                                        : 'Enter one-time password'
                                 }
                                 value={props.password}
                                 onChange={e => props.setPassword(e.target.value)}
                             />
                         </>
+                    :   null
             }
         </>
     )
