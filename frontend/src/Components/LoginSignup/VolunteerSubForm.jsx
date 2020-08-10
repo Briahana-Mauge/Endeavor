@@ -120,13 +120,12 @@ export default function VolunteerSubForm(props) {
 
 
     return (
-        <>
+        <div className="g1VolunteerSubForm row col-12 mt-4">
 
-            <div className="g1VolunteerSubForm row col-12 mt-4">
-                <div className="col-12"> {/* nested Bootstrap col for consistent padding */}
-                    <hr className="mb-4" />
-                    Please select all the skills you're interested and capable of helping our fellows with:
-                </div>
+            <div className="col-12"> {/* nested Bootstrap col for consistent padding */}
+                <hr className="mb-4" />
+                Please select the skills below you're interested in and capable of helping our fellows with:
+            </div>
 
             <div className="col-12 col-sm-6 col-lg-3 d-flex flex-column">
                 <div className="g1LandingForm__SkillsHeader">Languages</div>
@@ -141,8 +140,10 @@ export default function VolunteerSubForm(props) {
                 {listOtherSkills}
             </div>
 
-            <div className='col-12 col-md-6'>
-                <span>Please select all your help interests</span> <br />
+            <div className="col-12 mb-3 mt-3"> {/* nested Bootstrap col for consistent padding */}
+                <hr className="mb-4" />
+                Which of the following are you interested in assisting with?
+            </div>
 
                 <div className='custom-control custom-switch mb-2'>
                     <input 
@@ -208,6 +209,7 @@ export default function VolunteerSubForm(props) {
                     <label className='custom-control-label' htmlFor='publicProfile'>Would you like to have your profile public?</label>
                 </div>
             </div>
-        </>
+
+        </div>
     )
 }
