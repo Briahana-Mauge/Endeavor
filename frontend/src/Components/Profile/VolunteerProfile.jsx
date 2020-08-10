@@ -7,7 +7,7 @@ import LoginInputs from '../LoginSignup/LoginInputs';
 import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
-import SignupVolunteerSubForm from '../LoginSignup/SignupVolunteerSubForm';
+import VolunteerSubForm from '../LoginSignup/VolunteerSubForm';
 import Spinner from '../Spinner';
 
 export default function VolunteerProfile(props) {
@@ -169,15 +169,15 @@ export default function VolunteerProfile(props) {
     if (loading) {
         return <Spinner/>
     }
-    
+
     return (
         <>
             {
-                pathName[2] && pathName[2].toLowerCase() === 'password' 
+                pathName[2] && pathName[2].toLowerCase() === 'password'
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
                         <form className='form-row mt-3' onSubmit={props.handleUpdatePassword}>
-                            <PasswordUpdate 
+                            <PasswordUpdate
                                 password={password}
                                 setPassword={props.setPassword}
                                 newPassword={newPassword}
@@ -198,17 +198,17 @@ export default function VolunteerProfile(props) {
                                         If you chose to have your profile public, this is the slug to your profile
                                     </label>
                                     <input 
-                                        className='form-control col-sm-4' 
+                                        className='form-control col-sm-4'
                                         style={{display: 'inline-block'}}
                                         id='slugText'
-                                        type='text' 
-                                        placeholder='Slug' 
+                                        type='text'
+                                        placeholder='Slug'
                                         value={slug}
                                         onChange={e => setSlug(e.target.value)}
                                     />
                                 </div>
 
-                            <FirstAndLastNameInputs 
+                            <FirstAndLastNameInputs
                                 firstName={firstName}
                                 setFirstName={setFirstName}
                                 lastName={lastName}
@@ -222,8 +222,8 @@ export default function VolunteerProfile(props) {
                                 setPassword={props.setPassword}
                             />
 
-                            <SignupVolunteerSubForm 
-                                setFeedback={setFeedback} 
+                            <VolunteerSubForm
+                                setFeedback={setFeedback}
                                 company={company}
                                 setCompany={setCompany}
                                 title={title}
@@ -251,7 +251,7 @@ export default function VolunteerProfile(props) {
 
                             <div className='col-sm-12'>
                                 <textarea 
-                                    className='form-control mb-2' 
+                                    className='form-control mb-2'
                                     placeholder='Enter bio' 
                                     value={bio}
                                     onChange={e => setBio(e.target.value)}
@@ -260,7 +260,7 @@ export default function VolunteerProfile(props) {
 
                             <div className='col-sm-6'>
                                 <input 
-                                    className='form-control mb-2' 
+                                    className='form-control mb-2'
                                     type='text' 
                                     placeholder='LinkedIn link ' 
                                     value={linkedIn}

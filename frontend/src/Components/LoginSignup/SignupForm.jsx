@@ -5,7 +5,7 @@ import LoginInputs from './LoginInputs';
 import UserTypeSelection from './UserTypeSelection';
 import GetNewPasswordInputs from './GetNewPasswordInputs';
 import FellowCohortInput from './FellowCohortInput';
-import SignupVolunteerSubForm from './SignupVolunteerSubForm';
+import VolunteerSubForm from './VolunteerSubForm';
 
 
 export default function SignupForm(props) {
@@ -90,7 +90,7 @@ export default function SignupForm(props) {
 
             {   // Volunteer-Specific Form
                 props.formType === 'signup' && props.userType === 'volunteer'
-                    ?   <SignupVolunteerSubForm
+                    ?   <VolunteerSubForm
                             setFeedback={props.setFeedback}
                             company={props.company}
                             setCompany={props.setCompany}
