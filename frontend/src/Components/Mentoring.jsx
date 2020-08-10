@@ -182,7 +182,7 @@ export default function Mentoring(props) {
             {volunteerInfo}
             {
                 waitingForData
-                    ? <> <Spinner className='mentoring' size={100} /> {mentoringInfo} </>
+                    ? <> <Spinner size={100} /> {mentoringInfo} </>
                     : <>{mentoringInfo}</>
 
             }
