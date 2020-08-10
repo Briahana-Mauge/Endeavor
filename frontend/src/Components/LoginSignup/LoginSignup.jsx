@@ -88,6 +88,9 @@ export default function LoginSignup(props) {
                     props.setPassword('');
                     history.replace(from);
                 }
+                // reset form toggles after successful signup
+                props.setFormType('login');
+                props.setUserType('');
             }
 
         } catch (err) {
