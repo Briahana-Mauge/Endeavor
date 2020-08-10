@@ -48,6 +48,7 @@ export default function LoginSignup(props) {
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
                 props.settleUser(data.payload);
                 props.setPassword('');
+                props.setNewPassword('');
                 // reset form toggles after successful login
                 props.setFormType('login');
                 props.setUserType('');
@@ -60,12 +61,23 @@ export default function LoginSignup(props) {
                     const { data } = await axios.post(`/api/auth/admin/signup`, userData);
                     props.settleUser(data.payload);
                     props.setPassword('');
+                    props.setNewPassword('');
+                    // reset form toggles after successful signup
+                    props.setFormType('login');
+                    props.setUserType('');
+
                     history.replace(from);
                 } 
                 else if (props.userType === 'fellow' && email && password && firstName && lastName && newPassword && cohortId) {
                     const userData = {email, password, firstName, lastName, newPassword, cohortId};
                     const { data } = await axios.post(`/api/auth/fellow/signup`, userData);
                     props.settleUser(data.payload);
+                    props.setPassword('');
+                    props.setNewPassword('');
+                    // reset form toggles after successful signup
+                    props.setFormType('login');
+                    props.setUserType('');
+
                     history.replace(from);
                 } 
                 else if (props.userType === 'volunteer' && email && newPassword && firstName && lastName && company && title) {
@@ -90,11 +102,13 @@ export default function LoginSignup(props) {
                     const { data } = await axios.post(`/api/auth/volunteer/signup`, userData);
                     props.settleUser(data.payload);
                     props.setPassword('');
+                    props.setNewPassword('');
+                    // reset form toggles after successful signup
+                    props.setFormType('login');
+                    props.setUserType('');
+
                     history.replace(from);
                 }
-                // reset form toggles after successful signup
-                props.setFormType('login');
-                props.setUserType('');
             }
 
         } catch (err) {
