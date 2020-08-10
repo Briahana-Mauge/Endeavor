@@ -7,7 +7,7 @@ export default function UsersTab(props) {
     const [ password, setPassword ] = useState('');
     const [ role, setRole ] = useState('');
 
-    const handleFromSubmit = async (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         try {
@@ -23,7 +23,7 @@ export default function UsersTab(props) {
     }
 
     return (
-        <form className='form-inline mt-4' onSubmit={handleFromSubmit}>
+        <form className='form-inline mt-4' onSubmit={handleFormSubmit}>
             <input 
                 type='email' 
                 className='form-control mb-2 mr-sm-2' 
