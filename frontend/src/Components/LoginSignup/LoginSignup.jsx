@@ -48,6 +48,10 @@ export default function LoginSignup(props) {
                 const { data } = await axios.post(`/api/auth/login`, {email, password});
                 props.settleUser(data.payload);
                 props.setPassword('');
+                // reset form toggles after successful login
+                props.setFormType('login');
+                props.setUserType('');
+
                 history.replace(from);
             }
             else {
