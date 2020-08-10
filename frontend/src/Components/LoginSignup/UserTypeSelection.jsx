@@ -15,7 +15,7 @@ export default function UserTypeSelection(props) {
                             value={props.userType}
                             onChange={() => props.setUserType('fellow')}
                         />
-                        Yes, Pursuit Fellow!
+                            Yes, Pursuit Fellow!
                     </label>
                 </div>
 
@@ -28,7 +28,7 @@ export default function UserTypeSelection(props) {
                             value={props.userType}
                             onChange={() => props.setUserType('admin')}
                         />
-                        Yes, Pursuit Staff!
+                            Yes, Pursuit Staff!
                     </label>
                 </div>
 
@@ -41,7 +41,7 @@ export default function UserTypeSelection(props) {
                             value={props.userType}
                             onChange={() => props.setUserType('volunteer')}
                         />
-                        No, I want to register as an industry Volunteer!
+                            No, I want to register as an industry Volunteer!
                     </label>
                 </div>
 
