@@ -20,7 +20,7 @@ export default function SignupForm(props) {
 
     return (
         <>
-            <div className="row col-12">
+            <div className="row col-12 g1NoGutters g1SignupForm">
 
                 <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
                     <FirstAndLastNameInputs

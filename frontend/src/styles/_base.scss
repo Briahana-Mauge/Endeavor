@@ -178,9 +178,19 @@ hr {
     @media (min-width: 576px) { display: none; }
 }
 
-// previously EVENTS DASH styling here
-// previously NEW VOLUNTEERS styling here
-// previously MODALS styling here
+/* customized version of Bootstrap .no-gutters adding media responsiveness */
+@media (max-width: 575px) {
+    .g1NoGutters {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .g1NoGutters > .col,
+    .g1NoGutters > [class *= col-] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
 
 
 /* modal to profile patches */
