@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import FirstAndLastNameInputs from '../LoginSignup/FirstAndLastNameInputs';
-import EmailPassword from '../LoginSignup/EmailPassword';
+import LoginInputs from '../LoginSignup/LoginInputs';
 import ProfileTabs from './ProfileTabs';
 import PasswordUpdate from './PasswordUpdate';
 import FileUpload from './FileUpload';
@@ -110,7 +110,7 @@ export default function AdminProfile(props) {
                                 setLastName={props.setLastName}
                             />
 
-                            <EmailPassword 
+                            <LoginInputs
                                 email={email}
                                 setEmail={props.setEmail}
                                 password={password}

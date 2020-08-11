@@ -1,0 +1,121 @@
+.g1Landing {
+    &__header .appLogo {
+        height: 3.3rem;
+        margin-top: 1%;
+
+        @media (max-width: 575px) {
+            height: 2.3rem;
+        }
+    }
+
+    &__hero {
+        width: 90%;
+        margin-bottom: 3vh;
+        text-align: center;
+
+        h1.g1Tagline {
+            margin-top: 8vh;
+            font-family: var(--ff-top);
+            font-size: 3.1rem;
+            line-height: 1.1;
+            transition: color .7s linear;
+
+            @media (max-width: 575px) {
+                font-size: 2.1rem;
+            }
+
+            &--small {
+                margin-top: 2vh;
+                font-size: 1.2rem;
+                color: #bbb;
+            }
+        }
+
+        p {
+            margin-top: .7rem;
+            line-height: 1.5;
+            color: var(--color-yellow);
+        }
+
+        h1.g1Tagline--small + p {
+            font-size: .9rem;
+            transform: translateY(-.3rem);
+        }
+
+    }
+
+    .g1LandingForm {
+        @include flex-straight(column, flex-start, center);
+
+        &__col {
+            width: 100%;
+            max-width: 22rem;
+            margin: 0 auto;
+        }
+
+        &__btn-to-signup,
+        &__btn-to-login {
+            display: block; // overrides d: inline-block from .btn
+            max-width: fit-content;
+            margin-top: 2rem;
+
+            color: var(--color-highlight);
+
+            &:hover {
+                color: var(--color-white);
+            }
+        }
+
+        &__btn-to-login {
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+
+        &__header--login,
+        &__header--signup {
+            max-width: fit-content;
+
+            font-family: var(--ff-body);
+            font-size: 1.3rem;
+        }
+
+        &__header--signup {
+            font-size: 1.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .g1TxtLabel {
+            margin-bottom: 0;
+            align-self: flex-start;
+            position: relative;
+            top: 2px;
+            font-family: var(--ff-body);
+            font-size: .8rem;
+            color: #e5e5e5;
+        }
+
+        .g1UsertypeSelect {
+            margin-top: .3rem;
+        }
+
+        .g1VolunteerSubForm {
+            max-width: 52rem;
+        }
+
+        .g1-btn--submit {
+            width: 100%;
+            margin-top: 1.4rem;
+
+            &.disabled {
+                cursor: default;
+                filter: saturate(.6);
+            }
+        }
+    }
+}
+
+// placed out in base layer for component use in different places
+.g1SkillsHeader {
+    margin: 1.2em 0 .6em;
+    font-style: italic;
+}
