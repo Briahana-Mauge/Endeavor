@@ -87,24 +87,25 @@ export default function AdminProfile(props) {
                 pathName[2] && pathName[2].toLowerCase() === 'password' 
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
-                        <form className='form-row mt-3' onSubmit={props.handleUpdatePassword}>
-                            <PasswordUpdate
-                                password={password}
-                                setPassword={props.setPassword}
-                                newPassword={newPassword}
-                                setNewPassword={props.setNewPassword}
-                                confirmPassword={confirmPassword}
-                                setConfirmPassword={props.setConfirmPassword}
-                            />
-
-                            <button type='submit' className='btn btn-primary'>Update</button>
+                        <form className='mt-4' onSubmit={props.handleUpdatePassword}>
+                            <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
+                                <PasswordUpdate
+                                    password={password}
+                                    setPassword={props.setPassword}
+                                    newPassword={newPassword}
+                                    setNewPassword={props.setNewPassword}
+                                    confirmPassword={confirmPassword}
+                                    setConfirmPassword={props.setConfirmPassword}
+                                />
+                                <button type='submit' className='btn btn-primary mt-3'>Update</button>
+                            </div>
                         </form>
                     </>
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
                         <form className='mt-4' onSubmit={handleUpdateInfo}>
-                            <div className='col-12 d-flex justify-content-between mb-3 px-1'>
+                            <div className='col-11 d-flex justify-content-between mx-auto mb-3 px-1'>
                                 <button type='submit' className='btn btn-primary'>Update</button>
                                 <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
                             </div>
