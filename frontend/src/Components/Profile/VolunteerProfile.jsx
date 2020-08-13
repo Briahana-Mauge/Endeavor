@@ -195,12 +195,14 @@ export default function VolunteerProfile(props) {
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
                         <form className='mt-4' onSubmit={handleUpdateInfo}>
-                            <div className='col-11 d-flex justify-content-between mx-auto mb-3 px-1'>
-                                <button type='submit' className='btn btn-primary'>Update Profile</button>
-                                <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                            <div className='col-12 mt-4 g1NoGutters g1NoPadding mx-auto'>
+                                <div className="col-12 d-flex justify-content-between">
+                                    <button type='submit' className='btn btn-primary'>Update Profile</button>
+                                    <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                                </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row col-12 mt-4 g1NoGutters g1NoPadding mx-auto">
                                 <div className="g1InputCol col-12 col-sm-6">
                                     <FirstAndLastNameInputs
                                         firstName={firstName}
@@ -221,19 +223,34 @@ export default function VolunteerProfile(props) {
                                 </div>
                             </div>
 
-                            <div className='col-10 row mt-4 mx-auto'>
-                                <label className='col-sm-7' htmlFor='slugText'>
-                                    If you chose to have your profile public, this is the slug to your profile
+                            <div className="row col-12 g1NoGutters g1NoPadding mx-auto">
+                                <label htmlFor="emailTxt" className="g1TxtLabel col-12">Bio
+                                    <textarea
+                                        className='form-control'
+                                        placeholder=''
+                                        value={bio}
+                                        onChange={e => setBio(e.target.value)}
+                                    />
                                 </label>
-                                <input
-                                    className='form-control col-sm-5'
-                                    style={{display: 'inline-block'}}
-                                    id='slugText'
-                                    type='text'
-                                    placeholder='Slug'
-                                    value={slug}
-                                    onChange={e => setSlug(e.target.value)}
-                                />
+
+                                <label htmlFor="emailTxt" className="g1TxtLabel col-12">LinkedIn URL
+                                    <input
+                                        className='form-control'
+                                        type='text'
+                                        placeholder='https://'
+                                        value={linkedIn}
+                                        onChange={e => setLinkedIn(e.target.value)}
+                                    />
+                                </label>
+                            </div>
+
+                            {/* <div className="col-12">
+                                <div className="col-12"> double div for width consistency with other divs */}
+                                    {/* <hr className='mt-1 mb-4 mx-auto' />
+                                </div>
+                            </div> */}
+                            <div className="row col-12 mt-3 g1NoGutters g1NoPadding mx-auto">
+                                <FileUpload imageLink={loggedUser.v_picture} setPicFile={setPicFile} />
                             </div>
 
                             <VolunteerSubForm
@@ -263,40 +280,21 @@ export default function VolunteerProfile(props) {
                                 setPublicProfile={setPublicProfile}
                             />
 
-                            <div className="col-12">
-                                <div className="col-12"> {/* double div for width consistency with other divs */}
-                                    <hr className='mt-1 mb-4 mx-auto' />
-                                </div>
-                            </div>
-                            <div className="w-75 row mx-auto mb-4">
-                                <label htmlFor="emailTxt" className="g1TxtLabel">Bio
-                                    <textarea
-                                        className='form-control'
-                                        placeholder=''
-                                        value={bio}
-                                        onChange={e => setBio(e.target.value)}
-                                    />
+                            <div className='row col-12 g1NoGutters mx-auto'>
+                                <label className='col-10 col-sm-6 col-md-3 mr-2' htmlFor='slugText'>
+                                    If your profile is public, this is your URL slug:
                                 </label>
-
-                                <label htmlFor="emailTxt" className="g1TxtLabel">LinkedIn URL
-                                    <input
-                                        className='form-control'
-                                        type='text'
-                                        placeholder='https://'
-                                        value={linkedIn}
-                                        onChange={e => setLinkedIn(e.target.value)}
-                                    />
-                                </label>
+                                <input
+                                    className='form-control col-9 col-sm-5 col-md-4 px-2'
+                                    style={{display: 'inline-block'}}
+                                    id='slugText'
+                                    type='text'
+                                    placeholder='Slug'
+                                    value={slug}
+                                    onChange={e => setSlug(e.target.value)}
+                                />
                             </div>
 
-                            <div className="col-12">
-                                <div className="col-12"> {/* double div for width consistency with other divs */}
-                                    <hr className='mt-1 mb-4 mx-auto' />
-                                </div>
-                            </div>
-                            <div className="row mt-4">
-                                <FileUpload imageLink={loggedUser.v_picture} setPicFile={setPicFile} />
-                            </div>
                         </form>
                     </>
             }

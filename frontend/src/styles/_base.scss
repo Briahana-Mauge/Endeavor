@@ -182,7 +182,7 @@ hr {
     padding-top: calc(var(--navbar-height) + .4rem);
 }
 
-.card-text { //temp
+.card-text { // temp
     margin-bottom: 1rem;
 }
 
@@ -228,17 +228,23 @@ hr {
     }
 }
 
-.g1InputCol,
-.g1InputRow > * {
+.g1InputCol {
     width: 100%;
     max-width: 22rem;
     margin: 0 auto;
+
+    @media (min-width: 576px) {
+        margin: unset;
+    }
+
+    @media (min-width: 576px) and (max-width: 767px) {
+        max-width: 15rem;
+    }
 }
 
-.g1PureCenter {
-    position: absolute;
-    margin-left: 50%;
-    transform: translateX(-50%);
+.g1NoPadding {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 
