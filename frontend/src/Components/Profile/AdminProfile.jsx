@@ -72,6 +72,7 @@ export default function AdminProfile(props) {
             }
 
         } catch (err) {
+            setLoading(false);
             props.setFeedback(err);
         }
     }
