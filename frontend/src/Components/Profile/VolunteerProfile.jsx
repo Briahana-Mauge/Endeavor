@@ -244,11 +244,6 @@ export default function VolunteerProfile(props) {
                                 </label>
                             </div>
 
-                            {/* <div className="col-12">
-                                <div className="col-12"> double div for width consistency with other divs */}
-                                    {/* <hr className='mt-1 mb-4 mx-auto' />
-                                </div>
-                            </div> */}
                             <div className="row col-12 mt-3 g1NoGutters g1NoPadding mx-auto">
                                 <FileUpload imageLink={loggedUser.v_picture} setPicFile={setPicFile} />
                             </div>

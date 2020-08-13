@@ -105,12 +105,14 @@ export default function AdminProfile(props) {
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
                         <form className='mt-4' onSubmit={handleUpdateInfo}>
-                            <div className='col-11 d-flex justify-content-between mx-auto mb-3 px-1'>
-                                <button type='submit' className='btn btn-primary'>Update Profile</button>
-                                <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                            <div className='col-12 mt-4 g1NoGutters g1NoPadding mx-auto mb-3'>
+                                <div className="col-12 d-flex justify-content-between">
+                                    <button type='submit' className='btn btn-primary'>Update Profile</button>
+                                    <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                                </div>
                             </div>
 
-                            <div className="row">
+                            <div className="row col-12 mt-4 g1NoGutters g1NoPadding mx-auto">
                                 <div className="g1InputCol col-12 col-sm-6">
                                     <FirstAndLastNameInputs
                                         firstName={firstName}
@@ -131,8 +133,7 @@ export default function AdminProfile(props) {
                                 </div>
                             </div>
                             
-                            <hr className='my-4 w-25 mx-auto' />
-                            <div className="row mt-4">
+                            <div className="row col-12 mt-3 g1NoGutters g1NoPadding mx-auto mb-3">
                                 <FileUpload imageLink={loggedUser.a_picture} setPicFile={setPicFile} />
                             </div>
 

@@ -20,7 +20,7 @@ export default function SignupForm(props) {
 
     return (
         <>
-            <div className="row col-12 g1NoGutters g1SignupForm">
+            <div className="row col-12 justify-content-around g1NoGutters g1SignupForm">
 
                 <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
                     <FirstAndLastNameInputs
