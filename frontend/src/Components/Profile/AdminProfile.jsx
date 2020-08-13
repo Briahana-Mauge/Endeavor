@@ -88,7 +88,7 @@ export default function AdminProfile(props) {
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
                         <form className='mt-4' onSubmit={props.handleUpdatePassword}>
-                            <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
+                            <div className="g1InputCol g1NoPadding col-12 col-sm-6 d-flex flex-column">
                                 <PasswordUpdate
                                     password={password}
                                     setPassword={props.setPassword}
