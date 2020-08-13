@@ -42,6 +42,13 @@ ul, ol {
   list-style: none;
 }
 
+/* Make images act more naturally in sizing and easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
 
 :root {
     font-size: 16px;
