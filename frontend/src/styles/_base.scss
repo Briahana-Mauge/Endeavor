@@ -223,10 +223,17 @@ hr {
     }
 }
 
-.g1InputCol {
+.g1InputCol,
+.g1InputRow > * {
     width: 100%;
     max-width: 22rem;
     margin: 0 auto;
+}
+
+.g1PureCenter {
+    position: absolute;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 

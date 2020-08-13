@@ -103,30 +103,39 @@ export default function AdminProfile(props) {
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
-                        <form className='mt-3 g1InputCol col-12' onSubmit={handleUpdateInfo}>
-                            <FirstAndLastNameInputs 
-                                firstName={firstName}
-                                setFirstName={props.setFirstName}
-                                lastName={lastName}
-                                setLastName={props.setLastName}
-                            />
-
-                            <LoginInputs
-                                email={email}
-                                setEmail={props.setEmail}
-                                password={password}
-                                setPassword={props.setPassword}
-                            />
-                            
-                            <FileUpload imageLink={loggedUser.a_picture} setPicFile={setPicFile}/>
-
-                            <div className='col-sm-6'>
-                                <button type='submit' className='btn btn-primary mr-5'>Update</button>
+                        <form className='mt-4' onSubmit={handleUpdateInfo}>
+                            <div className='col-12 d-flex justify-content-between mb-3 px-1'>
+                                <button type='submit' className='btn btn-primary'>Update</button>
+                                <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
                             </div>
-                        </form>
 
-                        <br />
-                        <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                            <div className="row">
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <FirstAndLastNameInputs
+                                        firstName={firstName}
+                                        setFirstName={props.setFirstName}
+                                        lastName={lastName}
+                                        setLastName={props.setLastName}
+                                    />
+                                </div>
+
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <LoginInputs
+                                        email={email}
+                                        setEmail={props.setEmail}
+                                        password={password}
+                                        setPassword={props.setPassword}
+                                        formType='login'
+                                    />
+                                </div>
+                            </div>
+                            
+                            <hr className='my-4 w-25 mx-auto' />
+                            <div className="row mt-4">
+                                <FileUpload imageLink={loggedUser.a_picture} setPicFile={setPicFile} />
+                            </div>
+
+                        </form>
                     </>
             }
 

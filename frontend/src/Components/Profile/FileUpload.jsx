@@ -19,31 +19,32 @@ export default function FileUpload(props) {
 
     return (
         <>
-        <div className='col-sm-6'>
-            <div className='custom-file'>
-                <input 
-                    className='custom-file-input' 
-                    id='fileUpload' 
-                    type='file' 
-                    accept='image/*' 
-                    onInput={handleFileInput} 
-                    onChange={e => e.target.value = null} 
-                />
-                
-                <label className='custom-file-label' htmlFor='fileUpload'>
-                    Upload a profile image
-                </label>
+            <div className='g1InputCol col-12 col-sm-6'>
+                <div className='custom-file'>
+                    <input
+                        className='custom-file-input'
+                        id='fileUpload'
+                        type='file'
+                        accept='image/*'
+                        onInput={handleFileInput}
+                        onChange={e => e.target.value = null}
+                    />
+                    <label className='custom-file-label' htmlFor='fileUpload'>
+                        Upload a profile image
+                    </label>
+                </div>
             </div>
-        </div>
-        
-        {imagePreview 
-            ? <img 
-                className='d-block w-75 mx-auto mb-2' 
-                src={imagePreview} 
-                alt='User profile preview' 
-                />
-            : null
-        }
+
+            <div className='g1InputCol col-12 col-sm-6'>
+                {imagePreview
+                    ? <img
+                        className='mx-auto mb-2'
+                        src={imagePreview}
+                        alt='User profile preview'
+                        />
+                    : null
+                }
+            </div>
         </>
     )
 }
