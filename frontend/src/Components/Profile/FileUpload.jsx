@@ -19,7 +19,7 @@ export default function FileUpload(props) {
 
     return (
         <>
-            <div className='g1InputCol col-12 col-sm-6 mb-2'>
+            <div className='g1InputCol col-12 col-sm-6 mb-4'>
                 <div className='custom-file'>
                     <input
                         className='custom-file-input'
