@@ -47,12 +47,6 @@
     .g1LandingForm {
         @include flex-straight(column, flex-start, center);
 
-        &__col {
-            width: 100%;
-            max-width: 22rem;
-            margin: 0 auto;
-        }
-
         &__btn-to-signup,
         &__btn-to-login {
             display: block; // overrides d: inline-block from .btn

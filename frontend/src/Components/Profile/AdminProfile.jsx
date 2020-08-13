@@ -102,7 +102,7 @@ export default function AdminProfile(props) {
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
-                        <form className='form-row mt-3 g1Profile__col col-12 col-sm-6 d-flex flex-column' onSubmit={handleUpdateInfo}>
+                        <form className='mt-3 g1InputCol col-12' onSubmit={handleUpdateInfo}>
                             <FirstAndLastNameInputs 
                                 firstName={firstName}
                                 setFirstName={props.setFirstName}

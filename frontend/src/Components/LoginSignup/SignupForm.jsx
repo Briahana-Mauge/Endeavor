@@ -22,7 +22,7 @@ export default function SignupForm(props) {
         <>
             <div className="row col-12 g1NoGutters g1SignupForm">
 
-                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
+                <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
                     <FirstAndLastNameInputs
                         firstName={props.firstName}
                         setFirstName={props.setFirstName}
@@ -45,7 +45,7 @@ export default function SignupForm(props) {
                     />
                 </div>
 
-                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
+                <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
                     <UserTypeSelection
                         userType={props.userType}
                         setUserType={props.setUserType}
@@ -120,7 +120,7 @@ export default function SignupForm(props) {
                     :   null
             }
 
-            <div className="g1LandingForm__col">
+            <div className="g1InputCol">
                 {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
                     isSignupDisabled
                         ?   <button

@@ -133,7 +133,7 @@ export default function LoginSignup(props) {
                     ? // LOGIN MODE
                         <>
                             <h2 className="g1LandingForm__header--login">Log In</h2>
-                            <div className="g1LandingForm__col">
+                            <div className="g1InputCol">
                                 <LoginInputs
                                     email={email}
                                         setEmail={props.setEmail}
