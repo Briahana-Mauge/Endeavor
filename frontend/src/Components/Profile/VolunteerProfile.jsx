@@ -35,6 +35,7 @@ export default function VolunteerProfile(props) {
         setFirstName,
         setLastName,
         setEmail,
+        setPassword,
         setCompany,
         setTitle,
         setVolunteerSkills,
@@ -176,51 +177,64 @@ export default function VolunteerProfile(props) {
                 pathName[2] && pathName[2].toLowerCase() === 'password'
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
-                        <form className='form-row mt-3' onSubmit={props.handleUpdatePassword}>
-                            <PasswordUpdate
-                                password={password}
-                                setPassword={props.setPassword}
-                                newPassword={newPassword}
-                                setNewPassword={props.setNewPassword}
-                                confirmPassword={confirmPassword}
-                                setConfirmPassword={props.setConfirmPassword}
-                            />
-
-                            <button type='submit' className='btn btn-primary'>Update</button>
+                        <form className='mt-4' onSubmit={props.handleUpdatePassword}>
+                            <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
+                                <PasswordUpdate
+                                    password={password}
+                                    setPassword={props.setPassword}
+                                    newPassword={newPassword}
+                                    setNewPassword={props.setNewPassword}
+                                    confirmPassword={confirmPassword}
+                                    setConfirmPassword={props.setConfirmPassword}
+                                />
+                                <button type='submit' className='btn btn-primary mt-3'>Update Password</button>
+                            </div>
                         </form>
                     </>
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
-                        <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
-                                <div className='form-group col-sm-12'>
-                                    <label className='col-sm-8' htmlFor='slugText' >
-                                        If you chose to have your profile public, this is the slug to your profile
-                                    </label>
-                                    <input 
-                                        className='form-control col-sm-4'
-                                        style={{display: 'inline-block'}}
-                                        id='slugText'
-                                        type='text'
-                                        placeholder='Slug'
-                                        value={slug}
-                                        onChange={e => setSlug(e.target.value)}
+                        <form className='mt-4' onSubmit={handleUpdateInfo}>
+                            <div className='col-11 d-flex justify-content-between mx-auto mb-3 px-1'>
+                                <button type='submit' className='btn btn-primary'>Update Profile</button>
+                                <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                            </div>
+
+                            <div className="row">
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <FirstAndLastNameInputs
+                                        firstName={firstName}
+                                        setFirstName={setFirstName}
+                                        lastName={lastName}
+                                        setLastName={setLastName}
                                     />
                                 </div>
 
-                            <FirstAndLastNameInputs
-                                firstName={firstName}
-                                setFirstName={setFirstName}
-                                lastName={lastName}
-                                setLastName={setLastName}
-                            />
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <LoginInputs
+                                        email={email}
+                                        setEmail={setEmail}
+                                        password={password}
+                                        setPassword={setPassword}
+                                        formType='login'
+                                    />
+                                </div>
+                            </div>
 
-                            <LoginInputs
-                                email={email}
-                                setEmail={setEmail}
-                                password={password}
-                                setPassword={props.setPassword}
-                            />
+                            <div className='col-10 row mt-4 mx-auto'>
+                                <label className='col-sm-7' htmlFor='slugText'>
+                                    If you chose to have your profile public, this is the slug to your profile
+                                </label>
+                                <input
+                                    className='form-control col-sm-5'
+                                    style={{display: 'inline-block'}}
+                                    id='slugText'
+                                    type='text'
+                                    placeholder='Slug'
+                                    value={slug}
+                                    onChange={e => setSlug(e.target.value)}
+                                />
+                            </div>
 
                             <VolunteerSubForm
                                 setFeedback={setFeedback}
@@ -249,34 +263,41 @@ export default function VolunteerProfile(props) {
                                 setPublicProfile={setPublicProfile}
                             />
 
-                            <div className='col-sm-12'>
-                                <textarea 
-                                    className='form-control mb-2'
-                                    placeholder='Enter bio' 
-                                    value={bio}
-                                    onChange={e => setBio(e.target.value)}
-                                />
+                            <div className="col-12">
+                                <div className="col-12"> {/* double div for width consistency with other divs */}
+                                    <hr className='mt-1 mb-4 mx-auto' />
+                                </div>
+                            </div>
+                            <div className="w-75 row mx-auto mb-4">
+                                <label htmlFor="emailTxt" className="g1TxtLabel">Bio
+                                    <textarea
+                                        className='form-control'
+                                        placeholder=''
+                                        value={bio}
+                                        onChange={e => setBio(e.target.value)}
+                                    />
+                                </label>
+
+                                <label htmlFor="emailTxt" className="g1TxtLabel">LinkedIn URL
+                                    <input
+                                        className='form-control'
+                                        type='text'
+                                        placeholder='https://'
+                                        value={linkedIn}
+                                        onChange={e => setLinkedIn(e.target.value)}
+                                    />
+                                </label>
                             </div>
 
-                            <div className='col-sm-6'>
-                                <input 
-                                    className='form-control mb-2'
-                                    type='text' 
-                                    placeholder='LinkedIn link ' 
-                                    value={linkedIn}
-                                    onChange={e => setLinkedIn(e.target.value)}
-                                />
+                            <div className="col-12">
+                                <div className="col-12"> {/* double div for width consistency with other divs */}
+                                    <hr className='mt-1 mb-4 mx-auto' />
+                                </div>
                             </div>
-
-                            <FileUpload imageLink={loggedUser.v_picture} setPicFile={setPicFile}/>
-
-                            <div className='col-sm-6'>
-                                <button type='submit' className='btn btn-primary mr-5'>Update</button>
+                            <div className="row mt-4">
+                                <FileUpload imageLink={loggedUser.v_picture} setPicFile={setPicFile} />
                             </div>
                         </form>
-
-                        <br />
-                        <button className='btn btn-danger mb-4 float-right' onClick={props.deleteAccount}>Delete Account</button>
                     </>
             }
 

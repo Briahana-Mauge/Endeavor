@@ -97,7 +97,7 @@ export default function AdminProfile(props) {
                                     confirmPassword={confirmPassword}
                                     setConfirmPassword={props.setConfirmPassword}
                                 />
-                                <button type='submit' className='btn btn-primary mt-3'>Update</button>
+                                <button type='submit' className='btn btn-primary mt-3'>Update Password</button>
                             </div>
                         </form>
                     </>
@@ -106,7 +106,7 @@ export default function AdminProfile(props) {
                         <ProfileTabs profileTab='active' passwordTab=''/>
                         <form className='mt-4' onSubmit={handleUpdateInfo}>
                             <div className='col-11 d-flex justify-content-between mx-auto mb-3 px-1'>
-                                <button type='submit' className='btn btn-primary'>Update</button>
+                                <button type='submit' className='btn btn-primary'>Update Profile</button>
                                 <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
                             </div>
 
