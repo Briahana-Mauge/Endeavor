@@ -3,6 +3,17 @@ ANIME BENSALEM, BRIAHANA MAUGÉ, JOSEPH P. PASAOA
 APP MAIN SCSS | Capstone App (Pursuit Volunteer Mgr)
 */
 
+/*
+MEDIA QUERY SIZING REFERENCE - Bootstrap reference
+
+DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
+@media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
+@media (min-width: 768px) {} : md : MEDIUM devices (tablets, 768px and up)
+@media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
+@media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)
+*/
+
+
 
 
 /* ROOT & VARIABLES */
@@ -57,15 +68,6 @@ html, body, #root, .g1App {
     --zi-carousel-arrows: 100;
 }
 
-/*
-MEDIA QUERY SIZING REFERENCE - Bootstrap reference
-
-DEFAULT {} : xs : EXTRA SMALL devices (portrait phones, less than 576px)
-@media (min-width: 576px) {} : sm : SMALL devices (landscape phones, 576px and up)
-@media (min-width: 768px) {} : md : MEDIUM devices (tablets, 768px and up)
-@media (min-width: 992px) {} : lg : LARGE devices (desktops, 992px and up)
-@media (min-width: 1200px) {} : xl : EXTRA large devices (large desktops, 1200px and up)
-*/
 
 
 
