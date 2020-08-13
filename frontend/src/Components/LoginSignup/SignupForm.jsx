@@ -64,24 +64,26 @@ export default function SignupForm(props) {
                     {   // Volunteer Company and Title Inputs
                         props.formType === 'signup' && props.userType === 'volunteer'
                             ?   <>
-                                    <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer</label>
-                                    <input
-                                        type='text'
-                                        id='companyTxt'
-                                        className='form-control'
-                                        placeholder=''
-                                        value={props.company}
-                                        onChange={e => props.setCompany(e.target.value)}
-                                    />
-                                    <label htmlFor="titleTxt" className="g1TxtLabel">Position</label>
-                                    <input
-                                        type='text'
-                                        id='titleTxt'
-                                        className='form-control'
-                                        placeholder=''
-                                        value={props.title}
-                                        onChange={e => props.setTitle(e.target.value)}
-                                    />
+                                    <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer
+                                        <input
+                                            type='text'
+                                            id='companyTxt'
+                                            className='form-control'
+                                            placeholder=''
+                                            value={props.company}
+                                            onChange={e => props.setCompany(e.target.value)}
+                                        />
+                                    </label>
+                                    <label htmlFor="titleTxt" className="g1TxtLabel">Position
+                                        <input
+                                            type='text'
+                                            id='titleTxt'
+                                            className='form-control'
+                                            placeholder=''
+                                            value={props.title}
+                                            onChange={e => props.setTitle(e.target.value)}
+                                        />
+                                    </label>
                                 </>
                             :   null
                     }
