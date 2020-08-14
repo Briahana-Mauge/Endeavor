@@ -47,12 +47,6 @@
     .g1LandingForm {
         @include flex-straight(column, flex-start, center);
 
-        &__col {
-            width: 100%;
-            max-width: 22rem;
-            margin: 0 auto;
-        }
-
         &__btn-to-signup,
         &__btn-to-login {
             display: block; // overrides d: inline-block from .btn
@@ -84,18 +78,12 @@
             margin-bottom: 1rem;
         }
 
-        .g1TxtLabel {
-            margin-bottom: 0;
-            align-self: flex-start;
-            position: relative;
-            top: 2px;
-            font-family: var(--ff-body);
-            font-size: .8rem;
-            color: #e5e5e5;
-        }
-
         .g1UsertypeSelect {
             margin-top: .3rem;
+        }
+
+        .g1SignupForm {
+            max-width: 58rem;
         }
 
         .g1VolunteerSubForm {
@@ -104,7 +92,7 @@
 
         .g1-btn--submit {
             width: 100%;
-            margin-top: 1.4rem;
+            margin-top: 1.3rem;
 
             &.disabled {
                 cursor: default;

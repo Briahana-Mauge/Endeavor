@@ -72,6 +72,7 @@ export default function AdminProfile(props) {
             }
 
         } catch (err) {
+            setLoading(false);
             props.setFeedback(err);
         }
     }
@@ -86,46 +87,57 @@ export default function AdminProfile(props) {
                 pathName[2] && pathName[2].toLowerCase() === 'password' 
                 ?   <>
                         <ProfileTabs profileTab='' passwordTab='active'/>
-                        <form className='form-row mt-3' onSubmit={props.handleUpdatePassword}>
-                            <PasswordUpdate 
-                                password={password}
-                                setPassword={props.setPassword}
-                                newPassword={newPassword}
-                                setNewPassword={props.setNewPassword}
-                                confirmPassword={confirmPassword}
-                                setConfirmPassword={props.setConfirmPassword}
-                            />
-
-                            <button type='submit' className='btn btn-primary'>Update</button>
+                        <form className='mt-4' onSubmit={props.handleUpdatePassword}>
+                            <div className="g1InputCol g1NoPadding col-12 col-sm-6 d-flex flex-column">
+                                <PasswordUpdate
+                                    password={password}
+                                    setPassword={props.setPassword}
+                                    newPassword={newPassword}
+                                    setNewPassword={props.setNewPassword}
+                                    confirmPassword={confirmPassword}
+                                    setConfirmPassword={props.setConfirmPassword}
+                                />
+                                <button type='submit' className='btn btn-primary mt-3'>Update Password</button>
+                            </div>
                         </form>
                     </>
 
                 :   <>
                         <ProfileTabs profileTab='active' passwordTab=''/>
-                        <form className='form-row mt-3' onSubmit={handleUpdateInfo}>
-                            <FirstAndLastNameInputs 
-                                firstName={firstName}
-                                setFirstName={props.setFirstName}
-                                lastName={lastName}
-                                setLastName={props.setLastName}
-                            />
-
-                            <LoginInputs
-                                email={email}
-                                setEmail={props.setEmail}
-                                password={password}
-                                setPassword={props.setPassword}
-                            />
-                            
-                            <FileUpload imageLink={loggedUser.a_picture} setPicFile={setPicFile}/>
-
-                            <div className='col-sm-6'>
-                                <button type='submit' className='btn btn-primary mr-5'>Update</button>
+                        <form className='mt-4' onSubmit={handleUpdateInfo}>
+                            <div className='col-12 mt-4 g1NoGutters g1NoPadding mx-auto mb-3'>
+                                <div className="col-12 d-flex justify-content-between">
+                                    <button type='submit' className='btn btn-primary'>Update Profile</button>
+                                    <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                                </div>
                             </div>
-                        </form>
 
-                        <br />
-                        <button className='btn btn-danger' onClick={props.deleteAccount}>Delete Account</button>
+                            <div className="row col-12 mt-4 g1NoGutters g1NoPadding mx-auto">
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <FirstAndLastNameInputs
+                                        firstName={firstName}
+                                        setFirstName={props.setFirstName}
+                                        lastName={lastName}
+                                        setLastName={props.setLastName}
+                                    />
+                                </div>
+
+                                <div className="g1InputCol col-12 col-sm-6">
+                                    <LoginInputs
+                                        email={email}
+                                        setEmail={props.setEmail}
+                                        password={password}
+                                        setPassword={props.setPassword}
+                                        formType='login'
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="row col-12 mt-3 g1NoGutters g1NoPadding mx-auto mb-3">
+                                <FileUpload imageLink={loggedUser.a_picture} setPicFile={setPicFile} />
+                            </div>
+
+                        </form>
                     </>
             }
 

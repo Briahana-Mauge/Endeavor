@@ -89,7 +89,6 @@
 
     &__Interests {
         cursor: help;
-        list-style: none;
 
         li {
             font-family: var(--ff-body);
@@ -119,7 +118,6 @@
     }
 
     &__Skills {
-        list-style: none;
         font-size: .8rem;
 
         li::before {
@@ -320,7 +318,6 @@
             margin-right: var(--margin-right);
             margin-bottom: 0;
 
-            list-style: none;
             font-size: .9rem;
         }
 

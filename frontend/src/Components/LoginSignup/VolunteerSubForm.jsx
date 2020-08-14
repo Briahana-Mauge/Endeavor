@@ -120,7 +120,7 @@ export default function VolunteerSubForm(props) {
 
 
     return (
-        <div className="g1VolunteerSubForm row col-12 my-4">
+        <div className="g1VolunteerSubForm row col-12 mt-4 g1NoGutters mx-auto">
 
             <div className="col-12"> {/* nested Bootstrap col for consistent padding */}
                 <hr className="mb-4" />
@@ -202,12 +202,21 @@ export default function VolunteerSubForm(props) {
                     <label className='custom-control-label' htmlFor='industrySpeaker'>Being an Industry Speaker?</label>
                 </div>
 
+            </div>
+            <div className="col-12 mb-3 mt-3"> {/* nested Bootstrap col for consistent padding */}
+                <hr className="mb-4" />
                 <div className='custom-control custom-switch mb-2'>
-                    <input 
+                    <input
                         type='checkbox' className='custom-control-input' id='publicProfile'
                         checked={props.publicProfile} onChange={e => props.setPublicProfile(e.target.checked)}
                     />
-                    <label className='custom-control-label' htmlFor='publicProfile'>Would you like to have your profile public?</label>
+                    <label className='custom-control-label' htmlFor='publicProfile'>
+                        Would you like to have your profile publicly visible?
+                        {props.isProfilePage
+                            ?   ''
+                            :   ' (You can change this later at any time.)'
+                        }
+                    </label>
                 </div>
             </div>
 

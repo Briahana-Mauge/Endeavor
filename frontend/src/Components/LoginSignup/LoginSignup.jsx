@@ -127,13 +127,13 @@ export default function LoginSignup(props) {
                 <p>With Endeavor, <br className="break-only-small"/> empower your organization by empowering your volunteers.</p>
             </section>
 
-            <form className='g1Landing__g1LandingForm g1LandingForm container pb-4' onSubmit={handleFormSubmit}>
+            <form className='g1Landing__g1LandingForm g1LandingForm container pb-4 g1NoGutters' onSubmit={handleFormSubmit}>
                 {props.formType === 'login'
 
                     ? // LOGIN MODE
                         <>
                             <h2 className="g1LandingForm__header--login">Log In</h2>
-                            <div className="g1LandingForm__col">
+                            <div className="g1InputCol">
                                 <LoginInputs
                                     email={email}
                                         setEmail={props.setEmail}

@@ -20,9 +20,9 @@ export default function SignupForm(props) {
 
     return (
         <>
-            <div className="row col-12">
+            <div className="row col-12 justify-content-around g1NoGutters g1SignupForm">
 
-                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
+                <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
                     <FirstAndLastNameInputs
                         firstName={props.firstName}
                         setFirstName={props.setFirstName}
@@ -45,7 +45,7 @@ export default function SignupForm(props) {
                     />
                 </div>
 
-                <div className="g1LandingForm__col col-12 col-sm-6 d-flex flex-column">
+                <div className="g1InputCol col-12 col-sm-6 d-flex flex-column">
                     <UserTypeSelection
                         userType={props.userType}
                         setUserType={props.setUserType}
@@ -64,24 +64,26 @@ export default function SignupForm(props) {
                     {   // Volunteer Company and Title Inputs
                         props.formType === 'signup' && props.userType === 'volunteer'
                             ?   <>
-                                    <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer</label>
-                                    <input
-                                        type='text'
-                                        id='companyTxt'
-                                        className='form-control'
-                                        placeholder=''
-                                        value={props.company}
-                                        onChange={e => props.setCompany(e.target.value)}
-                                    />
-                                    <label htmlFor="titleTxt" className="g1TxtLabel">Position</label>
-                                    <input
-                                        type='text'
-                                        id='titleTxt'
-                                        className='form-control'
-                                        placeholder=''
-                                        value={props.title}
-                                        onChange={e => props.setTitle(e.target.value)}
-                                    />
+                                    <label htmlFor="companyTxt" className="g1TxtLabel mt-auto">Company / Employer
+                                        <input
+                                            type='text'
+                                            id='companyTxt'
+                                            className='form-control'
+                                            placeholder=''
+                                            value={props.company}
+                                            onChange={e => props.setCompany(e.target.value)}
+                                        />
+                                    </label>
+                                    <label htmlFor="titleTxt" className="g1TxtLabel">Position
+                                        <input
+                                            type='text'
+                                            id='titleTxt'
+                                            className='form-control'
+                                            placeholder=''
+                                            value={props.title}
+                                            onChange={e => props.setTitle(e.target.value)}
+                                        />
+                                    </label>
                                 </>
                             :   null
                     }
@@ -118,7 +120,7 @@ export default function SignupForm(props) {
                     :   null
             }
 
-            <div className="g1LandingForm__col">
+            <div className="g1InputCol">
                 {   // Submit Button, disabled if any unwanted conditions (see isSignupDisabled above) are true
                     isSignupDisabled
                         ?   <button

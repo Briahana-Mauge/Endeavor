@@ -6,15 +6,15 @@ export default function LoginInputs(props) {
 
     return (
         <>
-            <label htmlFor="emailTxt" className="g1TxtLabel">Email address</label>
-            <input 
-                className='form-control'
-                type='email'
-                id='emailTxt'
-                placeholder=''
-                value={props.email}
-                onChange={e => props.setEmail(e.target.value)}
-            />
+            <label className="g1TxtLabel">Email address
+                <input
+                    className='form-control'
+                    type='email'
+                    placeholder=''
+                    value={props.email}
+                    onChange={e => props.setEmail(e.target.value)}
+                />
+            </label>
             {   // Neither Given Password or Password input for new volunteer, hides
                 isLogin || (isPursuitSignup && props.userType !== '') // hidden initially when no usertype selected yet
                     ?   <>
@@ -24,19 +24,19 @@ export default function LoginInputs(props) {
                                         ? 'Password'
                                         : 'Given Password'
                                 }
+                                <input
+                                    type='password'
+                                    id='passwordTxt'
+                                    className='form-control'
+                                    placeholder={
+                                        isLogin
+                                            ? ''
+                                            : 'Enter one-time password'
+                                    }
+                                    value={props.password}
+                                    onChange={e => props.setPassword(e.target.value)}
+                                />
                             </label>
-                            <input
-                                type='password'
-                                id='passwordTxt'
-                                className='form-control'
-                                placeholder={
-                                    isLogin
-                                        ? ''
-                                        : 'Enter one-time password'
-                                }
-                                value={props.password}
-                                onChange={e => props.setPassword(e.target.value)}
-                            />
                         </>
                     :   null
             }
