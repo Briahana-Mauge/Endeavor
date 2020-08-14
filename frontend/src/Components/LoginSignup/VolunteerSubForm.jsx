@@ -211,7 +211,11 @@ export default function VolunteerSubForm(props) {
                         checked={props.publicProfile} onChange={e => props.setPublicProfile(e.target.checked)}
                     />
                     <label className='custom-control-label' htmlFor='publicProfile'>
-                        Would you like to have your profile publicly visible? (You can change this later at any time.)
+                        Would you like to have your profile publicly visible?
+                        {props.isProfilePage
+                            ?   ''
+                            :   ' (You can change this later at any time.)'
+                        }
                     </label>
                 </div>
             </div>

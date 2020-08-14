@@ -273,6 +273,7 @@ export default function VolunteerProfile(props) {
                                 setIndustrySpeaker={setIndustrySpeaker}
                                 publicProfile={publicProfile}
                                 setPublicProfile={setPublicProfile}
+                                isProfilePage={true}
                             />
 
                             <div className='row col-12 g1NoGutters mx-auto'>
