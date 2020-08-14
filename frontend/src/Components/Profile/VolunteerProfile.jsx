@@ -224,7 +224,7 @@ export default function VolunteerProfile(props) {
                             </div>
 
                             <div className="row col-12 g1NoGutters g1NoPadding mx-auto">
-                                <label htmlFor="emailTxt" className="g1TxtLabel col-12">Bio
+                                <label className="g1TxtLabel col-12">Bio
                                     <textarea
                                         className='form-control'
                                         placeholder=''
@@ -233,7 +233,7 @@ export default function VolunteerProfile(props) {
                                     />
                                 </label>
 
-                                <label htmlFor="emailTxt" className="g1TxtLabel col-12">LinkedIn URL
+                                <label className="g1TxtLabel col-12">LinkedIn URL
                                     <input
                                         className='form-control'
                                         type='text'

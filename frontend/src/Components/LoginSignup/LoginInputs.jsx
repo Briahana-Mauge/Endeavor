@@ -6,11 +6,10 @@ export default function LoginInputs(props) {
 
     return (
         <>
-            <label htmlFor="emailTxt" className="g1TxtLabel">Email address
+            <label className="g1TxtLabel">Email address
                 <input
                     className='form-control'
                     type='email'
-                    id='emailTxt'
                     placeholder=''
                     value={props.email}
                     onChange={e => props.setEmail(e.target.value)}

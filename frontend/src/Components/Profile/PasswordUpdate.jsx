@@ -4,7 +4,7 @@ export default function PasswordUpdate(props) {
     return (
         <>
 
-            <label htmlFor="emailTxt" className="g1TxtLabel mb-4">Current password
+            <label className="g1TxtLabel mb-4">Current password
                 <input 
                     type='password' 
                     className='form-control'
@@ -14,7 +14,7 @@ export default function PasswordUpdate(props) {
                 />
             </label>
 
-            <label htmlFor="emailTxt" className="g1TxtLabel">New password
+            <label className="g1TxtLabel">New password
                 <input 
                     className='form-control'
                     type='password' 
@@ -24,7 +24,7 @@ export default function PasswordUpdate(props) {
                 />
             </label>
 
-            <label htmlFor="emailTxt" className="g1TxtLabel">Confirm new password
+            <label className="g1TxtLabel">Confirm new password
                 <input 
                     type='password' 
                     className='form-control'
