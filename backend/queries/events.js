@@ -355,7 +355,7 @@ const getDashEventsForVolunteer = async (volunteerId) => {
     INNER JOIN cohorts ON events.attendees = cohorts.cohort_id
 
     WHERE event_start > now()
-        AND event_start::DATE <= (now() + interval '1 week')::DATE
+        AND event_start::DATE <= (now() + interval '2 week')::DATE
         AND events.deleted IS NULL
     GROUP BY event_id, cohort_id
     ORDER BY event_start ASC;

@@ -456,136 +456,224 @@ INSERT INTO events
         important
     )
 VALUES
-    ('2020-03-22 10:00-04', '2020-06-29 20:00-04', '6.2 CAPSTONE',
-        'Each year at the close of our technical curriculum, Pursuit Fellows work in teams to build fully-functional apps that they present at our annual Demo Days. This is a critical milestone in their journeys to become professional software developers: Fellows have the opportunity to work in teams while honing their design and presentation skills. Fellows will have a portfolio-worthy project they can show off to potential employers',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 9, TRUE),
 
-    ('2019-11-13 15:00-04', '2019-11-13 15:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
+    -- PAST ================
+    (   CURRENT_DATE - INTERVAL '4 days' + TIME '10:00-04', --'2020-06-21 10:00-04', 
+        CURRENT_DATE - INTERVAL '3 days' + TIME '20:00-04', --'2020-06-22 20:00-04',
+        'Hackathon 6.4',
+        'Fellows showcase apps that address important real-world problems: staying informed about COVID-19, supporting reopening restaurants, surfacing online reviews about discriminatory businesses, or just finding new music to listen to while you''re stuck at home.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 10, TRUE  ),
 
-    ('2020-06-03 13:00-04', '2020-06-03 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
+    (   CURRENT_DATE - INTERVAL '10 days' + TIME '00:00-04', --'2020-06-15 00:00-04',
+        CURRENT_DATE - INTERVAL '10 days' + TIME '23:59-04', --'2020-06-15 23:59-04',
+        'Capstone Demo Day',
+        'We are pleased to invite you to experience the products built by our Pursuit Core Full Stack Web developers. In just a year, New York''s finest new web developers have completed an intensive technical curriculum — mastering the fundamentals of Web development while sharpening their product development skills. Our developers represent the newest engineering talent in NYC tech. Come celebrate their achievements and the growth of a diverse and inclusive tech community in New York City.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 10, TRUE  ),
 
-    ('2019-07-01 13:00-04', '2019-07-01 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-
-    ('2020-02-22 13:00-04', '2020-02-22 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-    -- -- -- 5
-
-    ('2020-05-13 10:00-04', '2020-05-13 10:45-04', 'Let''s Do Remote Breakfast!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-
-    ('2020-03-12 13:00-04', '2020-03-12 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-
-    ('2020-05-04 13:00-04', '2020-05-04 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-
-    ('2020-04-22 13:00-04', '2020-04-22 13:45-04', 'Let''s Do Remote Lunch!',
-        'Spend your WFH lunch break with 6 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
-        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, FALSE),
-
-    ('2020-04-02 17:30-04', '2020-04-02 19:30-04', 'Code Review on Hackathon Projects',
-        'Join a group of 4 Fellows on April 2nd at 5:30pm to review their Hackathon projects.You''ll provide feedback to help them to help improve and implement new features. We''ll review the rubric you''ll use to evaluate the projects and then you''ll work with the groups remotely until 7:30pm. A week later, you''ll find time with the group to follow-up and review their final products. Volunteers must know Javascript, React, Node.js, PostgresSQL and Express. We are looking for 6 Volunteers.',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Alejandro Franco', 6, TRUE),
-    -- -- -- 10
-
-    ('2020-06-21 10:00-04', '2020-06-22 20:00-04', 'Hackathon 6.4',
-        'Volunteers will conduct two 45-minute 1:1 behavioral interviews using a sample job description and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts. We are looking for hiring managers or anyone who conducts interviews regularly. Engineers or tech-adjacent roles are a plus!',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-06-15 00:00-04', '2020-06-15 23:59-04', 'Capstone Demo Day',
-        'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-05-13 09:00-04', '2020-05-13 17:30-04', 'Conduct Virtual Behavioral Interviews',
-        'Volunteers will conduct two 45-minute 1:1 behavioral interviews using a sample job description and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts. We are looking for hiring managers or anyone who conducts interviews regularly. Engineers or tech-adjacent roles are a plus!',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-01-11 09:00-04', '2020-01-11 17:30-04', 'Conduct Virtual Technical Interviews',
-        'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-05-26 00:00-04', '2020-05-28 23:59-04', 'Staff Prep for Capstone',
-        'Faculty all-hands-on-deck roundtable regarding Capstone in 2020. Discussion and breakout rooms to help facilitate open dialogue and brainstorming. Virtual doughnuts will also be served.',
-        1, 'Zoom: https://zoom.us/my/alejos', 'David and Jukay', 6, FALSE),
-    -- -- -- 15
-
-    ('2020-05-25 00:00-04', '2020-05-25 23:59-04', '6.1 Capstone Tech Showcase',
-        'A showcase. Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide, Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.',
-        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-06-13 10:00-04', '2020-06-13 15:00-04', 'Pursuit + Clorox DTC 6.2 FullStack Web Technical Showcase',
-        'After several intensive months of training, Pursuit’s 6.2 FullStack Web fellows have spent the past 8 weeks working with volunteer mentors to build their capstone projects - original and innovative web applications from ideation to deployment. The Technical Showcase is an opportunity for Fellows to present their projects to industry professionals and receive technical feedback on their projects and pitches.  We are thrilled to partner with Clorox DTC on this event to celebrate the accomplishments of the 6.2 FullStack Web Fellows and further our shared goal of creating access to opportunity for everyone.  Join us to celebrate!',
-        10, 'https://zoom.us/my/alejos', 'Dessa Shepherd', 10, TRUE),
-
-    ('2020-06-8 13:00-04', '2020-06-8 15:00-04', 'Google Remote Onsite',
+    (   CURRENT_DATE - INTERVAL '17 days' + TIME '13:00-04', --'2020-06-08 13:00-04',
+        CURRENT_DATE - INTERVAL '17 days' + TIME '15:00-04', --'2020-06-08 15:00-04',
+        'Google Remote Onsite',
         'Take some time getting to know some Google Engineers for an inside look at what it’s like to work at Google!',
-        3, 'https://zoom.us/my/alejos', 'Alexis Medina', 10, FALSE),
+        3, 'Zoom: https://zoom.us/my/alejos',
+        'Alexis Medina', 5, FALSE  ),
 
-    ('2019-06-23 10:00-04', '2019-06-30 18:00-04', '6.2 Welcome Week',
-        'Let’s Welcome our new group of fellows to their first week at Pursuit.',
-        14, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu', 20, TRUE),
+    (   CURRENT_DATE - INTERVAL '22 days' + TIME '13:00-04', --'2020-06-03 13:00-04',
+        CURRENT_DATE - INTERVAL '22 days' + TIME '13:00-04', --'2020-06-03 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1,'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE   ),
 
-    ('2019-08-08 19:00-04', '2019-08-08 20:30-04', 'Industry Fluency: Career Pathways with Dion Ridley',
-        'I''m excited to invite you to your first Industry Fluency event - a tech talk with Dion Ridley',
-         1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Jessica Shyu',20, FALSE),
- -- -- -- 20
-    ('2019-10-24 17:45-04', '2019-10-24 20:00-04', 'Nomad Health Site Visit',
-        'Excited to have you join us for the Nomad Health Site Visit!',
-        1, '335 Madison Ave 5th Floor, New York, NY 10017', 'Alexis Medina', 5, FALSE),
-        
-        ('2019-11-16 10:00-04', '2019-11-16 13:00-04', '6.2: Professional Skills: Diversity & Inclusion in Tech Workshop',
+    (   CURRENT_DATE - INTERVAL '29 days' + TIME '0:00-04', --'2020-05-26 00:00-04',
+        CURRENT_DATE - INTERVAL '27 days' + TIME '23:59-04', --'2020-05-28 23:59-04',
+        'Staff Prep for Capstone',
+        'Faculty all-hands-on-deck roundtable regarding Capstone in 2020. Discussion and breakout rooms to help facilitate open dialogue and brainstorming. Virtual doughnuts will also be served.',
+        1, 'Zoom: https://zoom.us/my/alejos',
+        'David and Jukay', 8, FALSE ),
+
+    (   CURRENT_DATE - INTERVAL '1 month' + TIME '00:00-04', --'2020-05-25 00:00-04',
+        CURRENT_DATE - INTERVAL '1 month' + TIME '23:59-04', --'2020-05-25 23:59-04',
+        '6.1 Capstone Tech Showcase',
+        'A technical showcase of iOS ingenuity! We are pleased to invite you to experience the products built by our Pursuit Core iOS developers.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 10, TRUE  ),
+
+    (   CURRENT_DATE - INTERVAL '1 month' - INTERVAL '12 days' + TIME '10:00-04', --'2020-05-13 10:00-04',
+        CURRENT_DATE - INTERVAL '1 month' - INTERVAL '12 days' + TIME '10:45-04', --'2020-05-13 10:45-04',
+        'Let''s Do Remote Breakfast!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '1 month' - INTERVAL '12 days' + TIME '09:00-04', --'2020-05-13 09:00-04',
+        CURRENT_DATE - INTERVAL '1 month' - INTERVAL '12 days' + TIME '17:30-04', --'2020-05-13 17:30-04',
+        'Conduct Virtual Behavioral Interviews',
+        'Volunteers will conduct two 45-minute 1:1 behavioral interviews using a question bank and an interviewing guide. Afterwards, you''ll provide us with feedback through an evaluation form. We are looking for hiring managers or anyone who conducts interviews regularly.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 10, TRUE  ),
+
+    (   CURRENT_DATE - INTERVAL '2 month' - INTERVAL '3 days' + TIME '13:00-04', --'2020-04-22 13:00-04',
+        CURRENT_DATE - INTERVAL '2 month' - INTERVAL '3 days' + TIME '13:45-04', --'2020-04-22 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '2 month' - INTERVAL '21 days' + TIME '13:00-04', --'2020-04-04 13:00-04',
+        CURRENT_DATE - INTERVAL '2 month' - INTERVAL '21 days' + TIME '13:45-04', --'2020-04-04 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '2 month' - INTERVAL '23 days' + TIME '17:30-04', --'2020-04-02 17:30-04',
+        CURRENT_DATE - INTERVAL '2 month' - INTERVAL '23 days' + TIME '19:30-04', --'2020-04-02 19:30-04',
+        'Code Review on Hackathon Projects',
+        'Join a group of 4 Fellows on April 2nd at 5:30pm to review their Hackathon projects. You''ll provide feedback to help them to help improve and implement new features. We''ll review the rubric you''ll use to evaluate the projects and then you''ll work with the groups remotely until 7:30pm. A week later, you''ll find time with the group to follow-up and review their final products. Volunteers must know Javascript, React, Node.js, PostgresSQL and Express. We are looking for 6 Volunteers.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Alejandro Franco', 6, TRUE ),
+
+    (   CURRENT_DATE - INTERVAL '3 month' - INTERVAL '13 days' + TIME '13:00-04', --'2020-03-12 13:00-04',
+        CURRENT_DATE - INTERVAL '3 month' - INTERVAL '13 days' + TIME '13:45-04', --'2020-03-12 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '4 month' - INTERVAL '3 days' + TIME '13:00-04', --'2020-02-22 13:00-04',
+        CURRENT_DATE - INTERVAL '4 month' - INTERVAL '3 days' + TIME '13:45-04', --'2020-02-22 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '4 month' - INTERVAL '12 days' + TIME '15:00-04', --'2020-02-13 15:00-04',
+        CURRENT_DATE - INTERVAL '4 month' - INTERVAL '12 days' + TIME '15:45-04', --'2020-02-13 15:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '5 month' - INTERVAL '14 days' + TIME '09:00-04', --'2020-01-11 09:00-04',
+        CURRENT_DATE - INTERVAL '5 month' - INTERVAL '14 days' + TIME '17:30-04', --'2020-01-11 17:30-04',
+        'Conduct Virtual Technical Interviews',
+        'Volunteers will conduct two 45-minute 1:1 technical interviews using a question bank and an interviewing guide. Afterwards, you''ll provide us with feedback through an evaluation form.Interviews will take place virtually over Google Hangouts and repl. We are looking for hiring managers or anyone who conducts interviews regularly.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 20, TRUE  ),
+
+    (   CURRENT_DATE - INTERVAL '7 month' - INTERVAL '9 days' + TIME '10:00-04', --'2019-11-16 10:00-04',
+        CURRENT_DATE - INTERVAL '7 month' - INTERVAL '9 days' + TIME '13:00-04', --'2019-11-16 13:00-04',
+        '6.2: Professional Skills: Diversity & Inclusion in Tech Workshop',
         'Join us to learn about diversity and inclusion in the workplace and how to foster it.',
-        2, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101', 'Dessa Shepherd', 5, FALSE);
+        2, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Dessa Shepherd', 5, FALSE  ),
+
+    (   CURRENT_DATE - INTERVAL '8 month' - INTERVAL '1 days' + TIME '17:45-04', --'2019-10-24 17:45-04',
+        CURRENT_DATE - INTERVAL '8 month' - INTERVAL '1 days' + TIME '20:00-04', --'2019-10-24 20:00-04',
+        'Nomad Health Site Visit',
+        'Excited to have you join us for the Nomad Health Site Visit!',
+        1, '335 Madison Ave 5th Floor, New York, NY 10017',
+        'Alexis Medina', 5, FALSE   ),
+
+    (   CURRENT_DATE - INTERVAL '10 month' - INTERVAL '17 days' + TIME '19:00-04', --'2019-08-08 19:00-04',
+        CURRENT_DATE - INTERVAL '10 month' - INTERVAL '17 days' + TIME '20:30-04', --'2019-08-08 20:30-04',
+        'Industry Fluency: Career Pathways with Dion Ridley',
+        'I''m excited to invite you to your first Industry Fluency event - a tech talk with Dion Ridley!',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 5, FALSE   ),
+
+    (   CURRENT_DATE - INTERVAL '1 year' - INTERVAL '2 days' + TIME '10:00-04', --'2019-06-23 10:00-04',
+        CURRENT_DATE - INTERVAL '11 month' - INTERVAL '25 days' + TIME '18:00-04', --'2019-06-30 18:00-04',
+        '6.2 Welcome Week',
+        'Let’s Welcome our new group of full-stack fellows to their first week at Pursuit.',
+        14, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 20, TRUE  ),
+
+
+    -- ONGOING  ============
+    (   CURRENT_DATE - INTERVAL '2 month' - INTERVAL '3 days' + TIME '10:00-04', --'2020-03-22 10:00-04',
+        CURRENT_DATE + INTERVAL '28 days' + TIME '20:00-04', --'2020-06-29 20:00-04',
+        '6.2 Capstone-Building Period',
+        'Each year at the close of our technical curriculum, Pursuit Fellows work in teams to build fully-functional apps that they present at our annual Demo Days. This is a critical milestone in their journeys to become professional software developers: Fellows have the opportunity to work in teams while honing their design and presentation skills. Fellows will have a portfolio-worthy project they can show off to potential employers. Industry volunteers provide weekly and on-hand mentorship through this entire period.',
+        15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Alejandro Franco', 25, TRUE   ),
+
+
+    -- FUTURE ==============
+    (   CURRENT_DATE + INTERVAL '2 days' + TIME '13:00-04', --'2020-07-01 13:00-04',
+        CURRENT_DATE + INTERVAL '2 days' + TIME '13:45-04', --'2020-07-01 13:45-04',
+        'Let''s Do Remote Lunch!',
+        'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE + INTERVAL '4 days' + TIME '10:00-04',
+        CURRENT_DATE + INTERVAL '4 days' + TIME '10:45-04',
+        'Let''s Do Remote Breakfast!',
+        'Spend a WFH breakfast break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Breakfast Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE + INTERVAL '11 days' + TIME '10:00-04', --'2020-07-13 10:00-04',
+        CURRENT_DATE + INTERVAL '11 days' + TIME '15:00-04', --'2020-07-13 15:00-04',
+        'Pursuit + ACME DTC Host the 6.2 FullStack Web Technical Showcase',
+        'After several intensive months of training, Pursuit’s 6.2 FullStack Web fellows have spent the past 8 weeks working with volunteer mentors to build their capstone projects - original and innovative web applications from ideation to deployment. The Technical Showcase is an opportunity for Fellows to present their projects to industry professionals and receive technical feedback on their projects and pitches.  We are thrilled to partner with Clorox DTC on this event to celebrate the accomplishments of the 6.2 FullStack Web Fellows and further our shared goal of creating access to opportunity for everyone.  Join us to celebrate!',
+        10, 'Zoom: https://zoom.us/my/alejos',
+        'Dessa Shepherd', 10, TRUE  );
 
         
-
-
-
 INSERT INTO event_volunteers
     (eventv_id, volunteer_id, confirmed, volunteered_time)
 VALUES
-    (1, 1, TRUE, 2),
-    (1, 2, TRUE, 3),
-    (1, 10, TRUE, 1),
-    (1, 6, TRUE, 1),
-    (2, 2, TRUE, 2),-- 5
+    (1, 1, TRUE, 8),
+    (1, 2, TRUE, 8),
+    (1, 10, TRUE, 8),
+    (1, 6, TRUE, 8),
+    (2, 2, TRUE, 2),
     (2, 3, TRUE, 3),
     (3, 1, TRUE, 1),
     (4, 2, FALSE, 0),
     (4, 3, FALSE, 0),
-    (5, 4, FALSE, 0),-- 10
+    (4, 6, TRUE, 4),    -- 10
+    (5, 4, FALSE, 0),
     (5, 5, FALSE, 0),
-    (5, 6, TRUE, 1),
+    (5, 6, TRUE, 4),
     (5, 7, FALSE, 0),
     (6, 8, FALSE, 0),
-    (6, 9, FALSE, 0),-- 15
+    (6, 9, FALSE, 0),
+    (6, 6, TRUE, 5),
     (7, 10, FALSE, 0),
-    (7, 6, TRUE, 0),
     (8, 10, TRUE, 2),
-    (8, 6, TRUE, 2),
-    (8, 3, FALSE, 0),-- 20
+    (8, 6, TRUE, 2),    -- 20
+    (8, 3, FALSE, 0),
     (9, 4, FALSE, 0),
     (9, 5, FALSE, 0),
-    (9, 6, TRUE, 1),
-    (10, 6, TRUE, 2),
-    (12, 6, FALSE, 0),
-    (15, 10, FALSE, 0),
-    (16, 10, TRUE, 4),--25
-    (18, 6, FALSE, 0),
-    (19, 6, TRUE, 8),
-    (20, 6, TRUE, 1.5),
-    (21, 6, TRUE, 2.25),
-    (22, 6, TRUE, 3);
+    (10, 6, TRUE, 5),
+    (11, 6, TRUE, 3),
+    (12, 6, TRUE, 2),
+    (13, 6, TRUE, 2),
+    (14, 6, TRUE, 3),
+    (15, 6, TRUE, 4),
+    (16, 6, TRUE, 6),
+    (17, 6, TRUE, 3),   -- 30
+    (18, 6, TRUE, 5),
+    (19, 6, TRUE, 3),
+    (20, 6, TRUE, 8),
+    (20, 10, TRUE, 7),
+    (20, 1, TRUE, 5),
+    (20, 2, TRUE, 12),
+    (21, 9, TRUE, 1),
+    (21, 10, TRUE, 1),
+    (21, 3, TRUE, 1),
+    (22, 6, TRUE, 1), -- 40
+    (22, 4, TRUE, 1),
+    (22, 1, TRUE, 1),
+    (23, 7, TRUE, 5),
+    (23, 10, TRUE, 5),
+    (23, 9, TRUE, 5);
+
 
 INSERT INTO event_fellows
     (eventf_id, fellow_id)
@@ -594,17 +682,17 @@ VALUES
     (1, 2),
     (1, 10),
     (2, 2),
-    (2, 3),         -- 5
+    (2, 3), -- 5
     (3, 1),
     (4, 2),
     (4, 3),
     (5, 4),
-    (5, 5),         -- 10
+    (5, 5), -- 10
     (5, 6),
     (5, 7),
     (6, 8),
     (6, 9),
-    (7, 10),        -- 15
+    (7, 10), -- 15
     (8, 3),
     (9, 4),
     (9, 5);
