@@ -15,7 +15,9 @@ import EDashTableRow from './subcomponents/EDashTableRow';
 const VolunteerEDash = (props) => {
   const { events } = props;
 
+  const upcomingsHash = {};
   const rowsUpcomings = events.upcomings.map(event => {
+      upcomingsHash[event.event_id] = true;
       return(
         <EDashTableRow
           key={'upcoming' + event.event_id}
@@ -33,15 +35,16 @@ const VolunteerEDash = (props) => {
         />
       );
   });
-  const rowsImportants = events.importants.map(event => {
-      return(
-        <EDashTableRow
-          key={'important' + event.event_id}
-          tableType={"important"}
-          event={event}
-        />
-      );
-  });
+  const rowsImportants = events.importants.filter(event => !upcomingsHash[event.event_id])
+      .map(event => {
+          return(
+            <EDashTableRow
+              key={'important' + event.event_id}
+              tableType={"important"}
+              event={event}
+            />
+          );
+      });
 
 
   return(
@@ -61,7 +64,7 @@ const VolunteerEDash = (props) => {
       </UIModule>
 
 
-      <UIModule className='blueBerry' titleColor='Upcoming Pursuit' titleRegular='Events'>
+      <UIModule className='blueBerry' titleColor='Other Upcoming Pursuit' titleRegular='Events'>
           <EDashTable>
               {rowsImportants.length ? rowsImportants : <div className="g1EmptyRowMsg">There are no events to display here.</div>}
           </EDashTable>
