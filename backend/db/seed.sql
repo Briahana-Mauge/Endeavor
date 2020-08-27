@@ -602,15 +602,22 @@ VALUES
 
 
     -- FUTURE ==============
-    (   '2019-07-01 13:00-04',
-        '2019-07-01 13:45-04',
+    (   CURRENT_DATE + INTERVAL '2 days' + TIME '13:00-04', --'2020-07-01 13:00-04',
+        CURRENT_DATE + INTERVAL '2 days' + TIME '13:45-04', --'2020-07-01 13:45-04',
         'Let''s Do Remote Lunch!',
         'Spend your WFH lunch break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Lunch Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
         1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
-        'Jessica Shyu', 2, FALSE  ),
+        'Jessica Shyu', 6, FALSE  ),
 
-    (   '2020-07-13 10:00-04',
-        '2020-07-13 15:00-04',
+    (   CURRENT_DATE + INTERVAL '4 days' + TIME '10:00-04',
+        CURRENT_DATE + INTERVAL '4 days' + TIME '10:45-04',
+        'Let''s Do Remote Breakfast!',
+        'Spend a WFH breakfast break with 6-10 of our Fellows! Chat about anything! Get to know our Fellows and share your path to tech. We''ll share a list of possible topics as well. We''ll have 3 "Breakfast Rooms" over Zoom each day so please choose more than 1 day in case dates get filled up. I''ll reach back out to confirm your date.',
+        1, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
+        'Jessica Shyu', 6, FALSE  ),
+
+    (   CURRENT_DATE + INTERVAL '11 days' + TIME '10:00-04', --'2020-07-13 10:00-04',
+        CURRENT_DATE + INTERVAL '11 days' + TIME '15:00-04', --'2020-07-13 15:00-04',
         'Pursuit + ACME DTC Host the 6.2 FullStack Web Technical Showcase',
         'After several intensive months of training, Pursuit’s 6.2 FullStack Web fellows have spent the past 8 weeks working with volunteer mentors to build their capstone projects - original and innovative web applications from ideation to deployment. The Technical Showcase is an opportunity for Fellows to present their projects to industry professionals and receive technical feedback on their projects and pitches.  We are thrilled to partner with Clorox DTC on this event to celebrate the accomplishments of the 6.2 FullStack Web Fellows and further our shared goal of creating access to opportunity for everyone.  Join us to celebrate!',
         10, 'Zoom: https://zoom.us/my/alejos',
@@ -657,13 +664,16 @@ VALUES
     (20, 10, TRUE, 7),
     (20, 1, TRUE, 5),
     (20, 2, TRUE, 12),
-    (21, 6, TRUE, 2.25),
-    (21, 10, TRUE, 2.75),
-    (21, 3, TRUE, 2),
-    (22, 6, TRUE, 3.5), -- 40
-    (22, 4, TRUE, 2.5),
-    (22, 1, TRUE, 3),
-    (22, 7, TRUE, 3.5);
+    (21, 9, TRUE, 1),
+    (21, 10, TRUE, 1),
+    (21, 3, TRUE, 1),
+    (22, 6, TRUE, 1), -- 40
+    (22, 4, TRUE, 1),
+    (22, 1, TRUE, 1),
+    (23, 7, TRUE, 5),
+    (23, 10, TRUE, 5),
+    (23, 9, TRUE, 5);
+
 
 INSERT INTO event_fellows
     (eventf_id, fellow_id)
