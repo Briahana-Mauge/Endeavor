@@ -593,8 +593,8 @@ VALUES
 
 
     -- ONGOING  ============
-    (   '2020-03-22 10:00-04',
-        '2020-06-29 20:00-04',
+    (   CURRENT_DATE - INTERVAL '2 month' - INTERVAL '3 days' + TIME '10:00-04', --'2020-03-22 10:00-04',
+        CURRENT_DATE + INTERVAL '28 days' + TIME '20:00-04', --'2020-06-29 20:00-04',
         '6.2 Capstone-Building Period',
         'Each year at the close of our technical curriculum, Pursuit Fellows work in teams to build fully-functional apps that they present at our annual Demo Days. This is a critical milestone in their journeys to become professional software developers: Fellows have the opportunity to work in teams while honing their design and presentation skills. Fellows will have a portfolio-worthy project they can show off to potential employers. Industry volunteers provide weekly and on-hand mentorship through this entire period.',
         15, 'Pursuit HQ: 47-10 Austell Place, 2nd Fl Long Island City, NY 11101',
