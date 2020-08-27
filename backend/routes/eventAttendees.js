@@ -75,13 +75,13 @@ router.patch('/event/:event_id/volunteer/:volunteer_id', async (request, respons
 
             if (updateData.confirmed) {
                 messageData.html = emailText.accepted(volunteerInfo.name, volunteerInfo.event, event.event_id);
-                
+
             } else { //message sent when admin changes the request from approval to not approved.
                 messageData.html = emailText.removed(volunteerInfo.name, volunteerInfo.event, event.event_id);
             }
 
             await sendEmail(messageData);
-            
+
             const volunteer = await eventAttendeesQueries.manageVolunteerRequest(updateData);
             response.json({
                 err: false,
@@ -108,7 +108,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             }
 
             // get updated data about the logged volunteer
-            const volunteer = volunteerQueries.getVolunteerByEmail(request.user.v_email);
+            const volunteer = await volunteerQueries.getVolunteerByEmail(request.user.v_email);
             if (!volunteer.confirmed) { // if volunteer not confirmed to the platform they get notified 
                 throw new Error('403__Sorry,\nyou can not request to volunteer for an event right now as your profile is being reviewed by an volunteer manager.\nPlease try again later');
             }
@@ -117,7 +117,7 @@ router.post('/event/:event_id/add/:volunteer_id', async (request, response, next
             const admin = await userQueries.getAllAdmin();
             const adminEmailsList = admin.map(admin => `endeavor.mng+${admin.a_email.replace('@', '-')}@gmail.com`);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
-           
+
             const messageData = {
                 personalizations: [{
                     to: adminEmailsList
@@ -158,7 +158,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
             const [admins, event] = await Promise.all(promises);
             const name = request.user.v_first_name + ' ' + request.user.v_last_name;
             const adminEmailsList = admins.map(admin => `endeavor.mng+${admin.a_email.replace('@', '-')}@gmail.com`);
-           
+
             const messageData = {
                 personalizations: [{
                     to: adminEmailsList
@@ -169,7 +169,7 @@ router.delete('/event/:event_id/delete/:volunteer_id', async (request, response,
             };
 
             await sendEmail(messageData);
-            
+
             const volunteerRequest = await eventAttendeesQueries.deleteVolunteerFromEvent({volunteerId, eventId});
             response.json({
                 err: false,
